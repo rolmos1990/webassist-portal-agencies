@@ -1,0 +1,333 @@
+/* ============================================================
+   🌐 Fonts & Root Variables
+   ============================================================ */
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,700;1,600&family=Figtree:ital,wght@0,300..900;1,300..900&display=swap');
+
+:root {
+  --font-primary: "Montserrat", sans-serif;
+  --font-secondary: "Figtree", sans-serif;
+  --color-bg-main: #f0f4f8;
+  --color-sidebar: #012040;
+  --color-highlight: #0eace4;
+  --color-progress-bg: #e9f5e5;
+  --color-progress-fill: #7ac142;
+  --color-label: #4b647e;
+  --color-light-bg: #f4f8ed;
+  --color-trip-bg: #ffffff;
+  --color-title: #b3cee9;
+  --color-subtitle: #ffffff;
+  --color-small: #7492b1;
+  --color-badge-bg: #7cc249;
+}
+
+/* ============================================================
+   🧱 Global Base Styles
+   ============================================================ */
+body {
+  font-family: var(--font-primary);
+  background: var(--color-bg-main)!important;
+  margin: 0;
+  padding: 0;
+}
+
+p {
+  margin: 0;
+  padding: 0;
+}
+
+/* ============================================================
+   📊 Sales Target Components
+   ============================================================ */
+.bg-sales-target {
+  min-width: 260px;
+  background-color: var(--color-light-bg);
+}
+
+.progress-sales-target {
+  height: 12px;
+  background: var(--color-progress-bg);
+}
+
+.progress-bar-sales-target {
+  width: 80%;
+  background: var(--color-progress-fill);
+}
+
+.sales-target-labels {
+  font-size: 13px;
+  color: var(--color-label);
+}
+
+/* ============================================================
+   🧾 Trip Card Styles
+   ============================================================ */
+.trip-card {
+  background: var(--color-trip-bg);
+  padding: 0.5rem 0.75rem 1.5rem 1rem;
+  border-radius: 0.5rem;
+  min-height: 100px;
+}
+
+.trip-title {
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.trip-amount {
+  font-weight: 600;
+  font-size: 15px;
+}
+
+.trip-total {
+  color: var(--color-label);
+  font-size: 13px;
+}
+
+/* ============================================================
+   📚 Sidebar Styles
+   ============================================================ */
+.sidebar {
+  height: 100vh;
+  background: var(--color-sidebar);
+  width: 280px;
+  transition: width 0.3s ease;
+  overflow: hidden;
+}
+
+.hide-sidebar {
+  width: 0;
+  min-width: 0;
+  padding: 0;
+  border: none;
+}
+
+@media (max-width: 991.98px) {
+  .sidebar {
+    width: 0;
+    min-width: 0;
+    padding: 0;
+    border: none;
+  }
+
+  .sidebar.show-sidebar {
+    width: 280px;
+    min-width: 180px;
+    padding: initial;
+    border: initial;
+  }
+
+  #sidebarMenu {
+    overflow: auto;
+    position: fixed;
+    left: 0;
+    top: 0;
+    height: 100vh;
+    background: var(--color-sidebar);
+    z-index: 1050;
+  }
+}
+
+/* ============================================================
+   🧭 Sidebar Navigation
+   ============================================================ */
+.nav-pills .nav-link {
+  color: #b0c6db;
+}
+
+.nav-pills .nav-link .icon {
+  width: 24px;
+  height: 24px;
+}
+
+.nav-pills .nav-link.active,
+.nav-pills .show>.nav-link {
+  background-color: #092e55;
+  color: #ffffff;
+}
+
+/* ============================================================
+   🧩 Sidebar Toggle Button
+   ============================================================ */
+.sidebar-control {
+  position: fixed;
+  top: 70px;
+  left: 266px;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #ffffff;
+  border-radius: 50%;
+  border: 1px solid #e6e6e8;
+  z-index: 1200;
+  cursor: pointer;
+  transition: left 0.3s ease;
+}
+
+.sidebar-control.right-0 {
+  left: 20px;
+}
+
+.sidebar-control img {
+  width: 10px;
+  height: 13px;
+  transform: rotate(180deg);
+  transition: transform 0.3s ease;
+}
+
+.sidebar-control.inverted-arrow img {
+  transform: rotate(0deg);
+}
+
+@media (max-width: 991.98px) {
+  .sidebar-control {
+    left: 20px;
+  }
+
+  .sidebar-control.right-0 {
+    left: 266px;
+  }
+
+  .search-input {
+    width: 100%;
+  }
+}
+
+/* ============================================================
+   🔍 Search Input
+   ============================================================ */
+.search-input {
+  width: 492px;
+}
+
+/* ============================================================
+   🧢 Buttons
+   ============================================================ */
+.btn.btn-outline-primary {
+  font-weight: 500;
+  border: 1px solid var(--color-highlight);
+  color: var(--color-highlight);
+  height: 32px;
+  padding: 0 16px;
+}
+
+.btn.btn-outline-primary:hover {
+  background-color: var(--color-highlight);
+  color: #ffffff;
+}
+
+/* ============================================================
+   🧮 Selling Plan Card
+   ============================================================ */
+.selling-plan-card h1 {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--color-title);
+  line-height: 110%;
+}
+
+.selling-plan-card h2 {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--color-subtitle);
+  line-height: 140%;
+}
+
+.selling-plan-card p {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--color-small);
+}
+
+.selling-plan-card span {
+  font-size: 10px;
+  font-weight: 500;
+  color: #131313;
+  background: var(--color-badge-bg);
+  padding: 4px 8px;
+  border-radius: 17px;
+}
+
+/* ============================================================
+   🧱 Layout Utilities
+   ============================================================ */
+.w-xl-70 {
+  width: 70%;
+}
+
+@media (max-width: 1200px) {
+
+  .w-xl-70,
+  .top-sales-target {
+    width: 100%;
+  }
+}
+
+.content-box {
+  height: 100vh;
+  overflow-y: auto;
+}
+
+/* ============================================================
+   📊 Charts & Graphs
+   ============================================================ */
+.agent-agency-container,
+.performance-chart-container,
+.performance-chart,
+.ratio-chart,
+.kpi-chart,
+.commission-chart {
+  transition: all 0.3s ease;
+  display: flex;
+  flex: 1;
+}
+
+.performance-labels {
+  width: 150px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding-top: 22px;
+  padding-bottom: 45px;
+  flex-shrink: 0;
+}
+
+canvas {
+  width: 100% !important;
+}
+
+.performance-chart canvas {
+  height: 450px !important;
+}
+
+.ratio-chart canvas {
+  height: 250px !important;
+}
+
+.kpi-chart canvas {
+  height: 420px !important;
+}
+
+.commission-chart canvas {
+  height: 370px !important;
+}
+
+/* ============================================================
+   📅 Tables & Pagination
+   ============================================================ */
+table {
+  font-family: var(--font-secondary);
+  margin-bottom: 0;
+}
+
+table th {
+  font-weight: 600;
+}
+
+.pagination {
+  background: #f8f9fa;
+  margin: 0;
+  padding: 0.5em;
+}
