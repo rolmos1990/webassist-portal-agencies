@@ -1,0 +1,19 @@
+/* ============================================================
+   🎯 Buttons
+   ============================================================ */
+ @use '../abstracts/variables' as *;
+ 
+.btn {
+    &.btn-outline-primary {
+        font-weight: 500;
+        border: 1px solid $color-highlight;
+        color: $color-highlight;
+        height: 32px;
+        padding: 0 16px;
+
+        &:hover {
+            background-color: $color-highlight;
+            color: #ffffff;
+        }
+    }
+}

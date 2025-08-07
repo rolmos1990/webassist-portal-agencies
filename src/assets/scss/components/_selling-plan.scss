@@ -1,0 +1,35 @@
+/* ============================================================
+   🛒 Selling Plan Card
+   ============================================================ */
+ @use '../abstracts/variables' as *;
+ 
+.selling-plan-card {
+    h1 {
+        font-size: 13px;
+        font-weight: 500;
+        color: $color-title;
+        line-height: 110%;
+    }
+
+    h2 {
+        font-size: 14px;
+        font-weight: 700;
+        color: $color-subtitle;
+        line-height: 140%;
+    }
+
+    p {
+        font-size: 12px;
+        font-weight: 500;
+        color: $color-small;
+    }
+
+    span {
+        font-size: 10px;
+        font-weight: 500;
+        color: #131313;
+        background: $color-badge-bg;
+        padding: 4px 8px;
+        border-radius: 17px;
+    }
+}

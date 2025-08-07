@@ -8,6 +8,7 @@ import PrivateRoute from './routes/PrivateRoute';
 //boostrap5
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
+import './assets/scss/main.scss'; 
 import Dashboard from './pages/Dashboard';
 
 function App() {

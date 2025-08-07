@@ -1,0 +1,24 @@
+/* ============================================================
+   📈 Sales Target
+   ============================================================ */
+@use '../abstracts/variables' as *;
+
+.bg-sales-target {
+    min-width: 260px;
+    background-color: $color-light-bg;
+}
+
+.progress-sales-target {
+    height: 12px;
+    background: $color-progress-bg;
+
+    .progress-bar-sales-target {
+        width: 80%;
+        background: $color-progress-fill;
+    }
+}
+
+.sales-target-labels {
+    font-size: 13px;
+    color: $color-label;
+}

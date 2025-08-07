@@ -1,0 +1,16 @@
+/* ============================================================
+   🌐 Base Styles
+   ============================================================ */
+ @use '../abstracts/variables' as *;
+ 
+body {
+    font-family: $font-primary;
+    background: $color-bg-main !important;
+    margin: 0;
+    padding: 0;
+}
+
+p {
+    margin: 0;
+    padding: 0;
+}

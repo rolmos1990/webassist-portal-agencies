@@ -1,0 +1,26 @@
+/* ============================================================
+   🚗 Trip Card
+   ============================================================ */
+ @use '../abstracts/variables' as *;
+ 
+.trip-card {
+    background: $color-trip-bg;
+    padding: 0.5rem 0.75rem 1.5rem 1rem;
+    border-radius: 0.5rem;
+    min-height: 100px;
+
+    .trip-title {
+        font-size: 13px;
+        font-weight: 500;
+    }
+
+    .trip-amount {
+        font-weight: 600;
+        font-size: 15px;
+    }
+
+    .trip-total {
+        color: $color-label;
+        font-size: 13px;
+    }
+}

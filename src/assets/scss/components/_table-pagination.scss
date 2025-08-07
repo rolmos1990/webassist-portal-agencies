@@ -1,0 +1,19 @@
+/* ============================================================
+   📋 Table & Pagination
+   ============================================================ */
+ @use '../abstracts/variables' as *;
+ 
+table {
+    font-family: $font-secondary;
+    margin-bottom: 0;
+
+    th {
+        font-weight: 600;
+    }
+}
+
+.pagination {
+    background: #f8f9fa;
+    margin: 0;
+    padding: 0.5em;
+}

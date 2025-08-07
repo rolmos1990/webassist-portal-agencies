@@ -1,0 +1,65 @@
+/* ============================================================
+   📚 Sidebar Styles
+   ============================================================ */
+@use '../abstracts/variables' as *;
+
+.sidebar {
+    height: 100vh;
+    background: $color-sidebar;
+    width: 280px;
+    transition: width 0.3s ease;
+    overflow: hidden;
+}
+
+.hide-sidebar {
+    width: 0;
+    min-width: 0;
+    padding: 0;
+    border: none;
+}
+
+@media (max-width: 991.98px) {
+    .sidebar {
+        width: 0;
+        min-width: 0;
+        padding: 0;
+        border: none;
+    }
+
+    .sidebar.show-sidebar {
+        width: 280px;
+        min-width: 180px;
+        padding: initial;
+        border: initial;
+    }
+
+    #sidebarMenu {
+        overflow: auto;
+        position: fixed;
+        left: 0;
+        top: 0;
+        height: 100vh;
+        background: $color-sidebar;
+        z-index: 1050;
+    }
+}
+
+/* ============================================================
+   🧭 Sidebar Navigation
+   ============================================================ */
+.nav-pills {
+    .nav-link {
+        color: #b0c6db;
+
+        .icon {
+            width: 24px;
+            height: 24px;
+        }
+
+        &.active,
+        &.show>.nav-link {
+            background-color: #092e55;
+            color: #ffffff;
+        }
+    }
+}

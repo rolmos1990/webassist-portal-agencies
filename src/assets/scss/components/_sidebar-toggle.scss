@@ -1,0 +1,52 @@
+/* ============================================================
+   🧩 Sidebar Toggle Button
+   ============================================================ */
+ @use '../abstracts/variables' as *;
+ 
+.sidebar-control {
+    position: fixed;
+    top: 70px;
+    left: 266px;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: $color-trip-bg;
+    border-radius: 50%;
+    border: 1px solid #e6e6e8;
+    z-index: 1200;
+    cursor: pointer;
+    transition: left 0.3s ease;
+
+    &.right-0 {
+        left: 20px;
+    }
+
+    img {
+        width: 10px;
+        height: 13px;
+        transform: rotate(180deg);
+        transition: transform 0.3s ease;
+    }
+
+    &.inverted-arrow {
+        img {
+            transform: rotate(0deg);
+        }
+    }
+}
+
+@media (max-width: 991.98px) {
+    .sidebar-control {
+        left: 20px;
+
+        &.right-0 {
+            left: 266px;
+        }
+    }
+
+    .search-input {
+        width: 100%;
+    }
+}
