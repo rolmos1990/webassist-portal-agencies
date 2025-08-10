@@ -20,7 +20,7 @@ export function DataTable<T>({ table }: Props<T>) {
                   key={header.id}
                   onClick={header.column.getToggleSortingHandler()}
                   className={`border-0 user-select-none cursor-pointer ${
-                    header.column.getCanSort() ? "text-primary" : ""
+                    header.column.getCanSort() ? "text-black" : ""
                   }`}
                 >
                   {flexRender(
@@ -32,7 +32,7 @@ export function DataTable<T>({ table }: Props<T>) {
                     desc: <i className="bi bi-arrow-down ms-1" />,
                   }[header.column.getIsSorted() as string] ?? (
                     header.column.getCanSort() && (
-                      <i className="bi bi-arrow-down-up text-muted ms-1" />
+                      <i className="bi bi-arrow-down text-black ms-1" />
                     )
                   )}
                 </th>
