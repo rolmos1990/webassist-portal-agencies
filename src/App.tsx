@@ -6,10 +6,10 @@ import DashboardLayout from './layouts/DashboardLayout';
 import PrivateRoute from './routes/PrivateRoute';
 
 //boostrap5
-import './assets/scss/abstracts/_custom-variables.scss'; 
+import './assets/scss/abstracts/_custom-variables.scss';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
-import './assets/scss/main.scss'; 
+import './assets/scss/main.scss';
 import Dashboard from './pages/Dashboard';
 
 function App() {
@@ -28,7 +28,6 @@ function App() {
             <Route path="/quotesAgencies" element={<Dashboard />} />
             <Route path="/assistent" element={<Dashboard />} />
             <Route path="/reports" element={<Dashboard />} />
-
           </Route>
         </Route>
         <Route path="*" element={<Navigate to="/login" replace />} />

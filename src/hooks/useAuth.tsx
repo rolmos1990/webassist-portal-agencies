@@ -1,22 +1,12 @@
-import { useState, useEffect } from 'react';
-import { getWacApi } from '../api/generated';
+import { useGetIdiomaTiposPlanes } from '../api/generated';
 
 const useAuth = () => {
-  const [isAuthenticated, setIsAuthenticated] = useState(true);
-  //TODO -- implementado open api, esperar carga de idiomas..
-  useEffect(() => {
-    const api = getWacApi();
 
-    api.getIdiomas()
-      .then(() => {
-        setIsAuthenticated(true);
-      })
-      .catch(() => {
-        setIsAuthenticated(true);
-      });
-  }, []);
+  const { data, isLoading, isError } = useGetIdiomaTiposPlanes("es");
 
-  return { isAuthenticated };
+  //const isAuthenticated = !isLoading && !isError && !!data;
+const isAuthenticated = true;
+  return { isAuthenticated, isLoading, isError };
 };
 
 export default useAuth;
