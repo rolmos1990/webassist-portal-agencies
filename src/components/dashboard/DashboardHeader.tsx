@@ -9,7 +9,7 @@ export default function DashboardHeader({
 }: DashboardHeaderProps) {
   return (
     <div className="d-flex justify-content-start justify-content-md-between align-items-start align-items-md-center p-3 flex-column flex-md-row gap-2">
-      <div className="">
+      <div>
         <h5 className="p-0 m-0" style={{ fontWeight: 600, fontSize: "18px" }}>
           {title}
         </h5>

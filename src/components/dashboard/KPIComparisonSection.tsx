@@ -1,4 +1,4 @@
-import BarChart from '../BarChart';
+import BarChart from '../common/BarChart';
 import type { ChartData, ChartOptions } from 'chart.js';
 
 export default function KPIComparisonSection() {

@@ -1,4 +1,5 @@
-import RadioChart, { type RadioChartConfig } from '../common/RadioChart';
+import RadioChart from '../common/RadioChart';
+import type { RadioChartConfig } from '../../interfaces';
 
 export default function QuotePerformanceSection() {
   // Chart configurations

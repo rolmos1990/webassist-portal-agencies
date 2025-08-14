@@ -9,6 +9,7 @@
     width: 280px;
     transition: width 0.3s ease;
     overflow: hidden;
+    flex-shrink: 0;
 }
 
 .hide-sidebar {

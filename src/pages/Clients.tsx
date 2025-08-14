@@ -1,10 +1,10 @@
-import { DataTable } from "../components/DataTable";
-import { useClientsTable } from "../hooks/useClientTable";
+import { DataTable } from '../components/DataTable';
+import { useClientsTable } from '../hooks/useClientTable';
 
 function Clients() {
   const { table } = useClientsTable();
-    return (
-      <div className="min-vh-100 bg-light">
+  return (
+    <div className="min-vh-100 bg-light">
       <div className="container-fluid py-4">
         <div className="row">
           <div className="col-12">
@@ -12,9 +12,9 @@ function Clients() {
             <DataTable table={table} />
           </div>
         </div>
-        </div>
-        </div>
-      )
+      </div>
+    </div>
+  );
 }
 
 export default Clients;

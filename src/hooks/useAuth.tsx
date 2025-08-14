@@ -2,7 +2,7 @@ import { useGetIdiomaTiposPlanes } from '../api/generated';
 
 const useAuth = () => {
 
-  const { data, isLoading, isError } = useGetIdiomaTiposPlanes("es");
+  const { isLoading, isError } = useGetIdiomaTiposPlanes("es");
 
   //const isAuthenticated = !isLoading && !isError && !!data;
 const isAuthenticated = true;

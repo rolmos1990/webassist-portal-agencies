@@ -1,8 +1,28 @@
-import BarChart from '../BarChart';
+import BarChart from '../common/BarChart';
 import type { ChartData, ChartOptions } from 'chart.js';
 
-export default function CommissionEarnedSection() {
-  const chartData: ChartData<'bar'> = {
+interface CommissionEarnedSectionProps {
+  data?: {
+    labels: string[];
+    datasets: Array<{
+      label: string;
+      data: number[];
+      backgroundColor: string | string[] | ((ctx: any) => string);
+    }>;
+  };
+}
+
+export default function CommissionEarnedSection({ data }: CommissionEarnedSectionProps) {
+  // Use provided data or fallback to default data
+  const chartData: ChartData<'bar'> = data ? {
+    labels: data.labels,
+    datasets: data.datasets.map(dataset => ({
+      ...dataset,
+      borderRadius: 6,
+      barPercentage: 0.7,
+      categoryPercentage: 0.8,
+    }))
+  } : {
     labels: [
       "Jan", "Feb", "Mar", "Apr", "May", "Jun",
       "Jul", "Aug", "Sep", "Oct"

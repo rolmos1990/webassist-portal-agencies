@@ -1,26 +1,12 @@
-import iconSearch from '../assets/images/icons/search.svg';
 import iconRounded from '../assets/images/icons/rounded-icon.svg';
 import iconNotification from '../assets/images/icons/notification.svg';
+import Search from './common/Search';
 
 function Header() {
   return (
     <header className="d-flex align-items-center bg-white justify-content-center justify-content-md-between py-3">
       <div className="w-100 d-flex justify-content-center align-items-center ms-2 ms-md-0">
-        <div className="position-relative search-input">
-          <input
-            type="search"
-            className="form-control form-control-dark rounded-pill ps-5"
-            style={{ height: "48px" }}
-            placeholder="Search for..."
-            aria-label="Search"
-          />
-          <img
-            src={iconSearch}
-            alt="search"
-            className="position-absolute"
-            style={{ left: "15px", top: "14px", width: "20px", height: "20px" }}
-          />
-        </div>
+        <Search />
       </div>
 
       <div
