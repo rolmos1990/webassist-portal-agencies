@@ -1,8 +1,10 @@
 import { useNavigate } from 'react-router-dom';
 import logo from '../assets/images/logo2.png';
+import useAuth from '../hooks/useAuth';
 
 
 const Login = () => {
+  useAuth();
   const navigate = useNavigate();
 
   const handleLogin = () => {

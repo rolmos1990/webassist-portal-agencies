@@ -5,68 +5,383 @@
  * Api para uso interno WAC.
  * OpenAPI spec version: 1.0.0
  */
-import * as axios from 'axios';
+import {
+  useQuery
+} from '@tanstack/react-query';
 import type {
-  AxiosRequestConfig,
-  AxiosResponse
-} from 'axios';
+  DataTag,
+  DefinedInitialDataOptions,
+  DefinedUseQueryResult,
+  QueryClient,
+  QueryFunction,
+  QueryKey,
+  UndefinedInitialDataOptions,
+  UseQueryOptions,
+  UseQueryResult
+} from '@tanstack/react-query';
 
 import type {
   GetIdiomaDocumentosVoucher200,
   GetIdiomaLangStrings200,
   GetIdiomaTiposPlanes200,
+  GetIdiomaTiposPlanes400,
   GetIdiomas200
 } from './schemas';
 
-export const getWacApi = () => {
+import { customFetch } from './custom-fetcher';
 /**
  * @summary Los idiomas que tiene el Sitio
  */
-const getIdiomas = <TData = AxiosResponse<GetIdiomas200>>(
-     options?: AxiosRequestConfig
- ): Promise<TData> => {
-    return axios.default.get(
-      `/idiomas`,options
-    );
-  }
+export const getIdiomas = (
+    
+ signal?: AbortSignal
+) => {
+      
+      
+      return customFetch<GetIdiomas200>(
+      {url: `/idiomas`, method: 'GET', signal
+    },
+      );
+    }
+  
+
+export const getGetIdiomasQueryKey = () => {
+    return [`/idiomas`] as const;
+    }
+
+    
+export const getGetIdiomasQueryOptions = <TData = Awaited<ReturnType<typeof getIdiomas>>, TError = null | null>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getIdiomas>>, TError, TData>>, }
+) => {
+
+const {query: queryOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetIdiomasQueryKey();
+
+  
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getIdiomas>>> = ({ signal }) => getIdiomas(signal);
+
+      
+
+      
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getIdiomas>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type GetIdiomasQueryResult = NonNullable<Awaited<ReturnType<typeof getIdiomas>>>
+export type GetIdiomasQueryError = null | null
+
+
+export function useGetIdiomas<TData = Awaited<ReturnType<typeof getIdiomas>>, TError = null | null>(
+  options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getIdiomas>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getIdiomas>>,
+          TError,
+          Awaited<ReturnType<typeof getIdiomas>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetIdiomas<TData = Awaited<ReturnType<typeof getIdiomas>>, TError = null | null>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getIdiomas>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getIdiomas>>,
+          TError,
+          Awaited<ReturnType<typeof getIdiomas>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetIdiomas<TData = Awaited<ReturnType<typeof getIdiomas>>, TError = null | null>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getIdiomas>>, TError, TData>>, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/**
+ * @summary Los idiomas que tiene el Sitio
+ */
+
+export function useGetIdiomas<TData = Awaited<ReturnType<typeof getIdiomas>>, TError = null | null>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getIdiomas>>, TError, TData>>, }
+ , queryClient?: QueryClient 
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getGetIdiomasQueryOptions(options)
+
+  const query = useQuery(queryOptions , queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  query.queryKey = queryOptions.queryKey ;
+
+  return query;
+}
+
+
+
 
 /**
  * @summary Las traducciones del idioma
  */
-const getIdiomaLangStrings = <TData = AxiosResponse<GetIdiomaLangStrings200>>(
-    idioma: string, options?: AxiosRequestConfig
- ): Promise<TData> => {
-    return axios.default.get(
-      `/${idioma}/lang_strings`,options
-    );
-  }
+export const getIdiomaLangStrings = (
+    idioma: string,
+ signal?: AbortSignal
+) => {
+      
+      
+      return customFetch<GetIdiomaLangStrings200>(
+      {url: `/${idioma}/lang_strings`, method: 'GET', signal
+    },
+      );
+    }
+  
+
+export const getGetIdiomaLangStringsQueryKey = (idioma?: string,) => {
+    return [`/${idioma}/lang_strings`] as const;
+    }
+
+    
+export const getGetIdiomaLangStringsQueryOptions = <TData = Awaited<ReturnType<typeof getIdiomaLangStrings>>, TError = null | null>(idioma: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getIdiomaLangStrings>>, TError, TData>>, }
+) => {
+
+const {query: queryOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetIdiomaLangStringsQueryKey(idioma);
+
+  
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getIdiomaLangStrings>>> = ({ signal }) => getIdiomaLangStrings(idioma, signal);
+
+      
+
+      
+
+   return  { queryKey, queryFn, enabled: !!(idioma), ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getIdiomaLangStrings>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type GetIdiomaLangStringsQueryResult = NonNullable<Awaited<ReturnType<typeof getIdiomaLangStrings>>>
+export type GetIdiomaLangStringsQueryError = null | null
+
+
+export function useGetIdiomaLangStrings<TData = Awaited<ReturnType<typeof getIdiomaLangStrings>>, TError = null | null>(
+ idioma: string, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getIdiomaLangStrings>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getIdiomaLangStrings>>,
+          TError,
+          Awaited<ReturnType<typeof getIdiomaLangStrings>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetIdiomaLangStrings<TData = Awaited<ReturnType<typeof getIdiomaLangStrings>>, TError = null | null>(
+ idioma: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getIdiomaLangStrings>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getIdiomaLangStrings>>,
+          TError,
+          Awaited<ReturnType<typeof getIdiomaLangStrings>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetIdiomaLangStrings<TData = Awaited<ReturnType<typeof getIdiomaLangStrings>>, TError = null | null>(
+ idioma: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getIdiomaLangStrings>>, TError, TData>>, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/**
+ * @summary Las traducciones del idioma
+ */
+
+export function useGetIdiomaLangStrings<TData = Awaited<ReturnType<typeof getIdiomaLangStrings>>, TError = null | null>(
+ idioma: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getIdiomaLangStrings>>, TError, TData>>, }
+ , queryClient?: QueryClient 
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getGetIdiomaLangStringsQueryOptions(idioma,options)
+
+  const query = useQuery(queryOptions , queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  query.queryKey = queryOptions.queryKey ;
+
+  return query;
+}
+
+
+
 
 /**
  * @summary Devuelve los documentos del voucher entregado
  */
-const getIdiomaDocumentosVoucher = <TData = AxiosResponse<GetIdiomaDocumentosVoucher200>>(
+export const getIdiomaDocumentosVoucher = (
     idioma: string,
-    voucher: string, options?: AxiosRequestConfig
- ): Promise<TData> => {
-    return axios.default.get(
-      `/${idioma}/documentos/${voucher}`,options
-    );
-  }
+    voucher: string,
+ signal?: AbortSignal
+) => {
+      
+      
+      return customFetch<GetIdiomaDocumentosVoucher200>(
+      {url: `/${idioma}/documentos/${voucher}`, method: 'GET', signal
+    },
+      );
+    }
+  
+
+export const getGetIdiomaDocumentosVoucherQueryKey = (idioma?: string,
+    voucher?: string,) => {
+    return [`/${idioma}/documentos/${voucher}`] as const;
+    }
+
+    
+export const getGetIdiomaDocumentosVoucherQueryOptions = <TData = Awaited<ReturnType<typeof getIdiomaDocumentosVoucher>>, TError = null | null>(idioma: string,
+    voucher: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getIdiomaDocumentosVoucher>>, TError, TData>>, }
+) => {
+
+const {query: queryOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetIdiomaDocumentosVoucherQueryKey(idioma,voucher);
+
+  
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getIdiomaDocumentosVoucher>>> = ({ signal }) => getIdiomaDocumentosVoucher(idioma,voucher, signal);
+
+      
+
+      
+
+   return  { queryKey, queryFn, enabled: !!(idioma && voucher), ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getIdiomaDocumentosVoucher>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type GetIdiomaDocumentosVoucherQueryResult = NonNullable<Awaited<ReturnType<typeof getIdiomaDocumentosVoucher>>>
+export type GetIdiomaDocumentosVoucherQueryError = null | null
+
+
+export function useGetIdiomaDocumentosVoucher<TData = Awaited<ReturnType<typeof getIdiomaDocumentosVoucher>>, TError = null | null>(
+ idioma: string,
+    voucher: string, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getIdiomaDocumentosVoucher>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getIdiomaDocumentosVoucher>>,
+          TError,
+          Awaited<ReturnType<typeof getIdiomaDocumentosVoucher>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetIdiomaDocumentosVoucher<TData = Awaited<ReturnType<typeof getIdiomaDocumentosVoucher>>, TError = null | null>(
+ idioma: string,
+    voucher: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getIdiomaDocumentosVoucher>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getIdiomaDocumentosVoucher>>,
+          TError,
+          Awaited<ReturnType<typeof getIdiomaDocumentosVoucher>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetIdiomaDocumentosVoucher<TData = Awaited<ReturnType<typeof getIdiomaDocumentosVoucher>>, TError = null | null>(
+ idioma: string,
+    voucher: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getIdiomaDocumentosVoucher>>, TError, TData>>, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/**
+ * @summary Devuelve los documentos del voucher entregado
+ */
+
+export function useGetIdiomaDocumentosVoucher<TData = Awaited<ReturnType<typeof getIdiomaDocumentosVoucher>>, TError = null | null>(
+ idioma: string,
+    voucher: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getIdiomaDocumentosVoucher>>, TError, TData>>, }
+ , queryClient?: QueryClient 
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getGetIdiomaDocumentosVoucherQueryOptions(idioma,voucher,options)
+
+  const query = useQuery(queryOptions , queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  query.queryKey = queryOptions.queryKey ;
+
+  return query;
+}
+
+
+
 
 /**
  * Retorna una lista de tipos de planes disponibles en el idioma especificado. Si el idioma no es válido, se informa el error. Si el usuario está autenticado, se incluye también información del agente.
  * @summary Devuelve los tipos de planes
  */
-const getIdiomaTiposPlanes = <TData = AxiosResponse<GetIdiomaTiposPlanes200>>(
-    idioma: string, options?: AxiosRequestConfig
- ): Promise<TData> => {
-    return axios.default.get(
-      `/${idioma}/tipos_planes`,options
-    );
-  }
+export const getIdiomaTiposPlanes = (
+    idioma: string,
+ signal?: AbortSignal
+) => {
+      
+      
+      return customFetch<GetIdiomaTiposPlanes200>(
+      {url: `/${idioma}/tipos_planes`, method: 'GET', signal
+    },
+      );
+    }
+  
 
-return {getIdiomas,getIdiomaLangStrings,getIdiomaDocumentosVoucher,getIdiomaTiposPlanes}};
-export type GetIdiomasResult = AxiosResponse<GetIdiomas200>
-export type GetIdiomaLangStringsResult = AxiosResponse<GetIdiomaLangStrings200>
-export type GetIdiomaDocumentosVoucherResult = AxiosResponse<GetIdiomaDocumentosVoucher200>
-export type GetIdiomaTiposPlanesResult = AxiosResponse<GetIdiomaTiposPlanes200>
+export const getGetIdiomaTiposPlanesQueryKey = (idioma?: string,) => {
+    return [`/${idioma}/tipos_planes`] as const;
+    }
+
+    
+export const getGetIdiomaTiposPlanesQueryOptions = <TData = Awaited<ReturnType<typeof getIdiomaTiposPlanes>>, TError = GetIdiomaTiposPlanes400>(idioma: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getIdiomaTiposPlanes>>, TError, TData>>, }
+) => {
+
+const {query: queryOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetIdiomaTiposPlanesQueryKey(idioma);
+
+  
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getIdiomaTiposPlanes>>> = ({ signal }) => getIdiomaTiposPlanes(idioma, signal);
+
+      
+
+      
+
+   return  { queryKey, queryFn, enabled: !!(idioma), ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getIdiomaTiposPlanes>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type GetIdiomaTiposPlanesQueryResult = NonNullable<Awaited<ReturnType<typeof getIdiomaTiposPlanes>>>
+export type GetIdiomaTiposPlanesQueryError = GetIdiomaTiposPlanes400
+
+
+export function useGetIdiomaTiposPlanes<TData = Awaited<ReturnType<typeof getIdiomaTiposPlanes>>, TError = GetIdiomaTiposPlanes400>(
+ idioma: string, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getIdiomaTiposPlanes>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getIdiomaTiposPlanes>>,
+          TError,
+          Awaited<ReturnType<typeof getIdiomaTiposPlanes>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetIdiomaTiposPlanes<TData = Awaited<ReturnType<typeof getIdiomaTiposPlanes>>, TError = GetIdiomaTiposPlanes400>(
+ idioma: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getIdiomaTiposPlanes>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getIdiomaTiposPlanes>>,
+          TError,
+          Awaited<ReturnType<typeof getIdiomaTiposPlanes>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetIdiomaTiposPlanes<TData = Awaited<ReturnType<typeof getIdiomaTiposPlanes>>, TError = GetIdiomaTiposPlanes400>(
+ idioma: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getIdiomaTiposPlanes>>, TError, TData>>, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/**
+ * @summary Devuelve los tipos de planes
+ */
+
+export function useGetIdiomaTiposPlanes<TData = Awaited<ReturnType<typeof getIdiomaTiposPlanes>>, TError = GetIdiomaTiposPlanes400>(
+ idioma: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getIdiomaTiposPlanes>>, TError, TData>>, }
+ , queryClient?: QueryClient 
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getGetIdiomaTiposPlanesQueryOptions(idioma,options)
+
+  const query = useQuery(queryOptions , queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  query.queryKey = queryOptions.queryKey ;
+
+  return query;
+}

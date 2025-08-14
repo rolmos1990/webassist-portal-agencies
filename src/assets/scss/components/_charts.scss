@@ -2,8 +2,8 @@
    📊 Charts
    ============================================================ */
 
- @use '../abstracts/variables' as *;
- 
+@use '../abstracts/variables' as *;
+
 .agent-agency-container,
 .performance-chart-container,
 .performance-chart,
@@ -23,10 +23,6 @@
     padding-top: 22px;
     padding-bottom: 45px;
     flex-shrink: 0;
-}
-
-canvas {
-    width: 100% !important;
 }
 
 .performance-chart {

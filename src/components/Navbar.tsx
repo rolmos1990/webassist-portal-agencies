@@ -25,11 +25,17 @@ function NavBar() {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  const toggleSidebar = () => {
-    setSidebarOpen((prev) => !prev);
+  const handleSidebarToggle = () => {
+    if (isMobile) {
+      // En móvil: toggle entre show-sidebar y sin clase
+      setSidebarOpen((prev) => !prev);
+    } else {
+      // En desktop: toggle entre normal y hide-sidebar
+      setSidebarOpen((prev) => !prev);
+    }
   };
 
-  // Clases condicionales
+  // Clases condicionales basadas en la lógica original
   const sidebarClassName = `
     d-flex flex-column flex-shrink-0 sidebar
     ${isMobile ? (sidebarOpen ? 'show-sidebar' : '') : (sidebarOpen ? '' : 'hide-sidebar')}
@@ -47,7 +53,7 @@ function NavBar() {
         className={toggleClassName}
         id="sidebarToggle"
         style={{ cursor: 'pointer' }}
-        onClick={toggleSidebar}
+        onClick={handleSidebarToggle}
       >
         <img src={iconArrow} alt="arrow" />
       </div>
@@ -64,8 +70,6 @@ function NavBar() {
         <SidebarItem icon={iconNewQuote} label="Cotizaciones de la Agencia" path="/quotesAgencies" />
         <SidebarItem icon={iconStandingQuote} label="Asistencias de la Agencia" path="/assistent" />
         <SidebarItem icon={iconReports} label="Reporte de Ventas / Comisiones" path="/reports" />
-
-
         </ul>
       </div>
     </div>
