@@ -1,8 +1,12 @@
+import { useState } from 'react';
+import { Dropdown } from 'react-bootstrap';
 import iconRounded from '../assets/images/icons/rounded-icon.svg';
 import iconNotification from '../assets/images/icons/notification.svg';
 import Search from './common/Search';
 
 function Header() {
+  const [showDropdown, setShowDropdown] = useState(false);
+
   return (
     <header className="d-flex align-items-center bg-white justify-content-center justify-content-md-between py-3">
       <div className="w-100 d-flex justify-content-center align-items-center ms-2 ms-md-0">
@@ -32,30 +36,28 @@ function Header() {
             9
           </span>
         </div>
-        <div className="dropdown text-end">
-          <a
-            href="#"
-            className="d-block link-dark text-decoration-none dropdown-toggle"
-            id="dropdownUser1"
-            data-bs-toggle="dropdown"
-            aria-expanded="false"
+        <Dropdown show={showDropdown} onToggle={setShowDropdown}>
+          <Dropdown.Toggle 
+            variant="link" 
+            id="dropdown-user" 
+            className="text-decoration-none p-0"
           >
             <img
               src="https://github.com/mdo.png"
-              alt="mdo"
+              alt="Profile"
               width="32"
               height="32"
               className="rounded-circle"
             />
-          </a>
-          <ul className="dropdown-menu text-small" aria-labelledby="dropdownUser1">
-            <li><a className="dropdown-item" href="#">New project...</a></li>
-            <li><a className="dropdown-item" href="#">Settings</a></li>
-            <li><a className="dropdown-item" href="#">Profile</a></li>
-            <li><hr className="dropdown-divider" /></li>
-            <li><a className="dropdown-item" href="#">Sign out</a></li>
-          </ul>
-        </div>
+          </Dropdown.Toggle>
+
+          <Dropdown.Menu className="text-small">
+            <Dropdown.Item href="#">Settings</Dropdown.Item>
+            <Dropdown.Item href="#">Profile</Dropdown.Item>
+            <Dropdown.Divider />
+            <Dropdown.Item href="/login">Sign out</Dropdown.Item>
+          </Dropdown.Menu>
+        </Dropdown>
       </div>
     </header>
   );

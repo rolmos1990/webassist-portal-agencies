@@ -1,6 +1,14 @@
 import LinkedIcon from '../../assets/images/icons/link-icon.svg';
 
-export default function RevenueRenewalsSection() {
+interface RevenueRenewalsSectionProps {
+  data: {
+    totalRenewal: number;
+    monthlyGrowth: number;
+    yearlyGrowth: number;
+  };
+}
+
+export default function RevenueRenewalsSection({ data }: RevenueRenewalsSectionProps) {
   return (
     <div className="p-3 bg-white rounded-2 flex-fill" style={{ minWidth: 0, overflow: 'hidden' }}>
       <div className="d-flex justify-content-between align-items-start gap-3">
@@ -36,7 +44,7 @@ export default function RevenueRenewalsSection() {
             <div
               style={{ color: "#21272a", fontSize: "13px", fontWeight: "700" }}
             >
-              $49,223.00
+ ${data?.totalRenewal?.toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 2, maximumFractionDigits: 2 }) || '$0.00'}
             </div>
             <div style={{ color: "#4b647e", fontSize: "11px" }}>
               Total renewal done

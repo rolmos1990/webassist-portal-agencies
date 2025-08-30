@@ -1,7 +1,7 @@
 // -----------------------------------
 // Main Styles
 // -----------------------------------
-
+@use './abstracts/custom-variables' as *;
 @use './base/fonts';
 @use './base/base';
 @use './components/sales-target';

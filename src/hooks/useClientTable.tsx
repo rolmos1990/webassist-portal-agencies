@@ -1,5 +1,6 @@
-import { useDataTable, type UseDataTableOptions, type DataTableInstance } from './useDataTable';
+import { useDataTable, type UseDataTableOptions } from './useDataTable';
 import { type ColumnDef, type Table } from '@tanstack/react-table';
+import { Badge } from 'react-bootstrap';
 
 /**
  * Type representing a client in the table
@@ -8,8 +9,10 @@ export interface Client {
   id: string;
   name: string;
   email: string;
-  status: 'active' | 'inactive' | 'pending';
-  // Add other client properties as needed
+  phone: string;
+  agentCode: string;
+  commission: number;
+  status: 'Activo' | 'Inactivo' | 'Pendiente';
 }
 
 /**
@@ -41,8 +44,32 @@ export function useClientTable<TData = Client>({
     enableRowSelection: true,
   });
 
-  // Create a new object with all table methods and our custom methods
-  const extendedTable: Table<TData> & {
+  // Client-specific methods
+  const getClientStatusColor = (status: Client['status']): string => {
+    const statusColors = {
+      'Activo': 'text-green-500',
+      'Inactivo': 'text-red-500',
+      'Pendiente': 'text-yellow-500',
+    } as const;
+    return statusColors[status] || 'text-gray-500';
+  };
+
+  // Create an extended table object with custom methods
+  const extendedTable = {
+    ...table,
+    getClientStatusColor,
+    getPaginationProps: () => ({
+      currentPage: table.getState().pagination.pageIndex + 1,
+      totalPages: table.getPageCount(),
+      canPreviousPage: table.getCanPreviousPage(),
+      canNextPage: table.getCanNextPage(),
+      onPageChange: (page: number) => table.setPageIndex(page - 1),
+      onNextPage: () => table.nextPage(),
+      onPreviousPage: () => table.previousPage(),
+      onFirstPage: () => table.setPageIndex(0),
+      onLastPage: () => table.setPageIndex(Math.max(0, table.getPageCount() - 1)),
+    })
+  } as Table<TData> & {
     getClientStatusColor: (status: Client['status']) => string;
     getPaginationProps: () => {
       currentPage: number;
@@ -55,31 +82,7 @@ export function useClientTable<TData = Client>({
       onFirstPage: () => void;
       onLastPage: () => void;
     };
-  } = {
-    ...table,
-    // Client-specific methods
-    getClientStatusColor: (status: Client['status']) => {
-      const statusColors = {
-        active: 'text-green-500',
-        inactive: 'text-red-500',
-        pending: 'text-yellow-500',
-      };
-      return statusColors[status] || 'text-gray-500';
-    },
-    
-    // Pagination props for DataTable
-    getPaginationProps: () => ({
-      currentPage: table.getState().pagination.pageIndex + 1,
-      totalPages: table.getPageCount(),
-      canPreviousPage: table.getCanPreviousPage(),
-      canNextPage: table.getCanNextPage(),
-      onPageChange: (page: number) => table.setPageIndex(page - 1),
-      onNextPage: () => table.nextPage(),
-      onPreviousPage: () => table.previousPage(),
-      onFirstPage: () => table.setPageIndex(0),
-      onLastPage: () => table.setPageIndex(table.getPageCount() - 1),
-    })
-  };
+  } & typeof table;
 
   return extendedTable;
 }
@@ -90,32 +93,57 @@ export function useClientTable<TData = Client>({
  */
 export const defaultClientColumns: ColumnDef<Client>[] = [
   {
+    accessorKey: 'id',
+    header: 'ID',
+    cell: (info) => info.getValue(),
+    size: 60,
+  },
+  {
     accessorKey: 'name',
-    header: 'Name',
+    header: 'Nombre',
     cell: (info) => info.getValue(),
   },
   {
     accessorKey: 'email',
     header: 'Email',
-    cell: (info) => info.getValue(),
+    cell: (info) => info.getValue() || '-',
+  },
+  {
+    accessorKey: 'phone',
+    header: 'Teléfono',
+    cell: (info) => info.getValue() || '-',
+  },
+  {
+    accessorKey: 'agentCode',
+    header: 'Código de Agente',
+    cell: (info) => info.getValue() || '-',
+  },
+  {
+    accessorKey: 'commission',
+    header: 'Comisión',
+    cell: (info) => {
+      const value = info.getValue() as number;
+      return value ? `${value.toFixed(2)}%` : '-';
+    },
   },
   {
     accessorKey: 'status',
-    header: 'Status',
+    header: 'Estado',
     cell: (info) => {
+      console.log('info estado', info.getValue());
       const status = info.getValue() as Client['status'];
-      const colors = {
-        active: 'bg-green-100 text-green-800',
-        inactive: 'bg-red-100 text-red-800',
-        pending: 'bg-yellow-100 text-yellow-800',
-      };
+      
+      const variantMap = {
+        'Activo': 'success',
+        'Inactivo': 'danger',
+        'Pendiente': 'warning'
+      } as const;
       
       return (
-        <span className={`px-2 py-1 rounded-full text-xs font-medium ${colors[status] || 'bg-gray-100 text-gray-800'}`}>
-          {status.charAt(0).toUpperCase() + status.slice(1)}
-        </span>
+        <Badge pill bg={variantMap[status] || 'secondary'} className="text-uppercase">
+          {status}
+        </Badge>
       );
     },
-  },
-  // Add more default columns as needed
+  }
 ];

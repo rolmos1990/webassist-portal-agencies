@@ -1,15 +1,19 @@
 import LinkedIcon from '../../assets/images/icons/link-icon.svg';
 import HorizontalBarChart from '../common/HorizontalBarChart';
 
-export default function AgentPerformanceSection() {
-  const agentData = [
-    { name: 'Leslie King', subtitle: 'WE ASSIST', value: 9800 },
-    { name: 'Bertha Walters', subtitle: 'Infinity Transactional Ser...', value: 8900 },
-    { name: 'Heidi Jordan', subtitle: 'Palma & Company', value: 8500 },
-    { name: 'Norman Ramos', subtitle: 'BEN-IN', value: 8400 },
-    { name: 'Sylvia Burton', subtitle: 'Columbia Tours', value: 8300 },
-    { name: 'Tracey Ford', subtitle: 'PBC INTERNATIONAL', value: 8000 },
-  ];
+export interface AgentPerformanceData {
+  name: string;
+  subtitle: string;
+  value: number;
+}
+
+interface AgentPerformanceSectionProps {
+  data: {
+    data: AgentPerformanceData[];
+  };
+}
+
+export default function AgentPerformanceSection({ data = { data: [] } }: AgentPerformanceSectionProps) {
 
   return (
     <div className="p-3 bg-white rounded-2 w-100">
@@ -39,7 +43,7 @@ export default function AgentPerformanceSection() {
       </div>
       <HorizontalBarChart
         id="agentPerformanceChart"
-        data={agentData}
+        data={data.data || []}
         backgroundColor="#7cc249"
         height={450}
         maxValue={10000}

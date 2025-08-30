@@ -1,7 +1,16 @@
 import LinkedIcon from '../../assets/images/icons/link-icon.svg';
 import TripTargetCard from './TripTargetCard';
 
-export default function SalesTargetSection() {
+interface SalesTargetData {
+  percentage: number;
+  centerText?: string;
+}
+
+interface SalesTargetSectionProps {
+  data: SalesTargetData;
+}
+
+export default function SalesTargetSection({ data }: SalesTargetSectionProps) {
   return (
     <div className="p-3 bg-white mx-3 rounded-2">
       <div className="d-flex justify-content-between align-items-start gap-3">
@@ -25,13 +34,13 @@ export default function SalesTargetSection() {
         <div className="rounded-2 p-3 d-flex flex-column align-items-start justify-content-center top-sales-target bg-sales-target">
           <div className="d-flex w-100 justify-content-between align-items-center mb-2">
             <span style={{ fontWeight: '600' }}>Total Sales Target</span>
-            <span style={{ fontWeight: '600' }}>80%</span>
+            <span style={{ fontWeight: '600' }}>{data.percentage}%</span>
           </div>
           <div className="progress w-100 mb-2 progress-sales-target">
             <div
               className="progress-bar progress-bar-sales-target"
               role="progressbar"
-              aria-valuenow={80}
+              aria-valuenow={data.percentage}
               aria-valuemin={0}
               aria-valuemax={100}
             ></div>

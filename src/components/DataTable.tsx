@@ -1,25 +1,24 @@
 import { useMemo } from 'react';
+import type { Table as TanstackTable } from '@tanstack/react-table';
 import { Pagination } from './DataTable/Pagination';
 import { TableHeader } from './DataTable/TableHeader';
 import { TableBody } from './DataTable/TableBody';
 
+type PaginationProps = {
+  currentPage: number;
+  totalPages: number;
+  canPreviousPage: boolean;
+  canNextPage: boolean;
+  onPageChange: (page: number) => void;
+  onNextPage: () => void;
+  onPreviousPage: () => void;
+  onFirstPage: () => void;
+  onLastPage: () => void;
+};
+
 type DataTableProps<T> = {
-  table: {
-    getHeaderGroups: () => any[];
-    getRowModel: () => { rows: any[] };
-    getPaginationProps: () => {
-      currentPage: number;
-      totalPages: number;
-      canPreviousPage: boolean;
-      canNextPage: boolean;
-      onPageChange: (page: number) => void;
-      onNextPage: () => void;
-      onPreviousPage: () => void;
-      onFirstPage: () => void;
-      onLastPage: () => void;
-    };
-    // Add other required methods from TanstackTable
-    [key: string]: any;
+  table: TanstackTable<T> & {
+    getPaginationProps: () => PaginationProps;
   };
 };
 

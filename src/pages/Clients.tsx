@@ -2,324 +2,44 @@ import { useMemo } from 'react';
 import { DataTable } from '../components/DataTable';
 import { useClientTable, type Client, defaultClientColumns } from '../hooks/useClientTable';
 import type { ColumnDef, Table } from '@tanstack/react-table';
+import { useState } from 'react';
+import Offcanvas from 'react-bootstrap/Offcanvas';
+import { Button } from 'react-bootstrap';
+
 
 // Extend the base Client interface with additional fields
 interface ExtendedClient extends Client {
-  lastLogin: string;
-  joinDate: string;
+  id: string;
+  email: string;
+  name: string;
+  phone: string;
+  agentCode: string;
+  commission: number;
+  status: 'Activo' | 'Inactivo' | 'Pendiente';
 }
 
 // Sample data - in a real app, this would come from an API
-const sampleClients: ExtendedClient[] = [
-  {
-    id: '1',
-    name: 'John Doe',
-    email: 'john@example.com',
-    status: 'active',
-    lastLogin: '2023-08-29T14:32:00',
-    joinDate: '2023-01-15',
-  },
-  {
-    id: '2',
-    name: 'Jane Smith',
-    email: 'jane@example.com',
-    status: 'inactive',
-    lastLogin: '2023-08-20T09:15:00',
-    joinDate: '2023-02-20',
-  },
-  {
-    id: '3',
-    name: 'Robert Johnson',
-    email: 'robert@example.com',
-    status: 'pending',
-    lastLogin: '2023-08-28T16:45:00',
-    joinDate: '2023-03-10',
-  },
-    {
-    id: '4',
-    name: 'John Doe',
-    email: 'john@example.com',
-    status: 'active',
-    lastLogin: '2023-08-29T14:32:00',
-    joinDate: '2023-01-15',
-  },
-  {
-    id: '5',
-    name: 'Jane Smith',
-    email: 'jane@example.com',
-    status: 'inactive',
-    lastLogin: '2023-08-20T09:15:00',
-    joinDate: '2023-02-20',
-  },
-  {
-    id: '6',
-    name: 'Robert Johnson',
-    email: 'robert@example.com',
-    status: 'pending',
-    lastLogin: '2023-08-28T16:45:00',
-    joinDate: '2023-03-10',
-  },
-    {
-    id: '7',
-    name: 'John Doe',
-    email: 'john@example.com',
-    status: 'active',
-    lastLogin: '2023-08-29T14:32:00',
-    joinDate: '2023-01-15',
-  },
-  {
-    id: '8',
-    name: 'Jane Smith',
-    email: 'jane@example.com',
-    status: 'inactive',
-    lastLogin: '2023-08-20T09:15:00',
-    joinDate: '2023-02-20',
-  },
-  {
-    id: '9',
-    name: 'Robert Johnson',
-    email: 'robert@example.com',
-    status: 'pending',
-    lastLogin: '2023-08-28T16:45:00',
-    joinDate: '2023-03-10',
-  },
-    {
-    id: '1',
-    name: 'John Doe',
-    email: 'john@example.com',
-    status: 'active',
-    lastLogin: '2023-08-29T14:32:00',
-    joinDate: '2023-01-15',
-  },
-  {
-    id: '2',
-    name: 'Jane Smith',
-    email: 'jane@example.com',
-    status: 'inactive',
-    lastLogin: '2023-08-20T09:15:00',
-    joinDate: '2023-02-20',
-  },
-  {
-    id: '3',
-    name: 'Robert Johnson',
-    email: 'robert@example.com',
-    status: 'pending',
-    lastLogin: '2023-08-28T16:45:00',
-    joinDate: '2023-03-10',
-  },
-    {
-    id: '4',
-    name: 'John Doe',
-    email: 'john@example.com',
-    status: 'active',
-    lastLogin: '2023-08-29T14:32:00',
-    joinDate: '2023-01-15',
-  },
-  {
-    id: '5',
-    name: 'Jane Smith',
-    email: 'jane@example.com',
-    status: 'inactive',
-    lastLogin: '2023-08-20T09:15:00',
-    joinDate: '2023-02-20',
-  },
-  {
-    id: '6',
-    name: 'Robert Johnson',
-    email: 'robert@example.com',
-    status: 'pending',
-    lastLogin: '2023-08-28T16:45:00',
-    joinDate: '2023-03-10',
-  },
-    {
-    id: '7',
-    name: 'John Doe',
-    email: 'john@example.com',
-    status: 'active',
-    lastLogin: '2023-08-29T14:32:00',
-    joinDate: '2023-01-15',
-  },
-  {
-    id: '8',
-    name: 'Jane Smith',
-    email: 'jane@example.com',
-    status: 'inactive',
-    lastLogin: '2023-08-20T09:15:00',
-    joinDate: '2023-02-20',
-  },
-  {
-    id: '9',
-    name: 'Robert Johnson',
-    email: 'robert@example.com',
-    status: 'pending',
-    lastLogin: '2023-08-28T16:45:00',
-    joinDate: '2023-03-10',
-  },
-    {
-    id: '1',
-    name: 'John Doe',
-    email: 'john@example.com',
-    status: 'active',
-    lastLogin: '2023-08-29T14:32:00',
-    joinDate: '2023-01-15',
-  },
-  {
-    id: '2',
-    name: 'Jane Smith',
-    email: 'jane@example.com',
-    status: 'inactive',
-    lastLogin: '2023-08-20T09:15:00',
-    joinDate: '2023-02-20',
-  },
-  {
-    id: '3',
-    name: 'Robert Johnson',
-    email: 'robert@example.com',
-    status: 'pending',
-    lastLogin: '2023-08-28T16:45:00',
-    joinDate: '2023-03-10',
-  },
-    {
-    id: '4',
-    name: 'John Doe',
-    email: 'john@example.com',
-    status: 'active',
-    lastLogin: '2023-08-29T14:32:00',
-    joinDate: '2023-01-15',
-  },
-  {
-    id: '5',
-    name: 'Jane Smith',
-    email: 'jane@example.com',
-    status: 'inactive',
-    lastLogin: '2023-08-20T09:15:00',
-    joinDate: '2023-02-20',
-  },
-  {
-    id: '6',
-    name: 'Robert Johnson',
-    email: 'robert@example.com',
-    status: 'pending',
-    lastLogin: '2023-08-28T16:45:00',
-    joinDate: '2023-03-10',
-  },
-    {
-    id: '7',
-    name: 'John Doe',
-    email: 'john@example.com',
-    status: 'active',
-    lastLogin: '2023-08-29T14:32:00',
-    joinDate: '2023-01-15',
-  },
-  {
-    id: '8',
-    name: 'Jane Smith',
-    email: 'jane@example.com',
-    status: 'inactive',
-    lastLogin: '2023-08-20T09:15:00',
-    joinDate: '2023-02-20',
-  },
-  {
-    id: '9',
-    name: 'Robert Johnson',
-    email: 'robert@example.com',
-    status: 'pending',
-    lastLogin: '2023-08-28T16:45:00',
-    joinDate: '2023-03-10',
-  },
-    {
-    id: '1',
-    name: 'John Doe',
-    email: 'john@example.com',
-    status: 'active',
-    lastLogin: '2023-08-29T14:32:00',
-    joinDate: '2023-01-15',
-  },
-  {
-    id: '2',
-    name: 'Jane Smith',
-    email: 'jane@example.com',
-    status: 'inactive',
-    lastLogin: '2023-08-20T09:15:00',
-    joinDate: '2023-02-20',
-  },
-  {
-    id: '3',
-    name: 'Robert Johnson',
-    email: 'robert@example.com',
-    status: 'pending',
-    lastLogin: '2023-08-28T16:45:00',
-    joinDate: '2023-03-10',
-  },
-    {
-    id: '4',
-    name: 'John Doe',
-    email: 'john@example.com',
-    status: 'active',
-    lastLogin: '2023-08-29T14:32:00',
-    joinDate: '2023-01-15',
-  },
-  {
-    id: '5',
-    name: 'Jane Smith',
-    email: 'jane@example.com',
-    status: 'inactive',
-    lastLogin: '2023-08-20T09:15:00',
-    joinDate: '2023-02-20',
-  },
-  {
-    id: '6',
-    name: 'Robert Johnson',
-    email: 'robert@example.com',
-    status: 'pending',
-    lastLogin: '2023-08-28T16:45:00',
-    joinDate: '2023-03-10',
-  },
-    {
-    id: '7',
-    name: 'John Doe',
-    email: 'john@example.com',
-    status: 'active',
-    lastLogin: '2023-08-29T14:32:00',
-    joinDate: '2023-01-15',
-  },
-  {
-    id: '8',
-    name: 'Jane Smith',
-    email: 'jane@example.com',
-    status: 'inactive',
-    lastLogin: '2023-08-20T09:15:00',
-    joinDate: '2023-02-20',
-  },
-  {
-    id: '9',
-    name: 'Robert Johnson',
-    email: 'robert@example.com',
-    status: 'pending',
-    lastLogin: '2023-08-28T16:45:00',
-    joinDate: '2023-03-10',
-  },
-];
-
+const sampleClients: ExtendedClient[] = Array.from({ length: 20 }, (_, i) => ({
+  id: (i + 1).toString(),
+  email: `client${i + 1}@example.com`,
+  name: `Client ${i + 1} Name`,
+  phone: `+1 234 567 89${i.toString().padStart(2, '0')}`,
+  agentCode: `WSA-${(i + 1).toString().padStart(7, '0')}`,
+  commission: 0.00,
+  status: i % 3 === 0 ? 'Activo' : i % 3 === 1 ? 'Inactivo' : 'Pendiente'
+}));
 function Clients() {
+  const [show, setShow] = useState(false);
 
-
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+  
   // Define table columns with proper typing
   const columns = useMemo<ColumnDef<ExtendedClient>[]>(
     () => [
       // Use default columns with proper typing
       ...(defaultClientColumns as ColumnDef<ExtendedClient>[]),
       // Add additional columns
-      {
-        accessorKey: 'lastLogin',
-        header: 'Last Login',
-        cell: (info) => new Date(info.getValue() as string).toLocaleString(),
-      },
-      {
-        accessorKey: 'joinDate',
-        header: 'Join Date',
-        cell: (info) => new Date(info.getValue() as string).toLocaleDateString(),
-      },
       {
         id: 'actions',
         header: 'Actions',
@@ -380,8 +100,102 @@ function Clients() {
         <div className="row">
           <div className="col-12">
             <div className="d-flex justify-content-between align-items-center mb-4">
-              <h1 className="h3 mb-0">Client Management</h1>
-              <button type="button" className="btn btn-outline-primary rounded-pill"><i className="bi bi-plus-lg me-2"></i> Add Customer</button>
+              <h1 className="h3 mb-0">Agentes</h1>
+
+              <Button variant="outline-primary" className="rounded-pill" onClick={handleShow}>
+                <i className="bi bi-plus-lg me-2"></i>Agregar agente
+              </Button>
+              <Offcanvas show={show} onHide={handleClose} placement="end">
+                <Offcanvas.Header closeButton>
+                  <Offcanvas.Title>Agregar agente</Offcanvas.Title>
+                </Offcanvas.Header>
+                <Offcanvas.Body className="d-flex flex-column" style={{ minHeight: 'calc(100vh - 100px)' }}>
+                  <form id="newClientForm" onSubmit={(e) => {
+                    e.preventDefault();
+                    handleClose();
+                  }} className="d-flex flex-column flex-grow-1">
+                    <div>
+                      <div className="mb-3">
+                        <label htmlFor="name" className="form-label">Nombre</label>
+                        <input type="text" className="form-control" id="name" required />
+                      </div>
+                      <div className="mb-3">
+                        <label htmlFor="email" className="form-label">Correo electrónico</label>
+                        <input type="email" className="form-control" id="email" required />
+                      </div>
+                      <div className="mb-3">
+                        <label htmlFor="phone" className="form-label">Teléfono</label>
+                        <input type="tel" className="form-control" id="phone" required />
+                      </div>
+                      <div className="mb-3">
+                        <label htmlFor="commission" className="form-label">Comisión (%)</label>
+                        <input 
+                          type="number" 
+                          className="form-control" 
+                          id="commission" 
+                          min="0" 
+                          max="100" 
+                          step="0.01"
+                          required 
+                        />
+                      </div>
+                      
+                      <div className="mb-4">
+                        <label htmlFor="role" className="form-label">Rol</label>
+                        <select className="form-select" id="role" required>
+                          <option value="">Seleccionar rol</option>
+                          <option value="regular">Agente Regular</option>
+                          <option value="admin">Agente Administrador</option>
+                        </select>
+                      </div>
+                    </div>
+
+                    <div className="mb-4">
+                        <label className="form-label">Estado</label>
+                        <div className="d-flex gap-3">
+                          {['Activo', 'Inactivo', 'Pendiente'].map((status) => (
+                            <div key={status} className="form-check">
+                              <input 
+                                className="form-check-input" 
+                                type="radio" 
+                                name="status" 
+                                id={`status-${status.toLowerCase()}`} 
+                                value={status}
+                                defaultChecked={status === 'Activo'}
+                                required 
+                              />
+                              <label className="form-check-label" htmlFor={`status-${status.toLowerCase()}`}>
+                                {status}
+                              </label>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    
+                    <div className="mt-auto pt-4 border-top d-flex justify-content-end gap-3">
+                      <Button 
+                        type="button" 
+                        variant="link" 
+                        className="text-secondary text-decoration-none rounded-pill px-4"
+                        onClick={() => {
+                          const form = document.getElementById('newClientForm') as HTMLFormElement | null;
+                          form?.reset();
+                          handleClose();
+                        }}
+                      >
+                        Cancelar
+                      </Button>
+                      <Button 
+                        type="submit" 
+                        variant="primary" 
+                        className="rounded-pill px-4"
+                      >
+                        Guardar
+                      </Button>
+                    </div>
+                  </form>
+                </Offcanvas.Body>
+              </Offcanvas>
             </div>
             <div className="card">
               <div className="card-body p-0">

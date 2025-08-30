@@ -6,11 +6,12 @@ import DashboardLayout from './layouts/DashboardLayout';
 import PrivateRoute from './routes/PrivateRoute';
 
 //boostrap5
-import './assets/scss/abstracts/_custom-variables.scss';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import './assets/scss/main.scss';
 import Dashboard from './pages/Dashboard';
+import Profile from './pages/Profile';
 
 function App() {
   return (
@@ -22,7 +23,7 @@ function App() {
         <Route element={<PrivateRoute />}>
           <Route element={<DashboardLayout />}>
             <Route path="/" element={<Dashboard />} />
-            <Route path="/profile" element={<Dashboard />} />
+            <Route path="/profile" element={<Profile />} />
             <Route path="/agencies" element={<Dashboard />} />
             <Route path="/users" element={<Clients />} />
             <Route path="/quotesAgencies" element={<Dashboard />} />
