@@ -1,19 +1,57 @@
 /* ============================================================
    📋 Table & Pagination
    ============================================================ */
- @use '../abstracts/variables' as *;
- 
-table {
-    font-family: $font-secondary;
-    margin-bottom: 0;
+@use '../abstracts/variables' as *;
 
-    th {
-        font-weight: 600;
-    }
+.table-responsive.no-scrollbar {
+    overflow-x: auto;
+    /* Bootstrap ya lo usa; lo dejamos explícito */
+    -ms-overflow-style: none;
+    /* IE/Edge Legacy */
+    scrollbar-width: none;
+    /* Firefox */
 }
 
-.pagination {
-    background: #f8f9fa;
-    margin: 0;
-    padding: 0.5em;
+.table-responsive.no-scrollbar::-webkit-scrollbar {
+    display: none;
+    /* Chrome/Safari */
+}
+
+.table-pagination {
+    margin-top: 3em;
+
+    .pagination {
+        --bs-pagination-padding-x: 1.45rem;
+        --bs-pagination-padding-y: 0.65rem;
+        --bs-pagination-font-size: 1rem;
+
+        --bs-pagination-color: $dark;
+        --bs-pagination-bg: transparent;
+        --bs-pagination-border-width: 0;
+        --bs-pagination-border-radius: 0.2rem;
+
+        --bs-pagination-hover-bg: rgba($primary, 0.1);
+        --bs-pagination-hover-color: $primary;
+
+        --bs-pagination-active-bg: #0eace4;
+        --bs-pagination-active-color: rgba(19, 19, 19, 1);
+        --bs-pagination-active-border-color: transparent;
+
+        --bs-pagination-disabled-color: $secondary;
+        --bs-pagination-disabled-bg: transparent;
+    }
+
+    .page-link {
+        border-radius: 0.65rem;
+        transition: all 0.2s ease-in-out;
+
+        &:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        img {
+            padding: 0px 15px;
+        }
+    }
 }

@@ -1,54 +1,87 @@
-import { flexRender } from '@tanstack/react-table';
+import { useMemo } from 'react';
+import { Pagination } from './DataTable/Pagination';
+import { TableHeader } from './DataTable/TableHeader';
+import { TableBody } from './DataTable/TableBody';
 
-import type { Table as TanstackTable } from '@tanstack/react-table';
-
-type Props<T> = {
-  table: TanstackTable<T>;
+type DataTableProps<T> = {
+  table: {
+    getHeaderGroups: () => any[];
+    getRowModel: () => { rows: any[] };
+    getPaginationProps: () => {
+      currentPage: number;
+      totalPages: number;
+      canPreviousPage: boolean;
+      canNextPage: boolean;
+      onPageChange: (page: number) => void;
+      onNextPage: () => void;
+      onPreviousPage: () => void;
+      onFirstPage: () => void;
+      onLastPage: () => void;
+    };
+    // Add other required methods from TanstackTable
+    [key: string]: any;
+  };
 };
 
-export function DataTable<T>({ table }: Props<T>) {
+export function DataTable<T>({ table }: DataTableProps<T>) {
+  const paginationProps = table && table.getPaginationProps?.() || {
+    currentPage: 1,
+    totalPages: 1,
+    canPreviousPage: false,
+    canNextPage: false,
+    onPageChange: () => {},
+    onNextPage: () => {},
+    onPreviousPage: () => {},
+    onFirstPage: () => {},
+    onLastPage: () => {},
+  };
+
+  const {
+    currentPage,
+    totalPages: pagesCount,
+    canPreviousPage,
+    canNextPage,
+    onPageChange,
+    onNextPage,
+    onPreviousPage,
+    onFirstPage,
+    onLastPage,
+  } = paginationProps;
+
+  const pageNumbers = useMemo(() => {
+    const maxVisiblePages = 5;
+    if (!pagesCount) return [];
+    
+    const startPage = Math.max(1, currentPage - Math.floor(maxVisiblePages / 2));
+    const endPage = Math.min(pagesCount, startPage + maxVisiblePages - 1);
+    
+    return Array.from(
+      { length: endPage - Math.max(1, endPage - maxVisiblePages + 1) + 1 },
+      (_, i) => Math.max(1, endPage - maxVisiblePages + 1) + i
+    );
+  }, [currentPage, pagesCount]);
+
   return (
-    <div className="table-responsive">
+    <div className="table-responsive no-scrollbar">
       <table className="table table-hover border-0">
-        <thead className="table-light">
-          {table.getHeaderGroups().map((headerGroup) => (
-            <tr key={headerGroup.id} className="border-bottom">
-              {headerGroup.headers.map((header) => (
-                <th
-                  key={header.id}
-                  onClick={header.column.getToggleSortingHandler()}
-                  className={`border-0 user-select-none cursor-pointer ${
-                    header.column.getCanSort() ? 'text-black' : ''
-                  }`}
-                >
-                  {flexRender(
-                    header.column.columnDef.header,
-                    header.getContext()
-                  )}
-                  {{
-                    asc: <i className="bi bi-arrow-up ms-1" />,
-                    desc: <i className="bi bi-arrow-down ms-1" />,
-                  }[header.column.getIsSorted() as string] ??
-                    (header.column.getCanSort() && (
-                      <i className="bi bi-arrow-down-up text-black ms-1" />
-                    ))}
-                </th>
-              ))}
-            </tr>
-          ))}
-        </thead>
-        <tbody>
-          {table.getRowModel().rows.map((row) => (
-            <tr key={row.id} className="border-top">
-              {row.getVisibleCells().map((cell) => (
-                <td key={cell.id} className="border-0">
-                  {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                </td>
-              ))}
-            </tr>
-          ))}
-        </tbody>
+        <TableHeader table={table} />
+        <TableBody table={table} />
       </table>
+      
+      {pagesCount > 1 && (
+        <Pagination
+          currentPage={currentPage}
+          totalPages={pagesCount}
+          pageNumbers={pageNumbers}
+          canPreviousPage={canPreviousPage}
+          canNextPage={canNextPage}
+          onPageChange={onPageChange}
+          onPrevious={onPreviousPage}
+          onNext={onNextPage}
+          onFirstPage={onFirstPage}
+          onLastPage={onLastPage}
+        />
+      )}
     </div>
   );
 }

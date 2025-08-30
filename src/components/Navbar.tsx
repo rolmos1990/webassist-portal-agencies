@@ -27,10 +27,8 @@ function NavBar() {
 
   const handleSidebarToggle = () => {
     if (isMobile) {
-      // En móvil: toggle entre show-sidebar y sin clase
       setSidebarOpen((prev) => !prev);
     } else {
-      // En desktop: toggle entre normal y hide-sidebar
       setSidebarOpen((prev) => !prev);
     }
   };

@@ -60,3 +60,16 @@ export interface DashboardHeaderProps {
     actions?: React.ReactNode;
     className?: string;
 }
+
+export interface PaginationProps {
+    currentPage: number;
+    totalPages: number;
+    pageNumbers: number[];
+    canPreviousPage: boolean;
+    canNextPage: boolean;
+    onPageChange: (pageIndex: number) => void;
+    onPrevious: () => void;
+    onNext: () => void;
+    onFirstPage: () => void;
+    onLastPage: () => void;
+}
