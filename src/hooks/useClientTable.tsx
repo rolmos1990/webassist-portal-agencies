@@ -130,7 +130,6 @@ export const defaultClientColumns: ColumnDef<Client>[] = [
     accessorKey: 'status',
     header: 'Estado',
     cell: (info) => {
-      console.log('info estado', info.getValue());
       const status = info.getValue() as Client['status'];
       
       const variantMap = {

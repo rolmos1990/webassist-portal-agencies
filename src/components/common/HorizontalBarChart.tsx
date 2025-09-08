@@ -1,5 +1,15 @@
+import type { ChartDataItem } from '../../common/interfaces/chart';
 import { useHorizontalBarChart } from '../../hooks/useHorizontalBarChart';
-import type { HorizontalBarChartProps } from '../../interfaces';
+
+export interface HorizontalBarChartProps {
+    id: string;
+    data: ChartDataItem[];
+    backgroundColor: string;
+    height?: number;
+    maxValue?: number;
+    stepSize?: number;
+    className?: string;
+}
 
 export default function HorizontalBarChart({
   id,

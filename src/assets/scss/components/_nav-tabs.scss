@@ -1,0 +1,22 @@
+.nav-tabs {
+    border-bottom: 1px solid #e6eaee;
+}
+
+.nav-tabs .nav-link.custom-tab {
+    border: none;
+    color: #131313;
+    font-weight: 500;
+}
+
+.nav-tabs .nav-link.custom-tab.active {
+    border: none;
+    border-bottom: 2px solid #0dcaf0;
+    color: #131313;
+    background: transparent;
+}
+
+.nav-tabs .nav-link.custom-tab:hover {
+    border: none;
+    border-bottom: 2px solid #0dcaf0;
+    color: #131313;
+}

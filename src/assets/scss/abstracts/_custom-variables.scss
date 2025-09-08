@@ -1,43 +1,38 @@
+/* ==== Variables (Custom) ==== */
 $primary: rgba(14, 172, 228, 1);
 $secondary: #4b647e;
-$success: rgba(14, 172, 228, 1);
+$success: #7CC249;
 $danger: rgba(207, 64, 72, 1);
 $warning: #fbc02d;
 $info: #1e88e5;
 $light: #f5f5f5;
 $dark: #212121;
+$light-success: #EEFBF0;
 
-// También puedes redefinir el mapa de colores si quieres más control:
-$theme-colors: (
-    "primary": $primary,
-    "secondary": $secondary,
-    "success": $success,
-    "danger": $danger,
-    "warning": $warning,
-    "info": $info,
-    "light": $light,
-    "dark": $dark
-);
+/* ==== Bootstrap: un único módulo configurable ==== */
+/* No abras parciales (variables/maps/mixins) con @use/@import */
+@use "bootstrap" with ($primary: $primary,
+    $secondary: $secondary,
+    $success: $success,
+    $danger: $danger,
+    $warning: $warning,
+    $info: $info,
+    $light: $light,
+    $dark: $dark,
+    $theme-colors: ("primary": $primary,
+        "secondary": $secondary,
+        "success": $success,
+        "danger": $danger,
+        "warning": $warning,
+        "info": $info,
+        "light": $light,
+        "dark": $dark,
+        "gray": $secondary,
+        "light-success": $light-success ));
 
-// Colores personalizados
-$offcanvas-bg-color: #ffffff; // Fondo blanco
-$offcanvas-color: #2c3e50; // Color de texto oscuro
-$offcanvas-border-color: #e9ecef; // Borde gris claro
-
-// Tamaños y espaciados
-$offcanvas-horizontal-width: 450px; // Ancho para offcanvas horizontal
-$offcanvas-vertical-height: 60vh; // Altura para offcanvas vertical
-$offcanvas-padding-y: 1.5rem; // Espaciado vertical
-$offcanvas-padding-x: 1.5rem; // Espaciado horizontal
-
-// Efectos visuales
-$offcanvas-box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15); // Sombra suave
-$offcanvas-transition-duration: 0.3s; // Duración de la animación
-
-// Si necesitas personalizar el header
-$offcanvas-header-padding-y: 1rem;
-$offcanvas-header-padding-x: 1.5rem;
-$offcanvas-header-bg: $primary; // Usa el color primario definido
-$offcanvas-header-color: #ffffff; // Texto blanco para el header
-
-@import "bootstrap/scss/bootstrap";
+/* ==== root ==== */
+:root {
+    --bs-success-bg-subtle: #EEFBF0;
+    --bs-success-border-subtle: #DBEEE2;
+    --bs-success-text-emphasis: #1f3a10;
+}

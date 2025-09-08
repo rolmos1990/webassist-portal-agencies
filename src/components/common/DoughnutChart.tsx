@@ -1,5 +1,21 @@
+import type { DoughnutChartConfig } from '../../common/interfaces/chart';
 import { useDoughnutChart } from '../../hooks/useDoughnutChart';
-import type { DoughnutChartProps, DoughnutChartConfig } from '../../interfaces';
+
+export interface DoughnutChartProps {
+    percentage: number;
+    primaryColor?: string;
+    backgroundColor?: string;
+    textColor?: string;
+    fontFamily?: string;
+    size?: number;
+    cutout?: string;
+    animationDuration?: number;
+    centerText?: string;
+    showTooltips?: boolean;
+    className?: string;
+    config?: DoughnutChartConfig;
+}
+
 
 export default function DoughnutChart({
   percentage,
@@ -15,7 +31,6 @@ export default function DoughnutChart({
   className = '',
   config,
 }: DoughnutChartProps) {
-  // Use config if provided, otherwise use individual props
   const chartConfig: DoughnutChartConfig = config || {
     percentage,
     primaryColor,

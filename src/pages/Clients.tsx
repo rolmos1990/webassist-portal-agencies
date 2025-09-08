@@ -7,8 +7,7 @@ import Offcanvas from 'react-bootstrap/Offcanvas';
 import { Button } from 'react-bootstrap';
 
 
-// Extend the base Client interface with additional fields
-interface ExtendedClient extends Client {
+export interface ExtendedClient extends Client {
   id: string;
   email: string;
   name: string;
@@ -18,7 +17,6 @@ interface ExtendedClient extends Client {
   status: 'Activo' | 'Inactivo' | 'Pendiente';
 }
 
-// Sample data - in a real app, this would come from an API
 const sampleClients: ExtendedClient[] = Array.from({ length: 20 }, (_, i) => ({
   id: (i + 1).toString(),
   email: `client${i + 1}@example.com`,
@@ -34,12 +32,9 @@ function Clients() {
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
   
-  // Define table columns with proper typing
   const columns = useMemo<ColumnDef<ExtendedClient>[]>(
     () => [
-      // Use default columns with proper typing
       ...(defaultClientColumns as ColumnDef<ExtendedClient>[]),
-      // Add additional columns
       {
         id: 'actions',
         header: 'Actions',
@@ -50,7 +45,6 @@ function Clients() {
               className="btn btn-sm btn-outline-primary"
               onClick={(e) => {
                 e.stopPropagation();
-                // Handle edit
               }}
             >
               <i className="bi bi-pencil"></i>
@@ -60,7 +54,6 @@ function Clients() {
               className="btn btn-sm btn-outline-danger"
               onClick={(e) => {
                 e.stopPropagation();
-                // Handle delete
               }}
             >
               <i className="bi bi-trash"></i>
@@ -72,14 +65,12 @@ function Clients() {
     []
   );
 
-  // Initialize the table with data and columns
   const tableInstance = useClientTable<ExtendedClient>({
     data: sampleClients,
     columns,
-    initialPageSize: 10, // Show 10 items per page by default
+    initialPageSize: 10,
   });
 
-  // Cast the table instance to the expected type for DataTable
   const table = tableInstance as unknown as Table<ExtendedClient> & {
     getPaginationProps: () => {
       currentPage: number;
@@ -92,6 +83,11 @@ function Clients() {
       onFirstPage: () => void;
       onLastPage: () => void;
     };
+    bordered: false,
+    striped: false,
+    hover: true,
+    size: 'sm',
+    isLoading: true;
   };
 
   return (

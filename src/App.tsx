@@ -12,6 +12,8 @@ import 'bootstrap-icons/font/bootstrap-icons.css';
 import './assets/scss/main.scss';
 import Dashboard from './pages/Dashboard';
 import Profile from './pages/Profile';
+import MyQuotes from './pages/MyQuotes';
+import ClientDetail from './pages/ClientDetail.tsx';
 
 function App() {
   return (
@@ -26,7 +28,8 @@ function App() {
             <Route path="/profile" element={<Profile />} />
             <Route path="/agencies" element={<Dashboard />} />
             <Route path="/users" element={<Clients />} />
-            <Route path="/quotesAgencies" element={<Dashboard />} />
+            <Route path="/users/:id" element={<ClientDetail />} />
+            <Route path="/quotesAgencies" element={<MyQuotes />} />
             <Route path="/assistent" element={<Dashboard />} />
             <Route path="/reports" element={<Dashboard />} />
           </Route>

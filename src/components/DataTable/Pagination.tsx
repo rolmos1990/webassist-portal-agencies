@@ -1,4 +1,5 @@
-import type { PaginationProps } from '../../interfaces';
+
+import { Pagination as BSPagination } from 'react-bootstrap';
 
 const PageButton = ({ 
   page, 
@@ -9,23 +10,30 @@ const PageButton = ({
   isActive: boolean; 
   onClick: () => void 
 }) => (
-  <li className={`page-item ${isActive ? 'active' : ''}`}>
-    <button 
-      className="page-link" 
-      onClick={onClick}
-      aria-current={isActive ? 'page' : undefined}
-      aria-label={`Page ${page}`}
-    >
-      {page}
-    </button>
-  </li>
+  <BSPagination.Item 
+    active={isActive} 
+    onClick={onClick}
+    aria-current={isActive ? 'page' : undefined}
+    aria-label={`Page ${page}`}
+  >
+    {page}
+  </BSPagination.Item>
 );
 
-const PageEllipsis = () => (
-  <li className="page-item disabled">
-    <span className="page-link">...</span>
-  </li>
-);
+const PageEllipsis = () => <BSPagination.Ellipsis />;
+
+interface PaginationProps {
+  currentPage: number;
+  totalPages: number;
+  pageNumbers: number[];
+  canPreviousPage: boolean;
+  canNextPage: boolean;
+  onPageChange: (page: number) => void;
+  onPrevious: () => void;
+  onNext: () => void;
+  onFirstPage: () => void;
+  onLastPage: () => void;
+}
 
 export const Pagination = ({
   currentPage,
@@ -39,45 +47,36 @@ export const Pagination = ({
   onFirstPage,
   onLastPage,
 }: PaginationProps) => (
-  <nav className="table-pagination">
-    <ul className="pagination justify-content-center">
-      <li className={`page-item ${!canPreviousPage ? 'disabled' : ''}`}>
-        <button 
-          className="page-link" 
-          onClick={onPrevious}
-          disabled={!canPreviousPage}
-          aria-label="Previous page"
-        >
-          <span>
-            <img 
-              src="/src/table-icons/chevron-left.svg" 
-              alt="Previous" 
-              className="me-1"
-            />
-          </span>
-          Previous
-        </button>
-      </li>
+  <div className="table-pagination">
+    <BSPagination className="justify-content-center">
+      <BSPagination.Prev 
+        onClick={onPrevious}
+        disabled={!canPreviousPage}
+        aria-label="Previous page"
+      >
+        <span>
+          <img 
+            src="/src/table-icons/chevron-left.svg" 
+            alt="Previous" 
+            className="me-1"
+          />
+        </span>
+        Previous
+      </BSPagination.Prev>
       
-      {/* First Page */}
       {pageNumbers[0] > 1 && (
-        <li className="page-item">
-          <button 
-            className="page-link" 
-            onClick={onFirstPage}
-            disabled={!canPreviousPage}
-            aria-label="First page"
-          >
-            1
-          </button>
-        </li>
+        <BSPagination.Item 
+          onClick={onFirstPage}
+          disabled={!canPreviousPage}
+          aria-label="First page"
+        >
+          1
+        </BSPagination.Item>
       )}
       
-      {/* Ellipsis before page numbers */}
       {pageNumbers[0] > 2 && <PageEllipsis />}
       
-      {/* Page Numbers */}
-      {pageNumbers.map((page) => (
+      {pageNumbers.map((page : number) => (
         <PageButton
           key={page}
           page={page}
@@ -86,10 +85,8 @@ export const Pagination = ({
         />
       ))}
       
-      {/* Ellipsis after page numbers */}
       {pageNumbers[pageNumbers.length - 1] < totalPages - 1 && <PageEllipsis />}
       
-      {/* Last Page */}
       {pageNumbers[pageNumbers.length - 1] < totalPages && (
         <PageButton 
           page={totalPages}
@@ -98,23 +95,20 @@ export const Pagination = ({
         />
       )}
       
-      <li className={`page-item ${!canNextPage ? 'disabled' : ''}`}>
-        <button 
-          className="page-link" 
-          onClick={onNext}
-          disabled={!canNextPage}
-          aria-label="Next page"
-        >
-          Next
-          <span>
-            <img 
-              src="/src/table-icons/chevron-right.svg" 
-              alt="Next" 
-              className="ms-1"
-            />
-          </span>
-        </button>
-      </li>
-    </ul>
-  </nav>
+      <BSPagination.Next 
+        onClick={onNext}
+        disabled={!canNextPage}
+        aria-label="Next page"
+      >
+        Next
+        <span>
+          <img 
+            src="/src/table-icons/chevron-right.svg" 
+            alt="Next" 
+            className="ms-1"
+          />
+        </span>
+      </BSPagination.Next>
+    </BSPagination>
+  </div>
 );

@@ -1,5 +1,14 @@
+import type { RadioChartConfig } from '../../common/interfaces/chart';
 import { useRadioChart } from '../../hooks/useRadioChart';
-import type { RadioChartProps } from '../../interfaces';
+
+export interface RadioChartProps {
+    config: RadioChartConfig;
+    data?: any;
+    options?: any;
+    width?: number;
+    height?: number;
+    className?: string;
+}
 
 export default function RadioChart({ config }: RadioChartProps) {
   const { chartRef } = useRadioChart({ config });

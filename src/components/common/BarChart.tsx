@@ -1,6 +1,12 @@
 import { Bar } from 'react-chartjs-2';
 import { useBarChart } from '../../hooks/useBarChart';
-import type { BarChartProps } from '../../interfaces';
+
+export interface BarChartProps {
+    data: import('chart.js').ChartData<'bar'>;
+    options?: import('chart.js').ChartOptions<'bar'>;
+    height?: string;
+    className?: string;
+}
 
 export default function BarChart({ 
   data, 
