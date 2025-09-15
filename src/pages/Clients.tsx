@@ -5,6 +5,7 @@ import type { ColumnDef, Table } from '@tanstack/react-table';
 import { useState } from 'react';
 import Offcanvas from 'react-bootstrap/Offcanvas';
 import { Button } from 'react-bootstrap';
+import { useNavigate } from 'react-router-dom';
 
 
 export interface ExtendedClient extends Client {
@@ -27,6 +28,7 @@ const sampleClients: ExtendedClient[] = Array.from({ length: 20 }, (_, i) => ({
   status: i % 3 === 0 ? 'Activo' : i % 3 === 1 ? 'Inactivo' : 'Pendiente'
 }));
 function Clients() {
+const navigate = useNavigate();
   const [show, setShow] = useState(false);
 
   const handleClose = () => setShow(false);
@@ -44,6 +46,7 @@ function Clients() {
               type="button" 
               className="btn btn-sm btn-outline-primary"
               onClick={(e) => {
+                navigate(`/users/1`);
                 e.stopPropagation();
               }}
             >
@@ -53,6 +56,7 @@ function Clients() {
               type="button" 
               className="btn btn-sm btn-outline-danger"
               onClick={(e) => {
+                navigate(`/users/1`);
                 e.stopPropagation();
               }}
             >

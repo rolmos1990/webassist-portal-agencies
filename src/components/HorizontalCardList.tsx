@@ -78,12 +78,12 @@ export interface HorizontalCardListProps {
 export const HorizontalCardList: React.FC<HorizontalCardListProps> = ({
   children,
   className = '',
-  mobileCols = 2,
-  desktopCols = 5
+  mobileCols = 1,
+  desktopCols = 6
 }) => {
   return (
     <div 
-      className={`card-body row align-items-center border-bottom gy-4 row-cols-${mobileCols} row-cols-md-${desktopCols} py-4 pb-4 ${className}`}
+      className={`row align-items-center gy-4 row-cols-${mobileCols} row-cols-md-${desktopCols} py-4 pb-4 ${className}`}
     >
       {children}
     </div>

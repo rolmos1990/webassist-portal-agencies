@@ -1,4 +1,10 @@
-/* ==== Variables (Custom) ==== */
+/* (Opcional) herramientas Sass modernas */
+@use "sass:map";
+
+/* Functions */
+@import "bootstrap/scss/functions";
+
+/* Overrides de variables (antes de importar variables.scss) */
 $primary: rgba(14, 172, 228, 1);
 $secondary: #4b647e;
 $success: #7CC249;
@@ -9,30 +15,59 @@ $light: #f5f5f5;
 $dark: #212121;
 $light-success: #EEFBF0;
 
-/* ==== Bootstrap: un único módulo configurable ==== */
-/* No abras parciales (variables/maps/mixins) con @use/@import */
-@use "bootstrap" with ($primary: $primary,
-    $secondary: $secondary,
-    $success: $success,
-    $danger: $danger,
-    $warning: $warning,
-    $info: $info,
-    $light: $light,
-    $dark: $dark,
-    $theme-colors: ("primary": $primary,
-        "secondary": $secondary,
-        "success": $success,
-        "danger": $danger,
-        "warning": $warning,
-        "info": $info,
-        "light": $light,
-        "dark": $dark,
-        "gray": $secondary,
-        "light-success": $light-success ));
+$theme-colors: (
+  "primary": $primary,
+  "secondary": $secondary,
+  "success": $success,
+  "danger": $danger,
+  "warning": $warning,
+  "info": $info,
+  "light": $light,
+  "dark": $dark,
+  "gray": $secondary,
+  "light-success": $light-success
+);
 
-/* ==== root ==== */
+/* Requeridos de Bootstrap */
+@import "bootstrap/scss/variables";
+@import "bootstrap/scss/maps";
+@import "bootstrap/scss/mixins";
+@import "bootstrap/scss/root";
+
+/* Componentes */
+@import "bootstrap/scss/reboot";
+@import "bootstrap/scss/type";
+@import "bootstrap/scss/images";
+@import "bootstrap/scss/containers";
+@import "bootstrap/scss/grid";
+@import "bootstrap/scss/buttons";
+@import "bootstrap/scss/card";
+@import "bootstrap/scss/forms";
+/* ... agrega los que necesites ... */
+
+/* Utilities: carga mapa, mézclalo y construye API */
+@import "bootstrap/scss/utilities";
+
+$custom-utilities: (
+  "min-lines": (
+    property: min-height,
+    class: min-lines,
+    values: (
+      2: 2lh,
+      3: 3lh
+    )
+  )
+);
+
+/* Usa map.merge si activaste @use "sass:map"; si no, usa map-merge */
+$utilities: map.merge($utilities, $custom-utilities);
+
+/* Genera las clases utilitarias */
+@import "bootstrap/scss/utilities/api";
+
+/* Tus retoques globales (opcional) */
 :root {
-    --bs-success-bg-subtle: #EEFBF0;
-    --bs-success-border-subtle: #DBEEE2;
-    --bs-success-text-emphasis: #1f3a10;
+  --bs-success-bg-subtle: #EEFBF0;
+  --bs-success-border-subtle: #DBEEE2;
+  --bs-success-text-emphasis: #2f3a10;
 }
