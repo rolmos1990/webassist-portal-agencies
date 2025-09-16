@@ -1,0 +1,65 @@
+.form-range.range-fill {
+  background: transparent; /* ← evita la barra de fondo extra */
+  --range: 0%;             /* porcentaje dinámico (lo seteamos desde React) */
+  --fill-color: var(--bs-success);   /* o var(--bs-success) / tu $range-green */
+  --track-bg: var(--bs-gray-300);     /* $gray-300 */
+  height: 1.5rem;
+  padding: 0;
+  background-color: transparent;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  
+  &:focus {
+    outline: 0;
+  }
+  
+  /* WebKit / Blink */
+  &::-webkit-slider-runnable-track {
+    width: 100%;
+    height: 0.5rem;
+    background: linear-gradient(
+      to right,
+      var(--fill-color) 0,
+      var(--fill-color) var(--range),
+      var(--track-bg) var(--range),
+      var(--track-bg) 100%
+    );
+    border-radius: 1rem;
+  }
+  
+  &::-webkit-slider-thumb {
+    width: 1rem;
+    height: 1rem;
+    margin-top: -0.25rem;
+    background-color: var(--bs-success);
+    border: 0;
+    border-radius: 1rem;
+    -webkit-appearance: none;
+    appearance: none;
+  }
+  
+  /* Firefox */
+  &::-moz-range-track {
+    width: 100%;
+    height: 0.5rem;
+    background: linear-gradient(
+      to right,
+      var(--fill-color) 0,
+      var(--fill-color) var(--range),
+      var(--track-bg) var(--range),
+      var(--track-bg) 100%
+    );
+    border-radius: 1rem;
+  }
+  
+  &::-moz-range-thumb {
+    width: 1rem;
+    height: 1rem;
+    background-color: var(--bs-success);
+    border: 0;
+    border-radius: 1rem;
+    -moz-appearance: none;
+    appearance: none;
+  }
+}

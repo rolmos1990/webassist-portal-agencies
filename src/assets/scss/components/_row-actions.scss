@@ -1,0 +1,15 @@
+.action-menu {
+    border: 1px solid rgba(0,0,0,.06);
+    background: #fff;
+}
+.action-menu .dropdown-item:hover {
+    background-color: rgba(0,0,0,.04);
+}
+.action-menu .dropdown-item.text-danger:hover {
+    color: #dc3545 !important;
+}
+
+.action-menu .dropdown-item:active {
+    background-color: var(--bs-primary) !important;
+    color: var(--bs-gray-300) !important;  /* verde bootstrap */
+  }

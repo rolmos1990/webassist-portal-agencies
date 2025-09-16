@@ -15,7 +15,6 @@ interface OffcanvasProps {
   className?: string;
   title?: string;
   width?: string;
-  /** ✅ Nueva prop para mostrar u ocultar la X de cierre */
   canClose?: boolean;
 }
 
@@ -31,7 +30,7 @@ const Offcanvas = ({
   className = '',
   title = '',
   width = '400px',
-  canClose = true,      // ← por defecto true
+  canClose = true,
 }: OffcanvasProps) => {
   return (
     <BootstrapOffcanvas
@@ -43,13 +42,11 @@ const Offcanvas = ({
       scroll={scroll}
       keyboard={keyboard}
       className={className}
-      style={{
-        width
-      }}
+      style={{ width }}
     >
       <BootstrapOffcanvas.Header
         closeButton={canClose}
-        closeVariant="dark"// color del icono
+        className="border-bottom"
       >
         {title && (
           <BootstrapOffcanvas.Title as="h5">
@@ -58,13 +55,7 @@ const Offcanvas = ({
         )}
       </BootstrapOffcanvas.Header>
 
-      <BootstrapOffcanvas.Body
-              style={{
-                overflowY: 'auto',    // ✅ permite scroll
-                msOverflowStyle: 'none', // IE/Edge
-                scrollbarWidth: 'none',  // Firefox
-              }}  
-        >
+      <BootstrapOffcanvas.Body className="no-scrollbar" style={{ overflowY: 'auto' }}>
         {children}
       </BootstrapOffcanvas.Body>
     </BootstrapOffcanvas>

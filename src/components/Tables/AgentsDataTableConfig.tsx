@@ -1,0 +1,108 @@
+import type { AgentRow } from "../../data/agentData";
+import { StatusBadge, type ColumnDef } from "../DataTable";
+import RowActions from "../RowActions";
+
+type CreateColumnsDeps = {
+  currency: (n: number) => string;
+  t: (key: string) => string | React.ReactNode;
+  onEdit: (row: AgentRow) => void;
+  onToggle: (row: AgentRow) => void;
+  onDelete: (row: AgentRow) => void;
+};
+
+export function createAgentColumns({
+  currency,
+  t,
+  onEdit,
+  onToggle,
+  onDelete,
+}: CreateColumnsDeps): ColumnDef<AgentRow>[] {
+  return [
+    {
+      id: "name",
+      label: t("table.name"),
+      width: "28%",
+      sortable: true,
+      accessor: (row) => row.name,
+      align: "start",
+    },
+    {
+      id: "totalRevenue",
+      label: t("table.totalRevenue"),
+      width: "16%",
+      sortable: true,
+      accessor: (row) => row.totalRevenue,
+      align: "start",
+      render: (row) => currency(row.totalRevenue),
+    },
+    {
+      id: "totalCommission",
+      label: t("table.totalCommission"),
+      width: "20%",
+      sortable: true,
+      accessor: (row) => row.totalCommission,
+      align: "start",
+      render: (row) => currency(row.totalCommission),
+    },
+    {
+      id: "location",
+      label: t("table.location"),
+      width: "14%",
+      sortable: true,
+      accessor: (row) => row.location,
+      align: "center",
+    },
+    {
+      id: "totalPlans",
+      label: t("table.totalPlans"),
+      width: "14%",
+      sortable: true,
+      accessor: (row) => row.totalPlans,
+      align: "start",
+    },
+    {
+      id: "status",
+      label: t("table.status"),
+      width: "8%",
+      sortable: true,
+      accessor: (row) => row.status,
+      align: "end",
+      render: (row) => <StatusBadge status={row.status} />,
+    },
+    {
+      id: "actions",
+      label: <span className="visually-hidden">{t("table.actions")}</span>,
+      width: 36,
+      align: "end",
+      render: (row) => (
+        <RowActions context={row}>
+          <RowActions.Item<AgentRow>
+            icon="bi-pencil"
+            onClick={onEdit}
+          >
+            {t("table.edit")}
+          </RowActions.Item>
+
+          <RowActions.Item<AgentRow>
+            icon={row.status === "Active" ? "bi-toggle-on" : "bi-toggle-off"}
+            onClick={onToggle}
+          >
+            {row.status === "Active"
+              ? t("table.markInactive")
+              : t("table.markActive")}
+          </RowActions.Item>
+
+          <RowActions.Divider />
+
+          <RowActions.Item<AgentRow>
+            icon="bi-trash3"
+            danger
+            onClick={onDelete}
+          >
+            {t("table.delete")}
+          </RowActions.Item>
+        </RowActions>
+      ),
+    },
+  ];
+}

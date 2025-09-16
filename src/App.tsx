@@ -15,6 +15,8 @@ import Profile from './pages/Profile';
 import MyQuotes from './pages/MyQuotes';
 import ClientDetail from './pages/ClientDetail.tsx';
 import PlanDetail from './pages/PlanDetail.tsx';
+import Agencies from './pages/Agencies.tsx';
+import AgencyDetail from './pages/AgencyDetail.tsx';
 
 function App() {
   return (
@@ -27,7 +29,8 @@ function App() {
           <Route element={<DashboardLayout />}>
             <Route path="/" element={<Dashboard />} />
             <Route path="/profile" element={<Profile />} />
-            <Route path="/agencies" element={<Dashboard />} />
+            <Route path="/agencies" element={<Agencies />} />
+            <Route path="/agency/:id" element={<AgencyDetail />} />
             <Route path="/users" element={<Clients />} />
             <Route path="/users/:id" element={<ClientDetail />} />
             <Route path="/users/:id/plan/:planId" element={<PlanDetail />} />

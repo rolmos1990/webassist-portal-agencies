@@ -1,46 +1,20 @@
-import { useMemo, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
 import Breadcrumb from '../components/Breadcrumb';
 import { UIButton } from '../components/Button';
 import CreateAgenciesVertical from '../components/Forms/CreateAgenciesVertical';
 import Offcanvas from '../components/Offcanvas';
-import DataTable, { currency } from '../components/DataTable';
-import { createAgencyColumns } from '../components/Tables/AgencyDataTableConfig';
-import { t } from 'i18next';
-import { agencyData, type AgencyRow } from '../data/agencyData';
+import { AgencyTable } from '../components/Tables/AgencyTable';
+import { agencyData } from '../data/agencyData';
+import { useNavigate } from 'react-router-dom';
 
-function MyQuotes() {
-  const navigate = useNavigate();
+function Agencies() {
   const [show, setShow] = useState(false);
   const [loading, setLoading] = useState(false);
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
-  const onEdit = (row: AgencyRow) => {
-    console.log('Edit agency:', row);
-  };
-
-  const onToggle = (row: AgencyRow) => {
-    const newStatus = row.status === 'Active' ? 'Inactive' : 'Active';
-    console.log(`Toggled ${row.name} status to: ${newStatus}`);
-  };
-
-  const onDelete = (row: AgencyRow) => {
-    console.log('Delete agency:', row.name);
-  };
-
-  const cols = useMemo(
-    () =>
-      createAgencyColumns({
-        currency,
-        t: (key: string) => t(`${key}`),
-        onEdit,
-        onToggle,
-        onDelete,
-      }),
-    [t, onEdit, onToggle, onDelete]
-  );
+  const navigate = useNavigate();
 
   const handleSubmit = (data: any) => {
     console.log(data);
@@ -55,22 +29,22 @@ function MyQuotes() {
   return (
 <div className="min-vh-100 bg-light">
 <div className="container-fluid py-3 px-4">
-<Breadcrumb title="Agencies" rightContent={
-          <div className="d-flex gap-2">
-        <UIButton
-        variant="outline-primary"
-        icon=""
-        >
-        Filter By
-        </UIButton>
-        <UIButton
-        variant="dark"
-        icon=""
-        onClick={handleShow}
-        >
-        Create an Agency
-        </UIButton>
-          </div>
+        <Breadcrumb title="Agencies" rightContent={
+                  <div className="d-flex gap-2">
+                <UIButton
+                variant="outline-primary"
+                icon=""
+                >
+                Filter By
+                </UIButton>
+                <UIButton
+                variant="dark"
+                icon=""
+                onClick={handleShow}
+                >
+                Create an Agency
+                </UIButton>
+                  </div>
         } />      
         <Offcanvas
         show={show}
@@ -86,18 +60,19 @@ function MyQuotes() {
         </Offcanvas>
             <div className="card">
               <div className="card-body p-0">
-              <DataTable<AgencyRow>
-                  items={agencyData}
+              <AgencyTable
+                  data={agencyData}
                   loading={loading}
-                  columns={cols}
-                  defaultSort={{ id: "name", dir: "desc" }}
+                  sort={{ sortBy: 'name', sortDir: 'desc' }}
+                  onEdit={(row) => navigate(`/agency/${row.id}`)}
+                  onToggle={(row) => navigate(`/agency/${row.id}`)}
+                  onDelete={(row) => navigate(`/agency/${row.id}`)}
                   onSortChange={({ id, dir }) => {
                       console.log(id, dir);
-                      // fetchData({ sortBy: id, sortDir: dir }); // si haces server-side
                   }}
                   pagination={{
                       totalPages: 11,
-                      defaultPage: 3,
+                      currentPage: 3,
                       align: "center",
                       wrap: "none",
                       onChange: (p) => console.log("Ir a página:", p),
@@ -110,4 +85,4 @@ function MyQuotes() {
   );
 }
 
-export default MyQuotes;
+export default Agencies;

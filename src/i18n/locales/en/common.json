@@ -1,0 +1,20 @@
+{
+  "table": {
+    "name": "Name",
+    "totalRevenue": "Total Revenue",
+    "totalCommission": "Total Commission",
+    "location": "Location",
+    "totalPlans": "Total Plans",
+    "status": "Status",
+    "actions": "Actions",
+    "edit": "Edit",
+    "delete": "Delete",
+    "markActive": "Mark as Active",
+    "markInactive": "Mark as Inactive"
+  },
+  "status": {
+    "active": "Active",
+    "inactive": "Inactive"
+  },
+  "noData": "No data available"
+}
