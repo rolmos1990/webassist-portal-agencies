@@ -20,6 +20,7 @@ import AgencyDetail from './pages/AgencyDetail.tsx';
 import Agents from './pages/Agents.tsx';
 import AgentDetail from './pages/AgentDetail.tsx';
 import ForgotPassword from './pages/ForgotPassword.tsx';
+import CreateNewPassword from './pages/CreateNewPassword.tsx';
 
 function App() {
   return (
@@ -27,7 +28,8 @@ function App() {
       <Routes>
         <Route element={<AuthLayout />}>
           <Route path="/login" element={<Login />} />
-          <Route path="/forgotPassword" element={<ForgotPassword />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />  
+          <Route path="/create-new-password" element={<CreateNewPassword />} />
         </Route>
         <Route element={<PrivateRoute />}>
           <Route element={<DashboardLayout />}>

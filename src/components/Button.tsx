@@ -16,8 +16,8 @@ const BUTTON_STYLES = {
   "outline-info": "btn btn-outline-info bg-white",
   danger: "btn btn-danger",
   "outline-danger": "btn btn-outline-danger bg-white",
-  link: "btn btn-link",
-  dark: "btn btn-outline-primary bg-primary text-dark rounded-pill fw-semibold",
+  link: "btn btn-link text-decoration-none fw-semibold",
+  dark: "btn btn-outline-primary bg-primary text-dark fw-semibold",
   whiteLink: "btn btn-link text-secondary fw-semibold px-0 text-decoration-none",
   squareDark: "btn bg-primary text-dark fw-semibold border-0",
 
