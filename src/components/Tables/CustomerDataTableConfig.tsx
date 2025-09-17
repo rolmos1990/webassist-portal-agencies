@@ -1,7 +1,9 @@
 import React from "react";
-import type { ColumnDef } from "../DataTable";
+import { type ColumnDef } from "../DataTable";
 import RowActions from "../RowActions";
 import type { CustomerRow } from "../../data/customerData";
+import { StatusBadge } from "../StatusBadge";
+import { defaultStatusTheme } from "../StatusBadge/StatusBadgeThemes";
 
 type Deps = {
   currency: (n: number) => string;
@@ -9,14 +11,6 @@ type Deps = {
   onEdit: (row: CustomerRow) => void;
   onToggle: (row: CustomerRow) => void;
   onDelete: (row: CustomerRow) => void;
-};
-
-const StatusPill: React.FC<{ status: CustomerRow["status"] }> = ({ status }) => {
-  const cls =
-    status === "Activo"   ? "badge bg-success-subtle text-success"
-  : status === "Inactivo" ? "badge bg-secondary-subtle text-secondary"
-  :                         "badge bg-warning-subtle text-warning";
-  return <span className={cls}>{status}</span>;
 };
 
 export function createCustomerColumns({
@@ -30,7 +24,7 @@ export function createCustomerColumns({
     {
       id: "name",
       label: t("table.name"),
-      width: "22%",
+      width: "18%",
       sortable: true,
       accessor: (row) => row.name,
       align: "start",
@@ -38,7 +32,7 @@ export function createCustomerColumns({
     {
       id: "email",
       label: t("table.email"),
-      width: "22%",
+      width: "20%",
       sortable: true,
       accessor: (row) => row.email,
       align: "start",
@@ -49,30 +43,44 @@ export function createCustomerColumns({
       ),
     },
     {
-      id: "phone",
+      id: "phoneNumber",
       label: t("table.phone"),
-      width: "16%",
+      width: "12%",
       sortable: true,
-      accessor: (row) => row.phone,
+      accessor: (row) => row.phoneNumber,
       align: "start",
     },
     {
-      id: "agentCode",
-      label: t("table.agentCode"),
-      width: "14%",
-      sortable: true,
-      accessor: (row) => row.agentCode,
-      align: "center",
-      className: "font-monospace",
-    },
-    {
-      id: "commission",
-      label: t("table.commission"),
+      id: "city",
+      label: t("table.city"),
       width: "12%",
       sortable: true,
-      accessor: (row) => row.commission,
+      accessor: (row) => row.city,
+      align: "start",
+    },
+    {
+      id: "country",
+      label: t("table.country"),
+      width: "12%",
+      sortable: true,
+      accessor: (row) => row.country,
+      align: "start",
+    },
+    {
+      id: "totalPurchase",
+      label: t("table.purchases"),
+      width: "10%",
+      sortable: true,
+      accessor: (row) => currency(row.totalPurchase),
       align: "end",
-      render: (row) => currency(row.commission),
+    },
+    {
+      id: "createdOn",
+      label: t("table.created"),
+      width: "10%",
+      sortable: true,
+      accessor: (row) => row.createdOn,
+      align: "center",
     },
     {
       id: "status",
@@ -81,7 +89,7 @@ export function createCustomerColumns({
       sortable: true,
       accessor: (row) => row.status,
       align: "center",
-      render: (row) => <StatusPill status={row.status} />,
+      render: (row) => <StatusBadge status={row.status} theme={defaultStatusTheme} />,
     },
     {
       id: "actions",
@@ -98,10 +106,10 @@ export function createCustomerColumns({
           </RowActions.Item>
 
           <RowActions.Item<CustomerRow>
-            icon={row.status === "Activo" ? "bi-toggle-on" : "bi-toggle-off"}
+            icon={row.status === "Active" ? "bi-toggle-on" : "bi-toggle-off"}
             onClick={onToggle}
           >
-            {row.status === "Activo" ? "Marcar como Inactivo" : "Marcar como Activo"}
+            {row.status === "Inactive" ? "Marcar como Inactivo" : "Marcar como Activo"}
           </RowActions.Item>
 
           <RowActions.Divider />

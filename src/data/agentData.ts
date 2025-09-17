@@ -1,20 +1,72 @@
-export type AgentRow = {
-        name: string;
-        totalRevenue: number;
-        totalCommission: number;
-        location: string;
-        totalPlans: number;
-        status: "Active" | "Inactive";
-      };
+// data/agentsData.ts
+export type AgentStatus = "Active" | "Inactive";
 
+export type AgentRow = {
+  id: string;
+  agentCode: string;      // Agent Code
+  firstName: string;      // First Name
+  lastName: string;       // Last Name
+  email: string;          // Email
+  agencyName: string;     // Agency Name
+  totalSales: number;     // Total Sales
+  totalCommission: number;// Total Commission
+  status: AgentStatus;    // Status
+};
 
 export const agentsData: AgentRow[] = [
-    { name: "Panama Tours", totalRevenue: 61234.78, totalCommission: 3128.67, location: "Panama", totalPlans: 352, status: "Active" },
-    { name: "Canal Adventures", totalRevenue: 19876.12, totalCommission: 2450.89, location: "Panama", totalPlans: 410, status: "Inactive" },
-    { name: "Cultural Trails Panama", totalRevenue: 74512.9, totalCommission: 3589.12, location: "Panama", totalPlans: 150, status: "Active" },
-    { name: "Eco Tours Panama", totalRevenue: 12345.67, totalCommission: 2987.34, location: "Panama", totalPlans: 273, status: "Active" },
-    { name: "Island Hoppers Panama", totalRevenue: 28901.34, totalCommission: 2205.78, location: "Panama", totalPlans: 124, status: "Inactive" },
-    { name: "Panama City Tours", totalRevenue: 45678.9, totalCommission: 2650.5, location: "Panama", totalPlans: 346, status: "Inactive" },
-    { name: "Panama Dream Vacations", totalRevenue: 67890.12, totalCommission: 3871.99, location: "Panama", totalPlans: 292, status: "Inactive" },
-    { name: "Panama Explorers", totalRevenue: 54321.0, totalCommission: 3054.23, location: "Panama", totalPlans: 120, status: "Inactive" },
-  ];
+  {
+    id: "1",
+    agentCode: "55414",
+    firstName: "Alejandro",
+    lastName: "Torres",
+    email: "alejandrot@mail.com",
+    agencyName: "TVK Agency",
+    totalSales: 2100.00,
+    totalCommission: 1111.11,
+    status: "Active",
+  },
+  {
+    id: "2",
+    agentCode: "55415",
+    firstName: "María",
+    lastName: "Gómez",
+    email: "maria.gomez@mail.com",
+    agencyName: "Canal Travel",
+    totalSales: 1580.51,
+    totalCommission: 845.31,
+    status: "Inactive",
+  },
+  {
+    id: "3",
+    agentCode: "55416",
+    firstName: "Luis",
+    lastName: "Pérez",
+    email: "luis.perez@mail.com",
+    agencyName: "Eco Tours Panama",
+    totalSales: 2899.99,
+    totalCommission: 1299.5,
+    status: "Active",
+  },
+  {
+    id: "4",
+    agentCode: "55417",
+    firstName: "Valeria",
+    lastName: "Castillo",
+    email: "valeria.castillo@mail.com",
+    agencyName: "Adventure Corp",
+    totalSales: 750.01,
+    totalCommission: 340.25,
+    status: "Inactive",
+  },
+  {
+    id: "5",
+    agentCode: "55418",
+    firstName: "Jorge",
+    lastName: "Ríos",
+    email: "jorge.rios@mail.com",
+    agencyName: "Panama Dreams",
+    totalSales: 3220.75,
+    totalCommission: 1550.01,
+    status: "Active",
+  },
+];

@@ -1,5 +1,7 @@
 import type { SubAgencyRow } from "../../data/subAgencyData";
-import { StatusBadge, type ColumnDef } from "../DataTable";
+import { type ColumnDef } from "../DataTable";
+import { StatusBadge } from "../StatusBadge";
+import { defaultStatusTheme } from "../StatusBadge/StatusBadgeThemes";
 
 type CreateColumnsDeps = {
   currency: (n: number) => string;
@@ -60,7 +62,7 @@ export function createSubAgencyColumns({
       sortable: true,
       accessor: (row) => row.status,
       align: "end",
-      render: (row) => <StatusBadge status={row.status} />,
+      render: (row) => <StatusBadge status={row.status} theme={defaultStatusTheme} />,
     }
   ];
 }

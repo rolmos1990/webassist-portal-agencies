@@ -1,6 +1,8 @@
 import type { AgentRow } from "../../data/agentData";
-import { StatusBadge, type ColumnDef } from "../DataTable";
+import { type ColumnDef } from "../DataTable";
 import RowActions from "../RowActions";
+import { StatusBadge } from "../StatusBadge";
+import { defaultStatusTheme } from "../StatusBadge/StatusBadgeThemes";
 
 type CreateColumnsDeps = {
   currency: (n: number) => string;
@@ -19,47 +21,64 @@ export function createAgentColumns({
 }: CreateColumnsDeps): ColumnDef<AgentRow>[] {
   return [
     {
+      id: "agentCode",
+      label: t("table.agentCode"),
+      width: "14%",
+      sortable: true,
+      accessor: (row) => row.agentCode,
+      align: "start",
+    },
+    {
       id: "name",
       label: t("table.name"),
       width: "28%",
       sortable: true,
-      accessor: (row) => row.name,
+      accessor: (row) => row.agencyName,
       align: "start",
     },
     {
-      id: "totalRevenue",
-      label: t("table.totalRevenue"),
-      width: "16%",
+      id: "lastName",
+      label: t("table.lastName"),
+      width: "20%",
       sortable: true,
-      accessor: (row) => row.totalRevenue,
+      accessor: (row) => row.lastName,
       align: "start",
-      render: (row) => currency(row.totalRevenue),
+      render: (row) => row.lastName,
+    },
+    {
+      id: "email",
+      label: t("table.email"),
+      width: "14%",
+      sortable: true,
+      accessor: (row) => row.email,
+      align: "center",
+    },
+    {
+      id: "agencyName",
+      label: t("table.agencyName"),
+      width: "14%",
+      sortable: true,
+      accessor: (row) => row.agencyName,
+      align: "start",
+    },
+    {
+      id: "totalSales",
+      label: t("table.totalSales"),
+      width: "14%",
+      sortable: true,
+      accessor: (row) => row.totalSales,
+      render: (row) => currency(row.totalSales),
+      align: "start",
     },
     {
       id: "totalCommission",
       label: t("table.totalCommission"),
-      width: "20%",
+      width: "14%",
       sortable: true,
       accessor: (row) => row.totalCommission,
-      align: "start",
       render: (row) => currency(row.totalCommission),
-    },
-    {
-      id: "location",
-      label: t("table.location"),
-      width: "14%",
-      sortable: true,
-      accessor: (row) => row.location,
-      align: "center",
-    },
-    {
-      id: "totalPlans",
-      label: t("table.totalPlans"),
-      width: "14%",
-      sortable: true,
-      accessor: (row) => row.totalPlans,
       align: "start",
-    },
+    },    
     {
       id: "status",
       label: t("table.status"),
@@ -67,7 +86,7 @@ export function createAgentColumns({
       sortable: true,
       accessor: (row) => row.status,
       align: "end",
-      render: (row) => <StatusBadge status={row.status} />,
+      render: (row) => <StatusBadge status={row.status} theme={defaultStatusTheme} />,
     },
     {
       id: "actions",

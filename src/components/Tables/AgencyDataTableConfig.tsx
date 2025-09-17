@@ -1,6 +1,8 @@
 import type { AgencyRow } from "../../data/agencyData";
-import { StatusBadge, type ColumnDef } from "../DataTable";
+import { type ColumnDef } from "../DataTable";
 import RowActions from "../RowActions";
+import { StatusBadge } from "../StatusBadge";
+import { defaultStatusTheme } from "../StatusBadge/StatusBadgeThemes";
 
 type CreateColumnsDeps = {
   currency: (n: number) => string;
@@ -67,7 +69,7 @@ export function createAgencyColumns({
       sortable: true,
       accessor: (row) => row.status,
       align: "end",
-      render: (row) => <StatusBadge status={row.status} />,
+      render: (row) => <StatusBadge status={row.status} theme={defaultStatusTheme} />,
     },
     {
       id: "actions",

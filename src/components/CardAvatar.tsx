@@ -1,5 +1,6 @@
 import { StatusBadge } from "./StatusBadge";
 import type { StatusBadgeProps } from "./StatusBadge";
+import { defaultStatusTheme } from "./StatusBadge/StatusBadgeThemes";
 
 interface CardAvatarProps {
   avatarUrl: string;
@@ -37,7 +38,7 @@ export const CardAvatar = ({
             <h4 className="mb-2 d-flex flex-column flex-md-row align-items-center justify-content-center justify-content-md-start gap-2">
               {name}
               <div className="ms-md-2 mt-2 mt-md-0">
-                <StatusBadge status={status} />
+                <StatusBadge status={status} theme={defaultStatusTheme} />
               </div>
             </h4>
 

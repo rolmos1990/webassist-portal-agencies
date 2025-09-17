@@ -9,6 +9,7 @@ import { StatusBadge } from '../components/StatusBadge';
 import { PlanListDataExample } from '../examples/planListExample';
 import { StadingQuotesExample } from '../examples/stadingQuotes';
 import Breadcrumb from '../components/Breadcrumb';
+import { defaultStatusTheme } from '../components/StatusBadge/StatusBadgeThemes';
 
 export default function ClientDetail() {
     const navigate = useNavigate();
@@ -35,7 +36,7 @@ export default function ClientDetail() {
                 <CardAvatar 
                   avatarUrl="https://placehold.co/80x80"
                   name="Mateo Castillo"
-                  status="Activo"
+                  status="Active"
                   email="matoectl@mail.com"
                   phone="+50768934567"
                   location="La Palma, Panama"
@@ -83,7 +84,7 @@ export default function ClientDetail() {
                                 <ListItem key={index} onClick={() => navigate(`/users/1/plan/123`)}>
                                   <ListContent title="Plan Number" colSize={6}>{plan.planNumber}</ListContent>
                                   <ListContent title="Plan Name" colSize={6}>{plan.planName}</ListContent>
-                                  <ListContent title="Status" colSize={6}><StatusBadge status={plan.status} /></ListContent>
+                                  <ListContent title="Status" colSize={6}><StatusBadge status={plan.status} theme={defaultStatusTheme} /></ListContent>
                                   <ListContent title="Start Date" colSize={6}>{plan.startDate}</ListContent>
                                   <ListContent title="End Date" colSize={6}>{plan.endDate}</ListContent>
                                   <ListContent title="Amount Paid" colSize={6} isLast>{plan.amountPaid}</ListContent>

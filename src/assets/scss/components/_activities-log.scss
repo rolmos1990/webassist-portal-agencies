@@ -1,0 +1,37 @@
+/* Barra vertical fija a la izquierda */
+.activities-log .timeline-rail {
+  position: absolute;
+  left: 1.65rem;          /* eje de la barra */
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: #d6d9de; /* gris */
+}
+
+.timeline-row {
+  position: relative;
+  padding-left: 0rem; /* espacio entre barra y texto */
+  min-height: 2.2rem;
+}
+
+/* punto verde centrado en la fila */
+.timeline-dot {
+  position: absolute;
+  left: -1.30rem;            /* mismo eje que la barra */
+  top: 50%;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #198754;
+  transform: translate(-50%, -50%);
+  box-shadow: 0 0 0 2px #fff;
+}
+
+/* hora y descripción en columna (ya por defecto bloque) */
+.timeline-text .time {
+  display: inline-block;        /* fuerza a su propia línea */
+  font-size: 0.85rem;
+  color: #6c757d;        /* gris Bootstrap */
+  margin-bottom: 0.2rem;
+  margin-right:0.35rem;
+}

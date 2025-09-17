@@ -1,4 +1,3 @@
-// TablePagination.tsx
 import { useEffect, useMemo, useState } from "react";
 import "../assets/scss/components/_table-pagination.scss";
 

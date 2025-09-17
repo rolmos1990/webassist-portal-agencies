@@ -1,8 +1,8 @@
-import { useCallback, useMemo } from "react";
-import { createCustomerColumns } from "./CustomerDataTableConfig";
-import type { CustomerRow } from "../../data/customerData";
+import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
+import type { SalesRow } from "../../data/salesData";
 import DataTable, { currency, type SortDir, type SortState } from "../DataTable";
+import { createSalesColumns } from "./SalesDataTableConfig";
 
 // Define the PaginationProps interface to match the one in DataTable
 interface DataTablePaginationProps {
@@ -13,54 +13,34 @@ interface DataTablePaginationProps {
   onChange: (page: number) => void;
 }
 
-type CustomersTablePagination = Omit<DataTablePaginationProps, 'defaultPage'> & {
+type SalesTablePagination = Omit<DataTablePaginationProps, 'defaultPage'> & {
   currentPage?: number;
 };
 
-type CustomersTableProps = {
-  data: CustomerRow[];
+type SalesTableProps = {
+  data: SalesRow[];
   loading?: boolean;
-  pagination?: CustomersTablePagination;
+  pagination?: SalesTablePagination;
   sort?: {
     sortBy?: string;
     sortDir?: SortDir;
   };
   onSortChange?: (sort: { id: string; dir: SortDir }) => void;
-  onEdit?: (row: CustomerRow) => void;
-  onToggle?: (row: CustomerRow) => void;
-  onDelete?: (row: CustomerRow) => void;
 };
 
-export function CustomersTable({ 
+export function SalesTable({ 
   data, 
   loading = false, 
   pagination,
   sort,
   onSortChange,
-  onEdit: externalOnEdit,
-  onToggle: externalOnToggle,
-  onDelete: externalOnDelete
-}: CustomersTableProps) {
+}: SalesTableProps) {
   const { t } = useTranslation('common');
-  const handleEdit = useCallback((row: CustomerRow) => {
-    externalOnEdit?.(row);
-  }, [externalOnEdit]);
-
-  const handleToggle = useCallback((row: CustomerRow) => {
-    externalOnToggle?.(row);
-  }, [externalOnToggle]);
-
-  const handleDelete = useCallback((row: CustomerRow) => {
-    externalOnDelete?.(row);
-  }, [externalOnDelete]);
 
   const columns = useMemo(
-    () => createCustomerColumns({ 
+    () => createSalesColumns({ 
       currency, 
       t: (key: string) => t(`agents.${key}`),
-      onEdit: handleEdit, 
-      onToggle: handleToggle, 
-      onDelete: handleDelete 
     }),
     [t]
   );
@@ -76,7 +56,7 @@ export function CustomersTable({
   }, [sort]);
 
   return (
-    <DataTable<CustomerRow> 
+    <DataTable<SalesRow> 
       items={data} 
       columns={columns} 
       loading={loading}
@@ -92,4 +72,3 @@ export function CustomersTable({
     />
   );
 }
-

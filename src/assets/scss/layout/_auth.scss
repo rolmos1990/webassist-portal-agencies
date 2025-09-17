@@ -1,6 +1,10 @@
-.login-container{
-    background-image: url('../../images/background-login-page.png');
+.login-container {
+    background-color: #f0f0f0;  // color base
+    background: url('../../images/background-login-page.webp') center/cover no-repeat;
+    background-image: image-set(
+        url('../../images/background-login-page-tiny.webp') 1x,
+        url('../../images/background-login-page-tiny.webp') 2x
+      );
     background-size: cover;
     background-position: center;
-    background-repeat: no-repeat;
-}
+  }

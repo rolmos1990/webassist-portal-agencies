@@ -17,6 +17,9 @@ import ClientDetail from './pages/ClientDetail.tsx';
 import PlanDetail from './pages/PlanDetail.tsx';
 import Agencies from './pages/Agencies.tsx';
 import AgencyDetail from './pages/AgencyDetail.tsx';
+import Agents from './pages/Agents.tsx';
+import AgentDetail from './pages/AgentDetail.tsx';
+import ForgotPassword from './pages/ForgotPassword.tsx';
 
 function App() {
   return (
@@ -24,6 +27,7 @@ function App() {
       <Routes>
         <Route element={<AuthLayout />}>
           <Route path="/login" element={<Login />} />
+          <Route path="/forgotPassword" element={<ForgotPassword />} />
         </Route>
         <Route element={<PrivateRoute />}>
           <Route element={<DashboardLayout />}>
@@ -31,6 +35,8 @@ function App() {
             <Route path="/profile" element={<Profile />} />
             <Route path="/agencies" element={<Agencies />} />
             <Route path="/agency/:id" element={<AgencyDetail />} />
+            <Route path="/agents" element={<Agents />} />
+            <Route path="/agent/:id" element={<AgentDetail />} />
             <Route path="/users" element={<Clients />} />
             <Route path="/users/:id" element={<ClientDetail />} />
             <Route path="/users/:id/plan/:planId" element={<PlanDetail />} />

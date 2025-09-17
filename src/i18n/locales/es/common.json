@@ -1,4 +1,29 @@
 {
+  "quotes": {
+    "table": {
+      "number": "Número",
+      "name": "Nombre",
+      "product": "Producto",
+      "total": "Total"
+    }
+  },
+  "agents":{
+    "table":{
+      "agentCode":"Código",
+      "name":"Nombre",
+      "lastName":"Apellido",
+      "email":"Email",
+      "agencyName":"Agencia",
+      "totalSales":"Total de Ventas",
+      "totalCommission":"Total de Comisión",
+      "status":"Estado",
+      "actions":"Acciones",
+      "edit":"Editar",
+      "delete":"Eliminar",
+      "markActive":"Marcar como Activo",
+      "markInactive":"Marcar como Inactivo"
+    }
+  },
   "table": {
     "name": "Nombre",
     "totalRevenue": "Ingresos Totales",

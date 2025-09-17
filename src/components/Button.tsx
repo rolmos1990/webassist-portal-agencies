@@ -17,7 +17,10 @@ const BUTTON_STYLES = {
   danger: "btn btn-danger",
   "outline-danger": "btn btn-outline-danger bg-white",
   link: "btn btn-link",
-  dark: "btn btn-outline-primary bg-primary text-dark rounded-pill fn-semibold",
+  dark: "btn btn-outline-primary bg-primary text-dark rounded-pill fw-semibold",
+  whiteLink: "btn btn-link text-secondary fw-semibold px-0 text-decoration-none",
+  squareDark: "btn bg-primary text-dark fw-semibold border-0",
+
 } as const;
 
 export type ButtonVariant = keyof typeof BUTTON_STYLES;

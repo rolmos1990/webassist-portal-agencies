@@ -1,7 +1,7 @@
 // DataTable.tsx
 import React, { useMemo, useState } from "react";
 import "../assets/scss/components/_row-actions.scss";
-import TablePagination from "./TablaPagination";
+import TablePagination from "./TablePagination";
 
 type Align = "start" | "center" | "end";
 
@@ -175,18 +175,3 @@ export default function DataTable<T extends object>({
 /* Utils que ya tenías */
 export const currency = (v: number) =>
   v.toLocaleString("en-US", { style: "currency", currency: "USD", minimumFractionDigits: 2 });
-
-export const StatusBadge: React.FC<{ status: "Active" | "Inactive" }> = ({ status }) => (
-  <span
-    className={`badge rounded-pill d-inline-flex align-items-center gap-1 ${
-      status === "Active" ? "bg-light text-success border" : "bg-light text-secondary border"
-    }`}
-    style={{ fontWeight: 500 }}
-  >
-    <span
-      className={`rounded-circle ${status === "Active" ? "bg-success" : "bg-secondary"}`}
-      style={{ width: 6, height: 6 }}
-    />
-    {status}
-  </span>
-);

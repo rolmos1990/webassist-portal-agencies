@@ -31,7 +31,7 @@ interface Props {
   onCancel: () => void;
 }
 
-export default function CreateAgentForm({ onSubmit, onCancel }: Props) {
+export default function CreateAgentVertical({ onSubmit, onCancel }: Props) {
   const {
     register,
     handleSubmit,

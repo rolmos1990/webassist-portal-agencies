@@ -6,6 +6,7 @@ import { HorizontalCardList, HorizontalCardListItem } from '../components/Horizo
 import { StatusBadge } from '../components/StatusBadge';
 import Offcanvas from '../components/Offcanvas';
 import { BenefitsExample } from '../examples/BenefitsExample';
+import { defaultStatusTheme } from '../components/StatusBadge/StatusBadgeThemes';
 
 export default function PlanDetail() {
     const [show, setShow] = useState(false);
@@ -81,7 +82,7 @@ export default function PlanDetail() {
                 <h4 className="mb-2 d-flex flex-column flex-md-row align-items-center justify-content-center justify-content-md-start gap-2">
               A93-E2B5K9
               <div className="ms-md-2 mt-2 mt-md-0">
-                <StatusBadge status={"Activo"} />
+                <StatusBadge status={"Active"} theme={defaultStatusTheme} />
               </div>
             </h4>
         

@@ -1,34 +1,76 @@
-import { useMemo, useCallback } from "react";
-import { useTranslation } from "react-i18next";
+import { useCallback, useMemo } from "react";
 import { createAgentColumns } from "./AgentsDataTableConfig";
 import type { AgentRow } from "../../data/agentData";
-import DataTable, { currency } from "../DataTable";
+import { useTranslation } from "react-i18next";
+import DataTable, { currency, type SortDir, type SortState } from "../DataTable";
 
-export function AgentsTable({ data }: { data: AgentRow[] }) {
+// Define the PaginationProps interface to match the one in DataTable
+interface DataTablePaginationProps {
+  totalPages: number;
+  defaultPage?: number;
+  align?: 'start' | 'center' | 'end';
+  wrap?: 'none' | 'container' | 'container-fluid';
+  onChange: (page: number) => void;
+}
+
+type AgentsTablePagination = Omit<DataTablePaginationProps, 'defaultPage'> & {
+  currentPage?: number;
+};
+
+type AgentsTableProps = {
+  data: AgentRow[];
+  loading?: boolean;
+  pagination?: AgentsTablePagination;
+  sort?: SortState | null;
+  onSortChange?: (sort: { id: string; dir: SortDir }) => void;
+  onEdit?: (row: AgentRow) => void;
+  onToggle?: (row: AgentRow) => void;
+  onDelete?: (row: AgentRow) => void;
+};
+
+export function AgentsTable({ 
+  data, 
+  loading = false, 
+  pagination,
+  sort,
+  onSortChange,
+  onEdit: externalOnEdit,
+  onToggle: externalOnToggle,
+  onDelete: externalOnDelete
+}: AgentsTableProps) {
   const { t } = useTranslation('common');
 
-  const onEdit = useCallback((row: AgentRow) => {
-    console.log("Edit", row);
-  }, []);
+  const handleEdit = useCallback((row: AgentRow) => {
+    externalOnEdit?.(row);
+  }, [externalOnEdit]);
 
-  const onToggle = useCallback((row: AgentRow) => {
-    console.log("Toggle", row);
-  }, []);
+  const handleToggle = useCallback((row: AgentRow) => {
+    externalOnToggle?.(row);
+  }, [externalOnToggle]);
 
-  const onDelete = useCallback((row: AgentRow) => {
-    console.log("Delete", row);
-  }, []);
+  const handleDelete = useCallback((row: AgentRow) => {
+    externalOnDelete?.(row);
+  }, [externalOnDelete]);
 
   const columns = useMemo(
     () => createAgentColumns({ 
       currency, 
       t: (key: string) => t(`agents.${key}`), 
-      onEdit, 
-      onToggle, 
-      onDelete 
+      onEdit: handleEdit, 
+      onToggle: handleToggle, 
+      onDelete: handleDelete 
     }),
-    [t, onEdit, onToggle, onDelete]
+    [t, handleEdit, handleToggle, handleDelete]
   );
 
-  return <DataTable<AgentRow> items={data} columns={columns} />;
+  return (
+    <DataTable<AgentRow> 
+      items={data} 
+      columns={columns} 
+      loading={loading}
+      pagination={pagination}
+      sort={sort}
+      onSortChange={onSortChange}
+    />
+  );
 }
