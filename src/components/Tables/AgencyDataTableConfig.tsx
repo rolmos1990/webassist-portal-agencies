@@ -22,7 +22,7 @@ export function createAgencyColumns({
   return [
     {
       id: "name",
-      label: t("table.name"),
+      label: t("agency.name"),
       width: "28%",
       sortable: true,
       accessor: (row) => row.name,
@@ -30,7 +30,7 @@ export function createAgencyColumns({
     },
     {
       id: "totalRevenue",
-      label: t("table.totalRevenue"),
+      label: t("agency.totalRevenue"),
       width: "16%",
       sortable: true,
       accessor: (row) => row.totalRevenue,
@@ -39,7 +39,7 @@ export function createAgencyColumns({
     },
     {
       id: "totalCommission",
-      label: t("table.totalCommission"),
+      label: t("agency.totalCommission"),
       width: "20%",
       sortable: true,
       accessor: (row) => row.totalCommission,
@@ -48,7 +48,7 @@ export function createAgencyColumns({
     },
     {
       id: "location",
-      label: t("table.location"),
+      label: t("agency.location"),
       width: "14%",
       sortable: true,
       accessor: (row) => row.location,
@@ -56,7 +56,7 @@ export function createAgencyColumns({
     },
     {
       id: "totalPlans",
-      label: t("table.totalPlans"),
+      label: t("agency.totalPlans"),
       width: "14%",
       sortable: true,
       accessor: (row) => row.totalPlans,
@@ -64,7 +64,7 @@ export function createAgencyColumns({
     },
     {
       id: "status",
-      label: t("table.status"),
+      label: t("agency.status"),
       width: "8%",
       sortable: true,
       accessor: (row) => row.status,
@@ -73,7 +73,7 @@ export function createAgencyColumns({
     },
     {
       id: "actions",
-      label: <span className="visually-hidden">{t("table.actions")}</span>,
+      label: <span className="visually-hidden">{t("agency.actions")}</span>,
       width: 36,
       align: "end",
       render: (row) => (
@@ -82,7 +82,7 @@ export function createAgencyColumns({
             icon="bi-pencil"
             onClick={onEdit}
           >
-            {t("table.edit")}
+            {t("agency.edit")}
           </RowActions.Item>
 
           <RowActions.Item<AgencyRow>
@@ -90,8 +90,8 @@ export function createAgencyColumns({
             onClick={onToggle}
           >
             {row.status === "Active"
-              ? t("table.markInactive")
-              : t("table.markActive")}
+              ? t("agency.markInactive")
+              : t("agency.markActive")}
           </RowActions.Item>
 
           <RowActions.Divider />
@@ -101,7 +101,7 @@ export function createAgencyColumns({
             danger
             onClick={onDelete}
           >
-            {t("table.delete")}
+            {t("agency.delete")}
           </RowActions.Item>
         </RowActions>
       ),

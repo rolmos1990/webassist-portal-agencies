@@ -1,11 +1,21 @@
 import { useState } from 'react';
 import { Dropdown } from 'react-bootstrap';
 import iconRounded from '../assets/images/icons/rounded-icon.svg';
-import iconNotification from '../assets/images/icons/notification.svg';
 import Search from './common/Search';
+import NotificationsDropdown from './NotificationDropdown';
+import type { NotificationItem } from './NotificationDropdown';
+import { useNavigate } from 'react-router-dom';
 
 function Header() {
+  const navigate = useNavigate();
   const [showDropdown, setShowDropdown] = useState(false);
+
+  // TODO -- definir dentro de hooks estos states (verificar si usar context/sustants)
+  const [notifications, setNotifications] = useState<NotificationItem[]>([
+    { id: 1, title: "Target Achieved", time: "2 mins ago", message: "Congrats! You’ve hit 80%.", unread: true },
+    { id: 2, title: "Agent Joined",  time: "1 hr ago",    message: "Sarah Parker joined your team.", unread: true },
+    { id: 3, title: "New Program Added", time: "3 hr ago", message: "“Premium Travel Care” is now available." },
+  ]);
 
   return (
     <header className="d-flex align-items-center bg-white justify-content-center justify-content-md-between py-3">
@@ -18,28 +28,24 @@ function Header() {
         className="col-md-3 text-end px-2 px-md-4 d-flex align-items-center justify-content-end gap-2 gap-md-3"
       >
         <img src={iconRounded} alt="rounded icon" />
-        <div className="position-relative">
-          <img src={iconNotification} alt="notification icon" />
-          <span
-            className="position-absolute d-flex justify-content-center align-items-center"
-            style={{
-              top: "0",
-              backgroundColor: "brown",
-              color: "white",
-              borderRadius: "50%",
-              fontSize: "12px",
-              right: "-5px",
-              width: "17px",
-              height: "17px",
-            }}
-          >
-            9
-          </span>
-        </div>
+
+        {/* 🔔 Notificaciones */}
+        <NotificationsDropdown
+          items={notifications}
+          onItemClick={(item) => {
+            navigate(`/users/${item.id}`);
+            setNotifications(prev =>
+              prev.map(n => n.id === item.id ? { ...n, unread: false } : n)
+            );
+          }}
+          onOpenAll={() => navigate(`/users`)}
+        />
+
+        {/* 👤 User dropdown */}
         <Dropdown show={showDropdown} onToggle={setShowDropdown}>
-          <Dropdown.Toggle 
-            variant="link" 
-            id="dropdown-user" 
+          <Dropdown.Toggle
+            variant="link"
+            id="dropdown-user"
             className="text-decoration-none p-0"
           >
             <img

@@ -1,3 +1,5 @@
+import Breadcrumb from '../components/Breadcrumb';
+import { UIButton } from '../components/Button';
 import {
   DashboardHeader,
   SalesTargetSection,
@@ -9,10 +11,24 @@ import {
   AgentPerformanceSection,
   AgencyPerformanceSection
 } from '../components/dashboard';
+import CreateAgenciesVertical from '../components/Forms/CreateAgenciesVertical';
+import FilterByAgencyForm from '../components/Forms/FilterByAgencyForm';
+import Offcanvas from '../components/Offcanvas';
 import { useDashboardData } from '../hooks/useDashboardData';
+import { useState } from 'react';
 
 function Dashboard() {
   const { data, loading, error } = useDashboardData();
+
+  const [show, setShow] = useState(false);
+
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+
+  const handleSubmit = (data: any) => {
+    console.log(data);
+    handleClose();
+  };
 
   if (loading) {
     return (
@@ -42,8 +58,33 @@ function Dashboard() {
   }
 
   return (
-    <>
-      <DashboardHeader />
+    <div className="min-vh-100 bg-light">
+      <div className="container-fluid py-3 px-4">
+    <Breadcrumb title="Dashboard" description="Monitor key performance of Product and Agency sales" 
+    rightContent={
+      <div className="d-flex gap-2">
+        <UIButton variant="outline-primary" icon=""  onClick={handleShow}>
+          Filter By
+        </UIButton>
+        <UIButton variant="outline-primary" icon="">
+          This year
+        </UIButton>
+      </div>
+    }
+    />
+
+      <Offcanvas
+        show={show}
+        onHide={() => setShow(false)}
+        placement="end"
+        title="Filter By Agency"
+        canClose={true}
+        scroll={true}
+        backdrop="static"
+        width="380px"
+      >
+        <FilterByAgencyForm onSubmit={handleSubmit} onCancel={handleClose} />
+        </Offcanvas>
 
       <SalesTargetSection data={data.salesTarget} />
 
@@ -60,7 +101,9 @@ function Dashboard() {
         <AgentPerformanceSection data={data.agentPerformance} />
         <AgencyPerformanceSection />
       </div>  
-    </>)
+      </div>
+    </div>
+  );
 }
 
 export default Dashboard;

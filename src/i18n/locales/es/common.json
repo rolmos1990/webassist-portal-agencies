@@ -1,45 +1,64 @@
 {
+  "sales":{
+    "planName":"Plan Name",
+    "saleAmount":"Sale Amount",
+    "unitQty":"Unit Qty",
+    "variationsPercent":"Variations Percent",
+    "unitPrice":"Unit Price",
+    "voucher":"Voucher"
+},
   "quotes": {
-    "table": {
-      "number": "Número",
-      "name": "Nombre",
-      "product": "Producto",
+      "number": "Number",
+      "name": "Name",
+      "product": "Product",
       "total": "Total"
-    }
+  },
+  "agency":{
+      "name":"Name",
+      "totalRevenue":"Total Revenue",
+      "totalCommission":"Total Commission",
+      "location":"Location",
+      "totalPlans":"Total Plans",
+      "status":"Status",
+      "actions":"Actions",
+      "edit":"Edit",
+      "delete":"Delete",
+      "markActive":"Mark as Active",
+      "markInactive":"Mark as Inactive"
   },
   "agents":{
-    "table":{
-      "agentCode":"Código",
-      "name":"Nombre",
-      "lastName":"Apellido",
-      "email":"Email",
-      "agencyName":"Agencia",
-      "totalSales":"Total de Ventas",
-      "totalCommission":"Total de Comisión",
-      "status":"Estado",
-      "actions":"Acciones",
-      "edit":"Editar",
-      "delete":"Eliminar",
-      "markActive":"Marcar como Activo",
-      "markInactive":"Marcar como Inactivo"
-    }
-  },
-  "table": {
-    "name": "Nombre",
-    "totalRevenue": "Ingresos Totales",
-    "totalCommission": "Comisión Total",
-    "location": "Ubicación",
-    "totalPlans": "Planes Totales",
-    "status": "Estado",
-    "actions": "Acciones",
-    "edit": "Editar",
-    "delete": "Eliminar",
-    "markActive": "Marcar como Activo",
-    "markInactive": "Marcar como Inactivo"
-  },
+    "agentCode":"Agent Code",
+    "name":"Name",
+    "lastName":"Last Name",
+    "email":"Email",
+    "agencyName":"Agency Name",
+    "totalSales":"Total Sales",
+    "totalCommission":"Total Commission",
+    "status":"Status",
+    "actions":"Actions",
+    "edit":"Edit",
+    "delete":"Delete",
+    "markActive":"Mark as Active",
+    "markInactive":"Mark as Inactive"
+},
+"user": {
+  "name": "Name",
+  "email": "Email",
+  "phone": "Phone",
+  "city": "City",
+  "country": "Country",
+  "purchases": "Purchases",
+  "created": "Created",
+  "status": "Status",
+  "actions": "Actions",
+  "edit": "Edit",
+  "delete": "Delete",
+  "markActive": "Mark as Active",
+  "markInactive": "Mark as Inactive"
+},
   "status": {
-    "active": "Activo",
-    "inactive": "Inactivo"
+    "active": "Active",
+    "inactive": "Inactive"
   },
-  "noData": "No hay datos disponibles"
+  "noData": "No data available"
 }

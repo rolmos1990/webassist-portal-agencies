@@ -22,7 +22,7 @@ export function createAgentColumns({
   return [
     {
       id: "agentCode",
-      label: t("table.agentCode"),
+      label: t("agents.agentCode"),
       width: "14%",
       sortable: true,
       accessor: (row) => row.agentCode,
@@ -30,7 +30,7 @@ export function createAgentColumns({
     },
     {
       id: "name",
-      label: t("table.name"),
+      label: t("agents.name"),
       width: "28%",
       sortable: true,
       accessor: (row) => row.agencyName,
@@ -38,7 +38,7 @@ export function createAgentColumns({
     },
     {
       id: "lastName",
-      label: t("table.lastName"),
+      label: t("agents.lastName"),
       width: "20%",
       sortable: true,
       accessor: (row) => row.lastName,
@@ -47,7 +47,7 @@ export function createAgentColumns({
     },
     {
       id: "email",
-      label: t("table.email"),
+      label: t("agents.email"),
       width: "14%",
       sortable: true,
       accessor: (row) => row.email,
@@ -55,7 +55,7 @@ export function createAgentColumns({
     },
     {
       id: "agencyName",
-      label: t("table.agencyName"),
+      label: t("agents.agencyName"),
       width: "14%",
       sortable: true,
       accessor: (row) => row.agencyName,
@@ -63,7 +63,7 @@ export function createAgentColumns({
     },
     {
       id: "totalSales",
-      label: t("table.totalSales"),
+      label: t("agents.totalSales"),
       width: "14%",
       sortable: true,
       accessor: (row) => row.totalSales,
@@ -72,7 +72,7 @@ export function createAgentColumns({
     },
     {
       id: "totalCommission",
-      label: t("table.totalCommission"),
+      label: t("agents.totalCommission"),
       width: "14%",
       sortable: true,
       accessor: (row) => row.totalCommission,
@@ -81,7 +81,7 @@ export function createAgentColumns({
     },    
     {
       id: "status",
-      label: t("table.status"),
+      label: t("agents.status"),
       width: "8%",
       sortable: true,
       accessor: (row) => row.status,
@@ -99,7 +99,7 @@ export function createAgentColumns({
             icon="bi-pencil"
             onClick={onEdit}
           >
-            {t("table.edit")}
+            {t("agents.edit")}
           </RowActions.Item>
 
           <RowActions.Item<AgentRow>
@@ -107,8 +107,8 @@ export function createAgentColumns({
             onClick={onToggle}
           >
             {row.status === "Active"
-              ? t("table.markInactive")
-              : t("table.markActive")}
+              ? t("agents.markInactive")
+              : t("agents.markActive")}
           </RowActions.Item>
 
           <RowActions.Divider />
@@ -118,7 +118,7 @@ export function createAgentColumns({
             danger
             onClick={onDelete}
           >
-            {t("table.delete")}
+            {t("agents.delete")}
           </RowActions.Item>
         </RowActions>
       ),

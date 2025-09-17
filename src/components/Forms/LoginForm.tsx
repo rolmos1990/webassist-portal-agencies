@@ -4,6 +4,7 @@ import * as yup from 'yup';
 import { UIButton } from "../Button";
 import InputText from "./Inputs/InputText";
 import { useNavigate } from 'react-router-dom';
+import InputEmail from './Inputs/InputEmail';
 
 export interface CreateAgencyFormData {
     email: string;
@@ -46,8 +47,8 @@ const LoginForm: React.FC<Props> = ({ onSubmit }) => {
         className="py-3"
         noValidate
       >
-        <InputText
-          name="userEmail"
+        <InputEmail
+          name="email"
           label="Email"
           placeholder="Your email address"
           register={register}
@@ -56,7 +57,7 @@ const LoginForm: React.FC<Props> = ({ onSubmit }) => {
         />
 
         <InputText
-          name="userPassword"
+          name="password"
           label="Password"
           placeholder="Your password"
           register={register}

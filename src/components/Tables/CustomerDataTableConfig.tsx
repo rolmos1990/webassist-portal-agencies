@@ -23,7 +23,7 @@ export function createCustomerColumns({
   return [
     {
       id: "name",
-      label: t("table.name"),
+      label: t("user.name"),
       width: "18%",
       sortable: true,
       accessor: (row) => row.name,
@@ -31,7 +31,7 @@ export function createCustomerColumns({
     },
     {
       id: "email",
-      label: t("table.email"),
+      label: t("user.email"),
       width: "20%",
       sortable: true,
       accessor: (row) => row.email,
@@ -44,7 +44,7 @@ export function createCustomerColumns({
     },
     {
       id: "phoneNumber",
-      label: t("table.phone"),
+      label: t("user.phone"),
       width: "12%",
       sortable: true,
       accessor: (row) => row.phoneNumber,
@@ -52,7 +52,7 @@ export function createCustomerColumns({
     },
     {
       id: "city",
-      label: t("table.city"),
+      label: t("user.city"),
       width: "12%",
       sortable: true,
       accessor: (row) => row.city,
@@ -60,7 +60,7 @@ export function createCustomerColumns({
     },
     {
       id: "country",
-      label: t("table.country"),
+      label: t("user.country"),
       width: "12%",
       sortable: true,
       accessor: (row) => row.country,
@@ -68,7 +68,7 @@ export function createCustomerColumns({
     },
     {
       id: "totalPurchase",
-      label: t("table.purchases"),
+      label: t("user.purchases"),
       width: "10%",
       sortable: true,
       accessor: (row) => currency(row.totalPurchase),
@@ -76,7 +76,7 @@ export function createCustomerColumns({
     },
     {
       id: "createdOn",
-      label: t("table.created"),
+      label: t("user.created"),
       width: "10%",
       sortable: true,
       accessor: (row) => row.createdOn,
@@ -84,7 +84,7 @@ export function createCustomerColumns({
     },
     {
       id: "status",
-      label: t("table.status"),
+      label: t("user.status"),
       width: "8%",
       sortable: true,
       accessor: (row) => row.status,
@@ -102,14 +102,16 @@ export function createCustomerColumns({
             icon="bi-pencil"
             onClick={onEdit}
           >
-            Edit
+            {t("user.edit")}
           </RowActions.Item>
 
           <RowActions.Item<CustomerRow>
             icon={row.status === "Active" ? "bi-toggle-on" : "bi-toggle-off"}
             onClick={onToggle}
           >
-            {row.status === "Inactive" ? "Marcar como Inactivo" : "Marcar como Activo"}
+            {row.status === "Active"
+              ? t("user.markInactive")
+              : t("user.markActive")}
           </RowActions.Item>
 
           <RowActions.Divider />
@@ -119,7 +121,7 @@ export function createCustomerColumns({
             danger
             onClick={onDelete}
           >
-            Delete
+            {t("user.delete")}
           </RowActions.Item>
         </RowActions>
       ),

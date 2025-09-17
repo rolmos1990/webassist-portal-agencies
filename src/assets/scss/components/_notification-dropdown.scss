@@ -1,0 +1,15 @@
+/* Acerca el menú al ícono y anímalo */
+.notification-menu {
+  margin-top: -6px;                 /* más pegado al icono */
+  transform-origin: top right;
+  transition: opacity .16s ease, transform .16s ease;
+  transform: translateY(-2px);
+}
+.notification-menu.show {
+  transform: translateY(0);
+}
+
+/* Evita cortes si algún contenedor tiene overflow */
+header, .header-actions {
+  overflow: visible; /* ajusta al wrapper real donde vive el dropdown */
+}

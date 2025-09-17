@@ -42,7 +42,7 @@ const Search: React.FC<SearchProps> = ({
       <input
         type="search"
         className="form-control form-control-dark rounded-pill ps-5"
-        style={{ height }}
+        style={{ height, width: 320 }}
         placeholder={placeholder}
         aria-label={ariaLabel}
         value={value}

@@ -1,46 +1,19 @@
+import { t } from 'i18next';
 import { useMemo, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import Breadcrumb from '../components/Breadcrumb';
 import { UIButton } from '../components/Button';
+import DataTable, { currency } from '../components/DataTable';
 import CreateAgenciesVertical from '../components/Forms/CreateAgenciesVertical';
 import Offcanvas from '../components/Offcanvas';
-import DataTable, { currency } from '../components/DataTable';
-import { createAgencyColumns } from '../components/Tables/AgencyDataTableConfig';
-import { t } from 'i18next';
-import { agencyData, type AgencyRow } from '../data/agencyData';
+import { createQuotesColumns } from '../components/Tables/QuotesDataTableConfig';
+import { quotesData, type QuotesRow } from '../data/quotesData';
+import { QuotesTable } from '../components/Tables/QuotesTable';
 
 function MyQuotes() {
-  const navigate = useNavigate();
   const [show, setShow] = useState(false);
-  const [loading, setLoading] = useState(false);
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
-
-  const onEdit = (row: AgencyRow) => {
-    console.log('Edit agency:', row);
-  };
-
-  const onToggle = (row: AgencyRow) => {
-    const newStatus = row.status === 'Active' ? 'Inactive' : 'Active';
-    console.log(`Toggled ${row.name} status to: ${newStatus}`);
-  };
-
-  const onDelete = (row: AgencyRow) => {
-    console.log('Delete agency:', row.name);
-  };
-
-  const cols = useMemo(
-    () =>
-      createAgencyColumns({
-        currency,
-        t: (key: string) => t(`${key}`),
-        onEdit,
-        onToggle,
-        onDelete,
-      }),
-    [t, onEdit, onToggle, onDelete]
-  );
 
   const handleSubmit = (data: any) => {
     console.log(data);
@@ -86,18 +59,17 @@ function MyQuotes() {
         </Offcanvas>
             <div className="card">
               <div className="card-body p-0">
-              <DataTable<AgencyRow>
-                  items={agencyData}
-                  loading={loading}
-                  columns={cols}
-                  defaultSort={{ id: "name", dir: "desc" }}
+              <QuotesTable
+                  data={quotesData}
+                  loading={false}
+                  sort={{ sortBy: "name", sortDir: "desc" }}
                   onSortChange={({ id, dir }) => {
                       console.log(id, dir);
                       // fetchData({ sortBy: id, sortDir: dir }); // si haces server-side
                   }}
                   pagination={{
                       totalPages: 11,
-                      defaultPage: 3,
+                      currentPage: 3,
                       align: "center",
                       wrap: "none",
                       onChange: (p) => console.log("Ir a página:", p),

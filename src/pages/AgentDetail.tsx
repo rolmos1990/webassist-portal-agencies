@@ -1,5 +1,4 @@
 import { useMemo } from "react";
-import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { mapPermissionsToCheckOptions } from "../adapters/permissions-mapper";
 import { ActivitiesLog } from '../components/ActivitiesLog';
@@ -9,7 +8,7 @@ import { CardAvatar } from '../components/CardAvatar';
 import ContactCard from "../components/ContactCard";
 import PermissionsAgentsVertical from "../components/Forms/PermissionsAgentsVertical";
 import { HorizontalCardList, HorizontalCardListItem } from '../components/HorizontalCardList';
-import { QuotesTable } from "../components/Tables/QuotesDataTable";
+import { QuotesTable } from "../components/Tables/QuotesTable";
 import { SalesTable } from "../components/Tables/SalesTable";
 import TabPanel from '../components/TabPanel';
 import { activityData } from '../data/activityData';
@@ -22,7 +21,6 @@ import { defaultStatusTheme } from "../components/StatusBadge/StatusBadgeThemes"
 
 export default function AgentDetail() {
     const navigate = useNavigate();
-    const { t } = useTranslation("common");
     
     const permissionsOptions = useMemo(
         () => mapPermissionsToCheckOptions(userPermissionsData),

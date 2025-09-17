@@ -1,14 +1,32 @@
 {
+  "sales":{
+      "planName":"Plan Name",
+      "saleAmount":"Sale Amount",
+      "unitQty":"Unit Qty",
+      "variationsPercent":"Variations Percent",
+      "unitPrice":"Unit Price",
+      "voucher":"Voucher"
+  },
   "quotes": {
-    "table": {
       "number": "Number",
       "name": "Name",
       "product": "Product",
       "total": "Total"
-    }
+  },
+  "agency":{
+      "name":"Name",
+      "totalRevenue":"Total Revenue",
+      "totalCommission":"Total Commission",
+      "location":"Location",
+      "totalPlans":"Total Plans",
+      "status":"Status",
+      "actions":"Actions",
+      "edit":"Edit",
+      "delete":"Delete",
+      "markActive":"Mark as Active",
+      "markInactive":"Mark as Inactive"
   },
   "agents":{
-    "table":{
       "agentCode":"Agent Code",
       "name":"Name",
       "lastName":"Last Name",
@@ -22,14 +40,15 @@
       "delete":"Delete",
       "markActive":"Mark as Active",
       "markInactive":"Mark as Inactive"
-    }
   },
-  "table": {
+  "user": {
     "name": "Name",
-    "totalRevenue": "Total Revenue",
-    "totalCommission": "Total Commission",
-    "location": "Location",
-    "totalPlans": "Total Plans",
+    "email": "Email",
+    "phone": "Phone",
+    "city": "City",
+    "country": "Country",
+    "purchases": "Purchases",
+    "created": "Created",
     "status": "Status",
     "actions": "Actions",
     "edit": "Edit",

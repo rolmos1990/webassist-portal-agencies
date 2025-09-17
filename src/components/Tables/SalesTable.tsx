@@ -40,7 +40,7 @@ export function SalesTable({
   const columns = useMemo(
     () => createSalesColumns({ 
       currency, 
-      t: (key: string) => t(`agents.${key}`),
+      t,
     }),
     [t]
   );

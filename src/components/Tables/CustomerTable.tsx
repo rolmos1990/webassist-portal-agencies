@@ -57,7 +57,7 @@ export function CustomersTable({
   const columns = useMemo(
     () => createCustomerColumns({ 
       currency, 
-      t: (key: string) => t(`agents.${key}`),
+      t,
       onEdit: handleEdit, 
       onToggle: handleToggle, 
       onDelete: handleDelete 

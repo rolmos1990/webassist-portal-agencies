@@ -55,7 +55,7 @@ export function AgentsTable({
   const columns = useMemo(
     () => createAgentColumns({ 
       currency, 
-      t: (key: string) => t(`agents.${key}`), 
+      t, 
       onEdit: handleEdit, 
       onToggle: handleToggle, 
       onDelete: handleDelete 

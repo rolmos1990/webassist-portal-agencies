@@ -13,7 +13,7 @@ export function createSalesColumns({
   return [
     {
       id: "planName",
-      label: t("table.planName"),
+      label: t("sales.planName"),
       width: "28%",
       sortable: true,
       accessor: (row) => row.planName,
@@ -21,7 +21,7 @@ export function createSalesColumns({
     },
     {
       id: "saleAmount",
-      label: t("table.saleAmount"),
+      label: t("sales.saleAmount"),
       width: "16%",
       sortable: true,
       accessor: (row) => row.saleAmount,
@@ -30,7 +30,7 @@ export function createSalesColumns({
     },
     {
       id: "unitQty",
-      label: t("table.unitQty"),
+      label: t("sales.unitQty"),
       width: "20%",
       sortable: true,
       accessor: (row) => row.unitQty,
@@ -39,7 +39,7 @@ export function createSalesColumns({
     },
     {
       id: "variationsPercent",
-      label: t("table.variationsPercent"),
+      label: t("sales.variationsPercent"),
       width: "14%",
       sortable: true,
       accessor: (row) => row.variationsPercent,
@@ -47,7 +47,7 @@ export function createSalesColumns({
     },
     {
       id: "unitPrice",
-      label: t("table.unitPrice"),
+      label: t("sales.unitPrice"),
       width: "14%",
       sortable: true,
       accessor: (row) => row.unitPrice,
@@ -55,7 +55,7 @@ export function createSalesColumns({
     },
     {
       id: "voucher",
-      label: t("table.voucher"),
+      label: t("sales.voucher"),
       width: "8%",
       sortable: true,
       accessor: (row) => row.voucher,

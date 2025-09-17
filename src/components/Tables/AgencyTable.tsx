@@ -41,7 +41,7 @@ export function AgencyTable({
   onToggle: externalOnToggle,
   onDelete: externalOnDelete
 }: AgencyTableProps) {
-  const { t } = useTranslation('common');
+  const { t } = useTranslation("common");
   
   const handleEdit = useCallback((row: AgencyRow) => {
     externalOnEdit?.(row);
@@ -58,7 +58,7 @@ export function AgencyTable({
   const columns = useMemo(
     () => createAgencyColumns({ 
       currency, 
-      t: (key: string) => t(`agents.${key}`), 
+      t, 
       onEdit: handleEdit, 
       onToggle: handleToggle, 
       onDelete: handleDelete 

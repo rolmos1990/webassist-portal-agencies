@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 
 interface BreadcrumbProps {
   title?: string;
+  description?: string;
   hasBack?: boolean;
   rightContent?: ReactNode;
   className?: string;
@@ -10,6 +11,7 @@ interface BreadcrumbProps {
 
 const Breadcrumb = ({
   title,
+  description = '',
   hasBack = false,
   rightContent,
   className = ''
@@ -17,24 +19,29 @@ const Breadcrumb = ({
   const navigate = useNavigate();
 
   return (
-    <div className={`container-fluid border-bottom py-3 ${className}`}>
-      <div className="d-flex justify-content-between align-items-center">
-        <div className="d-flex align-items-center">
-          {hasBack && (
-            <button 
-              onClick={() => navigate(-1)} 
-              type="button" 
-              className="btn fw-semibold text-decoration-none p-0 d-flex align-items-center fs-4 me-3"
+    <div className={`container-fluid py-3 ${className}`}>
+      <div className="d-flex justify-content-between align-items-start">
+        {/* IZQUIERDA: título/back + descripción en columna */}
+        <div className="d-flex flex-column">
+          {hasBack ? (
+            <button
+              onClick={() => navigate(-1)}
+              type="button"
+              className="btn fw-semibold text-decoration-none p-0 d-inline-flex align-items-center fs-4 text-start"
             >
               <i className="bi bi-arrow-left-short me-2"></i>
               {title || 'Back'}
             </button>
+          ) : (
+            title && <h1 className="h4 mb-1 fw-semibold">{title}</h1>
           )}
-          {!hasBack && title && (
-            <h1 className="h4 mb-0 fw-semibold">{title}</h1>
+
+          {description && (
+            <p className="mb-0 small text-muted">{description}</p>
           )}
         </div>
 
+        {/* DERECHA: acciones */}
         {rightContent && (
           <div className="d-flex gap-2">
             {rightContent}

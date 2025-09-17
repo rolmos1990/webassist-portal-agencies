@@ -13,7 +13,7 @@ export function createQuotesColumns({
   return [
     {
         id: "id",
-        label: t("quotes.table.number"),
+        label: t("quotes.number"),
         width: "12%",
         sortable: true,
         accessor: (row) => row.id,
@@ -21,7 +21,7 @@ export function createQuotesColumns({
       },
       {
         id: "name",
-        label: t("quotes.table.name"),
+        label: t("quotes.name"),
         width: "22%",       
         sortable: true,
         accessor: (row) => row.name,
@@ -29,7 +29,7 @@ export function createQuotesColumns({
       },
       {
         id: "product",
-        label: t("quotes.table.product"),
+        label: t("quotes.product"),
         width: "51%",       
         sortable: true,
         accessor: (row) => row.product,
@@ -37,7 +37,7 @@ export function createQuotesColumns({
       },
       {
         id: "total",
-        label: t("quotes.table.total"),
+        label: t("quotes.total"),
         width: "15%",       
         sortable: true,
         accessor: (row) => row.total,

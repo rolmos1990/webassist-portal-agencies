@@ -1,14 +1,14 @@
 import { useNavigate } from 'react-router-dom';
 import logo from '../assets/images/logo2.png';
 import useAuth from '../hooks/useAuth';
-import { UIButton } from '../components/Button';
 import LoginForm from '../components/Forms/LoginForm';
 
 const Login = () => {
   useAuth();
   const navigate = useNavigate();
 
-  const handleLogin = () => {
+  const handleLogin = (data: any) => {
+    console.log(data);
     localStorage.setItem('token', '123'); // token simulado
     navigate('/');
   };
@@ -22,7 +22,7 @@ const Login = () => {
               <h1 className="fw-bold fs-3">Welcome Back!👋</h1>
               <p className="text-secondary">¡Please enter your login details!</p>
             </div>
-            <LoginForm onSubmit={(data) => console.log(data)} />
+            <LoginForm onSubmit={(data) => handleLogin(data)} />
             <div className="d-flex flex-column flex-sm-row align-items-center align-items-sm-start gap-sm-1">
               <span>¿Don't have an account?</span>
               <a className="text-decoration-none" href="#">Create an Account</a>
