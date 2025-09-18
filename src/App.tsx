@@ -6,9 +6,6 @@ import DashboardLayout from './layouts/DashboardLayout';
 import PrivateRoute from './routes/PrivateRoute';
 
 //boostrap5
-import 'bootstrap/dist/css/bootstrap.min.css';
-import 'bootstrap/dist/js/bootstrap.bundle.min.js';
-import 'bootstrap-icons/font/bootstrap-icons.css';
 import './assets/scss/main.scss';
 import Dashboard from './pages/Dashboard';
 import Profile from './pages/Profile';
@@ -21,6 +18,7 @@ import Agents from './pages/Agents.tsx';
 import AgentDetail from './pages/AgentDetail.tsx';
 import ForgotPassword from './pages/ForgotPassword.tsx';
 import CreateNewPassword from './pages/CreateNewPassword.tsx';
+import Settings from './pages/Settings.tsx';
 
 function App() {
   return (
@@ -45,6 +43,7 @@ function App() {
             <Route path="/quotesAgencies" element={<MyQuotes />} />
             <Route path="/assistent" element={<Dashboard />} />
             <Route path="/reports" element={<Dashboard />} />
+            <Route path="/settings" element={<Settings />} />
           </Route>
         </Route>
         <Route path="*" element={<Navigate to="/login" replace />} />

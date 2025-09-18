@@ -49,12 +49,14 @@ function Agencies() {
         <Offcanvas
         show={show}
         onHide={() => setShow(false)}
+        onShow={() => console.log('shown')}
         placement="end"
-        title="Create New Agent"
-        canClose={true}
-        scroll={true}
-        backdrop="static"
-        width="380px"
+        title="Panel"
+        width="420px"
+        id="app-offcanvas"
+        backdrop={true}     // clic fuera cierra; usa 'static' si NO quieres que cierre
+        scroll={false}      // evita scroll del body
+        keyboard={true}     // Esc para cerrar
       >
         <CreateAgenciesVertical onSubmit={handleSubmit} onCancel={handleClose} locations={locations} />
         </Offcanvas>

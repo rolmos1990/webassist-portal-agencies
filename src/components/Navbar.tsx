@@ -63,7 +63,7 @@ function NavBar() {
         <ul className="nav nav-pills flex-column mb-auto mt-3 ps-3">
         <SidebarItem icon={iconDashboard} label="Mi Tablero" path="/" />
         <SidebarItem icon={iconSales} label="Perfil" path="/profile" />
-        <SidebarItem icon={iconAgencies} label="Perfil de Agencia" path="/agencies" />
+        <SidebarItem icon={iconAgencies} label="Agencias" path="/agencies" />
         <SidebarItem icon={iconAgencies} label="Agentes" path="/agents" />
         <SidebarItem icon={iconAgents} label="Administrar Usuarios" path="/users" />
         <SidebarItem icon={iconNewQuote} label="Cotizaciones de la Agencia" path="/quotesAgencies" />

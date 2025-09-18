@@ -6,5 +6,5 @@ export const defaultStatusTheme: StatusTheme = {
   Inactive: "secondary",
   Pending:  { tone: "warning", label: "Pending" },
   Error:    { tone: "danger",  label: "Error" },
-  default:  { tone: "info" }, // fallback si llega un estado no mapeado
+  default:  { tone: "info" },
 };

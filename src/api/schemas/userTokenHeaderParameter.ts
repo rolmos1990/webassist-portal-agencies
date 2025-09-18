@@ -6,7 +6,7 @@
  * OpenAPI spec version: 1.0.0
  */
 
-export type GetIdiomaTiposPlanes400 = {
-  ok?: boolean;
-  mensaje?: string;
-};
+/**
+ * Token de usuario para autenticación
+ */
+export type UserTokenHeaderParameter = string;

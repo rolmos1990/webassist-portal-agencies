@@ -6,16 +6,20 @@
  * OpenAPI spec version: 1.0.0
  */
 import {
+  useMutation,
   useQuery
 } from '@tanstack/react-query';
 import type {
   DataTag,
   DefinedInitialDataOptions,
   DefinedUseQueryResult,
+  MutationFunction,
   QueryClient,
   QueryFunction,
   QueryKey,
   UndefinedInitialDataOptions,
+  UseMutationOptions,
+  UseMutationResult,
   UseQueryOptions,
   UseQueryResult
 } from '@tanstack/react-query';
@@ -25,7 +29,9 @@ import type {
   GetIdiomaLangStrings200,
   GetIdiomaTiposPlanes200,
   GetIdiomaTiposPlanes400,
-  GetIdiomas200
+  GetIdiomas200,
+  PostIdiomaLogin200,
+  PostIdiomaLoginBody
 } from './schemas';
 
 import { customFetch } from './custom-fetcher';
@@ -385,3 +391,79 @@ export function useGetIdiomaTiposPlanes<TData = Awaited<ReturnType<typeof getIdi
 
   return query;
 }
+
+
+
+
+/**
+ * @summary Iniciar sesión
+ */
+export const postIdiomaLogin = (
+    idioma: string,
+    postIdiomaLoginBody: PostIdiomaLoginBody,
+ signal?: AbortSignal
+) => {
+      
+      const formUrlEncoded = new URLSearchParams();
+if(postIdiomaLoginBody.user !== undefined) {
+ formUrlEncoded.append(`user`, postIdiomaLoginBody.user)
+ }
+if(postIdiomaLoginBody.password !== undefined) {
+ formUrlEncoded.append(`password`, postIdiomaLoginBody.password)
+ }
+
+      return customFetch<PostIdiomaLogin200>(
+      {url: `/${idioma}/login`, method: 'POST',
+      headers: {'Content-Type': 'application/x-www-form-urlencoded', },
+       data: formUrlEncoded, signal
+    },
+      );
+    }
+  
+
+
+export const getPostIdiomaLoginMutationOptions = <TError = null | null,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postIdiomaLogin>>, TError,{idioma: string;data: PostIdiomaLoginBody}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof postIdiomaLogin>>, TError,{idioma: string;data: PostIdiomaLoginBody}, TContext> => {
+
+const mutationKey = ['postIdiomaLogin'];
+const {mutation: mutationOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }};
+
+      
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof postIdiomaLogin>>, {idioma: string;data: PostIdiomaLoginBody}> = (props) => {
+          const {idioma,data} = props ?? {};
+
+          return  postIdiomaLogin(idioma,data,)
+        }
+
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type PostIdiomaLoginMutationResult = NonNullable<Awaited<ReturnType<typeof postIdiomaLogin>>>
+    export type PostIdiomaLoginMutationBody = PostIdiomaLoginBody
+    export type PostIdiomaLoginMutationError = null | null
+
+    /**
+ * @summary Iniciar sesión
+ */
+export const usePostIdiomaLogin = <TError = null | null,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postIdiomaLogin>>, TError,{idioma: string;data: PostIdiomaLoginBody}, TContext>, }
+ , queryClient?: QueryClient): UseMutationResult<
+        Awaited<ReturnType<typeof postIdiomaLogin>>,
+        TError,
+        {idioma: string;data: PostIdiomaLoginBody},
+        TContext
+      > => {
+
+      const mutationOptions = getPostIdiomaLoginMutationOptions(options);
+
+      return useMutation(mutationOptions , queryClient);
+    }

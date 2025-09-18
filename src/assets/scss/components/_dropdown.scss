@@ -1,0 +1,5 @@
+.header-user-menu .dropdown-menu {
+    right: auto;         // anula el cálculo por la columna
+    left: 0;             // opcional si quieres que se abra hacia el botón
+    transform: translateX(-20%); // ajusta fino si queda separado
+  }

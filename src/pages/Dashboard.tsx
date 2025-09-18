@@ -82,6 +82,7 @@ function Dashboard() {
         scroll={true}
         backdrop="static"
         width="380px"
+        keyboard={true}
       >
         <FilterByAgencyForm onSubmit={handleSubmit} onCancel={handleClose} />
         </Offcanvas>

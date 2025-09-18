@@ -1,5 +1,5 @@
-import type { ReactNode } from 'react';
-import { Offcanvas as BootstrapOffcanvas } from 'react-bootstrap';
+import { useEffect, useRef } from 'react';
+import OffcanvasJS from 'bootstrap/js/dist/offcanvas';
 
 type Placement = 'start' | 'end' | 'top' | 'bottom';
 
@@ -8,7 +8,7 @@ interface OffcanvasProps {
   onHide: () => void;
   onShow?: () => void;
   placement?: Placement;
-  children: ReactNode;
+  children: React.ReactNode;
   backdrop?: boolean | 'static';
   scroll?: boolean;
   keyboard?: boolean;
@@ -16,9 +16,10 @@ interface OffcanvasProps {
   title?: string;
   width?: string;
   canClose?: boolean;
+  id?: string;
 }
 
-const Offcanvas = ({
+export default function Offcanvas({
   show,
   onHide,
   onShow,
@@ -31,35 +32,57 @@ const Offcanvas = ({
   title = '',
   width = '400px',
   canClose = true,
-}: OffcanvasProps) => {
+  id = 'app-offcanvas',
+}: OffcanvasProps) {
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+
+    const instance = OffcanvasJS.getOrCreateInstance(el, {
+      backdrop,
+      scroll,
+      keyboard,
+    });
+
+    const handleShown = () => onShow?.();
+    const handleHidden = () => onHide();
+
+    el.addEventListener('shown.bs.offcanvas', handleShown);
+    el.addEventListener('hidden.bs.offcanvas', handleHidden);
+
+    if (show) instance.show();
+    else instance.hide();
+
+    return () => {
+      el.removeEventListener('shown.bs.offcanvas', handleShown);
+      el.removeEventListener('hidden.bs.offcanvas', handleHidden);
+    };
+  }, [show, backdrop, scroll, keyboard, onHide, onShow]);
+
   return (
-    <BootstrapOffcanvas
-      show={show}
-      onHide={onHide}
-      onShow={onShow}
-      placement={placement}
-      backdrop={backdrop}
-      scroll={scroll}
-      keyboard={keyboard}
-      className={className}
+    <div
+      ref={ref}
+      id={id}
+      className={`offcanvas offcanvas-${placement} ${className}`}
+      tabIndex={-1}
       style={{ width }}
     >
-      <BootstrapOffcanvas.Header
-        closeButton={canClose}
-        className="border-bottom"
-      >
-        {title && (
-          <BootstrapOffcanvas.Title as="h5">
-            {title}
-          </BootstrapOffcanvas.Title>
+      <div className="offcanvas-header border-bottom">
+        {title && <h5 className="offcanvas-title">{title}</h5>}
+        {canClose && (
+          <button
+            type="button"
+            className="btn-close"
+            data-bs-dismiss="offcanvas"
+            aria-label="Close"
+          />
         )}
-      </BootstrapOffcanvas.Header>
-
-      <BootstrapOffcanvas.Body className="no-scrollbar" style={{ overflowY: 'auto' }}>
+      </div>
+      <div className="offcanvas-body" style={{ overflowY: 'auto' }}>
         {children}
-      </BootstrapOffcanvas.Body>
-    </BootstrapOffcanvas>
+      </div>
+    </div>
   );
-};
-
-export default Offcanvas;
+}

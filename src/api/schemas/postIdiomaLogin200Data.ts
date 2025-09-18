@@ -6,7 +6,6 @@
  * OpenAPI spec version: 1.0.0
  */
 
-export type GetIdiomaTiposPlanes400 = {
-  ok?: boolean;
-  mensaje?: string;
+export type PostIdiomaLogin200Data = {
+  token?: string;
 };

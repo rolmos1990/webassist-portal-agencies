@@ -57,6 +57,7 @@ const LoginForm: React.FC<Props> = ({ onSubmit }) => {
         />
 
         <InputText
+          type="password"
           name="password"
           label="Password"
           placeholder="Your password"
