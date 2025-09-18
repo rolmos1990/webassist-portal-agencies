@@ -1,0 +1,52 @@
+.switch-lg .form-check-input {
+    /* === Configurable === */
+    --track-w: 3.25rem;      /* ancho del track */
+    --track-h: 1.75rem;      /* alto del track */
+    --gap: 0.25rem;          /* espacio entre bolita y bordes internos */
+    --knob: 1.25rem;         /* tamaño de la bolita */
+    --bd: 1px;               /* grosor del borde del track */
+  
+    width: var(--track-w);
+    height: var(--track-h);
+    border-radius: var(--track-h);
+    background-color: #fff;
+    border: var(--bd) solid var(--bs-black);
+    position: relative;
+    outline: none;
+    box-shadow: none;
+    padding: 0;
+    cursor: pointer;
+    overflow: hidden; /* 🔑 evita que la bolita se salga visualmente */
+    box-sizing: border-box; /* incluye el borde en el tamaño total */
+  }
+  
+  /* Bolita OFF (negra) */
+  .switch-lg .form-check-input::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: var(--gap);
+    width: var(--knob);
+    height: var(--knob);
+    background-color: var(--bs-black);
+    border-radius: 50%;
+    transform: translateY(-50%);
+    transition: transform .3s ease, background-color .3s ease;
+  }
+  
+  /* Track ON */
+  .switch-lg .form-check-input:checked {
+    background-color: #fff;
+    border-color: var(--bs-primary);
+  }
+  
+  /* Bolita ON (primary) sin desbordar) */
+  .switch-lg .form-check-input:checked::after {
+    background-color: var(--bs-primary);
+    /* desplazamiento = track_w - knob - (2*gap) - (2*border) */
+    transform: translate(
+      calc(var(--track-w) - var(--knob) - (2 * var(--gap)) - (2 * var(--bd))),
+      -50%
+    );
+  }
+  

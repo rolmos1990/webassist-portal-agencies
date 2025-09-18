@@ -26,6 +26,8 @@ interface InputSelectProps {
   rules?: RegisterOptions;
   /** Callback opcional para escuchar cambios (además del estado de RHF) */
   onValueChange?: (value: string) => void;
+  /** ➕ mínimo ancho del select (ej: 220, "16rem", "60%") */
+  minWidth?: number | string;
 }
 
 const InputSelect: React.FC<InputSelectProps> = ({
@@ -41,7 +43,12 @@ const InputSelect: React.FC<InputSelectProps> = ({
   disabled = false,
   rules,
   onValueChange,
+  minWidth,
 }) => {
+  
+  const minW =
+  typeof minWidth === 'number' ? `${minWidth}px` : minWidth || undefined;
+
   return (
     <div className={mainClassName}>
       <label htmlFor={name} className="form-label">{label}</label>
@@ -49,6 +56,7 @@ const InputSelect: React.FC<InputSelectProps> = ({
         id={name}
         disabled={disabled}
         className={`form-select rounded-pill ${error ? 'is-invalid' : ''} ${className}`}
+        style={{ minWidth: minW }} 
         aria-invalid={!!error}
         aria-describedby={`${name}-error`}
         {...register(name, {
