@@ -1,0 +1,31 @@
+{
+    "ok": true,
+    "data": {
+      "id": "1",
+      "email": "ramon.olmos90@gmail.com",
+      "pais": null,
+      "nombre": "Ramon",
+      "apellido": "Olmos",
+      "telefono": "+50764739851",
+      "ultimo_login": "1758296449",
+      "imagen": "",
+      "distribuidor": "44",
+      "comision": "0.00",
+      "cambiar_password": "0",
+      "rol": "1",
+      "tipo_pago": "2",
+      "qr": "agente_197.png",
+      "token_api": "529c7985d3973aa370134805f05c0206c67221809314b30093c059e5f537273f",
+      "recibir_correos_renovaciones": "1",
+      "correo_renovaciones_alternativo": "",
+      "status": "1",
+      "userid": "string",
+      "nombre_completo": "Ramon Olmos",
+      "cambiarpassword": false,
+      "agencia": "44",
+      "idioma_user": "es",
+      "roles": [
+        "agente"
+      ]
+    }
+  }

@@ -112,12 +112,10 @@ export const useAuthStore = create<AuthState>()(
     {
       name: "auth-store",
       storage: createJSONStorage(() => localStorage),
-      // Solo persistimos lo necesario; NO persistas flags de notificación
       partialize: (s) => ({
         userToken: s.userToken,
         tokenExpiresAt: s.tokenExpiresAt,
         user: s.user,
-        // isAuthenticated/isExpired se recomponen con login/logout
       }),
     }
   )
