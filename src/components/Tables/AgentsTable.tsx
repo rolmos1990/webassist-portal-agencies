@@ -1,8 +1,9 @@
 import { useCallback, useMemo } from "react";
 import { createAgentColumns } from "./AgentsDataTableConfig";
-import type { AgentRow } from "../../data/agentData";
+//import type { AgentRow } from "../../data/agentData";
 import { useTranslation } from "react-i18next";
 import DataTable, { currency, type SortDir, type SortState } from "../DataTable";
+import type { GetIdiomaAgentes200DataItem } from "../../api/schemas";
 
 // Define the PaginationProps interface to match the one in DataTable
 interface DataTablePaginationProps {
@@ -18,14 +19,14 @@ type AgentsTablePagination = Omit<DataTablePaginationProps, 'defaultPage'> & {
 };
 
 type AgentsTableProps = {
-  data: AgentRow[];
+  data: GetIdiomaAgentes200DataItem[];
   loading?: boolean;
   pagination?: AgentsTablePagination;
   sort?: SortState | null;
   onSortChange?: (sort: { id: string; dir: SortDir }) => void;
-  onEdit?: (row: AgentRow) => void;
-  onToggle?: (row: AgentRow) => void;
-  onDelete?: (row: AgentRow) => void;
+  onEdit?: (row: GetIdiomaAgentes200DataItem) => void;
+  onToggle?: (row: GetIdiomaAgentes200DataItem) => void;
+  onDelete?: (row: GetIdiomaAgentes200DataItem) => void;
 };
 
 export function AgentsTable({ 
@@ -40,15 +41,15 @@ export function AgentsTable({
 }: AgentsTableProps) {
   const { t } = useTranslation('common');
 
-  const handleEdit = useCallback((row: AgentRow) => {
+  const handleEdit = useCallback((row: GetIdiomaAgentes200DataItem) => {
     externalOnEdit?.(row);
   }, [externalOnEdit]);
 
-  const handleToggle = useCallback((row: AgentRow) => {
+  const handleToggle = useCallback((row: GetIdiomaAgentes200DataItem) => {
     externalOnToggle?.(row);
   }, [externalOnToggle]);
 
-  const handleDelete = useCallback((row: AgentRow) => {
+  const handleDelete = useCallback((row: GetIdiomaAgentes200DataItem) => {
     externalOnDelete?.(row);
   }, [externalOnDelete]);
 
@@ -64,7 +65,7 @@ export function AgentsTable({
   );
 
   return (
-    <DataTable<AgentRow> 
+    <DataTable<GetIdiomaAgentes200DataItem> 
       items={data} 
       columns={columns} 
       loading={loading}

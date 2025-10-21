@@ -1,10 +1,12 @@
 export default {
   weassist: {
-    input: 'https://dev.weassistgroup.com/admin/site/openapi.yaml',
+    input: './openapi.yaml',
     output: {
       target: './src/api/generated.ts',
       schemas: './src/api/schemas',
       client: 'react-query',
+      mock: true, 
+      mode: 'split', 
       override: {  // aquí dentro de output
         mutator: {
           path: './src/api/custom-fetcher.ts',

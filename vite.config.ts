@@ -10,4 +10,13 @@ export default defineConfig({
       '@': path.resolve(__dirname, './src'),
     },
   },
+  server: {
+    proxy: {
+      '/admin/api': {
+        target: 'https://dev.weassistgroup.com',
+        changeOrigin: true,
+        secure: false,
+      },
+    },
+  },
 });

@@ -6,8 +6,9 @@
  * OpenAPI spec version: 1.0.0
  */
 
+export type GetIdiomaCotizacionesParams = {
 /**
- * Datos del agente autenticado, si aplica
- * @nullable
+ * Número de página para paginación
  */
-export type GetIdiomaTiposPlanes200User = { [key: string]: unknown } | null;
+pagina?: number;
+};

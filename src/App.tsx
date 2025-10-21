@@ -20,34 +20,38 @@ import ForgotPassword from './pages/ForgotPassword.tsx';
 import CreateNewPassword from './pages/CreateNewPassword.tsx';
 import Settings from './pages/Settings.tsx';
 
+import { bootstrapAuthWatcher } from './stores/useAuthStore.ts';
+
+bootstrapAuthWatcher();
+
 function App() {
   return (
     <BrowserRouter>
-      <Routes>
-        <Route element={<AuthLayout />}>
-          <Route path="/login" element={<Login />} />
-          <Route path="/forgot-password" element={<ForgotPassword />} />  
-          <Route path="/create-new-password" element={<CreateNewPassword />} />
-        </Route>
-        <Route element={<PrivateRoute />}>
-          <Route element={<DashboardLayout />}>
-            <Route path="/" element={<Dashboard />} />
-            <Route path="/profile" element={<Profile />} />
-            <Route path="/agencies" element={<Agencies />} />
-            <Route path="/agency/:id" element={<AgencyDetail />} />
-            <Route path="/agents" element={<Agents />} />
-            <Route path="/agent/:id" element={<AgentDetail />} />
-            <Route path="/users" element={<Clients />} />
-            <Route path="/users/:id" element={<ClientDetail />} />
-            <Route path="/users/:id/plan/:planId" element={<PlanDetail />} />
-            <Route path="/quotesAgencies" element={<MyQuotes />} />
-            <Route path="/assistent" element={<Dashboard />} />
-            <Route path="/reports" element={<Dashboard />} />
-            <Route path="/settings" element={<Settings />} />
+        <Routes>
+          <Route element={<AuthLayout />}>
+            <Route path="/login" element={<Login />} />
+            <Route path="/forgot-password" element={<ForgotPassword />} />  
+            <Route path="/create-new-password" element={<CreateNewPassword />} />
           </Route>
-        </Route>
-        <Route path="*" element={<Navigate to="/login" replace />} />
-      </Routes>
+          <Route element={<PrivateRoute />}>
+            <Route element={<DashboardLayout />}>
+              <Route path="/" element={<Dashboard />} />
+              <Route path="/profile" element={<Profile />} />
+              <Route path="/agencies" element={<Agencies />} />
+              <Route path="/agency/:id" element={<AgencyDetail />} />
+              <Route path="/agents" element={<Agents />} />
+              <Route path="/agent/:id" element={<AgentDetail />} />
+              <Route path="/users" element={<Clients />} />
+              <Route path="/users/:id" element={<ClientDetail />} />
+              <Route path="/users/:id/plan/:planId" element={<PlanDetail />} />
+              <Route path="/quotesAgencies" element={<MyQuotes />} />
+              <Route path="/assistent" element={<Dashboard />} />
+              <Route path="/reports" element={<Dashboard />} />
+              <Route path="/settings" element={<Settings />} />
+            </Route>
+          </Route>
+          <Route path="*" element={<Navigate to="/login" replace />} />
+        </Routes>
     </BrowserRouter>
   );
 }

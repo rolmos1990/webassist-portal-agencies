@@ -1,0 +1,1521 @@
+openapi: 3.1.0
+info:
+  title: WAC API
+  description: Api para uso interno WAC.
+  version: 1.0.0
+servers:
+  - url: "https://dev.weassistgroup.com/admin/api"
+    description: Dev server
+  - url: "https://www.weassistgroup.com/admin/api"
+    description: Production server
+
+paths:
+  /idiomas:
+    get:
+      summary: Los idiomas que tiene el Sitio
+      responses:
+        "200":
+          description: Respuesta exitosa con los idiomas
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                    example: true
+                  data:
+                    type: object
+                    additionalProperties:
+                      type: string
+                    example:
+                      es: "Español"
+                      en: "English"
+        "400":
+          description: Bad Request
+        "404":
+          description: Resource not found
+  /{idioma}/lang_strings_version:
+    get:
+      summary: Versión de las traducciones del idioma
+      parameters:
+        - name: idioma
+          in: path
+          required: true
+          schema:
+            type: string
+          description: El código del idioma
+      responses:
+        "200":
+          description: Respuesta exitosa con las traducciones y su versión
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                    example: true
+                  data:
+                    type: object
+                    properties:
+                      version:
+                        type: string
+                        example: "1e02e983cb4b66157f12e503c0c55c9c"
+        "400":
+          description: Bad Request
+        "404":
+          description: Resource not found
+  /{idioma}/lang_strings:
+    get:
+      summary: Las traducciones del idioma
+      parameters:
+        - name: idioma
+          in: path
+          required: true
+          schema:
+            type: string
+          description: El código del idioma
+      responses:
+        "200":
+          description: Respuesta exitosa con las Traducciones
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                    example: true
+                  data:
+                    type: object
+                    additionalProperties:
+                      type: string
+                    example:
+                      slug_idioma: "es"
+                      idioma: "Español"
+                      meta_description: "We Assist es una compañía de asistencia..."
+                      derechos: "Todos los derechos Reservados © 2025 - We Assist Corp."
+                      info_contacto: "Información de contacto"
+                      # ...otros campos dinámicos...
+        "400":
+          description: Bad Request
+        "404":
+          description: Resource not found
+
+  /{idioma}/documentos/{voucher}:
+    get:
+      summary: Devuelve los documentos del voucher entregado
+      parameters:
+        - name: idioma
+          in: path
+          required: true
+          schema:
+            type: string
+          description: El código del idioma
+        - name: voucher
+          in: path
+          required: true
+          schema:
+            type: string
+          description: El código del voucher
+      responses:
+        "200":
+          description: Respuesta exitosa con los documentos
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                    example: true
+                  documentos:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        nombre:
+                          type: string
+                        voucher:
+                          type: string
+                          example: "A93-XXXX"
+                        pdf_vouchers:
+                          type: object
+                          properties:
+                            es:
+                              type: string
+                              example: "https://www.weassistgroup.com/vouchers/voucher_A93-XXXX_es.pdf"
+                            en:
+                              type: string
+                              example: "https://www.weassistgroup.com/vouchers/voucher_A93-XXXX_en.pdf"
+                        links_tarjetas_es:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              nombre:
+                                type: string
+                                example: "test user"
+                              file:
+                                type: string
+                                example: "https://www.weassistgroup.com/vouchers/card_A93-XXXX_1_es.pdf"
+                        links_tarjetas_en:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              nombre:
+                                type: string
+                                example: "CESAR VILLALAZ"
+                              file:
+                                type: string
+                                example: "https://www.weassistgroup.com/vouchers/card_A93-XXXX_1_en.pdf"
+                  user:
+                    $ref: "#/components/schemas/User"
+        "400":
+          description: Bad Request
+        "404":
+          description: Resource not found
+
+  /{idioma}/login:
+    post:
+      summary: Iniciar sesión
+      parameters:
+        - name: idioma
+          in: path
+          required: true
+          schema:
+            type: string
+          description: El código del idioma
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                user:
+                  type: string
+                  format: email
+                  description: El email del usuario
+                password:
+                  type: string
+                  description: La contraseña del usuario
+      responses:
+        "200":
+          description: Respuesta exitosa con el token de acceso en el array data (token_api)
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                    example: true
+                  data:
+                    $ref: "#/components/schemas/UserLogin"
+        "400":
+          description: Bad Request
+        "404":
+          description: Resource not found
+
+  /{idioma}/logout:
+    post:
+      summary: Cierra la sesión del usuario
+      parameters:
+        - name: idioma
+          in: path
+          required: true
+          schema:
+            type: string
+          description: El código del idioma
+        - $ref: "#/components/parameters/userTokenHeader"
+      responses:
+        "200":
+          description: Sesión cerrada correctamente
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                    example: true
+        "400":
+          description: Bad Request
+        "404":
+          description: Resource not found
+
+  /{idioma}/reporte-ventas-agencia:
+    get:
+      summary: Reporte de ventas por agencia (mes actual)
+      parameters:
+        - name: idioma
+          in: path
+          required: true
+          schema:
+            type: string
+          description: El código del idioma
+        - $ref: "#/components/parameters/userTokenHeader"
+      responses:
+        "200":
+          description: Reporte de ventas exitoso
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ReporteVentasAgenciaResponse"
+        "400":
+          description: Bad Request
+        "404":
+          description: Resource not found
+
+  /{idioma}/reporte-ventas-agencia/{mes_ano}:
+    get:
+      summary: Reporte de ventas por agencia filtrado por mes y año (MM-YYYY)
+      parameters:
+        - name: idioma
+          in: path
+          required: true
+          schema:
+            type: string
+          description: El código del idioma
+        - name: mes_ano
+          in: path
+          required: true
+          schema:
+            type: string
+            example: "08-2025"
+          description: Mes y año en formato MM-YYYY
+        - $ref: "#/components/parameters/userTokenHeader"
+      responses:
+        "200":
+          description: Reporte de ventas exitoso
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ReporteVentasAgenciaResponse"
+        "400":
+          description: Bad Request
+        "404":
+          description: Resource not found
+
+  /{idioma}/perfil:
+    get:
+      summary: Obtiene el perfil del usuario autenticado
+      parameters:
+        - name: idioma
+          in: path
+          required: true
+          schema:
+            type: string
+          description: El código del idioma
+        - $ref: "#/components/parameters/userTokenHeader"
+      responses:
+        "200":
+          description: Perfil del usuario autenticado
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                    example: true
+                  data:
+                    $ref: "#/components/schemas/UserLogin"
+        "400":
+          description: Bad Request
+        "404":
+          description: Resource not found
+
+  /{idioma}/vouchers_master:
+    get:
+      summary: Lista los vouchers master disponibles para el usuario autenticado
+      parameters:
+        - name: idioma
+          in: path
+          required: true
+          schema:
+            type: string
+          description: El código del idioma
+        - $ref: "#/components/parameters/userTokenHeader"
+      responses:
+        "200":
+          description: Listado de vouchers master
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                    example: true
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                          example: 3
+                        codigo:
+                          type: string
+                          example: "A93-A96-1"
+                        agencia:
+                          type: string
+                          example: "96"
+                        agente:
+                          type: string
+                          example: "443"
+                        plan:
+                          type: string
+                          example: "122"
+                        noches:
+                          type: string
+                          example: "300"
+                        noches_disponibles:
+                          type: string
+                          example: "282"
+                        precio:
+                          type: string
+                          example: "1011.00"
+                        costo_procesamiento:
+                          type: string
+                          example: "0.00"
+                        precio_dia:
+                          type: string
+                          example: "3.37"
+                        costo_dia:
+                          type: string
+                          example: "0.73"
+                        ts_ini:
+                          type: string
+                          example: "1736658000"
+                        ts_fin:
+                          type: string
+                          example: "1768193999"
+                        ts_creacion:
+                          type: string
+                          example: "1736372465"
+                        ts_emision:
+                          type: string
+                          example: "1736606274"
+                        comision_procesada:
+                          type: string
+                          example: "1"
+                        status:
+                          type: string
+                          example: "1"
+                    user:
+                      $ref: "#/components/schemas/UserLogin"
+        "400":
+          description: Bad Request
+        "404":
+          description: Resource not found
+
+  /{idioma}/vouchers_master/{id_master}:
+    get:
+      summary: Obtiene el detalle de un voucher master específico (los vouchers ya creados del master enviado)
+      parameters:
+        - name: idioma
+          in: path
+          required: true
+          schema:
+            type: string
+          description: El código del idioma
+        - name: id_master
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: ID del voucher master
+        - $ref: "#/components/parameters/userTokenHeader"
+      responses:
+        "200":
+          description: Detalle del voucher master
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                    example: true
+                  data:
+                    type: object
+                    properties:
+                      voucher:
+                        type: object
+                        properties:
+                          id:
+                            type: string
+                            example: "3"
+                          codigo:
+                            type: string
+                            example: "A93-XXX-1"
+                          agencia:
+                            type: string
+                          agente:
+                            type: string
+                          plan:
+                            type: string
+                            example: "122"
+                          noches:
+                            type: string
+                            example: "300"
+                          noches_disponibles:
+                            type: string
+                            example: "282"
+                          precio:
+                            type: string
+                            example: "10.00"
+                          costo_procesamiento:
+                            type: string
+                            example: "0.00"
+                          precio_dia:
+                            type: string
+                            example: "1.11"
+                          costo_dia:
+                            type: string
+                            example: "0.01"
+                          ts_ini:
+                            type: string
+                            example: "1736658000"
+                          ts_fin:
+                            type: string
+                            example: "1768193999"
+                          ts_creacion:
+                            type: string
+                            example: "1736372465"
+                          ts_emision:
+                            type: string
+                            example: "1736606274"
+                          comision_procesada:
+                            type: string
+                            example: "1"
+                          status:
+                            type: string
+                            example: "1"
+                      items:
+                        type: array
+                        description: Lista de vouchers creados bajo este master
+                        items:
+                          type: object
+                          properties:
+                            id:
+                              type: string
+                              example: "4094"
+                            linea_carrito:
+                              type: string
+                              example: "26944"
+                            pais:
+                              type: string
+                              example: "1"
+                            pais_destino:
+                              type: string
+                              example: "12"
+                            plan:
+                              type: string
+                              example: "122"
+                            distribuidor:
+                              type: string
+                            agente:
+                              type: string
+                            precio:
+                              type: string
+                              example: "30.33"
+                            costo:
+                              type: string
+                              example: "6.57"
+                            costo_base:
+                              type: string
+                              example: "6.57"
+                            costo_transaccion:
+                              type: string
+                              example: "0.00"
+                            margen:
+                              type: string
+                              example: "23.76"
+                            fecha_ts:
+                              type: string
+                              example: "1736722102"
+                            fecha_inicio_ts:
+                              type: string
+                              example: "1736658000"
+                            fecha_fin_ts:
+                              type: string
+                              example: "1737349200"
+                            voucher:
+                              type: string
+                              example: "A93-XXX-1-XXX"
+                            voucher_master:
+                              type: string
+                              example: "3"
+                            ocultar_precios:
+                              type: string
+                              example: "0"
+                            enviar_correos:
+                              type: string
+                              example: "1"
+                            contacto:
+                              type: string
+                            contacto_telefono:
+                              type: string
+                            contacto_email:
+                              type: string
+                            consideraciones:
+                              type: string
+                            cancelada:
+                              type: string
+                            fecha_cancelacion_ts:
+                              type: string
+                              nullable: true
+                              example: null
+                            usuario_cancelacion:
+                              type: string
+                              example: "0"
+                            cobrada_recibo:
+                              type: string
+                              nullable: true
+                              example: null
+                            pagada_cheque:
+                              type: string
+                              nullable: true
+                              example: null
+                            metodo_pago:
+                              type: string
+                              example: "2"
+                            pais_bin:
+                              type: string
+                              example: ""
+                            transaccion_internacional:
+                              type: string
+                              example: "1"
+                            comision_procesada:
+                              type: string
+                              example: "1"
+                            renovacion_de:
+                              type: string
+                              nullable: true
+                              example: null
+                            leido_erp:
+                              type: string
+                              example: "0"
+                            aprobacion_temp:
+                              type: string
+                              example: ""
+                            noches:
+                              type: integer
+                              example: 18
+                  usuario:
+                    $ref: "#/components/schemas/UserLogin"
+
+        "400":
+          description: Bad Request
+        "404":
+          description: Resource not found
+
+  /{idioma}/renovaciones-pendientes:
+    get:
+      summary: Lista las renovaciones pendientes para el usuario autenticado
+      parameters:
+        - name: idioma
+          in: path
+          required: true
+          schema:
+            type: string
+          description: El código del idioma
+        - $ref: "#/components/parameters/userTokenHeader"
+      responses:
+        "200":
+          description: Listado de renovaciones pendientes
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                    example: true
+                  data:
+                    type: object
+                    properties:
+                      items:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            id:
+                              type: string
+                              example: "9"
+                            venta:
+                              type: string
+                              example: "3346"
+                            agente:
+                              type: string
+                              example: "56"
+                            agencia:
+                              type: string
+                              example: "10"
+                            carrito:
+                              type: string
+                              example: "63973"
+                            carrito_linea:
+                              type: string
+                              example: "38386"
+                            precio_total:
+                              type: string
+                              example: "150.00"
+                            ts_creacion:
+                              type: string
+                              example: "1758640498"
+                            ts_inicio_viaje:
+                              type: string
+                              example: "1759640400"
+                            ultimo_recordatorio:
+                              type: string
+                              example: "3"
+                            venta_renovacion:
+                              type: string
+                              nullable: true
+                              example: null
+                            ts_cierre:
+                              type: string
+                              nullable: true
+                              example: null
+                            idioma:
+                              type: string
+                              example: "es"
+                            status:
+                              type: string
+                              example: "1"
+                            agente_nombre:
+                              type: string
+                              example: "Nombre Agente"
+                            agencia_nombre:
+                              type: string
+                              example: "Nombre Agencia"
+                            fecha_inicio_viaje:
+                              type: string
+                              example: "05/10/2025"
+                            etapa_nombre:
+                              type: string
+                              nullable: true
+                              example: null
+                            venta_datos:
+                              type: object
+                              properties:
+                                id:
+                                  type: string
+                                  example: "3346"
+                                linea_carrito:
+                                  type: string
+                                  example: "23849"
+                                pais:
+                                  type: string
+                                  example: "1"
+                                pais_destino:
+                                  type: string
+                                  example: "-1"
+                                plan:
+                                  type: string
+                                  example: "30"
+                                distribuidor:
+                                  type: string
+                                  example: "10"
+                                agente:
+                                  type: string
+                                  example: "56"
+                                precio:
+                                  type: string
+                                  example: "150.00"
+                                costo:
+                                  type: string
+                                  example: "46.90"
+                                costo_base:
+                                  type: string
+                                  example: "46.90"
+                                costo_transaccion:
+                                  type: string
+                                  example: "4.74"
+                                margen:
+                                  type: string
+                                  example: "98.36"
+                                fecha_ts:
+                                  type: string
+                                  example: "1728146462"
+                                fecha_inicio_ts:
+                                  type: string
+                                  example: "1728104400"
+                                fecha_fin_ts:
+                                  type: string
+                                  example: "1759554000"
+                                voucher:
+                                  type: string
+                                  example: "A93-XXXXXX"
+                                voucher_master:
+                                  type: string
+                                  nullable: true
+                                  example: null
+                                ocultar_precios:
+                                  type: string
+                                  example: "0"
+                                enviar_correos:
+                                  type: string
+                                  example: "1"
+                                contacto:
+                                  type: string
+                                  example: "Nombre Contacto"
+                                contacto_telefono:
+                                  type: string
+                                  example: "00000000"
+                                contacto_email:
+                                  type: string
+                                  example: "correo@ejemplo.com"
+                                consideraciones:
+                                  type: string
+                                  example: ""
+                                cancelada:
+                                  type: string
+                                  example: "0"
+                                fecha_cancelacion_ts:
+                                  type: string
+                                  nullable: true
+                                  example: null
+                                usuario_cancelacion:
+                                  type: string
+                                  example: "0"
+                                cobrada_recibo:
+                                  type: string
+                                  nullable: true
+                                  example: null
+                                pagada_cheque:
+                                  type: string
+                                  nullable: true
+                                  example: null
+                                metodo_pago:
+                                  type: string
+                                  example: "1"
+                                pais_bin:
+                                  type: string
+                                  example: "PA"
+                                transaccion_internacional:
+                                  type: string
+                                  example: "2"
+                                comision_procesada:
+                                  type: string
+                                  example: "1"
+                                renovacion_de:
+                                  type: string
+                                  nullable: true
+                                  example: null
+                                leido_erp:
+                                  type: string
+                                  example: "0"
+                                aprobacion_temp:
+                                  type: string
+                                  example: ""
+                                documentos:
+                                  type: array
+                                  items:
+                                    type: object
+                                    properties:
+                                      nombre:
+                                        type: string
+                                        example: "Nombre Cliente"
+                                      voucher:
+                                        type: string
+                                        example: "A93-XXXXXX"
+                                      pdf_vouchers:
+                                        type: object
+                                        properties:
+                                          es:
+                                            type: string
+                                            example: "https://www.ejemplo.com/vouchers/voucher_A93-XXXXXX_es.pdf"
+                                          en:
+                                            type: string
+                                            example: "https://www.ejemplo.com/vouchers/voucher_A93-XXXXXX_en.pdf"
+                                      links_tarjetas_es:
+                                        type: array
+                                        items:
+                                          type: object
+                                          properties:
+                                            nombre:
+                                              type: string
+                                              example: "Nombre Cliente"
+                                            file:
+                                              type: string
+                                              example: "https://www.ejemplo.com/vouchers/card_A93-XXXXXX_1_es.pdf"
+                                      links_tarjetas_en:
+                                        type: array
+                                        items:
+                                          type: object
+                                          properties:
+                                            nombre:
+                                              type: string
+                                              example: "Nombre Cliente"
+                                            file:
+                                              type: string
+                                              example: "https://www.ejemplo.com/vouchers/card_A93-XXXXXX_1_en.pdf"
+                                cliente:
+                                  type: string
+                                  example: "Nombre Cliente"
+                            url_carrito:
+                              type: string
+                              example: "https://dev.weassistgroup.com/es/carrito/XXXXXXXX"
+                  usuario:
+                    $ref: "#/components/schemas/UserLogin"
+        "400":
+          description: Bad Request
+        "404":
+          description: Resource not found
+
+  /{idioma}/agentes:
+    get:
+      summary: Lista los agentes de una agencia
+      parameters:
+        - name: idioma
+          in: path
+          required: true
+          schema:
+            type: string
+          description: El código del idioma
+        - $ref: "#/components/parameters/userTokenHeader"
+        - name: agencia
+          in: query
+          required: true
+          schema:
+            type: integer
+          description: ID de la agencia para filtrar los agentes
+      responses:
+        "200":
+          description: Listado de agentes de la agencia
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                    example: true
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                        email:
+                          type: string
+                        pais:
+                          type: string
+                        nombre:
+                          type: string
+                        apellido:
+                          type: string
+                        telefono:
+                          type: string
+                        xxx_tipo:
+                          type: string
+                        password_ini:
+                          type: string
+                        ultimo_login:
+                          type: string
+                        imagen:
+                          type: string
+                        distribuidor:
+                          type: string
+                        comision:
+                          type: string
+                        rol:
+                          type: string
+                        email_registro:
+                          type: string
+                        email_bienvenida:
+                          type: string
+                        tipo_pago:
+                          type: string
+                        ts_creacion:
+                          type: string
+                        idioma:
+                          type: string
+                        qr:
+                          type: string
+                        recibir_correos_renovaciones:
+                          type: string
+                        correo_renovaciones_alternativo:
+                          type: string
+                        status:
+                          type: string
+                        codigo:
+                          type: string
+                        ultimo_login_fecha:
+                          type: string
+                        email_registro_fecha:
+                          type: string
+                        email_bienvenida_fecha:
+                          type: string
+                        fecha_creacion:
+                          type: string
+                  usuario:
+                    $ref: "#/components/schemas/UserLogin"
+        "400":
+          description: Bad Request
+        "404":
+          description: Resource not found
+
+  /{idioma}/perfil-agencia:
+    get:
+      summary: Obtiene el perfil de la agencia autenticada
+      parameters:
+        - name: idioma
+          in: path
+          required: true
+          schema:
+            type: string
+          description: El código del idioma
+        - $ref: "#/components/parameters/userTokenHeader"
+      responses:
+        "200":
+          description: Perfil de la agencia autenticada
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                ok:
+                  type: boolean
+                  example: true
+                data:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                      example: "44"
+                    nombre:
+                      type: string
+                      example: "Justin Peralta"
+                    comision:
+                      type: string
+                      example: "25.00"
+                    creador_agencias:
+                      type: boolean
+                      example: true
+                    padre:
+                      type: string
+                      example: "81"
+                    razon_social:
+                      type: string
+                      example: "si"
+                    ruc:
+                      type: string
+                      example: ""
+                    pais:
+                      type: string
+                      example: "1"
+                    estado:
+                      type: string
+                      nullable: true
+                      example: null
+                    ciudad:
+                      type: string
+                      nullable: true
+                      example: null
+                    direccion:
+                      type: string
+                      example: "Panama, Ciudad de Panama"
+                    codigo_postal:
+                      type: string
+                      nullable: true
+                      example: null
+                    telefono:
+                      type: string
+                      example: "67665750"
+                    contacto:
+                      type: string
+                      example: "2555555"
+                    email:
+                      type: string
+                      example: ""
+                    sitio_web:
+                      type: string
+                      nullable: true
+                      example: null
+                    enviar_copia_vouchers:
+                      type: boolean
+                      example: true
+                    logo:
+                      type: string
+                      nullable: true
+                      example: null
+                    limite_credito:
+                      type: string
+                      example: "1000000.00"
+                    paga_neta:
+                      type: boolean
+                      example: true
+                    agentes_ven_neta:
+                      type: boolean
+                      example: true
+                    tipo_pago:
+                      type: string
+                      example: "1"
+                    permitir_sin_precio:
+                      type: boolean
+                      example: false
+                    vouchers_sin_precio:
+                      type: boolean
+                      example: false
+                    status:
+                      type: string
+                      example: "1"
+                    nombre_padre:
+                      type: string
+                      example: "Columbia Tours"
+                    pais_nombre:
+                      type: string
+                      example: "Panama"
+                    ultimo_login_fecha:
+                      type: string
+                      example: ""
+                    tipo_pago_nombre:
+                      type: string
+                      example: "Directo"
+                    fecha_creacion:
+                      type: string
+                      example: "27/05/2025"
+                usuario:
+                  $ref: "#/components/schemas/UserLogin"
+        "400":
+          description: Bad Request
+        "404":
+          description: Resource not found
+
+  /{idioma}/cotizaciones:
+    get:
+      summary: Lista las cotizaciones del agente o agencia autenticada
+      parameters:
+        - name: idioma
+          in: path
+          required: true
+          schema:
+            type: string
+          description: El código del idioma
+        - $ref: "#/components/parameters/userTokenHeader"
+        - name: pagina
+          in: query
+          required: true
+          schema:
+            type: integer
+            default: 1
+          description: Número de página para paginación
+      responses:
+        "200":
+          description: Listado de cotizaciones
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                    example: true
+                  data:
+                    type: object
+                    properties:
+                      items:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            url:
+                              type: string
+                              example: "https://www.weassistgroup.com/es/carrito/abc123"
+                            fecha:
+                              type: string
+                              example: "01/09/2025"
+                            fecha_modificacion:
+                              type: string
+                              example: "02/09/2025"
+                            # ...otros campos...
+                      paginacion:
+                        type: object
+                        properties:
+                          pagina_actual:
+                            type: integer
+                            example: 1
+                          cantidad_paginas:
+                            type: integer
+                            example: 5
+                          cantidad_total:
+                            type: integer
+                            example: 120
+        "400":
+          description: Bad Request
+        "404":
+          description: Resource not found
+
+  /{idioma}/asistencias/{pagina}:
+    get:
+      summary: Lista las asistencias del agente o agencia autenticada
+      parameters:
+        - name: idioma
+          in: path
+          required: true
+          schema:
+            type: string
+          description: El código del idioma
+        - name: pagina
+          in: path
+          required: true
+          schema:
+            type: integer
+            default: 1
+          description: Número de página para paginación
+        - $ref: "#/components/parameters/userTokenHeader"
+      responses:
+        "200":
+          description: Listado de asistencias
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                    example: true
+                  data:
+                    type: object
+                    properties:
+                      items:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            token:
+                              type: string
+                              example: "A93-A96-1-XXXX"
+                            total:
+                              type: string
+                              example: "30.33"
+                            fecha:
+                              type: string
+                              example: "12/01/2025 05:48 pm"
+                            vouchers:
+                              type: array
+                              items:
+                                type: object
+                                properties:
+                                  nombre:
+                                    type: string
+                                    example: "Usuario Prueba"
+                                  voucher:
+                                    type: string
+                                    example: "A93-A96-1-XXXX"
+                                  pdf_vouchers:
+                                    type: object
+                                    properties:
+                                      es:
+                                        type: string
+                                        example: "https://www.weassistgroup.com/vouchers/voucher_A93-A96-1-XXXX_es.pdf"
+                                      en:
+                                        type: string
+                                        example: "https://www.weassistgroup.com/vouchers/voucher_A93-A96-1-XXXX_en.pdf"
+                                  links_tarjetas_es:
+                                    type: array
+                                    items:
+                                      type: object
+                                      properties:
+                                        nombre:
+                                          type: string
+                                          example: "Usuario Prueba"
+                                        file:
+                                          type: string
+                                          example: "https://www.weassistgroup.com/vouchers/card_A93-A96-1-XXXX_1_es.pdf"
+                                  links_tarjetas_en:
+                                    type: array
+                                    items:
+                                      type: object
+                                      properties:
+                                        nombre:
+                                          type: string
+                                          example: "Usuario Prueba"
+                                        file:
+                                          type: string
+                                          example: "https://www.weassistgroup.com/vouchers/card_A93-A96-1-XXXX_1_en.pdf"
+                      paginacion:
+                        type: object
+                        properties:
+                          pagina_actual:
+                            type: integer
+                            example: 1
+                          cantidad_paginas:
+                            type: integer
+                            example: 5
+                          cantidad_total:
+                            type: integer
+                            example: 120
+        "400":
+          description: Bad Request
+        "404":
+          description: Resource not found
+  /{idioma}/lead_evento:
+    post:
+      summary: Registra un lead de evento
+      parameters:
+        - name: idioma
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Código del idioma
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              description: Datos del lead del evento
+              properties:
+                evento:
+                  type: string
+                  example: "1"
+                nombre:
+                  type: string
+                  example: "Nombre"
+                apellido:
+                  type: string
+                  example: "Apellido"
+                ocupacion:
+                  type: string
+                  example: "Ocupacion"
+                email:
+                  type: string
+                  format: email
+                  example: "test@test.com"
+                telefono:
+                  type: string
+                  example: "xxx-xxxx"
+                ip:
+                  type: string
+                  example: "X.x.X.X"
+      responses:
+        "200":
+          description: Lead registrado correctamente
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                    example: true
+        "400":
+          description: Bad Request
+        "404":
+          description: Resource not found
+
+components:
+  schemas:
+    Respuesta:
+      type: array
+      description: Un array con la respuesta, depende del endpoint
+      items:
+        type: object
+        additionalProperties:
+          type: string
+    User:
+      type: object
+      properties:
+        agente:
+          type: object
+          properties:
+            nombre:
+              type: string
+            apellido:
+              type: string
+            email:
+              type: string
+              example: "test@test.com"
+            codigo:
+              type: string
+              example: "WSA-XXXX"
+            comision:
+              type: string
+              example: "10%"
+        agencia:
+          type: string
+          example: "WE ASSIST"
+    UserLogin:
+      type: object
+      properties:
+        id:
+          type: string
+        email:
+          type: string
+        pais:
+          type: string
+          nullable: true
+          example: null
+        nombre:
+          type: string
+        apellido:
+          type: string
+        telefono:
+          type: string
+        ultimo_login:
+          type: string
+          example: "1758296449"
+        imagen:
+          type: string
+          example: ""
+        distribuidor:
+          type: string
+          example: "44"
+        comision:
+          type: string
+          example: "0.00"
+        cambiar_password:
+          type: string
+          example: "0"
+        rol:
+          type: string
+          example: "1"
+        tipo_pago:
+          type: string
+          example: "2"
+        qr:
+          type: string
+          example: "agente_197.png"
+        token_api:
+          type: string
+          example: "529c7985d3973aa370134805f05c0206c67221809314b30093c059e5f537273f"
+        recibir_correos_renovaciones:
+          type: string
+          example: "1"
+        correo_renovaciones_alternativo:
+          type: string
+          example: ""
+        status:
+          type: string
+          example: "1"
+        userid:
+          type: string
+        nombre_completo:
+          type: string
+          example: "test test"
+        cambiarpassword:
+          type: boolean
+          example: false
+        agencia:
+          type: string
+          example: "44"
+        idioma_user:
+          type: string
+          example: "es"
+        roles:
+          type: array
+          items:
+            type: string
+          example: ["agente"]
+    ReporteVentasAgenciaResponse:
+      type: object
+      properties:
+        ok:
+          type: boolean
+          example: true
+        data:
+          type: object
+          properties:
+            mes:
+              type: string
+              example: "09"
+            mes_nombre:
+              type: string
+              example: "Septiembre"
+            ano:
+              type: string
+              example: "2025"
+            agencia:
+              description: ID de la agencia
+              type: string
+              example: "1"
+            agente:
+              type: integer
+              example: 0
+            items:
+              type: array
+              items:
+                type: object
+                description: Detalle de cada venta
+                properties:
+                  id:
+                    type: string
+                  voucher:
+                    type: string
+                    example: "A93-XXXX"
+                  fecha_venta:
+                    type: string
+                    example: "01/09/2025 11:55 am"
+                  agencia_id:
+                    type: string
+                    example: "1"
+                  agencia_nombre:
+                    type: string
+                    example: "WE ASSIST"
+                  agente_id:
+                    type: string
+                    example: "0"
+                  agente_nombre:
+                    type: string
+                    example: ""
+                  precio_venta:
+                    type: number
+                    example: 39.97
+                  costo_procesamiento:
+                    type: number
+                    example: 1.5
+                  base_comision:
+                    type: number
+                    example: 39.97
+                  porcentaje:
+                    type: string
+                    example: "100.00"
+                  monto:
+                    type: string
+                    example: "33.18"
+            acums:
+              type: object
+              properties:
+                precio:
+                  type: number
+                  description: Monto total de ventas
+                  example: 28057.23
+                costo_administrativo:
+                  type: number
+                  example: 1002.68
+                base_comision:
+                  type: number
+                  example: 28057.23
+                monto:
+                  type: number
+                  description: Monto total de comisiones
+                  example: 13839.79
+
+  parameters:
+    userTokenHeader:
+      name: userToken
+      in: header
+      required: true
+      schema:
+        type: string
+      description: Token de usuario para autenticación
+
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+
+security:
+  - bearerAuth: []

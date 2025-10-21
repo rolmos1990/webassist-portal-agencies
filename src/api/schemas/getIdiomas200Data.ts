@@ -6,6 +6,4 @@
  * OpenAPI spec version: 1.0.0
  */
 
-export type PostIdiomaLogin200Data = {
-  token?: string;
-};
+export type GetIdiomas200Data = {[key: string]: string};

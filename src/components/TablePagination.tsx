@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import "../assets/scss/components/_table-pagination.scss";
+import { t } from "i18next";
 
 type Align = "start" | "center" | "end";
 type Wrap = "none" | "container" | "container-fluid";
@@ -109,7 +110,7 @@ export default function TablePagination({
         }}
       >
         <i className="bi bi-chevron-left me-2" aria-hidden="true" />
-        <span>Previous</span>
+        <span>{t('datatable_previous')}</span>
       </a>
     </li>
   );
@@ -128,7 +129,7 @@ export default function TablePagination({
           if (!isLast) gotoPage(page + 1);
         }}
       >
-        <span className="me-2">Next</span>
+        <span className="me-2">{t('datatable_next')}</span>
         <i className="bi bi-chevron-right" aria-hidden="true" />
       </a>
     </li>

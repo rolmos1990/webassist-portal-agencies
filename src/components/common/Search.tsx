@@ -1,8 +1,8 @@
 import React from 'react';
 import iconSearch from '../../assets/images/icons/search.svg';
+import { useTranslation } from 'react-i18next';
 
 interface SearchProps {
-  placeholder?: string;
   value?: string;
   onChange?: (value: string) => void;
   onSubmit?: (value: string) => void;
@@ -14,7 +14,6 @@ interface SearchProps {
 }
 
 const Search: React.FC<SearchProps> = ({
-  placeholder = "Search for...",
   value,
   onChange,
   onSubmit,
@@ -24,6 +23,7 @@ const Search: React.FC<SearchProps> = ({
   disabled = false,
   ariaLabel = "Search"
 }) => {
+  const { t } = useTranslation();
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newValue = e.target.value;
     onChange?.(newValue);
@@ -43,7 +43,7 @@ const Search: React.FC<SearchProps> = ({
         type="search"
         className="form-control form-control-dark rounded-pill ps-5"
         style={{ height, width: 320 }}
-        placeholder={placeholder}
+        placeholder={t('datatable_search')}
         aria-label={ariaLabel}
         value={value}
         onChange={handleInputChange}

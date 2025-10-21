@@ -5,9 +5,9 @@
  * Api para uso interno WAC.
  * OpenAPI spec version: 1.0.0
  */
-import type { PostIdiomaLogin200Data } from './postIdiomaLogin200Data';
+import type { UserLogin } from './userLogin';
 
 export type PostIdiomaLogin200 = {
   ok?: boolean;
-  data?: PostIdiomaLogin200Data;
+  data?: UserLogin;
 };

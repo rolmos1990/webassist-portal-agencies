@@ -1,15 +1,16 @@
-import type { AgentRow } from "../../data/agentData";
+//import type { AgentRow } from "../../data/agentData";
 import { type ColumnDef } from "../DataTable";
 import RowActions from "../RowActions";
 import { StatusBadge } from "../StatusBadge";
 import { defaultStatusTheme } from "../StatusBadge/StatusBadgeThemes";
+import type { GetIdiomaAgentes200DataItem } from "../../api/schemas";
 
 type CreateColumnsDeps = {
   currency: (n: number) => string;
   t: (key: string) => string | React.ReactNode;
-  onEdit: (row: AgentRow) => void;
-  onToggle: (row: AgentRow) => void;
-  onDelete: (row: AgentRow) => void;
+  onEdit: (row: GetIdiomaAgentes200DataItem) => void;
+  onToggle: (row: GetIdiomaAgentes200DataItem) => void;
+  onDelete: (row: GetIdiomaAgentes200DataItem) => void;
 };
 
 export function createAgentColumns({
@@ -18,14 +19,14 @@ export function createAgentColumns({
   onEdit,
   onToggle,
   onDelete,
-}: CreateColumnsDeps): ColumnDef<AgentRow>[] {
+}: CreateColumnsDeps): ColumnDef<GetIdiomaAgentes200DataItem>[] {
   return [
     {
       id: "agentCode",
       label: t("agents.agentCode"),
       width: "14%",
       sortable: true,
-      accessor: (row) => row.agentCode,
+      accessor: (row) => row.id,
       align: "start",
     },
     {
@@ -33,7 +34,7 @@ export function createAgentColumns({
       label: t("agents.name"),
       width: "28%",
       sortable: true,
-      accessor: (row) => row.agencyName,
+      accessor: (row) => row.nombre,
       align: "start",
     },
     {
@@ -41,9 +42,9 @@ export function createAgentColumns({
       label: t("agents.lastName"),
       width: "20%",
       sortable: true,
-      accessor: (row) => row.lastName,
+      accessor: (row) => row.apellido,
       align: "start",
-      render: (row) => row.lastName,
+      render: (row) => row.apellido,
     },
     {
       id: "email",
@@ -55,10 +56,10 @@ export function createAgentColumns({
     },
     {
       id: "agencyName",
-      label: t("agents.agencyName"),
+      label: t("agents.rol"),
       width: "14%",
       sortable: true,
-      accessor: (row) => row.agencyName,
+      accessor: (row) => row.rol,
       align: "start",
     },
     {
@@ -66,8 +67,8 @@ export function createAgentColumns({
       label: t("agents.totalSales"),
       width: "14%",
       sortable: true,
-      accessor: (row) => row.totalSales,
-      render: (row) => currency(row.totalSales),
+      accessor: (row) => row.comision,
+      render: (row) => currency(Number(row.comision) ?? 0),
       align: "start",
     },
     {
@@ -75,8 +76,8 @@ export function createAgentColumns({
       label: t("agents.totalCommission"),
       width: "14%",
       sortable: true,
-      accessor: (row) => row.totalCommission,
-      render: (row) => currency(row.totalCommission),
+      accessor: (row) => row.comision,
+      render: (row) => currency(Number(row.comision) ?? 0),
       align: "start",
     },    
     {
@@ -86,7 +87,7 @@ export function createAgentColumns({
       sortable: true,
       accessor: (row) => row.status,
       align: "end",
-      render: (row) => <StatusBadge status={row.status} theme={defaultStatusTheme} />,
+      render: (row) => <StatusBadge status={row.status ?? ""} theme={defaultStatusTheme} />,
     },
     {
       id: "actions",
@@ -95,14 +96,14 @@ export function createAgentColumns({
       align: "end",
       render: (row) => (
         <RowActions context={row}>
-          <RowActions.Item<AgentRow>
+          <RowActions.Item<GetIdiomaAgentes200DataItem>
             icon="bi-pencil"
             onClick={onEdit}
           >
             {t("agents.edit")}
           </RowActions.Item>
 
-          <RowActions.Item<AgentRow>
+          <RowActions.Item<GetIdiomaAgentes200DataItem>
             icon={row.status === "Active" ? "bi-toggle-on" : "bi-toggle-off"}
             onClick={onToggle}
           >
@@ -113,7 +114,7 @@ export function createAgentColumns({
 
           <RowActions.Divider />
 
-          <RowActions.Item<AgentRow>
+          <RowActions.Item<GetIdiomaAgentes200DataItem>
             icon="bi-trash3"
             danger
             onClick={onDelete}

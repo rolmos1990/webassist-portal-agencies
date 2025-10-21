@@ -6,6 +6,7 @@ import Offcanvas from '../components/Offcanvas';
 import { AgencyTable } from '../components/Tables/AgencyTable';
 import { agencyData } from '../data/agencyData';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 function Agencies() {
   const [show, setShow] = useState(false);
@@ -15,6 +16,7 @@ function Agencies() {
   const handleShow = () => setShow(true);
 
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   const handleSubmit = (data: any) => {
     console.log(data);
@@ -29,20 +31,20 @@ function Agencies() {
   return (
 <div className="min-vh-100 bg-light">
 <div className="container-fluid py-3 px-4">
-        <Breadcrumb title="Agencies" rightContent={
+        <Breadcrumb title={t('agencias')} rightContent={
                   <div className="d-flex gap-2">
                 <UIButton
                 variant="outline-primary"
                 icon=""
                 >
-                Filter By
+                {t('agencias_filter_by')}
                 </UIButton>
                 <UIButton
                 variant="dark"
                 icon=""
                 onClick={handleShow}
                 >
-                Create an Agency
+                {t('crear_agencia')}
                 </UIButton>
                   </div>
         } />      
@@ -54,9 +56,9 @@ function Agencies() {
         title="Panel"
         width="420px"
         id="app-offcanvas"
-        backdrop={true}     // clic fuera cierra; usa 'static' si NO quieres que cierre
-        scroll={false}      // evita scroll del body
-        keyboard={true}     // Esc para cerrar
+        backdrop={true}
+        scroll={false}
+        keyboard={true}
       >
         <CreateAgenciesVertical onSubmit={handleSubmit} onCancel={handleClose} locations={locations} />
         </Offcanvas>

@@ -1,16 +1,26 @@
 import { useNavigate } from 'react-router-dom';
 import logo from '../assets/images/logo2.png';
-import useAuth from '../hooks/useAuth';
 import LoginForm from '../components/Forms/LoginForm';
+import { useAuthStore } from '../stores/useAuthStore';
+import { useLocation } from 'react-router-dom';
 
 const Login = () => {
-  useAuth();
   const navigate = useNavigate();
+  const login = useAuthStore((s) => s.login);
+  const location = useLocation() as any;
+
 
   const handleLogin = (data: any) => {
-    console.log(data);
-    localStorage.setItem('token', '123'); // token simulado
-    navigate('/');
+    console.log('login Data: ', data);
+    // const res = await customFetch<{ token: string; exp: number; user_token?: string; user?: any }>({ ... });
+    const userId = "1";
+    const fakeUserToken = "user_token_value";
+    const expiresAt = Date.now() + 60 * 60 * 1000; // 1h
+
+    login({ userToken: fakeUserToken, expiresAt, user: { id: userId, email: data.email } });
+
+    const to = location.state?.from?.pathname || "/";
+    navigate(to, { replace: true });
   };
 
   return (

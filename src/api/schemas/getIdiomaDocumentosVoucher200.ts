@@ -5,9 +5,11 @@
  * Api para uso interno WAC.
  * OpenAPI spec version: 1.0.0
  */
-import type { Respuesta } from './respuesta';
+import type { GetIdiomaDocumentosVoucher200DocumentosItem } from './getIdiomaDocumentosVoucher200DocumentosItem';
+import type { User } from './user';
 
 export type GetIdiomaDocumentosVoucher200 = {
   ok?: boolean;
-  data?: Respuesta;
+  documentos?: GetIdiomaDocumentosVoucher200DocumentosItem[];
+  user?: User;
 };

@@ -5,9 +5,12 @@ import Search from "./common/Search";
 import NotificationsDropdown from "./NotificationDropdown";
 import type { NotificationItem } from "./NotificationDropdown";
 import Dropdown, { DropdownDivider, DropdownItem } from "./Dropdown";
+import { useAuthStore } from '../stores/useAuthStore';
+
 
 function Header() {
   const navigate = useNavigate();
+  const logout = useAuthStore((s) => s.logout);
 
   const [notifications, setNotifications] = useState<NotificationItem[]>([
     { id: 1, title: "Target Achieved", time: "2 mins ago", message: "Congrats! You’ve hit 80%.", unread: true },
@@ -55,7 +58,7 @@ function Header() {
           <DropdownItem onClick={() => navigate("/settings")}>Settings</DropdownItem>
           <DropdownItem onClick={() => navigate("/profile")}>Profile</DropdownItem>
           <DropdownDivider />
-          <DropdownItem onClick={() => navigate("/login")}>Sign out</DropdownItem>
+          <DropdownItem onClick={() => logout()}>Sign out</DropdownItem>
         </Dropdown>
       </div>
     </header>

@@ -1,6 +1,3 @@
-// Dashboard data service - Simulates API calls for chart data
-// In a real application, these would be actual API calls
-
 export interface DashboardData {
   commissionEarned: {
     labels: string[];

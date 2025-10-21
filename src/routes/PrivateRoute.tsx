@@ -1,10 +1,45 @@
-import { Navigate, Outlet } from 'react-router-dom';
-import useAuth from '../hooks/useAuth';
+import { Navigate, Outlet, useLocation } from "react-router-dom";
+import { useEffect } from "react";
+import { toast } from "../services/toast";
+import { useTranslation } from "react-i18next";
+import { useAuthStore } from "../stores/useAuthStore";
 
 const PrivateRoute = () => {
-  const { isAuthenticated } = useAuth();
+  const { t } = useTranslation();
+  const location = useLocation();
 
-  return isAuthenticated ? <Outlet /> : <Navigate to="/login" replace />;
+  const isAuthenticated = useAuthStore((s) => s.isAuthenticated);
+  const isExpired = useAuthStore((s) => s.isExpired);
+  const lastLogoutExpired = useAuthStore((s) => s.lastLogoutExpired);
+  const notifiedLogout = useAuthStore((s) => s.notifiedLogout);
+  const markLogoutNotified = useAuthStore((s) => s.markLogoutNotified);
+
+  useEffect(() => {
+    const shouldNotify =
+      (!isAuthenticated || isExpired) &&
+      lastLogoutExpired &&
+      !notifiedLogout &&
+      location.pathname !== "/login";
+
+    if (shouldNotify) {
+      toast.error("Disconnected", t("errors.sessionExpired"));
+      markLogoutNotified();
+    }
+  }, [
+    isAuthenticated,
+    isExpired,
+    lastLogoutExpired,
+    notifiedLogout,
+    location.pathname,
+    t,
+    markLogoutNotified,
+  ]);
+
+  if (!isAuthenticated || isExpired) {
+    return <Navigate to="/login" replace state={{ from: location }} />;
+  }
+
+  return <Outlet />;
 };
 
 export default PrivateRoute;

@@ -1,8 +1,8 @@
-import { useGetIdiomaTiposPlanes } from '../api/generated';
+import { useGetIdiomaAsistenciasPagina } from '../api/generated';
 
 const useAuth = () => {
 
-  const { isLoading, isError } = useGetIdiomaTiposPlanes("es");
+  const { isLoading, isError } = useGetIdiomaAsistenciasPagina("es");
 
   //const isAuthenticated = !isLoading && !isError && !!data;
 const isAuthenticated = true;
