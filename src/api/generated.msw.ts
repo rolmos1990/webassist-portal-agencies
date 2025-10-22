@@ -3,7 +3,7 @@
  * Do not edit manually.
  * WAC API
  * Api para uso interno WAC.
- * OpenAPI spec version: 1.0.0
+ * OpenAPI spec version: 1.0.1
  */
 import {
   faker
@@ -16,58 +16,64 @@ import {
 } from 'msw';
 
 import type {
-  GetIdiomaAgentes200,
-  GetIdiomaAsistenciasPagina200,
-  GetIdiomaCotizaciones200,
-  GetIdiomaDocumentosVoucher200,
-  GetIdiomaLangStrings200,
-  GetIdiomaLangStringsVersion200,
-  GetIdiomaPerfil200,
-  GetIdiomaPerfilAgencia200,
-  GetIdiomaRenovacionesPendientes200,
-  GetIdiomaVouchersMaster200,
-  GetIdiomaVouchersMasterIdMaster200,
+  DetenerRecordatorioRenovacion200,
+  GetAgentesAgencia200,
+  GetAsistenciasAgenteAgencia200,
+  GetCobrandingConfig200,
+  GetCotizacionesAgenteAgencia200,
+  GetDocumentosVoucher200,
   GetIdiomas200,
-  PostIdiomaLeadEvento200,
-  PostIdiomaLogin200,
-  PostIdiomaLogout200,
+  GetLangStrings200,
+  GetLangStringsVersion200,
+  GetLeadEvento200,
+  GetPerfilAgencia200,
+  GetPerfilAgente200,
+  GetRenovacionesPendientes200,
+  GetVouchersMaster200,
+  GetVouchersMasterDetail200,
+  PostAgenteLogin200,
+  PostLogout200,
   ReporteVentasAgenciaResponse
 } from './schemas';
 
 
-export const getGetIdiomasResponseMock = (overrideResponse: Partial< GetIdiomas200 > = {}): GetIdiomas200 => ({ok: true, data: {"es":"Español","en":"English"}, ...overrideResponse})
+export const getGetIdiomasResponseMock = () => ((() => idiomas_default)())
 
-export const getGetIdiomaLangStringsVersionResponseMock = (overrideResponse: Partial< GetIdiomaLangStringsVersion200 > = {}): GetIdiomaLangStringsVersion200 => ({ok: true, data: faker.helpers.arrayElement([{version: "1e02e983cb4b66157f12e503c0c55c9c"}, undefined]), ...overrideResponse})
+export const getGetLangStringsVersionResponseMock = (overrideResponse: Partial< GetLangStringsVersion200 > = {}): GetLangStringsVersion200 => ({ok: true, data: faker.helpers.arrayElement([{version: "1e02e983cb4b66157f12e503c0c55c9c"}, undefined]), ...overrideResponse})
 
-export const getGetIdiomaLangStringsResponseMock = (overrideResponse: Partial< GetIdiomaLangStrings200 > = {}): GetIdiomaLangStrings200 => ({ok: true, data: {"slug_idioma":"es","idioma":"Español","meta_description":"We Assist es una compañía de asistencia...","derechos":"Todos los derechos Reservados © 2025 - We Assist Corp.","info_contacto":"Información de contacto"}, ...overrideResponse})
+export const getGetLangStringsResponseMock = (overrideResponse: Partial< GetLangStrings200 > = {}): GetLangStrings200 => ({ok: true, data: {"slug_idioma":"es","idioma":"Español","meta_description":"We Assist es una compañía de asistencia...","derechos":"Todos los derechos Reservados © 2025 - We Assist Corp.","info_contacto":"Información de contacto"}, ...overrideResponse})
 
-export const getGetIdiomaDocumentosVoucherResponseMock = (overrideResponse: Partial< GetIdiomaDocumentosVoucher200 > = {}): GetIdiomaDocumentosVoucher200 => ({ok: true, documentos: faker.helpers.arrayElement([Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({nombre: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), voucher: "A93-XXXX", pdf_vouchers: faker.helpers.arrayElement([{es: "https://www.weassistgroup.com/vouchers/voucher_A93-XXXX_es.pdf", en: "https://www.weassistgroup.com/vouchers/voucher_A93-XXXX_en.pdf"}, undefined]), links_tarjetas_es: faker.helpers.arrayElement([Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({nombre: "test user", file: "https://www.weassistgroup.com/vouchers/card_A93-XXXX_1_es.pdf"})), undefined]), links_tarjetas_en: faker.helpers.arrayElement([Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({nombre: "CESAR VILLALAZ", file: "https://www.weassistgroup.com/vouchers/card_A93-XXXX_1_en.pdf"})), undefined])})), undefined]), user: faker.helpers.arrayElement([{agente: faker.helpers.arrayElement([{nombre: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), apellido: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), email: "test@test.com", codigo: "WSA-XXXX", comision: "10%"}, undefined]), agencia: "WE ASSIST"}, undefined]), ...overrideResponse})
+export const getGetDocumentosVoucherResponseMock = (overrideResponse: Partial< GetDocumentosVoucher200 > = {}): GetDocumentosVoucher200 => ({ok: true, documentos: faker.helpers.arrayElement([Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({nombre: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), voucher: "A93-XXXX", pdf_vouchers: faker.helpers.arrayElement([{es: "https://www.weassistgroup.com/vouchers/voucher_A93-XXXX_es.pdf", en: "https://www.weassistgroup.com/vouchers/voucher_A93-XXXX_en.pdf"}, undefined]), links_tarjetas_es: faker.helpers.arrayElement([Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({nombre: "test user", file: "https://www.weassistgroup.com/vouchers/card_A93-XXXX_1_es.pdf"})), undefined]), links_tarjetas_en: faker.helpers.arrayElement([Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({nombre: "CESAR VILLALAZ", file: "https://www.weassistgroup.com/vouchers/card_A93-XXXX_1_en.pdf"})), undefined])})), undefined]), user: faker.helpers.arrayElement([{agente: faker.helpers.arrayElement([{nombre: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), apellido: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), email: "test@test.com", codigo: "WSA-XXXX", comision: "10%"}, undefined]), agencia: "WE ASSIST"}, undefined]), ...overrideResponse})
 
-export const getPostIdiomaLoginResponseMock = (overrideResponse: Partial< PostIdiomaLogin200 > = {}): PostIdiomaLogin200 => ({ok: true, data: faker.helpers.arrayElement([{id: (() => faker.string.uuid())(), email: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), pais: null, nombre: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), apellido: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), telefono: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), ultimo_login: "1758296449", imagen: "", distribuidor: "44", comision: "0.00", cambiar_password: "0", rol: "1", tipo_pago: "2", qr: "agente_197.png", token_api: "529c7985d3973aa370134805f05c0206c67221809314b30093c059e5f537273f", recibir_correos_renovaciones: "1", correo_renovaciones_alternativo: "", status: "1", userid: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), nombre_completo: "test test", cambiarpassword: false, agencia: "44", idioma_user: "es", roles: ["agente"]}, undefined]), ...overrideResponse})
+export const getPostAgenteLoginResponseMock = (overrideResponse: Partial< PostAgenteLogin200 > = {}): PostAgenteLogin200 => ({ok: true, data: faker.helpers.arrayElement([{id: (() => faker.string.uuid())(), email: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), pais: null, nombre: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), apellido: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), telefono: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), ultimo_login: "1758296449", imagen: "", distribuidor: "44", comision: "0.00", cambiar_password: "0", rol: "1", tipo_pago: "2", qr: "agente_197.png", token_api: "529c7985d3973aa370134805f05c0206c67221809314b30093c059e5f537273f", recibir_correos_renovaciones: "1", correo_renovaciones_alternativo: "", status: "1", userid: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), nombre_completo: "test test", cambiarpassword: false, agencia: "44", idioma_user: "es", roles: ["agente"]}, undefined]), ...overrideResponse})
 
-export const getPostIdiomaLogoutResponseMock = (overrideResponse: Partial< PostIdiomaLogout200 > = {}): PostIdiomaLogout200 => ({ok: true, ...overrideResponse})
+export const getPostLogoutResponseMock = (overrideResponse: Partial< PostLogout200 > = {}): PostLogout200 => ({ok: true, ...overrideResponse})
 
-export const getGetIdiomaReporteVentasAgenciaResponseMock = (overrideResponse: Partial< ReporteVentasAgenciaResponse > = {}): ReporteVentasAgenciaResponse => ({ok: true, data: faker.helpers.arrayElement([{mes: "09", mes_nombre: "Septiembre", ano: "2025", agencia: "1", agente: 0, items: faker.helpers.arrayElement([Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({id: (() => faker.string.uuid())(), voucher: "A93-XXXX", fecha_venta: "01/09/2025 11:55 am", agencia_id: "1", agencia_nombre: "WE ASSIST", agente_id: "0", agente_nombre: "", precio_venta: 39.97, costo_procesamiento: 1.5, base_comision: 39.97, porcentaje: "100.00", monto: "33.18"})), undefined]), acums: faker.helpers.arrayElement([{precio: 28057.23, costo_administrativo: 1002.68, base_comision: 28057.23, monto: 13839.79}, undefined])}, undefined]), ...overrideResponse})
+export const getGetReporteVentasAgenciaResponseMock = (overrideResponse: Partial< ReporteVentasAgenciaResponse > = {}): ReporteVentasAgenciaResponse => ({ok: true, data: faker.helpers.arrayElement([{mes: "09", mes_nombre: "Septiembre", ano: "2025", agencia: "1", agente: 0, items: faker.helpers.arrayElement([Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({id: (() => faker.string.uuid())(), voucher: "A93-XXXX", fecha_venta: "01/09/2025 11:55 am", agencia_id: "1", agencia_nombre: "WE ASSIST", agente_id: "0", agente_nombre: "", precio_venta: 39.97, costo_procesamiento: 1.5, base_comision: 39.97, porcentaje: "100.00", monto: "33.18"})), undefined]), acums: faker.helpers.arrayElement([{precio: 28057.23, costo_administrativo: 1002.68, base_comision: 28057.23, monto: 13839.79}, undefined])}, undefined]), ...overrideResponse})
 
-export const getGetIdiomaReporteVentasAgenciaMesAnoResponseMock = (overrideResponse: Partial< ReporteVentasAgenciaResponse > = {}): ReporteVentasAgenciaResponse => ({ok: true, data: faker.helpers.arrayElement([{mes: "09", mes_nombre: "Septiembre", ano: "2025", agencia: "1", agente: 0, items: faker.helpers.arrayElement([Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({id: (() => faker.string.uuid())(), voucher: "A93-XXXX", fecha_venta: "01/09/2025 11:55 am", agencia_id: "1", agencia_nombre: "WE ASSIST", agente_id: "0", agente_nombre: "", precio_venta: 39.97, costo_procesamiento: 1.5, base_comision: 39.97, porcentaje: "100.00", monto: "33.18"})), undefined]), acums: faker.helpers.arrayElement([{precio: 28057.23, costo_administrativo: 1002.68, base_comision: 28057.23, monto: 13839.79}, undefined])}, undefined]), ...overrideResponse})
+export const getGetReporteVentasAgenciaFiltradoResponseMock = (overrideResponse: Partial< ReporteVentasAgenciaResponse > = {}): ReporteVentasAgenciaResponse => ({ok: true, data: faker.helpers.arrayElement([{mes: "09", mes_nombre: "Septiembre", ano: "2025", agencia: "1", agente: 0, items: faker.helpers.arrayElement([Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({id: (() => faker.string.uuid())(), voucher: "A93-XXXX", fecha_venta: "01/09/2025 11:55 am", agencia_id: "1", agencia_nombre: "WE ASSIST", agente_id: "0", agente_nombre: "", precio_venta: 39.97, costo_procesamiento: 1.5, base_comision: 39.97, porcentaje: "100.00", monto: "33.18"})), undefined]), acums: faker.helpers.arrayElement([{precio: 28057.23, costo_administrativo: 1002.68, base_comision: 28057.23, monto: 13839.79}, undefined])}, undefined]), ...overrideResponse})
 
-export const getGetIdiomaPerfilResponseMock = (overrideResponse: Partial< GetIdiomaPerfil200 > = {}): GetIdiomaPerfil200 => ({ok: true, data: faker.helpers.arrayElement([{id: (() => faker.string.uuid())(), email: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), pais: null, nombre: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), apellido: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), telefono: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), ultimo_login: "1758296449", imagen: "", distribuidor: "44", comision: "0.00", cambiar_password: "0", rol: "1", tipo_pago: "2", qr: "agente_197.png", token_api: "529c7985d3973aa370134805f05c0206c67221809314b30093c059e5f537273f", recibir_correos_renovaciones: "1", correo_renovaciones_alternativo: "", status: "1", userid: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), nombre_completo: "test test", cambiarpassword: false, agencia: "44", idioma_user: "es", roles: ["agente"]}, undefined]), ...overrideResponse})
+export const getGetPerfilAgenteResponseMock = (overrideResponse: Partial< GetPerfilAgente200 > = {}): GetPerfilAgente200 => ({ok: true, data: faker.helpers.arrayElement([{id: (() => faker.string.uuid())(), email: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), pais: null, nombre: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), apellido: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), telefono: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), ultimo_login: "1758296449", imagen: "", distribuidor: "44", comision: "0.00", cambiar_password: "0", rol: "1", tipo_pago: "2", qr: "agente_197.png", token_api: "529c7985d3973aa370134805f05c0206c67221809314b30093c059e5f537273f", recibir_correos_renovaciones: "1", correo_renovaciones_alternativo: "", status: "1", userid: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), nombre_completo: "test test", cambiarpassword: false, agencia: "44", idioma_user: "es", roles: ["agente"]}, undefined]), ...overrideResponse})
 
-export const getGetIdiomaVouchersMasterResponseMock = (overrideResponse: Partial< GetIdiomaVouchersMaster200 > = {}): GetIdiomaVouchersMaster200 => ({ok: true, data: faker.helpers.arrayElement([Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({id: (() => faker.string.uuid())(), codigo: "A93-A96-1", agencia: "96", agente: "443", plan: "122", noches: "300", noches_disponibles: "282", precio: "1011.00", costo_procesamiento: "0.00", precio_dia: "3.37", costo_dia: "0.73", ts_ini: "1736658000", ts_fin: "1768193999", ts_creacion: "1736372465", ts_emision: "1736606274", comision_procesada: "1", status: "1"})), undefined]), ...overrideResponse})
+export const getGetCobrandingConfigResponseMock = (overrideResponse: Partial< GetCobrandingConfig200 > = {}): GetCobrandingConfig200 => ({ok: faker.helpers.arrayElement([faker.datatype.boolean(), undefined]), datos: faker.helpers.arrayElement([{id: (() => faker.string.uuid())(), agencia: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), agente: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), color1: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), color2: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), color3: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), color4: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), logo: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), home_sec1_img: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), home_sec3_img1: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), home_sec3_img2: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), home_sec3_img3: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), home_bg_form: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), telefono: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), null]), undefined]), whatsapp: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), null]), undefined]), email: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), null]), undefined]), nombre: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), dominio: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), home_titulo: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), home_subtitulo: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), home_cta1: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), home_sec2_titulo: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), home_sec2_subtitulo: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), home_sec3_titulo: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), home_sec3_subtitulo1: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), home_sec3_texto1: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), home_sec3_subtitulo2: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), home_sec3_texto2: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), home_sec3_subtitulo3: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), home_sec3_texto3: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), home_sec3_cta: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), home_sec4_titulo: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), home_sec4_texto: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), footer_col: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), planes: faker.helpers.arrayElement([Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => (faker.string.alpha({length: {min: 10, max: 20}}))), undefined]), tipos_planes: faker.helpers.arrayElement([Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => (faker.string.alpha({length: {min: 10, max: 20}}))), undefined])}, undefined]), ...overrideResponse})
 
-export const getGetIdiomaVouchersMasterIdMasterResponseMock = (overrideResponse: Partial< GetIdiomaVouchersMasterIdMaster200 > = {}): GetIdiomaVouchersMasterIdMaster200 => ({ok: true, data: faker.helpers.arrayElement([{voucher: faker.helpers.arrayElement([{id: (() => faker.string.uuid())(), codigo: "A93-XXX-1", agencia: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), agente: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), plan: "122", noches: "300", noches_disponibles: "282", precio: "10.00", costo_procesamiento: "0.00", precio_dia: "1.11", costo_dia: "0.01", ts_ini: "1736658000", ts_fin: "1768193999", ts_creacion: "1736372465", ts_emision: "1736606274", comision_procesada: "1", status: "1"}, undefined]), items: faker.helpers.arrayElement([Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({id: (() => faker.string.uuid())(), linea_carrito: "26944", pais: "1", pais_destino: "12", plan: "122", distribuidor: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), agente: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), precio: "30.33", costo: "6.57", costo_base: "6.57", costo_transaccion: "0.00", margen: "23.76", fecha_ts: "1736722102", fecha_inicio_ts: "1736658000", fecha_fin_ts: "1737349200", voucher: "A93-XXX-1-XXX", voucher_master: "3", ocultar_precios: "0", enviar_correos: "1", contacto: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), contacto_telefono: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), contacto_email: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), consideraciones: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), cancelada: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), fecha_cancelacion_ts: null, usuario_cancelacion: "0", cobrada_recibo: null, pagada_cheque: null, metodo_pago: "2", pais_bin: "", transaccion_internacional: "1", comision_procesada: "1", renovacion_de: null, leido_erp: "0", aprobacion_temp: "", noches: 18})), undefined])}, undefined]), usuario: faker.helpers.arrayElement([{id: (() => faker.string.uuid())(), email: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), pais: null, nombre: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), apellido: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), telefono: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), ultimo_login: "1758296449", imagen: "", distribuidor: "44", comision: "0.00", cambiar_password: "0", rol: "1", tipo_pago: "2", qr: "agente_197.png", token_api: "529c7985d3973aa370134805f05c0206c67221809314b30093c059e5f537273f", recibir_correos_renovaciones: "1", correo_renovaciones_alternativo: "", status: "1", userid: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), nombre_completo: "test test", cambiarpassword: false, agencia: "44", idioma_user: "es", roles: ["agente"]}, undefined]), ...overrideResponse})
+export const getGetVouchersMasterResponseMock = (overrideResponse: Partial< GetVouchersMaster200 > = {}): GetVouchersMaster200 => ({ok: true, data: faker.helpers.arrayElement([Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({id: (() => faker.string.uuid())(), codigo: "A93-A96-1", agencia: "96", agente: "443", plan: "122", noches: "300", noches_disponibles: "282", precio: "1011.00", costo_procesamiento: "0.00", precio_dia: "3.37", costo_dia: "0.73", ts_ini: "1736658000", ts_fin: "1768193999", ts_creacion: "1736372465", ts_emision: "1736606274", comision_procesada: "1", status: "1"})), undefined]), ...overrideResponse})
 
-export const getGetIdiomaRenovacionesPendientesResponseMock = (overrideResponse: Partial< GetIdiomaRenovacionesPendientes200 > = {}): GetIdiomaRenovacionesPendientes200 => ({ok: true, data: faker.helpers.arrayElement([{items: faker.helpers.arrayElement([Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({id: (() => faker.string.uuid())(), venta: "3346", agente: "56", agencia: "10", carrito: "63973", carrito_linea: "38386", precio_total: "150.00", ts_creacion: "1758640498", ts_inicio_viaje: "1759640400", ultimo_recordatorio: "3", venta_renovacion: null, ts_cierre: null, idioma: "es", status: "1", agente_nombre: "Nombre Agente", agencia_nombre: "Nombre Agencia", fecha_inicio_viaje: "05/10/2025", etapa_nombre: null, venta_datos: faker.helpers.arrayElement([{id: (() => faker.string.uuid())(), linea_carrito: "23849", pais: "1", pais_destino: "-1", plan: "30", distribuidor: "10", agente: "56", precio: "150.00", costo: "46.90", costo_base: "46.90", costo_transaccion: "4.74", margen: "98.36", fecha_ts: "1728146462", fecha_inicio_ts: "1728104400", fecha_fin_ts: "1759554000", voucher: "A93-XXXXXX", voucher_master: null, ocultar_precios: "0", enviar_correos: "1", contacto: "Nombre Contacto", contacto_telefono: "00000000", contacto_email: "correo@ejemplo.com", consideraciones: "", cancelada: "0", fecha_cancelacion_ts: null, usuario_cancelacion: "0", cobrada_recibo: null, pagada_cheque: null, metodo_pago: "1", pais_bin: "PA", transaccion_internacional: "2", comision_procesada: "1", renovacion_de: null, leido_erp: "0", aprobacion_temp: "", documentos: faker.helpers.arrayElement([Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({nombre: "Nombre Cliente", voucher: "A93-XXXXXX", pdf_vouchers: faker.helpers.arrayElement([{es: "https://www.ejemplo.com/vouchers/voucher_A93-XXXXXX_es.pdf", en: "https://www.ejemplo.com/vouchers/voucher_A93-XXXXXX_en.pdf"}, undefined]), links_tarjetas_es: faker.helpers.arrayElement([Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({nombre: "Nombre Cliente", file: "https://www.ejemplo.com/vouchers/card_A93-XXXXXX_1_es.pdf"})), undefined]), links_tarjetas_en: faker.helpers.arrayElement([Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({nombre: "Nombre Cliente", file: "https://www.ejemplo.com/vouchers/card_A93-XXXXXX_1_en.pdf"})), undefined])})), undefined]), cliente: "Nombre Cliente"}, undefined]), url_carrito: "https://dev.weassistgroup.com/es/carrito/XXXXXXXX"})), undefined])}, undefined]), usuario: faker.helpers.arrayElement([{id: (() => faker.string.uuid())(), email: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), pais: null, nombre: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), apellido: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), telefono: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), ultimo_login: "1758296449", imagen: "", distribuidor: "44", comision: "0.00", cambiar_password: "0", rol: "1", tipo_pago: "2", qr: "agente_197.png", token_api: "529c7985d3973aa370134805f05c0206c67221809314b30093c059e5f537273f", recibir_correos_renovaciones: "1", correo_renovaciones_alternativo: "", status: "1", userid: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), nombre_completo: "test test", cambiarpassword: false, agencia: "44", idioma_user: "es", roles: ["agente"]}, undefined]), ...overrideResponse})
+export const getGetVouchersMasterDetailResponseMock = (overrideResponse: Partial< GetVouchersMasterDetail200 > = {}): GetVouchersMasterDetail200 => ({ok: true, data: faker.helpers.arrayElement([{voucher: faker.helpers.arrayElement([{id: (() => faker.string.uuid())(), codigo: "A93-XXX-1", agencia: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), agente: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), plan: "122", noches: "300", noches_disponibles: "282", precio: "10.00", costo_procesamiento: "0.00", precio_dia: "1.11", costo_dia: "0.01", ts_ini: "1736658000", ts_fin: "1768193999", ts_creacion: "1736372465", ts_emision: "1736606274", comision_procesada: "1", status: "1"}, undefined]), items: faker.helpers.arrayElement([Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({id: (() => faker.string.uuid())(), linea_carrito: "26944", pais: "1", pais_destino: "12", plan: "122", distribuidor: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), agente: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), precio: "30.33", costo: "6.57", costo_base: "6.57", costo_transaccion: "0.00", margen: "23.76", fecha_ts: "1736722102", fecha_inicio_ts: "1736658000", fecha_fin_ts: "1737349200", voucher: "A93-XXX-1-XXX", voucher_master: "3", ocultar_precios: "0", enviar_correos: "1", contacto: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), contacto_telefono: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), contacto_email: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), consideraciones: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), cancelada: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), fecha_cancelacion_ts: null, usuario_cancelacion: "0", cobrada_recibo: null, pagada_cheque: null, metodo_pago: "2", pais_bin: "", transaccion_internacional: "1", comision_procesada: "1", renovacion_de: null, leido_erp: "0", aprobacion_temp: "", noches: 18})), undefined])}, undefined]), usuario: faker.helpers.arrayElement([{id: (() => faker.string.uuid())(), email: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), pais: null, nombre: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), apellido: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), telefono: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), ultimo_login: "1758296449", imagen: "", distribuidor: "44", comision: "0.00", cambiar_password: "0", rol: "1", tipo_pago: "2", qr: "agente_197.png", token_api: "529c7985d3973aa370134805f05c0206c67221809314b30093c059e5f537273f", recibir_correos_renovaciones: "1", correo_renovaciones_alternativo: "", status: "1", userid: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), nombre_completo: "test test", cambiarpassword: false, agencia: "44", idioma_user: "es", roles: ["agente"]}, undefined]), ...overrideResponse})
 
-export const getGetIdiomaAgentesResponseMock = (overrideResponse: Partial< GetIdiomaAgentes200 > = {}): GetIdiomaAgentes200 => ({ok: true, data: faker.helpers.arrayElement([Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({id: (() => faker.string.uuid())(), email: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), pais: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), nombre: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), apellido: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), telefono: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), xxx_tipo: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), password_ini: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), ultimo_login: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), imagen: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), distribuidor: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), comision: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), rol: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), email_registro: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), email_bienvenida: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), tipo_pago: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), ts_creacion: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), idioma: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), qr: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), recibir_correos_renovaciones: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), correo_renovaciones_alternativo: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), status: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), codigo: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), ultimo_login_fecha: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), email_registro_fecha: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), email_bienvenida_fecha: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), fecha_creacion: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined])})), undefined]), usuario: faker.helpers.arrayElement([{id: (() => faker.string.uuid())(), email: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), pais: null, nombre: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), apellido: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), telefono: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), ultimo_login: "1758296449", imagen: "", distribuidor: "44", comision: "0.00", cambiar_password: "0", rol: "1", tipo_pago: "2", qr: "agente_197.png", token_api: "529c7985d3973aa370134805f05c0206c67221809314b30093c059e5f537273f", recibir_correos_renovaciones: "1", correo_renovaciones_alternativo: "", status: "1", userid: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), nombre_completo: "test test", cambiarpassword: false, agencia: "44", idioma_user: "es", roles: ["agente"]}, undefined]), ...overrideResponse})
+export const getGetRenovacionesPendientesResponseMock = (overrideResponse: Partial< GetRenovacionesPendientes200 > = {}): GetRenovacionesPendientes200 => ({ok: true, data: faker.helpers.arrayElement([{items: faker.helpers.arrayElement([Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({id: (() => faker.string.uuid())(), venta: "3346", agente: "56", agencia: "10", carrito: "63973", carrito_linea: "38386", precio_total: "150.00", ts_creacion: "1758640498", ts_inicio_viaje: "1759640400", ultimo_recordatorio: "3", venta_renovacion: null, ts_cierre: null, idioma: "es", status: "1", agente_nombre: "Nombre Agente", agencia_nombre: "Nombre Agencia", fecha_inicio_viaje: "05/10/2025", etapa_nombre: null, venta_datos: faker.helpers.arrayElement([{id: (() => faker.string.uuid())(), linea_carrito: "23849", pais: "1", pais_destino: "-1", plan: "30", distribuidor: "10", agente: "56", precio: "150.00", costo: "46.90", costo_base: "46.90", costo_transaccion: "4.74", margen: "98.36", fecha_ts: "1728146462", fecha_inicio_ts: "1728104400", fecha_fin_ts: "1759554000", voucher: "A93-XXXXXX", voucher_master: null, ocultar_precios: "0", enviar_correos: "1", contacto: "Nombre Contacto", contacto_telefono: "00000000", contacto_email: "correo@ejemplo.com", consideraciones: "", cancelada: "0", fecha_cancelacion_ts: null, usuario_cancelacion: "0", cobrada_recibo: null, pagada_cheque: null, metodo_pago: "1", pais_bin: "PA", transaccion_internacional: "2", comision_procesada: "1", renovacion_de: null, leido_erp: "0", aprobacion_temp: "", documentos: faker.helpers.arrayElement([Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({nombre: "Nombre Cliente", voucher: "A93-XXXXXX", pdf_vouchers: faker.helpers.arrayElement([{es: "https://www.ejemplo.com/vouchers/voucher_A93-XXXXXX_es.pdf", en: "https://www.ejemplo.com/vouchers/voucher_A93-XXXXXX_en.pdf"}, undefined]), links_tarjetas_es: faker.helpers.arrayElement([Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({nombre: "Nombre Cliente", file: "https://www.ejemplo.com/vouchers/card_A93-XXXXXX_1_es.pdf"})), undefined]), links_tarjetas_en: faker.helpers.arrayElement([Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({nombre: "Nombre Cliente", file: "https://www.ejemplo.com/vouchers/card_A93-XXXXXX_1_en.pdf"})), undefined])})), undefined]), cliente: "Nombre Cliente"}, undefined]), url_carrito: "https://dev.weassistgroup.com/es/carrito/XXXXXXXX"})), undefined])}, undefined]), usuario: faker.helpers.arrayElement([{id: (() => faker.string.uuid())(), email: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), pais: null, nombre: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), apellido: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), telefono: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), ultimo_login: "1758296449", imagen: "", distribuidor: "44", comision: "0.00", cambiar_password: "0", rol: "1", tipo_pago: "2", qr: "agente_197.png", token_api: "529c7985d3973aa370134805f05c0206c67221809314b30093c059e5f537273f", recibir_correos_renovaciones: "1", correo_renovaciones_alternativo: "", status: "1", userid: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), nombre_completo: "test test", cambiarpassword: false, agencia: "44", idioma_user: "es", roles: ["agente"]}, undefined]), ...overrideResponse})
 
-export const getGetIdiomaPerfilAgenciaResponseMock = (): GetIdiomaPerfilAgencia200 => ({})
+export const getDetenerRecordatorioRenovacionResponseMock = (overrideResponse: Partial< DetenerRecordatorioRenovacion200 > = {}): DetenerRecordatorioRenovacion200 => ({ok: faker.helpers.arrayElement([faker.datatype.boolean(), undefined]), ...overrideResponse})
 
-export const getGetIdiomaCotizacionesResponseMock = (overrideResponse: Partial< GetIdiomaCotizaciones200 > = {}): GetIdiomaCotizaciones200 => ({ok: true, data: faker.helpers.arrayElement([{items: faker.helpers.arrayElement([Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({url: "https://www.weassistgroup.com/es/carrito/abc123", fecha: "01/09/2025", fecha_modificacion: "02/09/2025"})), undefined]), paginacion: faker.helpers.arrayElement([{pagina_actual: 1, cantidad_paginas: 5, cantidad_total: 120}, undefined])}, undefined]), ...overrideResponse})
+export const getGetAgentesAgenciaResponseMock = (overrideResponse: Partial< GetAgentesAgencia200 > = {}): GetAgentesAgencia200 => ({ok: true, data: faker.helpers.arrayElement([Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({id: (() => faker.string.uuid())(), email: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), pais: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), nombre: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), apellido: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), telefono: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), xxx_tipo: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), password_ini: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), ultimo_login: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), imagen: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), distribuidor: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), comision: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), rol: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), email_registro: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), email_bienvenida: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), tipo_pago: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), ts_creacion: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), idioma: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), qr: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), recibir_correos_renovaciones: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), correo_renovaciones_alternativo: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), status: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), codigo: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), ultimo_login_fecha: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), email_registro_fecha: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), email_bienvenida_fecha: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), fecha_creacion: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined])})), undefined]), usuario: faker.helpers.arrayElement([{id: (() => faker.string.uuid())(), email: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), pais: null, nombre: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), apellido: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), telefono: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), ultimo_login: "1758296449", imagen: "", distribuidor: "44", comision: "0.00", cambiar_password: "0", rol: "1", tipo_pago: "2", qr: "agente_197.png", token_api: "529c7985d3973aa370134805f05c0206c67221809314b30093c059e5f537273f", recibir_correos_renovaciones: "1", correo_renovaciones_alternativo: "", status: "1", userid: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), nombre_completo: "test test", cambiarpassword: false, agencia: "44", idioma_user: "es", roles: ["agente"]}, undefined]), ...overrideResponse})
 
-export const getGetIdiomaAsistenciasPaginaResponseMock = (overrideResponse: Partial< GetIdiomaAsistenciasPagina200 > = {}): GetIdiomaAsistenciasPagina200 => ({ok: true, data: faker.helpers.arrayElement([{items: faker.helpers.arrayElement([Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({token: "A93-A96-1-XXXX", total: "30.33", fecha: "12/01/2025 05:48 pm", vouchers: faker.helpers.arrayElement([Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({nombre: "Usuario Prueba", voucher: "A93-A96-1-XXXX", pdf_vouchers: faker.helpers.arrayElement([{es: "https://www.weassistgroup.com/vouchers/voucher_A93-A96-1-XXXX_es.pdf", en: "https://www.weassistgroup.com/vouchers/voucher_A93-A96-1-XXXX_en.pdf"}, undefined]), links_tarjetas_es: faker.helpers.arrayElement([Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({nombre: "Usuario Prueba", file: "https://www.weassistgroup.com/vouchers/card_A93-A96-1-XXXX_1_es.pdf"})), undefined]), links_tarjetas_en: faker.helpers.arrayElement([Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({nombre: "Usuario Prueba", file: "https://www.weassistgroup.com/vouchers/card_A93-A96-1-XXXX_1_en.pdf"})), undefined])})), undefined])})), undefined]), paginacion: faker.helpers.arrayElement([{pagina_actual: 1, cantidad_paginas: 5, cantidad_total: 120}, undefined])}, undefined]), ...overrideResponse})
+export const getGetPerfilAgenciaResponseMock = (overrideResponse: Partial< GetPerfilAgencia200 > = {}): GetPerfilAgencia200 => ({ok: true, data: faker.helpers.arrayElement([{id: (() => faker.string.uuid())(), nombre: "Justin Peralta", comision: "25.00", creador_agencias: true, padre: "81", razon_social: "si", ruc: "", pais: "1", estado: null, ciudad: null, direccion: "Panama, Ciudad de Panama", codigo_postal: null, telefono: "67665750", contacto: "2555555", email: "", sitio_web: null, enviar_copia_vouchers: true, logo: null, limite_credito: "1000000.00", paga_neta: true, agentes_ven_neta: true, tipo_pago: "1", permitir_sin_precio: false, vouchers_sin_precio: false, status: "1", nombre_padre: "Columbia Tours", pais_nombre: "Panama", ultimo_login_fecha: "", tipo_pago_nombre: "Directo", fecha_creacion: "27/05/2025", tipo: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), tipo_nombre: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined])}, undefined]), usuario: faker.helpers.arrayElement([{id: (() => faker.string.uuid())(), email: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), pais: null, nombre: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), apellido: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), telefono: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), ultimo_login: "1758296449", imagen: "", distribuidor: "44", comision: "0.00", cambiar_password: "0", rol: "1", tipo_pago: "2", qr: "agente_197.png", token_api: "529c7985d3973aa370134805f05c0206c67221809314b30093c059e5f537273f", recibir_correos_renovaciones: "1", correo_renovaciones_alternativo: "", status: "1", userid: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), nombre_completo: "test test", cambiarpassword: false, agencia: "44", idioma_user: "es", roles: ["agente"]}, undefined]), ...overrideResponse})
 
-export const getPostIdiomaLeadEventoResponseMock = (overrideResponse: Partial< PostIdiomaLeadEvento200 > = {}): PostIdiomaLeadEvento200 => ({ok: true, ...overrideResponse})
+export const getGetCotizacionesAgenteAgenciaResponseMock = (overrideResponse: Partial< GetCotizacionesAgenteAgencia200 > = {}): GetCotizacionesAgenteAgencia200 => ({ok: true, data: faker.helpers.arrayElement([{items: faker.helpers.arrayElement([Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({url: "https://www.weassistgroup.com/es/carrito/abc123", fecha: "01/09/2025", fecha_modificacion: "02/09/2025"})), undefined]), paginacion: faker.helpers.arrayElement([{pagina_actual: 1, cantidad_paginas: 5, cantidad_total: 120}, undefined])}, undefined]), ...overrideResponse})
+
+export const getGetAsistenciasAgenteAgenciaResponseMock = (overrideResponse: Partial< GetAsistenciasAgenteAgencia200 > = {}): GetAsistenciasAgenteAgencia200 => ({ok: true, data: faker.helpers.arrayElement([{items: faker.helpers.arrayElement([Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({token: "A93-A96-1-XXXX", total: "30.33", fecha: "12/01/2025 05:48 pm", vouchers: faker.helpers.arrayElement([Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({nombre: "Usuario Prueba", voucher: "A93-A96-1-XXXX", pdf_vouchers: faker.helpers.arrayElement([{es: "https://www.weassistgroup.com/vouchers/voucher_A93-A96-1-XXXX_es.pdf", en: "https://www.weassistgroup.com/vouchers/voucher_A93-A96-1-XXXX_en.pdf"}, undefined]), links_tarjetas_es: faker.helpers.arrayElement([Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({nombre: "Usuario Prueba", file: "https://www.weassistgroup.com/vouchers/card_A93-A96-1-XXXX_1_es.pdf"})), undefined]), links_tarjetas_en: faker.helpers.arrayElement([Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({nombre: "Usuario Prueba", file: "https://www.weassistgroup.com/vouchers/card_A93-A96-1-XXXX_1_en.pdf"})), undefined])})), undefined])})), undefined]), paginacion: faker.helpers.arrayElement([{pagina_actual: 1, cantidad_paginas: 5, cantidad_total: 120}, undefined])}, undefined]), ...overrideResponse})
+
+export const getGetLeadEventoResponseMock = (overrideResponse: Partial< GetLeadEvento200 > = {}): GetLeadEvento200 => ({ok: true, ...overrideResponse})
 
 
 export const getGetIdiomasMockHandler = (overrideResponse?: GetIdiomas200 | ((info: Parameters<Parameters<typeof http.get>[1]>[0]) => Promise<GetIdiomas200> | GetIdiomas200)) => {
@@ -82,192 +88,216 @@ export const getGetIdiomasMockHandler = (overrideResponse?: GetIdiomas200 | ((in
   })
 }
 
-export const getGetIdiomaLangStringsVersionMockHandler = (overrideResponse?: GetIdiomaLangStringsVersion200 | ((info: Parameters<Parameters<typeof http.get>[1]>[0]) => Promise<GetIdiomaLangStringsVersion200> | GetIdiomaLangStringsVersion200)) => {
+export const getGetLangStringsVersionMockHandler = (overrideResponse?: GetLangStringsVersion200 | ((info: Parameters<Parameters<typeof http.get>[1]>[0]) => Promise<GetLangStringsVersion200> | GetLangStringsVersion200)) => {
   return http.get('*/:idioma/lang_strings_version', async (info) => {await delay(1000);
   
     return new HttpResponse(JSON.stringify(overrideResponse !== undefined
     ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse)
-    : getGetIdiomaLangStringsVersionResponseMock()),
+    : getGetLangStringsVersionResponseMock()),
       { status: 200,
         headers: { 'Content-Type': 'application/json' }
       })
   })
 }
 
-export const getGetIdiomaLangStringsMockHandler = (overrideResponse?: GetIdiomaLangStrings200 | ((info: Parameters<Parameters<typeof http.get>[1]>[0]) => Promise<GetIdiomaLangStrings200> | GetIdiomaLangStrings200)) => {
+export const getGetLangStringsMockHandler = (overrideResponse?: GetLangStrings200 | ((info: Parameters<Parameters<typeof http.get>[1]>[0]) => Promise<GetLangStrings200> | GetLangStrings200)) => {
   return http.get('*/:idioma/lang_strings', async (info) => {await delay(1000);
   
     return new HttpResponse(JSON.stringify(overrideResponse !== undefined
     ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse)
-    : getGetIdiomaLangStringsResponseMock()),
+    : getGetLangStringsResponseMock()),
       { status: 200,
         headers: { 'Content-Type': 'application/json' }
       })
   })
 }
 
-export const getGetIdiomaDocumentosVoucherMockHandler = (overrideResponse?: GetIdiomaDocumentosVoucher200 | ((info: Parameters<Parameters<typeof http.get>[1]>[0]) => Promise<GetIdiomaDocumentosVoucher200> | GetIdiomaDocumentosVoucher200)) => {
+export const getGetDocumentosVoucherMockHandler = (overrideResponse?: GetDocumentosVoucher200 | ((info: Parameters<Parameters<typeof http.get>[1]>[0]) => Promise<GetDocumentosVoucher200> | GetDocumentosVoucher200)) => {
   return http.get('*/:idioma/documentos/:voucher', async (info) => {await delay(1000);
   
     return new HttpResponse(JSON.stringify(overrideResponse !== undefined
     ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse)
-    : getGetIdiomaDocumentosVoucherResponseMock()),
+    : getGetDocumentosVoucherResponseMock()),
       { status: 200,
         headers: { 'Content-Type': 'application/json' }
       })
   })
 }
 
-export const getPostIdiomaLoginMockHandler = (overrideResponse?: PostIdiomaLogin200 | ((info: Parameters<Parameters<typeof http.post>[1]>[0]) => Promise<PostIdiomaLogin200> | PostIdiomaLogin200)) => {
+export const getPostAgenteLoginMockHandler = (overrideResponse?: PostAgenteLogin200 | ((info: Parameters<Parameters<typeof http.post>[1]>[0]) => Promise<PostAgenteLogin200> | PostAgenteLogin200)) => {
   return http.post('*/:idioma/login', async (info) => {await delay(1000);
   
     return new HttpResponse(JSON.stringify(overrideResponse !== undefined
     ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse)
-    : getPostIdiomaLoginResponseMock()),
+    : getPostAgenteLoginResponseMock()),
       { status: 200,
         headers: { 'Content-Type': 'application/json' }
       })
   })
 }
 
-export const getPostIdiomaLogoutMockHandler = (overrideResponse?: PostIdiomaLogout200 | ((info: Parameters<Parameters<typeof http.post>[1]>[0]) => Promise<PostIdiomaLogout200> | PostIdiomaLogout200)) => {
+export const getPostLogoutMockHandler = (overrideResponse?: PostLogout200 | ((info: Parameters<Parameters<typeof http.post>[1]>[0]) => Promise<PostLogout200> | PostLogout200)) => {
   return http.post('*/:idioma/logout', async (info) => {await delay(1000);
   
     return new HttpResponse(JSON.stringify(overrideResponse !== undefined
     ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse)
-    : getPostIdiomaLogoutResponseMock()),
+    : getPostLogoutResponseMock()),
       { status: 200,
         headers: { 'Content-Type': 'application/json' }
       })
   })
 }
 
-export const getGetIdiomaReporteVentasAgenciaMockHandler = (overrideResponse?: ReporteVentasAgenciaResponse | ((info: Parameters<Parameters<typeof http.get>[1]>[0]) => Promise<ReporteVentasAgenciaResponse> | ReporteVentasAgenciaResponse)) => {
+export const getGetReporteVentasAgenciaMockHandler = (overrideResponse?: ReporteVentasAgenciaResponse | ((info: Parameters<Parameters<typeof http.get>[1]>[0]) => Promise<ReporteVentasAgenciaResponse> | ReporteVentasAgenciaResponse)) => {
   return http.get('*/:idioma/reporte-ventas-agencia', async (info) => {await delay(1000);
   
     return new HttpResponse(JSON.stringify(overrideResponse !== undefined
     ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse)
-    : getGetIdiomaReporteVentasAgenciaResponseMock()),
+    : getGetReporteVentasAgenciaResponseMock()),
       { status: 200,
         headers: { 'Content-Type': 'application/json' }
       })
   })
 }
 
-export const getGetIdiomaReporteVentasAgenciaMesAnoMockHandler = (overrideResponse?: ReporteVentasAgenciaResponse | ((info: Parameters<Parameters<typeof http.get>[1]>[0]) => Promise<ReporteVentasAgenciaResponse> | ReporteVentasAgenciaResponse)) => {
+export const getGetReporteVentasAgenciaFiltradoMockHandler = (overrideResponse?: ReporteVentasAgenciaResponse | ((info: Parameters<Parameters<typeof http.get>[1]>[0]) => Promise<ReporteVentasAgenciaResponse> | ReporteVentasAgenciaResponse)) => {
   return http.get('*/:idioma/reporte-ventas-agencia/:mesAno', async (info) => {await delay(1000);
   
     return new HttpResponse(JSON.stringify(overrideResponse !== undefined
     ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse)
-    : getGetIdiomaReporteVentasAgenciaMesAnoResponseMock()),
+    : getGetReporteVentasAgenciaFiltradoResponseMock()),
       { status: 200,
         headers: { 'Content-Type': 'application/json' }
       })
   })
 }
 
-export const getGetIdiomaPerfilMockHandler = (overrideResponse?: GetIdiomaPerfil200 | ((info: Parameters<Parameters<typeof http.get>[1]>[0]) => Promise<GetIdiomaPerfil200> | GetIdiomaPerfil200)) => {
+export const getGetPerfilAgenteMockHandler = (overrideResponse?: GetPerfilAgente200 | ((info: Parameters<Parameters<typeof http.get>[1]>[0]) => Promise<GetPerfilAgente200> | GetPerfilAgente200)) => {
   return http.get('*/:idioma/perfil', async (info) => {await delay(1000);
   
     return new HttpResponse(JSON.stringify(overrideResponse !== undefined
     ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse)
-    : getGetIdiomaPerfilResponseMock()),
+    : getGetPerfilAgenteResponseMock()),
       { status: 200,
         headers: { 'Content-Type': 'application/json' }
       })
   })
 }
 
-export const getGetIdiomaVouchersMasterMockHandler = (overrideResponse?: GetIdiomaVouchersMaster200 | ((info: Parameters<Parameters<typeof http.get>[1]>[0]) => Promise<GetIdiomaVouchersMaster200> | GetIdiomaVouchersMaster200)) => {
+export const getGetCobrandingConfigMockHandler = (overrideResponse?: GetCobrandingConfig200 | ((info: Parameters<Parameters<typeof http.post>[1]>[0]) => Promise<GetCobrandingConfig200> | GetCobrandingConfig200)) => {
+  return http.post('*/:idioma/cobranding', async (info) => {await delay(1000);
+  
+    return new HttpResponse(JSON.stringify(overrideResponse !== undefined
+    ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse)
+    : getGetCobrandingConfigResponseMock()),
+      { status: 200,
+        headers: { 'Content-Type': 'application/json' }
+      })
+  })
+}
+
+export const getGetVouchersMasterMockHandler = (overrideResponse?: GetVouchersMaster200 | ((info: Parameters<Parameters<typeof http.get>[1]>[0]) => Promise<GetVouchersMaster200> | GetVouchersMaster200)) => {
   return http.get('*/:idioma/vouchers_master', async (info) => {await delay(1000);
   
     return new HttpResponse(JSON.stringify(overrideResponse !== undefined
     ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse)
-    : getGetIdiomaVouchersMasterResponseMock()),
+    : getGetVouchersMasterResponseMock()),
       { status: 200,
         headers: { 'Content-Type': 'application/json' }
       })
   })
 }
 
-export const getGetIdiomaVouchersMasterIdMasterMockHandler = (overrideResponse?: GetIdiomaVouchersMasterIdMaster200 | ((info: Parameters<Parameters<typeof http.get>[1]>[0]) => Promise<GetIdiomaVouchersMasterIdMaster200> | GetIdiomaVouchersMasterIdMaster200)) => {
+export const getGetVouchersMasterDetailMockHandler = (overrideResponse?: GetVouchersMasterDetail200 | ((info: Parameters<Parameters<typeof http.get>[1]>[0]) => Promise<GetVouchersMasterDetail200> | GetVouchersMasterDetail200)) => {
   return http.get('*/:idioma/vouchers_master/:idMaster', async (info) => {await delay(1000);
   
     return new HttpResponse(JSON.stringify(overrideResponse !== undefined
     ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse)
-    : getGetIdiomaVouchersMasterIdMasterResponseMock()),
+    : getGetVouchersMasterDetailResponseMock()),
       { status: 200,
         headers: { 'Content-Type': 'application/json' }
       })
   })
 }
 
-export const getGetIdiomaRenovacionesPendientesMockHandler = (overrideResponse?: GetIdiomaRenovacionesPendientes200 | ((info: Parameters<Parameters<typeof http.get>[1]>[0]) => Promise<GetIdiomaRenovacionesPendientes200> | GetIdiomaRenovacionesPendientes200)) => {
+export const getGetRenovacionesPendientesMockHandler = (overrideResponse?: GetRenovacionesPendientes200 | ((info: Parameters<Parameters<typeof http.get>[1]>[0]) => Promise<GetRenovacionesPendientes200> | GetRenovacionesPendientes200)) => {
   return http.get('*/:idioma/renovaciones-pendientes', async (info) => {await delay(1000);
   
     return new HttpResponse(JSON.stringify(overrideResponse !== undefined
     ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse)
-    : getGetIdiomaRenovacionesPendientesResponseMock()),
+    : getGetRenovacionesPendientesResponseMock()),
       { status: 200,
         headers: { 'Content-Type': 'application/json' }
       })
   })
 }
 
-export const getGetIdiomaAgentesMockHandler = (overrideResponse?: GetIdiomaAgentes200 | ((info: Parameters<Parameters<typeof http.get>[1]>[0]) => Promise<GetIdiomaAgentes200> | GetIdiomaAgentes200)) => {
+export const getDetenerRecordatorioRenovacionMockHandler = (overrideResponse?: DetenerRecordatorioRenovacion200 | ((info: Parameters<Parameters<typeof http.post>[1]>[0]) => Promise<DetenerRecordatorioRenovacion200> | DetenerRecordatorioRenovacion200)) => {
+  return http.post('*/:idioma/detener_recordatorio_renovacion', async (info) => {await delay(1000);
+  
+    return new HttpResponse(JSON.stringify(overrideResponse !== undefined
+    ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse)
+    : getDetenerRecordatorioRenovacionResponseMock()),
+      { status: 200,
+        headers: { 'Content-Type': 'application/json' }
+      })
+  })
+}
+
+export const getGetAgentesAgenciaMockHandler = (overrideResponse?: GetAgentesAgencia200 | ((info: Parameters<Parameters<typeof http.get>[1]>[0]) => Promise<GetAgentesAgencia200> | GetAgentesAgencia200)) => {
   return http.get('*/:idioma/agentes', async (info) => {await delay(1000);
   
     return new HttpResponse(JSON.stringify(overrideResponse !== undefined
     ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse)
-    : getGetIdiomaAgentesResponseMock()),
+    : getGetAgentesAgenciaResponseMock()),
       { status: 200,
         headers: { 'Content-Type': 'application/json' }
       })
   })
 }
 
-export const getGetIdiomaPerfilAgenciaMockHandler = (overrideResponse?: GetIdiomaPerfilAgencia200 | ((info: Parameters<Parameters<typeof http.get>[1]>[0]) => Promise<GetIdiomaPerfilAgencia200> | GetIdiomaPerfilAgencia200)) => {
+export const getGetPerfilAgenciaMockHandler = (overrideResponse?: GetPerfilAgencia200 | ((info: Parameters<Parameters<typeof http.get>[1]>[0]) => Promise<GetPerfilAgencia200> | GetPerfilAgencia200)) => {
   return http.get('*/:idioma/perfil-agencia', async (info) => {await delay(1000);
   
     return new HttpResponse(JSON.stringify(overrideResponse !== undefined
     ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse)
-    : getGetIdiomaPerfilAgenciaResponseMock()),
+    : getGetPerfilAgenciaResponseMock()),
       { status: 200,
         headers: { 'Content-Type': 'application/json' }
       })
   })
 }
 
-export const getGetIdiomaCotizacionesMockHandler = (overrideResponse?: GetIdiomaCotizaciones200 | ((info: Parameters<Parameters<typeof http.get>[1]>[0]) => Promise<GetIdiomaCotizaciones200> | GetIdiomaCotizaciones200)) => {
+export const getGetCotizacionesAgenteAgenciaMockHandler = (overrideResponse?: GetCotizacionesAgenteAgencia200 | ((info: Parameters<Parameters<typeof http.get>[1]>[0]) => Promise<GetCotizacionesAgenteAgencia200> | GetCotizacionesAgenteAgencia200)) => {
   return http.get('*/:idioma/cotizaciones', async (info) => {await delay(1000);
   
     return new HttpResponse(JSON.stringify(overrideResponse !== undefined
     ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse)
-    : getGetIdiomaCotizacionesResponseMock()),
+    : getGetCotizacionesAgenteAgenciaResponseMock()),
       { status: 200,
         headers: { 'Content-Type': 'application/json' }
       })
   })
 }
 
-export const getGetIdiomaAsistenciasPaginaMockHandler = (overrideResponse?: GetIdiomaAsistenciasPagina200 | ((info: Parameters<Parameters<typeof http.get>[1]>[0]) => Promise<GetIdiomaAsistenciasPagina200> | GetIdiomaAsistenciasPagina200)) => {
+export const getGetAsistenciasAgenteAgenciaMockHandler = (overrideResponse?: GetAsistenciasAgenteAgencia200 | ((info: Parameters<Parameters<typeof http.get>[1]>[0]) => Promise<GetAsistenciasAgenteAgencia200> | GetAsistenciasAgenteAgencia200)) => {
   return http.get('*/:idioma/asistencias/:pagina', async (info) => {await delay(1000);
   
     return new HttpResponse(JSON.stringify(overrideResponse !== undefined
     ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse)
-    : getGetIdiomaAsistenciasPaginaResponseMock()),
+    : getGetAsistenciasAgenteAgenciaResponseMock()),
       { status: 200,
         headers: { 'Content-Type': 'application/json' }
       })
   })
 }
 
-export const getPostIdiomaLeadEventoMockHandler = (overrideResponse?: PostIdiomaLeadEvento200 | ((info: Parameters<Parameters<typeof http.post>[1]>[0]) => Promise<PostIdiomaLeadEvento200> | PostIdiomaLeadEvento200)) => {
+export const getGetLeadEventoMockHandler = (overrideResponse?: GetLeadEvento200 | ((info: Parameters<Parameters<typeof http.post>[1]>[0]) => Promise<GetLeadEvento200> | GetLeadEvento200)) => {
   return http.post('*/:idioma/lead_evento', async (info) => {await delay(1000);
   
     return new HttpResponse(JSON.stringify(overrideResponse !== undefined
     ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse)
-    : getPostIdiomaLeadEventoResponseMock()),
+    : getGetLeadEventoResponseMock()),
       { status: 200,
         headers: { 'Content-Type': 'application/json' }
       })
@@ -275,20 +305,22 @@ export const getPostIdiomaLeadEventoMockHandler = (overrideResponse?: PostIdioma
 }
 export const getWacApiMock = () => [
   getGetIdiomasMockHandler(),
-  getGetIdiomaLangStringsVersionMockHandler(),
-  getGetIdiomaLangStringsMockHandler(),
-  getGetIdiomaDocumentosVoucherMockHandler(),
-  getPostIdiomaLoginMockHandler(),
-  getPostIdiomaLogoutMockHandler(),
-  getGetIdiomaReporteVentasAgenciaMockHandler(),
-  getGetIdiomaReporteVentasAgenciaMesAnoMockHandler(),
-  getGetIdiomaPerfilMockHandler(),
-  getGetIdiomaVouchersMasterMockHandler(),
-  getGetIdiomaVouchersMasterIdMasterMockHandler(),
-  getGetIdiomaRenovacionesPendientesMockHandler(),
-  getGetIdiomaAgentesMockHandler(),
-  getGetIdiomaPerfilAgenciaMockHandler(),
-  getGetIdiomaCotizacionesMockHandler(),
-  getGetIdiomaAsistenciasPaginaMockHandler(),
-  getPostIdiomaLeadEventoMockHandler()
+  getGetLangStringsVersionMockHandler(),
+  getGetLangStringsMockHandler(),
+  getGetDocumentosVoucherMockHandler(),
+  getPostAgenteLoginMockHandler(),
+  getPostLogoutMockHandler(),
+  getGetReporteVentasAgenciaMockHandler(),
+  getGetReporteVentasAgenciaFiltradoMockHandler(),
+  getGetPerfilAgenteMockHandler(),
+  getGetCobrandingConfigMockHandler(),
+  getGetVouchersMasterMockHandler(),
+  getGetVouchersMasterDetailMockHandler(),
+  getGetRenovacionesPendientesMockHandler(),
+  getDetenerRecordatorioRenovacionMockHandler(),
+  getGetAgentesAgenciaMockHandler(),
+  getGetPerfilAgenciaMockHandler(),
+  getGetCotizacionesAgenteAgenciaMockHandler(),
+  getGetAsistenciasAgenteAgenciaMockHandler(),
+  getGetLeadEventoMockHandler()
 ]

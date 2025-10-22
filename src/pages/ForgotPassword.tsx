@@ -1,12 +1,10 @@
 import { useNavigate } from 'react-router-dom';
 import logo from '../assets/images/logo2.png';
-import useAuth from '../hooks/useAuth';
 import { UIButton } from '../components/Button';
 import ForgotPasswordForm from '../components/Forms/ForgotPasswordForm';
 
 
 const ForgotPassword = () => {
-  useAuth();
   const navigate = useNavigate();
 
 

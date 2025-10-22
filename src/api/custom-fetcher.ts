@@ -1,77 +1,159 @@
 import { useAuthStore } from "../stores/useAuthStore";
+import { ApiError } from "./errors/ApiError";
 
-interface FetchParams {
+type FetchParams<TBody = any> = {
   url: string;
   method: string;
   headers?: Record<string, string>;
-  body?: unknown;
-}
-
+  data?: TBody;
+  params?: Record<string, any>;
+  signal?: AbortSignal;
+};
 
 const PUBLIC_ENDPOINT_PATTERNS: RegExp[] = [
-  /^\login/i,
+  /^\/login/i,
   /^\/auth\/refresh/i,
-  /^\/public\//i
+  /^\/public\//i,
 ];
+
+const isAbsolute = (u: string) => /^https?:\/\//i.test(u);
+
+const buildUrl = (base: string | undefined, path: string, params?: Record<string, any>) => {
+  const trimmedBase = (base ?? "").replace(/\/+$/, "");
+  const finalPath = path || "";
+  const absoluteCandidate = isAbsolute(finalPath)
+    ? finalPath
+    : `${trimmedBase}${finalPath.startsWith("/") ? finalPath : `/${finalPath}`}`;
+
+  const url = isAbsolute(absoluteCandidate)
+    ? new URL(absoluteCandidate)
+    : new URL(absoluteCandidate, window.location.origin);
+
+  if (params) {
+    Object.entries(params).forEach(([k, v]) => {
+      if (v == null) return;
+      if (Array.isArray(v)) v.forEach(it => url.searchParams.append(k, String(it)));
+      else url.searchParams.set(k, String(v));
+    });
+  }
+
+  return url.toString();
+};
+
+const needsBody = (method: string) => !["GET", "HEAD"].includes(method.toUpperCase());
 
 export const customFetch = async <TResponse = unknown>(
   params: FetchParams
 ): Promise<TResponse> => {
-  const { url, method, headers = {}, body } = params;
+  const { url, method, headers = {}, data, params: query, signal } = params;
 
-  const bearerToken = import.meta.env.VITE_API_BEARER_TOKEN || '';
-  const baseUrl = import.meta.env.VITE_API_BASE_URL || '';
-  const fullUrl = `${baseUrl}${url}`;
+  const baseUrl = import.meta.env.VITE_API_BASE_URL || "";
+  const fullUrl = buildUrl(baseUrl, url, query);
 
+  const bearerToken = import.meta.env.VITE_API_BEARER_TOKEN || "";
   const userToken = localStorage.getItem("user_token") || "";
-  const isPublicByPattern = PUBLIC_ENDPOINT_PATTERNS.some((rx) => rx.test(url));
+  const isPublic = PUBLIC_ENDPOINT_PATTERNS.some(rx => rx.test(url));
+
+  // Respetar headers del generado
+  const finalHeaders: Record<string, string> = { ...headers };
+  if (!finalHeaders["Authorization"] && bearerToken) {
+    finalHeaders["Authorization"] = `Bearer ${bearerToken}`;
+  }
+  if (!finalHeaders["user_token"] && !isPublic && userToken) {
+    finalHeaders["user_token"] = userToken;
+  }
+
+  // Body según el Content-Type decidido por Orval
+  let body: BodyInit | undefined;
+  if (needsBody(method) && data != null) {
+    const ct = (finalHeaders["Content-Type"] || finalHeaders["content-type"] || "").toLowerCase();
+
+    if (data instanceof FormData || data instanceof URLSearchParams || data instanceof Blob) {
+      body = data as BodyInit;
+      if (data instanceof FormData) {
+        delete finalHeaders["Content-Type"];
+        delete finalHeaders["content-type"];
+      }
+    } else if (ct.includes("application/json")) {
+      body = typeof data === "string" ? data : JSON.stringify(data);
+    } else if (ct.includes("text/plain")) {
+      body = typeof data === "string" ? data : String(data);
+    } else if (ct.includes("application/x-www-form-urlencoded")) {
+      const usp = new URLSearchParams();
+      Object.entries(data as Record<string, any>).forEach(([k, v]) => {
+        if (v != null) usp.append(k, String(v));
+      });
+      body = usp as BodyInit;
+    } else {
+      body = typeof data === "string" ? data : JSON.stringify(data);
+      if (!ct) finalHeaders["Content-Type"] = "application/json";
+    }
+  }
 
   const response = await fetch(fullUrl, {
     method,
-    headers: {
-      'Content-Type': 'application/json',
-      ...(bearerToken ? { Authorization: `Bearer ${bearerToken}` } : {}),
-      ...(!isPublicByPattern && userToken ? { user_token: userToken } : {}),
-      ...headers,
-    },
-    body: body ? JSON.stringify(body) : undefined,
+    headers: finalHeaders,
+    body,
+    signal,
   });
 
+  if (response.status === 204) return undefined as TResponse;
+
+  // HTTP error (!2xx)
   if (!response.ok) {
-    let errorText: string;
+    let errorText = `HTTP ${response.status}`;
     try {
-      errorText = await response.text();
-    } catch {
-      errorText = 'Unknown error';
+      const ct = response.headers.get("content-type") || "";
+      if (ct.includes("application/json")) {
+        const j = await response.json();
+        errorText = j?.message ?? j?.error ?? j?.msg ?? JSON.stringify(j);
+        throw new ApiError(errorText, response.status, j);
+      } else {
+        errorText = await response.text();
+        throw new ApiError(errorText || `Error ${response.status}`, response.status, null);
+      }
+    } catch (e) {
+      if (e instanceof ApiError) throw e;
+      throw new ApiError(errorText || `Error ${response.status}`, response.status, null);
     }
-    throw new Error(`Error ${response.status}: ${errorText}`);
   }
 
-  const result = await response.json();
+  const respCT = response.headers.get("content-type") || "";
+  const result: any = respCT.includes("application/json")
+    ? await response.json()
+    : await response.text();
 
+  // Sesión inválida → logout + ApiError
   const mensajesSesionInvalida = [
     "Invalid user",
     "Invalid User",
     "Usuario inválido",
     "Sesión inválida o expirada",
-    "Debe ingresar para ver estos datos"
+    "Debe ingresar para ver estos datos",
   ];
+  const lower = (x: any) => String(x ?? "").toLowerCase();
+  const msg = lower(result?.msg);
+  const err = lower(result?.error);
+  
+  const sessionInvalidOrExpired =
+    !isPublic &&
+    (mensajesSesionInvalida.some(m => m.toLowerCase() === msg) ||
+     mensajesSesionInvalida.some(m => m.toLowerCase() === err));
 
-  const msg = String(result?.msg ?? "").toLowerCase();
-  const err = String(result?.error ?? "").toLowerCase();
-
-  const invalidByMessage =
-  !isPublicByPattern &&
-  (mensajesSesionInvalida.some(m => m.toLowerCase() === msg) ||
-   mensajesSesionInvalida.some(m => m.toLowerCase() === err));
-
-  if (invalidByMessage) {
+  if (sessionInvalidOrExpired) {
     useAuthStore.getState().logout({ expired: true });
-    return { sessionExpired: true } as any;
-  }   
+    throw new ApiError("Sesión inválida o expirada", 401, result);
+  }
 
-  if (response.status === 204) {
-    return undefined as TResponse;
+  if (result?.ok === false) {
+    const message =
+      result?.data?.error ??
+      result?.msg ??
+      result?.message ??
+      result?.error ??
+      "Ha ocurrido un error inesperado";
+
+      throw new ApiError(message, 500, result);
   }
 
   return result as TResponse;

@@ -3,9 +3,35 @@
  * Do not edit manually.
  * WAC API
  * Api para uso interno WAC.
- * OpenAPI spec version: 1.0.0
+ * OpenAPI spec version: 1.0.1
  */
 
+export * from './detenerRecordatorioRenovacion200';
+export * from './detenerRecordatorioRenovacionBody';
+export * from './getAgentesAgencia200';
+export * from './getAgentesAgencia200DataItem';
+export * from './getAgentesAgenciaParams';
+export * from './getAsistenciasAgenteAgencia200';
+export * from './getAsistenciasAgenteAgencia200Data';
+export * from './getAsistenciasAgenteAgencia200DataItemsItem';
+export * from './getAsistenciasAgenteAgencia200DataItemsItemVouchersItem';
+export * from './getAsistenciasAgenteAgencia200DataItemsItemVouchersItemLinksTarjetasEnItem';
+export * from './getAsistenciasAgenteAgencia200DataItemsItemVouchersItemLinksTarjetasEsItem';
+export * from './getAsistenciasAgenteAgencia200DataItemsItemVouchersItemPdfVouchers';
+export * from './getAsistenciasAgenteAgencia200DataPaginacion';
+export * from './getCobrandingConfig200';
+export * from './getCobrandingConfig200Datos';
+export * from './getCobrandingConfigBody';
+export * from './getCotizacionesAgenteAgencia200';
+export * from './getCotizacionesAgenteAgencia200Data';
+export * from './getCotizacionesAgenteAgencia200DataItemsItem';
+export * from './getCotizacionesAgenteAgencia200DataPaginacion';
+export * from './getCotizacionesAgenteAgenciaParams';
+export * from './getDocumentosVoucher200';
+export * from './getDocumentosVoucher200DocumentosItem';
+export * from './getDocumentosVoucher200DocumentosItemLinksTarjetasEnItem';
+export * from './getDocumentosVoucher200DocumentosItemLinksTarjetasEsItem';
+export * from './getDocumentosVoucher200DocumentosItemPdfVouchers';
 export * from './getIdiomaAgentes200';
 export * from './getIdiomaAgentes200DataItem';
 export * from './getIdiomaAgentesParams';
@@ -49,11 +75,37 @@ export * from './getIdiomaVouchersMasterIdMaster200DataItemsItem';
 export * from './getIdiomaVouchersMasterIdMaster200DataVoucher';
 export * from './getIdiomas200';
 export * from './getIdiomas200Data';
+export * from './getLangStrings200';
+export * from './getLangStrings200Data';
+export * from './getLangStringsVersion200';
+export * from './getLangStringsVersion200Data';
+export * from './getLeadEvento200';
+export * from './getLeadEventoBody';
+export * from './getPerfilAgencia200';
+export * from './getPerfilAgencia200Data';
+export * from './getPerfilAgente200';
+export * from './getRenovacionesPendientes200';
+export * from './getRenovacionesPendientes200Data';
+export * from './getRenovacionesPendientes200DataItemsItem';
+export * from './getRenovacionesPendientes200DataItemsItemVentaDatos';
+export * from './getRenovacionesPendientes200DataItemsItemVentaDatosDocumentosItem';
+export * from './getRenovacionesPendientes200DataItemsItemVentaDatosDocumentosItemLinksTarjetasEnItem';
+export * from './getRenovacionesPendientes200DataItemsItemVentaDatosDocumentosItemLinksTarjetasEsItem';
+export * from './getRenovacionesPendientes200DataItemsItemVentaDatosDocumentosItemPdfVouchers';
+export * from './getVouchersMaster200';
+export * from './getVouchersMaster200DataItem';
+export * from './getVouchersMasterDetail200';
+export * from './getVouchersMasterDetail200Data';
+export * from './getVouchersMasterDetail200DataItemsItem';
+export * from './getVouchersMasterDetail200DataVoucher';
+export * from './postAgenteLogin200';
+export * from './postAgenteLoginBody';
 export * from './postIdiomaLeadEvento200';
 export * from './postIdiomaLeadEventoBody';
 export * from './postIdiomaLogin200';
 export * from './postIdiomaLoginBody';
 export * from './postIdiomaLogout200';
+export * from './postLogout200';
 export * from './reporteVentasAgenciaResponse';
 export * from './reporteVentasAgenciaResponseData';
 export * from './reporteVentasAgenciaResponseDataAcums';

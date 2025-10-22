@@ -7,9 +7,9 @@ import { AgentsTable } from '../components/Tables/AgentsTable';
 //import { agentsData } from '../data/agentData';
 import CreateAgentVertical from '../components/Forms/CreateAgentVertical';
 import { useTranslation } from 'react-i18next';
-import { getIdiomaAgentes } from '../api/generated';
+import { getAgentesAgencia } from '../api/generated';
 import { useI18nCache } from '../i18n/i18nCacheProvider';
-import type { GetIdiomaAgentes200DataItem, GetIdiomaAgentesParams } from '../api/schemas';
+import type { GetAgentesAgencia200DataItem, GetAgentesAgenciaParams } from '../api/schemas';
 import { toast } from '../services/toast';
 
 function Agents() {
@@ -20,7 +20,7 @@ function Agents() {
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
-  const [agentsData, setAgentsData] = useState<GetIdiomaAgentes200DataItem[]>([]);
+  const [agentsData, setAgentsData] = useState<GetAgentesAgencia200DataItem[]>([]);
 
   useEffect(() => {
     onGetAgents();
@@ -37,8 +37,8 @@ function Agents() {
   const onGetAgents = async () => {
     try {
       setLoading(true);
-      const params: GetIdiomaAgentesParams = { agencia: 123 };
-      const res = await getIdiomaAgentes(lang, params);
+      const params: GetAgentesAgenciaParams = { agencia: 123 };
+      const res = await getAgentesAgencia(lang, params);
       if(res.ok){
         setAgentsData(res?.data ?? []);
       }

@@ -10,5 +10,5 @@ export type PostIdiomaLoginBody = {
   /** El email del usuario */
   user?: string;
   /** La contraseña del usuario */
-  password?: string;
+  pw?: string;
 };

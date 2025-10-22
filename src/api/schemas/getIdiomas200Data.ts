@@ -3,7 +3,7 @@
  * Do not edit manually.
  * WAC API
  * Api para uso interno WAC.
- * OpenAPI spec version: 1.0.0
+ * OpenAPI spec version: 1.0.1
  */
 
 export type GetIdiomas200Data = {[key: string]: string};

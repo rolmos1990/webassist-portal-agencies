@@ -2,17 +2,37 @@ openapi: 3.1.0
 info:
   title: WAC API
   description: Api para uso interno WAC.
-  version: 1.0.0
+  version: 1.0.1
+  contact:
+    name: Pixel Media Publicidad
+    url: https://www.pixelmedia.com.pa
+    email: webmaster@weassistgroup.com
 servers:
   - url: "https://dev.weassistgroup.com/admin/api"
     description: Dev server
   - url: "https://www.weassistgroup.com/admin/api"
     description: Production server
-
+tags:
+  - name: idiomas
+    description: Endpoints relacionados con idiomas
+  - name: agentes
+    description: Endpoints de agentes y agencias
+  - name: emisiones
+    description: Endpoints de Emisiones de Vouchers
+  - name: renovaciones
+    description: Endpoints para listado de renovaciones
+  - name: cobranding
+    description: Endpoints para configuración de cobranding
+  - name: leads
+    description: Endpoints para gestión de leads
 paths:
   /idiomas:
     get:
-      summary: Los idiomas que tiene el Sitio
+      summary: Listado de Idiomas
+      description: Los idiomas que tiene el Sitio
+      operationId: getIdiomas
+      tags:
+        - idiomas
       responses:
         "200":
           description: Respuesta exitosa con los idiomas
@@ -37,7 +57,11 @@ paths:
           description: Resource not found
   /{idioma}/lang_strings_version:
     get:
-      summary: Versión de las traducciones del idioma
+      summary: Última versión de las traducciones
+      description: Muestra la última versión de las traducciones del idioma
+      operationId: getLangStringsVersion
+      tags:
+        - idiomas
       parameters:
         - name: idioma
           in: path
@@ -68,7 +92,11 @@ paths:
           description: Resource not found
   /{idioma}/lang_strings:
     get:
-      summary: Las traducciones del idioma
+      summary: Traducciones
+      description: Muestra las traducciones del idioma seleccionado
+      operationId: getLangStrings
+      tags:
+        - idiomas
       parameters:
         - name: idioma
           in: path
@@ -105,7 +133,11 @@ paths:
 
   /{idioma}/documentos/{voucher}:
     get:
-      summary: Devuelve los documentos del voucher entregado
+      summary: Documentos del voucher
+      description: Devuelve los documentos del voucher entregado
+      operationId: getDocumentosVoucher
+      tags:
+        - emisiones
       parameters:
         - name: idioma
           in: path
@@ -181,6 +213,10 @@ paths:
   /{idioma}/login:
     post:
       summary: Iniciar sesión
+      description: Inicia la sesión de un agente
+      operationId: postAgenteLogin
+      tags:
+        - agentes
       parameters:
         - name: idioma
           in: path
@@ -199,7 +235,7 @@ paths:
                   type: string
                   format: email
                   description: El email del usuario
-                password:
+                pw:
                   type: string
                   description: La contraseña del usuario
       responses:
@@ -222,7 +258,11 @@ paths:
 
   /{idioma}/logout:
     post:
-      summary: Cierra la sesión del usuario
+      summary: Cerrar Sesión
+      description: Cierra la sesión del usuario
+      operationId: postLogout
+      tags:
+        - agentes
       parameters:
         - name: idioma
           in: path
@@ -249,7 +289,11 @@ paths:
 
   /{idioma}/reporte-ventas-agencia:
     get:
-      summary: Reporte de ventas por agencia (mes actual)
+      summary: Reporte de ventas por agencia
+      description: Reporte de ventas por agencia (mes actual)
+      operationId: getReporteVentasAgencia
+      tags:
+        - agentes
       parameters:
         - name: idioma
           in: path
@@ -272,7 +316,11 @@ paths:
 
   /{idioma}/reporte-ventas-agencia/{mes_ano}:
     get:
-      summary: Reporte de ventas por agencia filtrado por mes y año (MM-YYYY)
+      summary: Reporte de ventas por agencia (filtrado)
+      description: Reporte de ventas por agencia filtrado por mes y año (MM-YYYY)
+      operationId: getReporteVentasAgenciaFiltrado
+      tags:
+        - agentes
       parameters:
         - name: idioma
           in: path
@@ -302,7 +350,11 @@ paths:
 
   /{idioma}/perfil:
     get:
-      summary: Obtiene el perfil del usuario autenticado
+      summary: Perfil de Agente
+      description: Obtiene el perfil del usuario autenticado
+      operationId: getPerfilAgente
+      tags:
+        - agentes
       parameters:
         - name: idioma
           in: path
@@ -328,10 +380,133 @@ paths:
           description: Bad Request
         "404":
           description: Resource not found
-
+  /{idioma}/cobranding:
+    post:
+      summary: Configuración de una página de cobranding
+      description: Devuelve la configuración de una página de cobranding para un idioma y URL específicos.
+      operationId: getCobrandingConfig
+      tags:
+        - cobranding
+      parameters:
+        - name: idioma
+          in: path
+          required: true
+          description: Idioma de la configuración.
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                url:
+                  type: string
+                  description: URL para obtener la configuración de cobranding.
+      responses:
+        '200':
+          description: Respuesta exitosa
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                  datos:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                      agencia:
+                        type: string
+                      agente:
+                        type: string
+                      color1:
+                        type: string
+                      color2:
+                        type: string
+                      color3:
+                        type: string
+                      color4:
+                        type: string
+                      logo:
+                        type: string
+                      home_sec1_img:
+                        type: string
+                      home_sec3_img1:
+                        type: string
+                      home_sec3_img2:
+                        type: string
+                      home_sec3_img3:
+                        type: string
+                      home_bg_form:
+                        type: string
+                      telefono:
+                        type: string
+                        nullable: true
+                      whatsapp:
+                        type: string
+                        nullable: true
+                      email:
+                        type: string
+                        nullable: true
+                      nombre:
+                        type: string
+                      dominio:
+                        type: string
+                      home_titulo:
+                        type: string
+                      home_subtitulo:
+                        type: string
+                      home_cta1:
+                        type: string
+                      home_sec2_titulo:
+                        type: string
+                      home_sec2_subtitulo:
+                        type: string
+                      home_sec3_titulo:
+                        type: string
+                      home_sec3_subtitulo1:
+                        type: string
+                      home_sec3_texto1:
+                        type: string
+                      home_sec3_subtitulo2:
+                        type: string
+                      home_sec3_texto2:
+                        type: string
+                      home_sec3_subtitulo3:
+                        type: string
+                      home_sec3_texto3:
+                        type: string
+                      home_sec3_cta:
+                        type: string
+                      home_sec4_titulo:
+                        type: string
+                      home_sec4_texto:
+                        type: string
+                      footer_col:
+                        type: string
+                      planes:
+                        type: array
+                        items:
+                          type: string
+                      tipos_planes:
+                        type: array
+                        items:
+                          type: string
+        "400":
+          description: Bad Request
+        "404":
+          description: Resource not found
   /{idioma}/vouchers_master:
     get:
-      summary: Lista los vouchers master disponibles para el usuario autenticado
+      summary: Vouchers Master
+      description: Lista los vouchers master disponibles para el usuario autenticado
+      operationId: getVouchersMaster
+      tags:
+        - emisiones
       parameters:
         - name: idioma
           in: path
@@ -416,7 +591,11 @@ paths:
 
   /{idioma}/vouchers_master/{id_master}:
     get:
-      summary: Obtiene el detalle de un voucher master específico (los vouchers ya creados del master enviado)
+      summary: Detalle de Voucher Master
+      description: Obtiene el detalle de un voucher master específico (los vouchers ya creados del master enviado)
+      operationId: getVouchersMasterDetail
+      tags:
+        - emisiones
       parameters:
         - name: idioma
           in: path
@@ -618,7 +797,11 @@ paths:
 
   /{idioma}/renovaciones-pendientes:
     get:
-      summary: Lista las renovaciones pendientes para el usuario autenticado
+      summary: Renovaciones Pendientes
+      description: Lista las renovaciones pendientes para el usuario autenticado
+      operationId: getRenovacionesPendientes
+      tags:
+        - renovaciones
       parameters:
         - name: idioma
           in: path
@@ -871,9 +1054,51 @@ paths:
         "404":
           description: Resource not found
 
+  /{idioma}/detener_recordatorio_renovacion:
+    post:
+      summary: Detener Recordatorio Renovación
+      description: Desactiva el recordatorio de renovación para el usuario indicado.
+      operationId: detenerRecordatorioRenovacion
+      tags:
+        - renovaciones
+      parameters:
+        - name: idioma
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Código del idioma
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: string
+                  description: ID del usuario/agente para detener el recordatorio
+      responses:
+        "200":
+          description: Operación exitosa
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+        "400":
+          description: Bad Request
+        "404":
+          description: Resource not found
   /{idioma}/agentes:
     get:
-      summary: Lista los agentes de una agencia
+      summary: Agentes de Agencia
+      description: Lista los agentes de una agencia
+      operationId: getAgentesAgencia
+      tags:
+        - agentes
       parameters:
         - name: idioma
           in: path
@@ -967,7 +1192,11 @@ paths:
 
   /{idioma}/perfil-agencia:
     get:
-      summary: Obtiene el perfil de la agencia autenticada
+      summary: Perfil de Agencia
+      description: Obtiene el perfil de la agencia autenticada
+      operationId: getPerfilAgencia
+      tags:
+        - agentes
       parameters:
         - name: idioma
           in: path
@@ -984,109 +1213,113 @@ paths:
               schema:
                 type: object
                 properties:
-                ok:
-                  type: boolean
-                  example: true
-                data:
-                  type: object
-                  properties:
-                    id:
-                      type: string
-                      example: "44"
-                    nombre:
-                      type: string
-                      example: "Justin Peralta"
-                    comision:
-                      type: string
-                      example: "25.00"
-                    creador_agencias:
-                      type: boolean
-                      example: true
-                    padre:
-                      type: string
-                      example: "81"
-                    razon_social:
-                      type: string
-                      example: "si"
-                    ruc:
-                      type: string
-                      example: ""
-                    pais:
-                      type: string
-                      example: "1"
-                    estado:
-                      type: string
-                      nullable: true
-                      example: null
-                    ciudad:
-                      type: string
-                      nullable: true
-                      example: null
-                    direccion:
-                      type: string
-                      example: "Panama, Ciudad de Panama"
-                    codigo_postal:
-                      type: string
-                      nullable: true
-                      example: null
-                    telefono:
-                      type: string
-                      example: "67665750"
-                    contacto:
-                      type: string
-                      example: "2555555"
-                    email:
-                      type: string
-                      example: ""
-                    sitio_web:
-                      type: string
-                      nullable: true
-                      example: null
-                    enviar_copia_vouchers:
-                      type: boolean
-                      example: true
-                    logo:
-                      type: string
-                      nullable: true
-                      example: null
-                    limite_credito:
-                      type: string
-                      example: "1000000.00"
-                    paga_neta:
-                      type: boolean
-                      example: true
-                    agentes_ven_neta:
-                      type: boolean
-                      example: true
-                    tipo_pago:
-                      type: string
-                      example: "1"
-                    permitir_sin_precio:
-                      type: boolean
-                      example: false
-                    vouchers_sin_precio:
-                      type: boolean
-                      example: false
-                    status:
-                      type: string
-                      example: "1"
-                    nombre_padre:
-                      type: string
-                      example: "Columbia Tours"
-                    pais_nombre:
-                      type: string
-                      example: "Panama"
-                    ultimo_login_fecha:
-                      type: string
-                      example: ""
-                    tipo_pago_nombre:
-                      type: string
-                      example: "Directo"
-                    fecha_creacion:
-                      type: string
-                      example: "27/05/2025"
-                usuario:
-                  $ref: "#/components/schemas/UserLogin"
+                  ok:
+                    type: boolean
+                    example: true
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                        example: "44"
+                      nombre:
+                        type: string
+                        example: "Justin Peralta"
+                      comision:
+                        type: string
+                        example: "25.00"
+                      creador_agencias:
+                        type: boolean
+                        example: true
+                      padre:
+                        type: string
+                        example: "81"
+                      razon_social:
+                        type: string
+                        example: "si"
+                      ruc:
+                        type: string
+                        example: ""
+                      pais:
+                        type: string
+                        example: "1"
+                      estado:
+                        type: string
+                        nullable: true
+                        example: null
+                      ciudad:
+                        type: string
+                        nullable: true
+                        example: null
+                      direccion:
+                        type: string
+                        example: "Panama, Ciudad de Panama"
+                      codigo_postal:
+                        type: string
+                        nullable: true
+                        example: null
+                      telefono:
+                        type: string
+                        example: "67665750"
+                      contacto:
+                        type: string
+                        example: "2555555"
+                      email:
+                        type: string
+                        example: ""
+                      sitio_web:
+                        type: string
+                        nullable: true
+                        example: null
+                      enviar_copia_vouchers:
+                        type: boolean
+                        example: true
+                      logo:
+                        type: string
+                        nullable: true
+                        example: null
+                      limite_credito:
+                        type: string
+                        example: "1000000.00"
+                      paga_neta:
+                        type: boolean
+                        example: true
+                      agentes_ven_neta:
+                        type: boolean
+                        example: true
+                      tipo_pago:
+                        type: string
+                        example: "1"
+                      permitir_sin_precio:
+                        type: boolean
+                        example: false
+                      vouchers_sin_precio:
+                        type: boolean
+                        example: false
+                      status:
+                        type: string
+                        example: "1"
+                      nombre_padre:
+                        type: string
+                        example: "Columbia Tours"
+                      pais_nombre:
+                        type: string
+                        example: "Panama"
+                      ultimo_login_fecha:
+                        type: string
+                        example: ""
+                      tipo_pago_nombre:
+                        type: string
+                        example: "Directo"
+                      fecha_creacion:
+                        type: string
+                        example: "27/05/2025"
+                      tipo:
+                        type: string
+                      tipo_nombre:
+                        type: string
+                  usuario:
+                    $ref: "#/components/schemas/UserLogin"
         "400":
           description: Bad Request
         "404":
@@ -1094,7 +1327,11 @@ paths:
 
   /{idioma}/cotizaciones:
     get:
-      summary: Lista las cotizaciones del agente o agencia autenticada
+      summary: Cotizaciones de Agente / Agencia
+      description: Lista las cotizaciones del agente o agencia autenticada
+      operationId: getCotizacionesAgenteAgencia
+      tags:
+        - agentes
       parameters:
         - name: idioma
           in: path
@@ -1158,7 +1395,11 @@ paths:
 
   /{idioma}/asistencias/{pagina}:
     get:
-      summary: Lista las asistencias del agente o agencia autenticada
+      summary: Asistencias del Agente / Agencia
+      description: Lista las asistencias del agente o agencia autenticada
+      operationId: getAsistenciasAgenteAgencia
+      tags:
+        - emisiones
       parameters:
         - name: idioma
           in: path
@@ -1262,7 +1503,11 @@ paths:
           description: Resource not found
   /{idioma}/lead_evento:
     post:
-      summary: Registra un lead de evento
+      summary: Lead
+      description: Registra un lead de evento
+      operationId: getLeadEvento
+      tags:
+        - leads
       parameters:
         - name: idioma
           in: path
@@ -1318,13 +1563,6 @@ paths:
 
 components:
   schemas:
-    Respuesta:
-      type: array
-      description: Un array con la respuesta, depende del endpoint
-      items:
-        type: object
-        additionalProperties:
-          type: string
     User:
       type: object
       properties:

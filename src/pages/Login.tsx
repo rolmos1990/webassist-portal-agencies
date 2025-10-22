@@ -3,52 +3,54 @@ import logo from '../assets/images/logo2.png';
 import LoginForm from '../components/Forms/LoginForm';
 import { useAuthStore } from '../stores/useAuthStore';
 import { useLocation } from 'react-router-dom';
-import { usePostIdiomaLogin } from '../api/generated';
+import { usePostAgenteLogin } from '../api/generated';
+import { ApiError } from "../api/errors/ApiError";
+import { toast } from "../services/toast";
+import { useTranslation } from "react-i18next";
+
 
 
 const Login = () => {
   const navigate = useNavigate();
   const login = useAuthStore((s) => s.login);
   const location = useLocation() as any;
-  const { mutateAsync: doLogin, isPending } = usePostIdiomaLogin();
+  const { mutateAsync: postLogin, isPending } = usePostAgenteLogin();
+  const { i18n } = useTranslation(); // ✅ añadimos esto
 
 
 
   const handleLogin = async (data: any) => {
+    try {
+      const res: any = await postLogin({
+        idioma: i18n.language,
+        data: { user: data.email, pw: data.password },
+      });
 
-    const res: any = await doLogin({
-      idioma: "en",
-      data: { user: data.email, password: data.password },
-    });
-
-    const ok = res?.ok ?? true;
-    if (!ok) {
-      throw new Error(res?.message ?? "Credenciales inválidas");
+      const exp = res?.exp ?? res?.expires_in;
+      const expiresAt = computeExpiresAt(exp);
+  
+      const user =
+        res?.data ??
+        {
+          id: String(res?.id),
+          email: data.email,
+          name: res?.name,
+          roles: res?.roles,
+        };
+  
+      login({ userToken: res?.data?.token_api, expiresAt, user });
+  
+      const to = location.state?.from?.pathname || "/";
+      navigate(to, { replace: true });
+  
+    } catch (err: any) {  
+      if (err instanceof ApiError) {
+        toast.error(i18n.t("login_agente"), err.message);
+        return;
+      }
+  
+      toast.error(i18n.t("login_agente"), "Error desconocido");
     }
-
-    const token = res?.data?.token_api;
-
-    console.log('res: ',  res);
-
-    console.log('token: ', token);
-
-    const exp = res?.exp ?? res?.expires_in;
-    const expiresAt = computeExpiresAt(exp);
-
-    const user =
-    res?.data ??
-    {
-      id: String(res?.id),
-      email: data.email,
-      name: res?.name,
-      roles: res?.roles,
-    };
-
-    login({ userToken: token, expiresAt, user });
-    const to = location.state?.from?.pathname || "/";
-    navigate(to, { replace: true });
-    return { handleLogin, isLoggingIn: isPending };
-      
   };
 
   return (

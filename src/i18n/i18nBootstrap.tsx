@@ -5,8 +5,8 @@ import i18n from '../i18n/i18n';
 
 // Hooks generados por Orval (ajusta los nombres si difieren)
 import {
-  useGetIdiomaLangStringsVersion,
-  useGetIdiomaLangStrings,
+  useGetLangStringsVersion,
+  useGetLangStrings,
 } from '../api/generated';
 
 const NAMESPACE = 'translation';
@@ -14,7 +14,7 @@ const NAMESPACE = 'translation';
 export function I18nBootstrap() {
     const { lang, token, setToken } = useI18nCache();
 
-    const { data: fetchedToken } = useGetIdiomaLangStringsVersion<string>(
+    const { data: fetchedToken } = useGetLangStringsVersion<string>(
         lang,
         {
           query: {
@@ -28,7 +28,7 @@ export function I18nBootstrap() {
 
       console.log('language - tokenChanged: ', tokenChanged);
 
-      const { data: fetchedStrings } = useGetIdiomaLangStrings<LangStrings>(
+      const { data: fetchedStrings } = useGetLangStrings<LangStrings>(
         lang,
         {
           query: {
