@@ -13,6 +13,7 @@ export interface CreateAgencyFormData {
 
 interface Props {
     onSubmit: (data: CreateAgencyFormData) => void;
+    isLoading?: boolean;
   }
 
   const schema = yup.object({
@@ -21,7 +22,7 @@ interface Props {
   });
 
 
-const LoginForm: React.FC<Props> = ({ onSubmit }) => {
+const LoginForm: React.FC<Props> = ({ onSubmit, isLoading }) => {
     const {
       register,
       handleSubmit,
@@ -80,9 +81,9 @@ const LoginForm: React.FC<Props> = ({ onSubmit }) => {
           pill={false}
           size="lg"
           className="d-inline-block w-100"
-          disabled={isSubmitting}
+          disabled={isSubmitting || isLoading}
         >
-          Login
+          Login {isLoading && <div className="spinner-border spinner-border-sm ms-2 text-white" role="status" aria-hidden="true" />}
         </UIButton>
       </form>
     );
