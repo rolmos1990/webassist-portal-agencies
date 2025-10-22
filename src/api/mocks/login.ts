@@ -1,4 +1,6 @@
-{
+import type { PostAgenteLogin200 } from "../schemas";
+
+export const login: PostAgenteLogin200 = {
     "ok": true,
     "data": {
       "id": "1",

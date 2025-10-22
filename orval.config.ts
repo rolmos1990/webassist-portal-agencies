@@ -1,8 +1,11 @@
-import langStrings from './src/api/mocks/lang_strings.json'; // fixture JSON propia
-import langStringsVersion from './src/api/mocks/lang_strings_version.json'; // fixture JSON propia
-import idiomas from './src/api/mocks/idiomas.json'; // fixture JSON propia
-import login from './src/api/mocks/login.json'; // fixture JSON propia
+import { agents} from './src/api/mocks/agents.ts';
+import { idiomas } from './src/api/mocks/idiomas.ts';
+import { lang_strings } from './src/api/mocks/lang_strings.ts';
+import { lang_strings_version } from './src/api/mocks/lang_strings_version.ts';
+import { login } from './src/api/mocks/login.ts';
+
 import { faker } from '@faker-js/faker';
+
 
 export default {
   weassist: {
@@ -13,6 +16,7 @@ export default {
       client: 'react-query',
       mock: true, 
       mode: 'split', 
+      tsconfig: './tsconfig.orval.json',
       override: {  // aquí dentro de output
         mutator: {
           path: './src/api/custom-fetcher.ts',
@@ -20,7 +24,7 @@ export default {
         },
 
         mock: {
-          useExamples: true,            // usa example/examples del spec si existen
+          useExamples: false,            // usa example/examples del spec si existen
           generateEachHttpStatus: true, // mocks para todos los responses del spec
           properties: {
             '/.*\\.id$/': () => faker.string.uuid(),      // cualquier propiedad que termine en "id"
@@ -30,35 +34,16 @@ export default {
         },
 
         operations: {
-          getIdiomaLangStrings: {
-            mock: {
-              // opción A: fixture estática desde JSON
-              data: () => langStrings,
-            },
-          },
-          getIdiomaLangStringsVersion: {
-            mock: {
-              // opción A: fixture estática desde JSON
-              data: () => langStringsVersion,
-            },
-          },
-          getIdiomas: {
-            mock: {
-              // opción A: fixture estática desde JSON
-              data: () => idiomas,
-            },
-          },
-          postIdiomaLogin: {
-            mock: {
-              // opción A: fixture estática desde JSON
-              data: () => login,
-            },
-          },
+          getIdiomas:                 { mock: { data: () => idiomas } },
+          getLangStrings:             { mock: { data: () => lang_strings } },
+          getLangStringsVersion:      { mock: { data: () => lang_strings_version } },
+          postAgenteLogin:            { mock: { data: () => login } },
+          postLogout:                 { mock: { data: () => agents } },
+          getAgentesAgencia:          { mock: { data: () => agents } },
         },
 
-          createAgente: {
+          createAgent: {
             mock: {
-              // opción B: función dinámica con acceso al request
               data: () => ({
                 ok: true,
                 data: {

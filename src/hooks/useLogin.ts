@@ -32,8 +32,7 @@ export function useLogin() {
         });
 
         const token = res?.data?.token_api;
-        if (!token) throw new ApiError("No se recibió token válido", 400, res);
-
+        
         const exp = res?.exp ?? res?.expires_in;
         const expiresAt = computeExpiresAt(exp);
 
@@ -56,7 +55,7 @@ export function useLogin() {
           toast.error(t("login_agente"), err.message);
         } else {
           console.error("Unexpected Error:", err);
-          toast.error(t("login_agente"), t("error_desconocido", "Error desconocido"));
+          toast.error(t("login_agente"), t("error_desconocido"));
         }
         return false;
       }

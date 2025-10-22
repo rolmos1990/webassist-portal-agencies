@@ -11,6 +11,7 @@ import { getAgentesAgencia } from '../api/generated';
 import { useI18nCache } from '../i18n/i18nCacheProvider';
 import type { GetAgentesAgencia200DataItem, GetAgentesAgenciaParams } from '../api/schemas';
 import { toast } from '../services/toast';
+import { useAuthStore } from '../stores/useAuthStore';
 
 function Agents() {
   const [show, setShow] = useState(false);
@@ -30,6 +31,8 @@ function Agents() {
   const navigate = useNavigate();
     const { t } = useTranslation();
 
+  const agenciaId = useAuthStore((s) => s.user?.agencia) 
+
   const handleSubmit = (data: any) => {
     handleClose();
   };
@@ -37,7 +40,7 @@ function Agents() {
   const onGetAgents = async () => {
     try {
       setLoading(true);
-      const params: GetAgentesAgenciaParams = { agencia: 123 };
+      const params: GetAgentesAgenciaParams = { agencia: Number(agenciaId) };
       const res = await getAgentesAgencia(lang, params);
       if(res.ok){
         setAgentsData(res?.data ?? []);

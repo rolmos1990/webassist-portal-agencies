@@ -1,5 +1,7 @@
 import { useAuthStore } from "../stores/useAuthStore";
 import { ApiError } from "./errors/ApiError";
+import { readEnv } from "../../env";
+
 
 type FetchParams<TBody = any> = {
   url: string;
@@ -15,6 +17,9 @@ const PUBLIC_ENDPOINT_PATTERNS: RegExp[] = [
   /^\/auth\/refresh/i,
   /^\/public\//i,
 ];
+
+const bearerToken = readEnv("VITE_API_BEARER_TOKEN") || "";
+const baseUrl = readEnv("VITE_API_BASE_URL") || "";
 
 const isAbsolute = (u: string) => /^https?:\/\//i.test(u);
 
@@ -35,7 +40,7 @@ const buildUrl = (base: string | undefined, path: string, params?: Record<string
       if (Array.isArray(v)) v.forEach(it => url.searchParams.append(k, String(it)));
       else url.searchParams.set(k, String(v));
     });
-  }
+  } 
 
   return url.toString();
 };
@@ -47,11 +52,9 @@ export const customFetch = async <TResponse = unknown>(
 ): Promise<TResponse> => {
   const { url, method, headers = {}, data, params: query, signal } = params;
 
-  const baseUrl = import.meta.env.VITE_API_BASE_URL || "";
   const fullUrl = buildUrl(baseUrl, url, query);
 
-  const bearerToken = import.meta.env.VITE_API_BEARER_TOKEN || "";
-  const userToken = localStorage.getItem("user_token") || "";
+
   const isPublic = PUBLIC_ENDPOINT_PATTERNS.some(rx => rx.test(url));
 
   // Respetar headers del generado
@@ -59,14 +62,20 @@ export const customFetch = async <TResponse = unknown>(
   if (!finalHeaders["Authorization"] && bearerToken) {
     finalHeaders["Authorization"] = `Bearer ${bearerToken}`;
   }
-  if (!finalHeaders["user_token"] && !isPublic && userToken) {
-    finalHeaders["user_token"] = userToken;
+  
+  const userToken = useAuthStore.getState().userToken || ""; 
+  if (!finalHeaders["UserToken"] && !isPublic && userToken) {
+    finalHeaders["UserToken"] = userToken;
   }
+
+  finalHeaders["Accept"] = "application/json";
 
   // Body según el Content-Type decidido por Orval
   let body: BodyInit | undefined;
+
+  const ct = (finalHeaders["Content-Type"] || finalHeaders["content-type"] || "").toLowerCase();
+
   if (needsBody(method) && data != null) {
-    const ct = (finalHeaders["Content-Type"] || finalHeaders["content-type"] || "").toLowerCase();
 
     if (data instanceof FormData || data instanceof URLSearchParams || data instanceof Blob) {
       body = data as BodyInit;
@@ -86,9 +95,10 @@ export const customFetch = async <TResponse = unknown>(
       body = usp as BodyInit;
     } else {
       body = typeof data === "string" ? data : JSON.stringify(data);
-      if (!ct) finalHeaders["Content-Type"] = "application/json";
     }
   }
+
+  if (!ct) finalHeaders["Content-Type"] = "application/json";
 
   const response = await fetch(fullUrl, {
     method,

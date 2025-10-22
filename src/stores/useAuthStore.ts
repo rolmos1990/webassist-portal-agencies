@@ -7,6 +7,7 @@ export type User = {
   email: string;
   name?: string;
   roles?: string[];
+  agencia: string;
 };
 
 type AuthState = {
