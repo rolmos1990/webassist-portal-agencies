@@ -4,6 +4,7 @@ import * as yup from 'yup';
 import { UIButton } from "../Button";
 import InputText from "./Inputs/InputText";
 import { useNavigate } from 'react-router-dom';
+import { PATHS } from '../../routes/Routes';
 
 export interface FormData {
     password: string;
@@ -71,7 +72,7 @@ const CreateNewPasswordForm: React.FC<Props> = ({ onSubmit }) => {
         <div className="d-flex justify-content-end mb-3">
         <UIButton
           variant="link"
-          onClick={() => navigate('/forgot-password')}
+          onClick={() => navigate(PATHS.auth.forgotPassword())}
           title="Go to: Support"
           >
           Forgot Password?

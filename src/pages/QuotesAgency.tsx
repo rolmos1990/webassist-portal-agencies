@@ -7,7 +7,7 @@ import { quotesData } from '../data/quotesData';
 import { QuotesTable } from '../components/Tables/QuotesTable';
 import { useTranslation } from 'react-i18next';
 
-function MyQuotes() {
+function QuotesAgency() {
   const [show, setShow] = useState(false);
   const { t } = useTranslation();
 
@@ -79,4 +79,4 @@ function MyQuotes() {
   );
 }
 
-export default MyQuotes;
+export default QuotesAgency;

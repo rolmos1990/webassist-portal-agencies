@@ -3,6 +3,7 @@ import { useEffect } from "react";
 import { toast } from "../services/toast";
 import { useTranslation } from "react-i18next";
 import { useAuthStore } from "../stores/useAuthStore";
+import { PATHS } from "./Routes";
 
 const PrivateRoute = () => {
   const { t } = useTranslation();
@@ -19,7 +20,7 @@ const PrivateRoute = () => {
       (!isAuthenticated || isExpired) &&
       lastLogoutExpired &&
       !notifiedLogout &&
-      location.pathname !== "/login";
+      location.pathname !== PATHS.auth.login();
 
     if (shouldNotify) {
       toast.error("Disconnected", t("errors.sessionExpired"));
@@ -36,7 +37,7 @@ const PrivateRoute = () => {
   ]);
 
   if (!isAuthenticated || isExpired) {
-    return <Navigate to="/login" replace state={{ from: location }} />;
+    return <Navigate to={PATHS.auth.login()} replace state={{ from: location }} />;
   }
 
   return <Outlet />;

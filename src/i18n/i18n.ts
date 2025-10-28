@@ -8,21 +8,21 @@ import esCommon from './locales/es/common.json';
 
 // Configuración de i18next
 i18n
-  .use(LanguageDetector) // Detecta el idioma del navegador
-  .use(initReactI18next) // Pasa i18n a react-i18next
+  .use(LanguageDetector)
+  .use(initReactI18next)
   .init({
-    fallbackLng: 'es', // Idioma por defecto
+    fallbackLng: 'es',
     debug: process.env.NODE_ENV === 'development',
-    interpolation: {
-      escapeValue: false, // No es necesario para React
+    interpolation: { escapeValue: false },
+    detection: {
+      order: ['path', 'localStorage', 'navigator', 'htmlTag'],
+      lookupFromPathIndex: 0,
+      caches: ['localStorage'],
+      excludeCacheFor: ['cimode'],
     },
     resources: {
-      en: {
-        common: enCommon,
-      },
-      es: {
-        common: esCommon,
-      },
+      en: { common: enCommon },
+      es: { common: esCommon },
     },
   });
 

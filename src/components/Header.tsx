@@ -1,21 +1,23 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import iconRounded from "../assets/images/icons/rounded-icon.svg";
 import Search from "./common/Search";
 import NotificationsDropdown from "./NotificationDropdown";
 import type { NotificationItem } from "./NotificationDropdown";
 import Dropdown, { DropdownDivider, DropdownItem } from "./Dropdown";
 import { useAuthStore } from '../stores/useAuthStore';
-
+import { useTranslation } from "react-i18next";
+import { PATHS } from "../routes/Routes";
+import { useNavigate } from "react-router-dom";
 
 function Header() {
   const navigate = useNavigate();
   const logout = useAuthStore((s) => s.logout);
+  const { t } = useTranslation();
 
   const [notifications, setNotifications] = useState<NotificationItem[]>([
-    { id: 1, title: "Target Achieved", time: "2 mins ago", message: "Congrats! You’ve hit 80%.", unread: true },
-    { id: 2, title: "Agent Joined", time: "1 hr ago", message: "Sarah Parker joined your team.", unread: true },
-    { id: 3, title: "New Program Added", time: "3 hr ago", message: "“Premium Travel Care” is now available." },
+    //{ id: 1, title: "Target Achieved", time: "2 mins ago", message: "Congrats! You’ve hit 80%.", unread: true },
+    //{ id: 2, title: "Agent Joined", time: "1 hr ago", message: "Sarah Parker joined your team.", unread: true },
+    //{ id: 3, title: "New Program Added", time: "3 hr ago", message: "“Premium Travel Care” is now available." },
   ]);
 
 
@@ -35,12 +37,12 @@ function Header() {
         <NotificationsDropdown
           items={notifications}
           onItemClick={(item) => {
-            navigate(`/users/${item.id}`);
+            navigate(PATHS.agencies.detail(item.id));
             setNotifications((prev) =>
               prev.map((n) => (n.id === item.id ? { ...n, unread: false } : n))
             );
           }}
-          onOpenAll={() => navigate(`/users`)}
+          onOpenAll={() => navigate(PATHS.agencies.list())}
         />
 
         <Dropdown
@@ -55,8 +57,8 @@ function Header() {
             />
           }
         >
-          <DropdownItem onClick={() => navigate("/settings")}>Settings</DropdownItem>
-          <DropdownItem onClick={() => navigate("/profile")}>Profile</DropdownItem>
+          <DropdownItem onClick={() => navigate(PATHS.settings())}>{t('settings')}</DropdownItem>
+          <DropdownItem onClick={() => navigate(PATHS.settings())}>{t('profile')}</DropdownItem>
           <DropdownDivider />
           <DropdownItem onClick={() => logout()}>Sign out</DropdownItem>
         </Dropdown>

@@ -10,6 +10,7 @@ import { PlanListDataExample } from '../examples/planListExample';
 import { StadingQuotesExample } from '../examples/stadingQuotes';
 import Breadcrumb from '../components/Breadcrumb';
 import { defaultStatusTheme } from '../components/StatusBadge/StatusBadgeThemes';
+import { PATHS } from '../routes/Routes';
 
 export default function ClientDetail() {
     const navigate = useNavigate();
@@ -81,7 +82,7 @@ export default function ClientDetail() {
                           content: (
                             <ListGroup>
                               {PlanListDataExample().map((plan, index) => (
-                                <ListItem key={index} onClick={() => navigate(`/users/1/plan/123`)}>
+                                <ListItem key={index} onClick={() => navigate(PATHS.agencies.detail(123))}>
                                   <ListContent title="Plan Number" colSize={6}>{plan.planNumber}</ListContent>
                                   <ListContent title="Plan Name" colSize={6}>{plan.planName}</ListContent>
                                   <ListContent title="Status" colSize={6}><StatusBadge status={plan.status} theme={defaultStatusTheme} /></ListContent>

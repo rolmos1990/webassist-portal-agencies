@@ -2,6 +2,7 @@ import { useNavigate } from 'react-router-dom';
 import logo from '../assets/images/logo2.png';
 import { UIButton } from '../components/Button';
 import ForgotPasswordForm from '../components/Forms/ForgotPasswordForm';
+import { PATHS } from '../routes/Routes';
 
 
 const ForgotPassword = () => {
@@ -26,7 +27,7 @@ const ForgotPassword = () => {
                 variant="whiteLink"
                 icon="bi bi-arrow-left"
                 iconPosition="left"
-                onClick={() => navigate('/login')}
+                onClick={() => navigate(PATHS.auth.login())}
             >
                 Back to log in
             </UIButton>

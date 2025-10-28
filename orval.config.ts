@@ -1,9 +1,4 @@
-import { agents} from './src/api/mocks/agents.ts';
-import { idiomas } from './src/api/mocks/idiomas.ts';
-import { lang_strings } from './src/api/mocks/lang_strings.ts';
-import { lang_strings_version } from './src/api/mocks/lang_strings_version.ts';
-import { login } from './src/api/mocks/login.ts';
-
+import * as mocks from "./src/api/mocks";
 import { faker } from '@faker-js/faker';
 
 
@@ -17,7 +12,7 @@ export default {
       mock: true, 
       mode: 'split', 
       tsconfig: './tsconfig.orval.json',
-      override: {  // aquí dentro de output
+      override: {
         mutator: {
           path: './src/api/custom-fetcher.ts',
           name: 'customFetch',
@@ -34,26 +29,21 @@ export default {
         },
 
         operations: {
-          getIdiomas:                 { mock: { data: () => idiomas } },
-          getLangStrings:             { mock: { data: () => lang_strings } },
-          getLangStringsVersion:      { mock: { data: () => lang_strings_version } },
-          postAgenteLogin:            { mock: { data: () => login } },
-          postLogout:                 { mock: { data: () => agents } },
-          getAgentesAgencia:          { mock: { data: () => agents } },
+          getIdiomas:                               { mock: { data: () => mocks.idiomas } },
+          getLangStrings:                           { mock: { data: () => mocks.lang_strings } },
+          getLangStringsVersion:                    { mock: { data: () => mocks.lang_strings_version } },
+          postAgenteLogin:                       { mock: { data: () => mocks.agente_login } },
+          postLogout:                               { mock: { data: () => mocks.agente_logout } },
+          getAgentesAgencia:                        { mock: { data: () => mocks.agentes_agencia } },
+          getReporteVentasAgencia:                  { mock: { data: () => mocks.reporte_ventas_agencia } },
+          getReporteVentasAgenciaFiltrado:          { mock: { data: () => mocks.reporte_ventas_agencia_filtrado } },
+          getPerfilAgencia:                         { mock: { data: () => mocks.perfil_agencia } },
+          getPerfilAgente:                          { mock: { data: () => mocks.perfil_agente } },
+          getCotizacionesAgenteAgencia:             { mock: { data: () => mocks.cotizaciones_agente_agencia } },
+          getPerfil:                                { mock: { data: () => mocks.perfil } },
+          getAsistenciasAgenteAgencia:              { mock: { data: () => mocks.asistencias_agente_agencia } },
+        }
         },
-
-          createAgent: {
-            mock: {
-              data: () => ({
-                ok: true,
-                data: {
-                  id: faker.string.uuid(),
-                  createdAt: new Date().toISOString(),
-                },
-              }),
-            },
-          },
       },
     },
-  },
 };

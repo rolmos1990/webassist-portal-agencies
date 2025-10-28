@@ -1590,48 +1590,53 @@ components:
       properties:
         id:
           type: string
+          example: "123"
         email:
           type: string
+          example: "example@domain.com"
         pais:
           type: string
           nullable: true
-          example: null
+          example: "1"
         nombre:
           type: string
+          example: "Nombre"
         apellido:
           type: string
+          example: "Apellido"
         telefono:
           type: string
+          example: ""
+        whatsapp:
+          type: string
+          example: ""
         ultimo_login:
           type: string
-          example: "1758296449"
+          example: "1761165212"
         imagen:
           type: string
           example: ""
         distribuidor:
           type: string
-          example: "44"
+          example: "1"
         comision:
           type: string
           example: "0.00"
         cambiar_password:
           type: string
-          example: "0"
+          example: "1"
         rol:
           type: string
           example: "1"
         tipo_pago:
           type: string
-          example: "2"
+          example: "1"
         qr:
           type: string
-          example: "agente_197.png"
-        token_api:
-          type: string
-          example: "529c7985d3973aa370134805f05c0206c67221809314b30093c059e5f537273f"
+          example: "agente_123.png"
         recibir_correos_renovaciones:
-          type: string
-          example: "1"
+          type: boolean
+          example: true
         correo_renovaciones_alternativo:
           type: string
           example: ""
@@ -1640,18 +1645,23 @@ components:
           example: "1"
         userid:
           type: string
+          example: "123"
         nombre_completo:
           type: string
-          example: "test test"
+          example: "Nombre Apellido"
         cambiarpassword:
           type: boolean
-          example: false
+          example: true
         agencia:
           type: string
-          example: "44"
+          example: "1"
         idioma_user:
           type: string
-          example: "es"
+          nullable: true
+          example: null
+        token_api:
+          type: string
+          example: "<token>"
         roles:
           type: array
           items:

@@ -2,7 +2,7 @@
 import { type ColumnDef } from "../DataTable";
 import RowActions from "../RowActions";
 import { StatusBadge } from "../StatusBadge";
-import { defaultStatusTheme } from "../StatusBadge/StatusBadgeThemes";
+import { statusAgentTheme } from "../StatusBadge/StatusBadgeThemes";
 import type { GetIdiomaAgentes200DataItem } from "../../api/schemas";
 
 type CreateColumnsDeps = {
@@ -22,72 +22,63 @@ export function createAgentColumns({
 }: CreateColumnsDeps): ColumnDef<GetIdiomaAgentes200DataItem>[] {
   return [
     {
-      id: "agentCode",
-      label: t("agents.agentCode"),
-      width: "14%",
+      id: "codigo",
+      label: t("codigo_agente"),
+      width: "12%",
       sortable: true,
-      accessor: (row) => row.id,
+      accessor: (row) => row.codigo,
       align: "start",
     },
     {
       id: "name",
-      label: t("agents.name"),
-      width: "28%",
-      sortable: true,
+      label: t("nombre"),
+      width: "26%",
+      sortable: false,
       accessor: (row) => row.nombre,
       align: "start",
     },
     {
       id: "lastName",
-      label: t("agents.lastName"),
-      width: "20%",
-      sortable: true,
+      label: t("apellido"),
+      width: "18%",
+      sortable: false,
       accessor: (row) => row.apellido,
       align: "start",
       render: (row) => row.apellido,
     },
     {
       id: "email",
-      label: t("agents.email"),
+      label: t("correo"),
       width: "14%",
       sortable: true,
       accessor: (row) => row.email,
       align: "center",
     },
     {
-      id: "agencyName",
-      label: t("agents.rol"),
-      width: "14%",
+      id: "rol",
+      label: t("rol"),
+      width: "12%",
       sortable: true,
       accessor: (row) => row.rol,
       align: "start",
     },
     {
-      id: "totalSales",
-      label: t("agents.totalSales"),
-      width: "14%",
+      id: "comision",
+      label: t("comision"),
+      width: "12%",
       sortable: true,
       accessor: (row) => row.comision,
-      render: (row) => currency(Number(row.comision) ?? 0),
-      align: "start",
-    },
-    {
-      id: "totalCommission",
-      label: t("agents.totalCommission"),
-      width: "14%",
-      sortable: true,
-      accessor: (row) => row.comision,
-      render: (row) => currency(Number(row.comision) ?? 0),
+      render: (row) => row.comision,
       align: "start",
     },    
     {
       id: "status",
-      label: t("agents.status"),
-      width: "8%",
+      label: t("status"),
+      width: "5%",
       sortable: true,
       accessor: (row) => row.status,
       align: "end",
-      render: (row) => <StatusBadge status={row.status ?? ""} theme={defaultStatusTheme} />,
+      render: (row) => <StatusBadge status={row.status ?? ""} theme={statusAgentTheme} />,
     },
     {
       id: "actions",
@@ -100,7 +91,7 @@ export function createAgentColumns({
             icon="bi-pencil"
             onClick={onEdit}
           >
-            {t("agents.edit")}
+            {t("editar")}
           </RowActions.Item>
 
           <RowActions.Item<GetIdiomaAgentes200DataItem>
@@ -108,8 +99,8 @@ export function createAgentColumns({
             onClick={onToggle}
           >
             {row.status === "Active"
-              ? t("agents.markInactive")
-              : t("agents.markActive")}
+              ? t("activar")
+              : t("inactivar")}
           </RowActions.Item>
 
           <RowActions.Divider />
@@ -119,7 +110,7 @@ export function createAgentColumns({
             danger
             onClick={onDelete}
           >
-            {t("agents.delete")}
+            {t("eliminar")}
           </RowActions.Item>
         </RowActions>
       ),

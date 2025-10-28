@@ -1,5 +1,6 @@
 import "../assets/scss/components/_customer-card.scss";
 import { UIButton } from "./Button";
+import { useTranslation } from "react-i18next";
 
 type Gender = "Male" | "Female" | string;
 
@@ -7,15 +8,14 @@ export interface CustomerCardProps {
   name: string;
   gender: Gender;
   idNumber: string;
-  amount: number; // 112.84
-  dob: string; // "24/12/1975"
-  phone: string; // "+507666712785"
+  amount: number;
+  dob: string;
+  phone: string;
   email: string;
-  medicalTitle?: string; // "Medical condition or Pre existing Condition"
-  medicalDetails?: string; // "Controlled hypertension, ..."
+  medicalDetails?: string;
   onViewCard?: () => void;
   onViewCertification?: () => void;
-  currency?: string; // default: USD
+  currency?: string;
 }
 
 const genderIcon = (g: Gender) => {
@@ -45,12 +45,12 @@ export default function CustomerCard({
   dob,
   phone,
   email,
-  medicalTitle = "Medical condition or Pre existing Condition",
   medicalDetails = "",
   onViewCard,
   onViewCertification,
   currency = "USD",
 }: CustomerCardProps) {
+  const { t } = useTranslation();
   const { whole, cents } = formatAmountParts(amount, currency);
 
   return (
@@ -93,15 +93,15 @@ export default function CustomerCard({
         {/* Info grid */}
         <div className="row g-3">
           <div className="col-12 col-md-4">
-            <div className="text-muted small">DOB</div>
+            <div className="text-muted small">{t("pasaporte_viajero")}</div>
             <div>{dob}</div>
           </div>
           <div className="col-12 col-md-4">
-            <div className="text-muted small">Phone</div>
+            <div className="text-muted small">{t("telefono")}</div>
             <div>{phone}</div>
           </div>
           <div className="col-12 col-md-4">
-            <div className="text-muted small">Email</div>
+            <div className="text-muted small">{t("correo")}</div>
             <div className="text-truncate" title={email}>
               {email}
             </div>
@@ -110,9 +110,11 @@ export default function CustomerCard({
 
         {/* Medical section */}
         <div className="mt-4 mb-4">
-          <div className="text-black small">{medicalTitle}</div>
-          {medicalDetails && (
+          <div className="text-black small">{t("medica_viajero")}</div>
+          {medicalDetails ? (
             <div className="text-muted small min-text-height min-lines-2">{medicalDetails}</div>
+          ) : (
+            <div className="text-muted small min-text-height min-lines-2">-</div>
           )}
         </div>
 
@@ -124,7 +126,7 @@ export default function CustomerCard({
             icon="bi bi-file-earmark-arrow-down"
             onClick={onViewCard}
           >
-            Card
+            {t("ver_tarjeta")}
           </UIButton>
           <UIButton
             type="button"
@@ -132,7 +134,7 @@ export default function CustomerCard({
             icon="bi bi-file-earmark-arrow-down"
             onClick={onViewCertification}
           >
-            Certification
+            {t("ver_certificacion")}
           </UIButton>
         </div>
       </div>

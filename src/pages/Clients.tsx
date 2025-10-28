@@ -6,6 +6,7 @@ import Breadcrumb from '../components/Breadcrumb';
 import CreateClientVertical from '../components/Forms/CreateClientVertical';
 import { CustomersTable } from '../components/Tables/CustomerTable';
 import { useNavigate } from 'react-router-dom';
+import { PATHS } from '../routes/Routes';
 
 function Clients() {
   const [show, setShow] = useState(false);
@@ -36,7 +37,7 @@ function Clients() {
   };
 
   const handleEdit = (row: CustomerRow) => {
-    navigate(`/users/${row.id}`);
+    navigate(PATHS.agencies.detail(row.id));
   };
 
   const handleToggle = (row: CustomerRow) => {

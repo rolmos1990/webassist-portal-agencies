@@ -14,6 +14,7 @@ export interface UserLogin {
   nombre?: string;
   apellido?: string;
   telefono?: string;
+  whatsapp?: string;
   ultimo_login?: string;
   imagen?: string;
   distribuidor?: string;
@@ -22,14 +23,15 @@ export interface UserLogin {
   rol?: string;
   tipo_pago?: string;
   qr?: string;
-  token_api?: string;
-  recibir_correos_renovaciones?: string;
+  recibir_correos_renovaciones?: boolean;
   correo_renovaciones_alternativo?: string;
   status?: string;
   userid?: string;
   nombre_completo?: string;
   cambiarpassword?: boolean;
   agencia?: string;
-  idioma_user?: string;
+  /** @nullable */
+  idioma_user?: string | null;
+  token_api?: string;
   roles?: string[];
 }

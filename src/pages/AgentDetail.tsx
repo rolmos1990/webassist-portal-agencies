@@ -18,6 +18,7 @@ import { salesData } from "../data/salesData";
 import { userPermissionsData } from "../data/userPermissionData";
 import { StatusBadge } from "../components/StatusBadge";
 import { defaultStatusTheme } from "../components/StatusBadge/StatusBadgeThemes";
+import { PATHS } from "../routes/Routes";
 
 export default function AgentDetail() {
     const navigate = useNavigate();
@@ -130,7 +131,7 @@ export default function AgentDetail() {
                                                               action={{
                                                                 label: "View Profile",
                                                                 icon: <i className="bi bi-arrow-right"></i>,
-                                                                onClick: () => navigate("/agent/" + agent.id)
+                                                                onClick: () => navigate(PATHS.agencies.detail(agent.id))
                                                               }}
                                                         />
                                                     </div>

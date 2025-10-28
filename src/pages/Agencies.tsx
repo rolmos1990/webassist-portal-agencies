@@ -7,6 +7,7 @@ import { AgencyTable } from '../components/Tables/AgencyTable';
 import { agencyData } from '../data/agencyData';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { PATHS } from '../routes/Routes';
 
 function Agencies() {
   const [show, setShow] = useState(false);
@@ -68,9 +69,9 @@ function Agencies() {
                   data={agencyData}
                   loading={loading}
                   sort={{ sortBy: 'name', sortDir: 'desc' }}
-                  onEdit={(row) => navigate(`/agency/${row.id}`)}
-                  onToggle={(row) => navigate(`/agency/${row.id}`)}
-                  onDelete={(row) => navigate(`/agency/${row.id}`)}
+                  onEdit={(row) => navigate(PATHS.agencies.detail(row.id))}
+                  onToggle={(row) => navigate(PATHS.agencies.detail(row.id))}
+                  onDelete={(row) => navigate(PATHS.agencies.detail(row.id))}
                   onSortChange={({ id, dir }) => {
                       console.log(id, dir);
                   }}

@@ -1,6 +1,5 @@
 import { useCallback, useMemo } from "react";
 import { createAgentColumns } from "./AgentsDataTableConfig";
-//import type { AgentRow } from "../../data/agentData";
 import { useTranslation } from "react-i18next";
 import DataTable, { currency, type SortDir, type SortState } from "../DataTable";
 import type { GetIdiomaAgentes200DataItem } from "../../api/schemas";
@@ -39,7 +38,7 @@ export function AgentsTable({
   onToggle: externalOnToggle,
   onDelete: externalOnDelete
 }: AgentsTableProps) {
-  const { t } = useTranslation('common');
+  const { t } = useTranslation();
 
   const handleEdit = useCallback((row: GetIdiomaAgentes200DataItem) => {
     externalOnEdit?.(row);

@@ -10,7 +10,6 @@ export default function ToastProvider() {
   const [messages, setMessages] = useState<ToastMsg[]>([]);
   const instancesRef = useRef<Map<number, BSToast>>(new Map());
 
-  // Registrar entrada de toasts
   useEffect(() => {
     toast.register((type, title, message) => {
       const id = Date.now() + Math.random();
@@ -45,7 +44,6 @@ export default function ToastProvider() {
           style={{ minWidth: "320px" }}
           data-id={t.id}
           ref={(el) => {
-            // Crear/mostrar la instancia SOLO una vez por toast
             if (!el || instancesRef.current.has(t.id)) return;
 
             const instance = BSToast.getOrCreateInstance(el, {
@@ -54,7 +52,6 @@ export default function ToastProvider() {
             });
 
             el.addEventListener("hidden.bs.toast", () => {
-              // limpiar instancia + sacar del listado
               instancesRef.current.delete(t.id);
               setMessages(prev => prev.filter(m => m.id !== t.id));
             });

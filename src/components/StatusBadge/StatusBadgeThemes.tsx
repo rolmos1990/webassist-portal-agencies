@@ -8,3 +8,8 @@ export const defaultStatusTheme: StatusTheme = {
   Error:    { tone: "danger",  label: "Error" },
   default:  { tone: "info" },
 };
+
+export const statusAgentTheme: StatusTheme = {
+  "1":   { tone: "success" , label: "Activo" },
+  "0": { tone: "danger" , label: "Inactivo" },
+};

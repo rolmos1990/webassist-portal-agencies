@@ -1,6 +1,6 @@
 import type { PostAgenteLogin200 } from "../schemas";
 
-export const login: PostAgenteLogin200 = {
+export const agente_login: PostAgenteLogin200 = {
     "ok": true,
     "data": {
       "id": "1",
@@ -18,7 +18,7 @@ export const login: PostAgenteLogin200 = {
       "tipo_pago": "2",
       "qr": "agente_197.png",
       "token_api": "529c7985d3973aa370134805f05c0206c67221809314b30093c059e5f537273f",
-      "recibir_correos_renovaciones": "1",
+      "recibir_correos_renovaciones": true,
       "correo_renovaciones_alternativo": "",
       "status": "1",
       "userid": "string",

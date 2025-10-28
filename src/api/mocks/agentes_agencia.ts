@@ -1,6 +1,6 @@
 import type { GetAgentesAgencia200 } from '../schemas';
 
-export const agents: GetAgentesAgencia200 = {
+export const agentes_agencia: GetAgentesAgencia200 = {
   ok: true,
   data: [
     {
@@ -32,6 +32,35 @@ export const agents: GetAgentesAgencia200 = {
       email_bienvenida_fecha: "2024-12-20",
       fecha_creacion: "2024-12-20",
     },
+    {
+      id: "198",
+      email: "agente.demo2@weassist.com",
+      pais: "PA",
+      nombre: "Marcos",
+      apellido: "Perez",
+      telefono: "+50766778899",
+      xxx_tipo: "agente_secundario",
+      password_ini: "Agente#2024",
+      ultimo_login: "2025-01-10 14:22:01",
+      imagen: "/uploads/agentes/198/profile.jpg",
+      distribuidor: "44",
+      comision: "13.50",
+      rol: "agente",
+      email_registro: "1",
+      email_bienvenida: "1",
+      tipo_pago: "2",
+      ts_creacion: "1735324800",
+      idioma: "es",
+      qr: "agente_198.png",
+      recibir_correos_renovaciones: "1",
+      correo_renovaciones_alternativo: "",
+      status: "0",
+      codigo: "AGT-0198",
+      ultimo_login_fecha: "2025-01-10",
+      email_registro_fecha: "2024-12-20",
+      email_bienvenida_fecha: "2024-12-20",
+      fecha_creacion: "2024-12-20",
+    },
   ],
   usuario: {
     id: "1",
@@ -49,7 +78,6 @@ export const agents: GetAgentesAgencia200 = {
     tipo_pago: "2",
     qr: "agente_197.png",
     token_api: "529c7985d3973aa370134805f05c0206c67221809314b30093c059e5f537273f",
-    recibir_correos_renovaciones: "1",
     correo_renovaciones_alternativo: "",
     status: "1",
     userid: "string",
