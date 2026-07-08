@@ -5,14 +5,12 @@ import * as yup from 'yup';
 import { RowView } from '../RowView';
 import InputSelect, { type SelectOption } from './Inputs/InputSelect';
 import InputWithAddon from './Inputs/InputWithAddon';
-import { useMemo, useState } from 'react';
+import { useState } from 'react';
 import { UIButton } from '../Button';
+import { useTranslation } from 'react-i18next';
 
 export interface SettingsGeneralFormData {
   language: string;
-  timeZone: string;
-  dateFormat: string;
-  currency: string;
   defaultComissionRate: number;
   renewalComissionRate: number;
   minimiumRenevueTarget: number;
@@ -20,9 +18,6 @@ export interface SettingsGeneralFormData {
 
 const schema = yup.object({
   language: yup.string().required('Language is required'),
-  timeZone: yup.string().required('Time Zone is required'),
-  dateFormat: yup.string().required('Date Format is required'),
-  currency: yup.string().required('Currency is required'),
   defaultComissionRate: yup.number().required('Default Comission Rate is required'),
   renewalComissionRate: yup.number().required('Renewal Comission Rate is required'),
   minimiumRenevueTarget: yup.number().required('Minimum Revenue Target is required')
@@ -36,19 +31,8 @@ interface Props {
 }
 
 const LANGUAGE_OPTS: SelectOption[] = [
-  { value: 'English', label: 'English' },
-  { value: 'Spanish', label: 'Spanish' },
-];
-
-const TZ_OPTS: SelectOption[] = [
-  { value: 'America/Panama', label: '(GMT-5) America/Panama' },
-];
-
-const DATE_OPTS: SelectOption[] = [{ value: 'dd/mm/yyyy', label: 'dd/mm/yyyy' }];
-
-const CURRENCY_OPTS: SelectOption[] = [
-  { value: 'USD', label: 'USD' },
-  { value: 'EUR', label: 'EUR' },
+  { value: 'en', label: 'English' },
+  { value: 'es', label: 'Spanish' },
 ];
 
 const SELECT_ROWS: Array<{
@@ -56,14 +40,12 @@ const SELECT_ROWS: Array<{
   name: keyof SettingsGeneralFormData;
   options: SelectOption[];
 }> = [
-  { label: 'Language', name: 'language', options: LANGUAGE_OPTS },
-  { label: 'Time Zone', name: 'timeZone', options: TZ_OPTS },
-  { label: 'Date format', name: 'dateFormat', options: DATE_OPTS },
-  { label: 'Currency Settings', name: 'currency', options: CURRENCY_OPTS },
+  { label: 'Language', name: 'language', options: LANGUAGE_OPTS }
 ];
 
 
 export default function SettingsGeneralForm({ initialValues, onSubmit, onCancel }: Props) {
+  const { t } = useTranslation();
   const {
     register,
     handleSubmit,
@@ -76,7 +58,6 @@ export default function SettingsGeneralForm({ initialValues, onSubmit, onCancel 
   });
 
   const watched = useWatch({ control });
-  const currency = watched.currency ?? 'USD';
 
   const [editable, setEditable] = useState(false);
 
@@ -93,12 +74,6 @@ export default function SettingsGeneralForm({ initialValues, onSubmit, onCancel 
   };
 
 
-  const moneyFmt = useMemo(
-    () => new Intl.NumberFormat('en-US', { style: 'currency', currency }),
-    [currency]
-  );
-
-
   return (
     <form
       onSubmit={handleSubmit(handleFormSubmit)}
@@ -106,7 +81,7 @@ export default function SettingsGeneralForm({ initialValues, onSubmit, onCancel 
       noValidate
     >
                    
-      <h6 className="text-black fw-semibold mb-3 border-bottom pb-2">User Preference</h6>
+      <h6 className="text-black fw-semibold mb-3 border-bottom pb-2">{t('user_preference')}</h6>
       
       {/* --- Selects generados por configuración --- */}
       {SELECT_ROWS.map(({ label, name, options }) => (
@@ -135,12 +110,12 @@ export default function SettingsGeneralForm({ initialValues, onSubmit, onCancel 
       <hr className="border-0" />
 
       <div className="mt-4 pt-2">
-        <h6 className="text-black fw-semibold mb-3 border-bottom pb-2">Commission and Revenue Settings</h6>
+        <h6 className="text-black fw-semibold mb-3 border-bottom pb-2">{t('comission_and_revenue_settings')}</h6>
 
         <RowView
-          label="Default Commission Rate (%)"
-          hint="Input for the percentage commission assigned to new agents."
-          edit={editable}
+          label={t('default_commission_rate')}
+          hint={''}
+          edit={false}
           show={<span>{watched.defaultComissionRate} %</span>}
           editNode={
             <InputWithAddon
@@ -158,9 +133,9 @@ export default function SettingsGeneralForm({ initialValues, onSubmit, onCancel 
 
         {/* Renewal Commission */}
         <RowView
-          label="Renewal Commission Rate (%)"
-          hint="Input for commissions on policy renewals."
-          edit={editable}
+          label={t('renewal_commission_rate')}
+          hint={t('')}
+          edit={false}
           show={<span>{watched.renewalComissionRate} %</span>}
           editNode={
             <InputWithAddon
@@ -178,19 +153,19 @@ export default function SettingsGeneralForm({ initialValues, onSubmit, onCancel 
 
         {/* Minimum Revenue Target */}
         <RowView
-          label="Minimum Revenue Target"
-          hint="Set baseline targets for agents or agencies."
-          edit={editable}
+          label={t('minimum_revenue_target')}
+          hint={t('')}
+          edit={false}
           show={
             <span>
-                {moneyFmt.format(watched.minimiumRenevueTarget ?? 0)} {currency}
+                {watched.minimiumRenevueTarget ?? 0}
             </span>
           }
           editNode={
             <InputWithAddon
               name="minimiumRenevueTarget"
               placeholder="0"
-              endAdornment={currency}
+              endAdornment={"$"}
               register={register}
               error={errors.minimiumRenevueTarget}
               // fuerza number en RHF
@@ -208,7 +183,7 @@ export default function SettingsGeneralForm({ initialValues, onSubmit, onCancel 
               onClick={() => setEditable(true)}
               type="button"
             >
-              Edit
+              {t('editar')}
             </UIButton>
           ) : (
             <div className="d-flex gap-2">
@@ -217,13 +192,13 @@ export default function SettingsGeneralForm({ initialValues, onSubmit, onCancel 
                 onClick={() => handleCancel()}
                 type="button"
               >
-                Cancel
+                {t('cancelar')}
               </UIButton>
               <UIButton
                 variant="primary"
                 type="submit"
               >
-                Save
+                {t('guardar')}
               </UIButton>
             </div>
           )}

@@ -193,7 +193,6 @@ export default function PlanDetail() {
                                 dob="24/12/1975"
                                 phone="+50768934567"
                                 email="matoectl@mail.com"
-                                medicalTitle="Medical condition or Pre existing Condition"
                                 medicalDetails="None"
                                 onViewCard={() => {}}
                                 onViewCertification={() => {}}
