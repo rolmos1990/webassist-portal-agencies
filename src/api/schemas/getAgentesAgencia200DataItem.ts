@@ -3,7 +3,7 @@
  * Do not edit manually.
  * WAC API
  * Api para uso interno WAC.
- * OpenAPI spec version: 1.0.1
+ * OpenAPI spec version: 1.0.16
  */
 
 export type GetAgentesAgencia200DataItem = {
@@ -13,8 +13,6 @@ export type GetAgentesAgencia200DataItem = {
   nombre?: string;
   apellido?: string;
   telefono?: string;
-  xxx_tipo?: string;
-  password_ini?: string;
   ultimo_login?: string;
   imagen?: string;
   distribuidor?: string;
@@ -34,4 +32,10 @@ export type GetAgentesAgencia200DataItem = {
   email_registro_fecha?: string;
   email_bienvenida_fecha?: string;
   fecha_creacion?: string;
+  total_ventas?: number;
+  total_ventas_monto?: number;
+  total_comisiones?: number;
+  roles?: string[];
+  cotizaciones_vigentes?: number;
+  cotizaciones_vigentes_monto?: number;
 };

@@ -3,7 +3,7 @@
  * Do not edit manually.
  * WAC API
  * Api para uso interno WAC.
- * OpenAPI spec version: 1.0.1
+ * OpenAPI spec version: 1.0.16
  */
 
 export type PostAgenteLoginBody = {
@@ -11,4 +11,6 @@ export type PostAgenteLoginBody = {
   user?: string;
   /** La contraseña del usuario */
   pw?: string;
+  /** ID de la agencia (opcional) */
+  id_agencia?: string;
 };

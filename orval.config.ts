@@ -1,4 +1,15 @@
-import * as mocks from "./src/api/mocks";
+import { idiomas } from './src/api/mocks/idiomas.ts';
+import { lang_strings } from './src/api/mocks/lang_strings';
+import { lang_strings_version } from './src/api/mocks/lang_strings_version';
+import { agente_login } from './src/api/mocks/agente_login';
+import { agente_logout } from './src/api/mocks/agente_logout';
+import { agentes_agencia } from './src/api/mocks/agentes_agencia';
+import { reporte_ventas_agencia } from './src/api/mocks/reporte_ventas_agencia';
+import { reporte_ventas_agencia_filtrado } from './src/api/mocks/reporte_ventas_agencia_filtrado';
+import { perfil_agencia } from './src/api/mocks/perfil_agencia';
+import { perfil_agente } from './src/api/mocks/perfil_agente';
+import { cotizaciones_agente_agencia } from './src/api/mocks/cotizaciones_agente_agencia';
+import { asistencias_agente_agencia } from './src/api/mocks/asistencias_agente_agencia';
 import { faker } from '@faker-js/faker';
 
 
@@ -29,19 +40,19 @@ export default {
         },
 
         operations: {
-          getIdiomas:                               { mock: { data: () => mocks.idiomas } },
-          getLangStrings:                           { mock: { data: () => mocks.lang_strings } },
-          getLangStringsVersion:                    { mock: { data: () => mocks.lang_strings_version } },
-          postAgenteLogin:                       { mock: { data: () => mocks.agente_login } },
-          postLogout:                               { mock: { data: () => mocks.agente_logout } },
-          getAgentesAgencia:                        { mock: { data: () => mocks.agentes_agencia } },
-          getReporteVentasAgencia:                  { mock: { data: () => mocks.reporte_ventas_agencia } },
-          getReporteVentasAgenciaFiltrado:          { mock: { data: () => mocks.reporte_ventas_agencia_filtrado } },
-          getPerfilAgencia:                         { mock: { data: () => mocks.perfil_agencia } },
-          getPerfilAgente:                          { mock: { data: () => mocks.perfil_agente } },
-          getCotizacionesAgenteAgencia:             { mock: { data: () => mocks.cotizaciones_agente_agencia } },
-          getPerfil:                                { mock: { data: () => mocks.perfil } },
-          getAsistenciasAgenteAgencia:              { mock: { data: () => mocks.asistencias_agente_agencia } },
+          getIdiomas:                               { mock: { data: idiomas } },
+          getLangStrings:                           { mock: { data: () => lang_strings } },
+          getLangStringsVersion:                    { mock: { data: lang_strings_version } },
+          postAgenteLogin:                       { mock: { data: agente_login } },
+          postLogout:                               { mock: { data: agente_logout } },
+          getAgentesAgencia:                        { mock: { data: agentes_agencia } },
+          getReporteVentasAgencia:                  { mock: { data: reporte_ventas_agencia } },
+          getReporteVentasAgenciaFiltrado:          { mock: { data: reporte_ventas_agencia_filtrado } },
+          getPerfilAgencia:                         { mock: { data: perfil_agencia } },
+          getPerfilAgente:                          { mock: { data: perfil_agente } },
+          getCotizacionesAgenteAgencia:             { mock: { data: cotizaciones_agente_agencia } },
+          getAsistenciasAgenteAgencia:              { mock: { data: asistencias_agente_agencia } },
+          getStatusCodes:                           { mock: { properties: { '/.*\\.id$/': () => faker.number.int() } } },
         }
         },
       },

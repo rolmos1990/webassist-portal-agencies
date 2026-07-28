@@ -3,7 +3,7 @@
  * Do not edit manually.
  * WAC API
  * Api para uso interno WAC.
- * OpenAPI spec version: 1.0.1
+ * OpenAPI spec version: 1.0.16
  */
 
 export type GetCotizacionesAgenteAgenciaParams = {
@@ -11,4 +11,12 @@ export type GetCotizacionesAgenteAgenciaParams = {
  * Número de página para paginación
  */
 pagina?: number;
+/**
+ * Fecha de inicio para filtrar cotizaciones (formato DD/MM/YYYY)
+ */
+fecha_inicio?: string;
+/**
+ * Fecha de fin para filtrar cotizaciones (formato DD/MM/YYYY)
+ */
+fecha_final?: string;
 };

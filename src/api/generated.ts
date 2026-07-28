@@ -3,7 +3,7 @@
  * Do not edit manually.
  * WAC API
  * Api para uso interno WAC.
- * OpenAPI spec version: 1.0.1
+ * OpenAPI spec version: 1.0.16
  */
 import {
   useMutation,
@@ -25,15 +25,26 @@ import type {
 } from '@tanstack/react-query';
 
 import type {
+  ActualizarIdiomaAgente200,
+  ActualizarIdiomaAgenteBody,
   DetenerRecordatorioRenovacion200,
   DetenerRecordatorioRenovacionBody,
+  GetAgenciasAgencia200,
   GetAgentesAgencia200,
   GetAgentesAgenciaParams,
   GetAsistenciasAgenteAgencia200,
+  GetAsistenciasAgenteAgenciaParams,
+  GetBuscarVoucher200,
+  GetBuscarVoucherParams,
+  GetClienteVentas200,
+  GetClienteVentasParams,
+  GetClientes200,
+  GetClientesParams,
   GetCobrandingConfig200,
   GetCobrandingConfigBody,
   GetCotizacionesAgenteAgencia200,
   GetCotizacionesAgenteAgenciaParams,
+  GetDashboard200,
   GetDocumentosVoucher200,
   GetIdiomas200,
   GetLangStrings200,
@@ -43,6 +54,8 @@ import type {
   GetPerfilAgencia200,
   GetPerfilAgente200,
   GetRenovacionesPendientes200,
+  GetStatusCodes200,
+  GetTasaComisiones200,
   GetVouchersMaster200,
   GetVouchersMasterDetail200,
   PostAgenteLogin200,
@@ -324,6 +337,95 @@ export function useGetLangStrings<TData = Awaited<ReturnType<typeof getLangStrin
 
 
 /**
+ * Obtiene los diferentes códigos de estado utilizados en el sistema
+ * @summary Códigos de Estado
+ */
+export const getStatusCodes = (
+    idioma: string,
+ signal?: AbortSignal
+) => {
+      
+      
+      return customFetch<GetStatusCodes200>(
+      {url: `/${idioma}/status-codes`, method: 'GET', signal
+    },
+      );
+    }
+  
+
+export const getGetStatusCodesQueryKey = (idioma?: string,) => {
+    return [`/${idioma}/status-codes`] as const;
+    }
+
+    
+export const getGetStatusCodesQueryOptions = <TData = Awaited<ReturnType<typeof getStatusCodes>>, TError = null | null>(idioma: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getStatusCodes>>, TError, TData>>, }
+) => {
+
+const {query: queryOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetStatusCodesQueryKey(idioma);
+
+  
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getStatusCodes>>> = ({ signal }) => getStatusCodes(idioma, signal);
+
+      
+
+      
+
+   return  { queryKey, queryFn, enabled: !!(idioma), ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getStatusCodes>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type GetStatusCodesQueryResult = NonNullable<Awaited<ReturnType<typeof getStatusCodes>>>
+export type GetStatusCodesQueryError = null | null
+
+
+export function useGetStatusCodes<TData = Awaited<ReturnType<typeof getStatusCodes>>, TError = null | null>(
+ idioma: string, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getStatusCodes>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getStatusCodes>>,
+          TError,
+          Awaited<ReturnType<typeof getStatusCodes>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetStatusCodes<TData = Awaited<ReturnType<typeof getStatusCodes>>, TError = null | null>(
+ idioma: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getStatusCodes>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getStatusCodes>>,
+          TError,
+          Awaited<ReturnType<typeof getStatusCodes>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetStatusCodes<TData = Awaited<ReturnType<typeof getStatusCodes>>, TError = null | null>(
+ idioma: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getStatusCodes>>, TError, TData>>, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/**
+ * @summary Códigos de Estado
+ */
+
+export function useGetStatusCodes<TData = Awaited<ReturnType<typeof getStatusCodes>>, TError = null | null>(
+ idioma: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getStatusCodes>>, TError, TData>>, }
+ , queryClient?: QueryClient 
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getGetStatusCodesQueryOptions(idioma,options)
+
+  const query = useQuery(queryOptions , queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  query.queryKey = queryOptions.queryKey ;
+
+  return query;
+}
+
+
+
+
+/**
  * Devuelve los documentos del voucher entregado
  * @summary Documentos del voucher
  */
@@ -420,6 +522,103 @@ export function useGetDocumentosVoucher<TData = Awaited<ReturnType<typeof getDoc
 
 
 /**
+ * Devuelve los documentos de la busqueda, se puede buscar por voucher o por una combinación de nombre + apellido + (pasaporte o fecha de nacimiento)
+ * @summary Buscar voucher
+ */
+export const getBuscarVoucher = (
+    idioma: string,
+    params?: GetBuscarVoucherParams,
+ signal?: AbortSignal
+) => {
+      
+      
+      return customFetch<GetBuscarVoucher200>(
+      {url: `/${idioma}/buscar_voucher`, method: 'GET',
+        params, signal
+    },
+      );
+    }
+  
+
+export const getGetBuscarVoucherQueryKey = (idioma?: string,
+    params?: GetBuscarVoucherParams,) => {
+    return [`/${idioma}/buscar_voucher`, ...(params ? [params]: [])] as const;
+    }
+
+    
+export const getGetBuscarVoucherQueryOptions = <TData = Awaited<ReturnType<typeof getBuscarVoucher>>, TError = null | null>(idioma: string,
+    params?: GetBuscarVoucherParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getBuscarVoucher>>, TError, TData>>, }
+) => {
+
+const {query: queryOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetBuscarVoucherQueryKey(idioma,params);
+
+  
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getBuscarVoucher>>> = ({ signal }) => getBuscarVoucher(idioma,params, signal);
+
+      
+
+      
+
+   return  { queryKey, queryFn, enabled: !!(idioma), ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getBuscarVoucher>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type GetBuscarVoucherQueryResult = NonNullable<Awaited<ReturnType<typeof getBuscarVoucher>>>
+export type GetBuscarVoucherQueryError = null | null
+
+
+export function useGetBuscarVoucher<TData = Awaited<ReturnType<typeof getBuscarVoucher>>, TError = null | null>(
+ idioma: string,
+    params: undefined |  GetBuscarVoucherParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getBuscarVoucher>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getBuscarVoucher>>,
+          TError,
+          Awaited<ReturnType<typeof getBuscarVoucher>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetBuscarVoucher<TData = Awaited<ReturnType<typeof getBuscarVoucher>>, TError = null | null>(
+ idioma: string,
+    params?: GetBuscarVoucherParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getBuscarVoucher>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getBuscarVoucher>>,
+          TError,
+          Awaited<ReturnType<typeof getBuscarVoucher>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetBuscarVoucher<TData = Awaited<ReturnType<typeof getBuscarVoucher>>, TError = null | null>(
+ idioma: string,
+    params?: GetBuscarVoucherParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getBuscarVoucher>>, TError, TData>>, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/**
+ * @summary Buscar voucher
+ */
+
+export function useGetBuscarVoucher<TData = Awaited<ReturnType<typeof getBuscarVoucher>>, TError = null | null>(
+ idioma: string,
+    params?: GetBuscarVoucherParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getBuscarVoucher>>, TError, TData>>, }
+ , queryClient?: QueryClient 
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getGetBuscarVoucherQueryOptions(idioma,params,options)
+
+  const query = useQuery(queryOptions , queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  query.queryKey = queryOptions.queryKey ;
+
+  return query;
+}
+
+
+
+
+/**
  * Inicia la sesión de un agente
  * @summary Iniciar sesión
  */
@@ -429,18 +628,11 @@ export const postAgenteLogin = (
  signal?: AbortSignal
 ) => {
       
-      const formUrlEncoded = new URLSearchParams();
-if(postAgenteLoginBody.user !== undefined) {
- formUrlEncoded.append(`user`, postAgenteLoginBody.user)
- }
-if(postAgenteLoginBody.pw !== undefined) {
- formUrlEncoded.append(`pw`, postAgenteLoginBody.pw)
- }
-
+      
       return customFetch<PostAgenteLogin200>(
       {url: `/${idioma}/login`, method: 'POST',
-      headers: {'Content-Type': 'application/x-www-form-urlencoded', },
-       data: formUrlEncoded, signal
+      headers: {'Content-Type': 'application/json', },
+      data: postAgenteLoginBody, signal
     },
       );
     }
@@ -831,6 +1023,73 @@ export function useGetPerfilAgente<TData = Awaited<ReturnType<typeof getPerfilAg
 
 
 
+/**
+ * Actualiza el idioma preferido del agente autenticado
+ * @summary Actualizar Idioma del Agente
+ */
+export const actualizarIdiomaAgente = (
+    idioma: string,
+    actualizarIdiomaAgenteBody: ActualizarIdiomaAgenteBody,
+ signal?: AbortSignal
+) => {
+      
+      
+      return customFetch<ActualizarIdiomaAgente200>(
+      {url: `/${idioma}/actualizar-idioma`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: actualizarIdiomaAgenteBody, signal
+    },
+      );
+    }
+  
+
+
+export const getActualizarIdiomaAgenteMutationOptions = <TError = null | null,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof actualizarIdiomaAgente>>, TError,{idioma: string;data: ActualizarIdiomaAgenteBody}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof actualizarIdiomaAgente>>, TError,{idioma: string;data: ActualizarIdiomaAgenteBody}, TContext> => {
+
+const mutationKey = ['actualizarIdiomaAgente'];
+const {mutation: mutationOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }};
+
+      
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof actualizarIdiomaAgente>>, {idioma: string;data: ActualizarIdiomaAgenteBody}> = (props) => {
+          const {idioma,data} = props ?? {};
+
+          return  actualizarIdiomaAgente(idioma,data,)
+        }
+
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type ActualizarIdiomaAgenteMutationResult = NonNullable<Awaited<ReturnType<typeof actualizarIdiomaAgente>>>
+    export type ActualizarIdiomaAgenteMutationBody = ActualizarIdiomaAgenteBody
+    export type ActualizarIdiomaAgenteMutationError = null | null
+
+    /**
+ * @summary Actualizar Idioma del Agente
+ */
+export const useActualizarIdiomaAgente = <TError = null | null,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof actualizarIdiomaAgente>>, TError,{idioma: string;data: ActualizarIdiomaAgenteBody}, TContext>, }
+ , queryClient?: QueryClient): UseMutationResult<
+        Awaited<ReturnType<typeof actualizarIdiomaAgente>>,
+        TError,
+        {idioma: string;data: ActualizarIdiomaAgenteBody},
+        TContext
+      > => {
+
+      const mutationOptions = getActualizarIdiomaAgenteMutationOptions(options);
+
+      return useMutation(mutationOptions , queryClient);
+    }
+    
 /**
  * Devuelve la configuración de una página de cobranding para un idioma y URL específicos.
  * @summary Configuración de una página de cobranding
@@ -1337,6 +1596,95 @@ export function useGetAgentesAgencia<TData = Awaited<ReturnType<typeof getAgente
 
 
 /**
+ * Lista las agencias de una agencia
+ * @summary Agencias de Agencia
+ */
+export const getAgenciasAgencia = (
+    idioma: string,
+ signal?: AbortSignal
+) => {
+      
+      
+      return customFetch<GetAgenciasAgencia200>(
+      {url: `/${idioma}/agencias`, method: 'GET', signal
+    },
+      );
+    }
+  
+
+export const getGetAgenciasAgenciaQueryKey = (idioma?: string,) => {
+    return [`/${idioma}/agencias`] as const;
+    }
+
+    
+export const getGetAgenciasAgenciaQueryOptions = <TData = Awaited<ReturnType<typeof getAgenciasAgencia>>, TError = null | null>(idioma: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAgenciasAgencia>>, TError, TData>>, }
+) => {
+
+const {query: queryOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetAgenciasAgenciaQueryKey(idioma);
+
+  
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getAgenciasAgencia>>> = ({ signal }) => getAgenciasAgencia(idioma, signal);
+
+      
+
+      
+
+   return  { queryKey, queryFn, enabled: !!(idioma), ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getAgenciasAgencia>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type GetAgenciasAgenciaQueryResult = NonNullable<Awaited<ReturnType<typeof getAgenciasAgencia>>>
+export type GetAgenciasAgenciaQueryError = null | null
+
+
+export function useGetAgenciasAgencia<TData = Awaited<ReturnType<typeof getAgenciasAgencia>>, TError = null | null>(
+ idioma: string, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAgenciasAgencia>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getAgenciasAgencia>>,
+          TError,
+          Awaited<ReturnType<typeof getAgenciasAgencia>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetAgenciasAgencia<TData = Awaited<ReturnType<typeof getAgenciasAgencia>>, TError = null | null>(
+ idioma: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAgenciasAgencia>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getAgenciasAgencia>>,
+          TError,
+          Awaited<ReturnType<typeof getAgenciasAgencia>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetAgenciasAgencia<TData = Awaited<ReturnType<typeof getAgenciasAgencia>>, TError = null | null>(
+ idioma: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAgenciasAgencia>>, TError, TData>>, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/**
+ * @summary Agencias de Agencia
+ */
+
+export function useGetAgenciasAgencia<TData = Awaited<ReturnType<typeof getAgenciasAgencia>>, TError = null | null>(
+ idioma: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAgenciasAgencia>>, TError, TData>>, }
+ , queryClient?: QueryClient 
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getGetAgenciasAgenciaQueryOptions(idioma,options)
+
+  const query = useQuery(queryOptions , queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  query.queryKey = queryOptions.queryKey ;
+
+  return query;
+}
+
+
+
+
+/**
  * Obtiene el perfil de la agencia autenticada
  * @summary Perfil de Agencia
  */
@@ -1431,7 +1779,7 @@ export function useGetPerfilAgencia<TData = Awaited<ReturnType<typeof getPerfilA
  */
 export const getCotizacionesAgenteAgencia = (
     idioma: string,
-    params: GetCotizacionesAgenteAgenciaParams,
+    params?: GetCotizacionesAgenteAgenciaParams,
  signal?: AbortSignal
 ) => {
       
@@ -1451,7 +1799,7 @@ export const getGetCotizacionesAgenteAgenciaQueryKey = (idioma?: string,
 
     
 export const getGetCotizacionesAgenteAgenciaQueryOptions = <TData = Awaited<ReturnType<typeof getCotizacionesAgenteAgencia>>, TError = null | null>(idioma: string,
-    params: GetCotizacionesAgenteAgenciaParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getCotizacionesAgenteAgencia>>, TError, TData>>, }
+    params?: GetCotizacionesAgenteAgenciaParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getCotizacionesAgenteAgencia>>, TError, TData>>, }
 ) => {
 
 const {query: queryOptions} = options ?? {};
@@ -1475,7 +1823,7 @@ export type GetCotizacionesAgenteAgenciaQueryError = null | null
 
 export function useGetCotizacionesAgenteAgencia<TData = Awaited<ReturnType<typeof getCotizacionesAgenteAgencia>>, TError = null | null>(
  idioma: string,
-    params: GetCotizacionesAgenteAgenciaParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getCotizacionesAgenteAgencia>>, TError, TData>> & Pick<
+    params: undefined |  GetCotizacionesAgenteAgenciaParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getCotizacionesAgenteAgencia>>, TError, TData>> & Pick<
         DefinedInitialDataOptions<
           Awaited<ReturnType<typeof getCotizacionesAgenteAgencia>>,
           TError,
@@ -1486,7 +1834,7 @@ export function useGetCotizacionesAgenteAgencia<TData = Awaited<ReturnType<typeo
   ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 export function useGetCotizacionesAgenteAgencia<TData = Awaited<ReturnType<typeof getCotizacionesAgenteAgencia>>, TError = null | null>(
  idioma: string,
-    params: GetCotizacionesAgenteAgenciaParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getCotizacionesAgenteAgencia>>, TError, TData>> & Pick<
+    params?: GetCotizacionesAgenteAgenciaParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getCotizacionesAgenteAgencia>>, TError, TData>> & Pick<
         UndefinedInitialDataOptions<
           Awaited<ReturnType<typeof getCotizacionesAgenteAgencia>>,
           TError,
@@ -1497,7 +1845,7 @@ export function useGetCotizacionesAgenteAgencia<TData = Awaited<ReturnType<typeo
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 export function useGetCotizacionesAgenteAgencia<TData = Awaited<ReturnType<typeof getCotizacionesAgenteAgencia>>, TError = null | null>(
  idioma: string,
-    params: GetCotizacionesAgenteAgenciaParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getCotizacionesAgenteAgencia>>, TError, TData>>, }
+    params?: GetCotizacionesAgenteAgenciaParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getCotizacionesAgenteAgencia>>, TError, TData>>, }
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 /**
@@ -1506,7 +1854,7 @@ export function useGetCotizacionesAgenteAgencia<TData = Awaited<ReturnType<typeo
 
 export function useGetCotizacionesAgenteAgencia<TData = Awaited<ReturnType<typeof getCotizacionesAgenteAgencia>>, TError = null | null>(
  idioma: string,
-    params: GetCotizacionesAgenteAgenciaParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getCotizacionesAgenteAgencia>>, TError, TData>>, }
+    params?: GetCotizacionesAgenteAgenciaParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getCotizacionesAgenteAgencia>>, TError, TData>>, }
  , queryClient?: QueryClient 
  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
@@ -1528,41 +1876,42 @@ export function useGetCotizacionesAgenteAgencia<TData = Awaited<ReturnType<typeo
  */
 export const getAsistenciasAgenteAgencia = (
     idioma: string,
-    pagina: number = 1,
+    params?: GetAsistenciasAgenteAgenciaParams,
  signal?: AbortSignal
 ) => {
       
       
       return customFetch<GetAsistenciasAgenteAgencia200>(
-      {url: `/${idioma}/asistencias/${pagina}`, method: 'GET', signal
+      {url: `/${idioma}/asistencias`, method: 'GET',
+        params, signal
     },
       );
     }
   
 
 export const getGetAsistenciasAgenteAgenciaQueryKey = (idioma?: string,
-    pagina: number= 1,) => {
-    return [`/${idioma}/asistencias/${pagina}`] as const;
+    params?: GetAsistenciasAgenteAgenciaParams,) => {
+    return [`/${idioma}/asistencias`, ...(params ? [params]: [])] as const;
     }
 
     
 export const getGetAsistenciasAgenteAgenciaQueryOptions = <TData = Awaited<ReturnType<typeof getAsistenciasAgenteAgencia>>, TError = null | null>(idioma: string,
-    pagina: number = 1, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAsistenciasAgenteAgencia>>, TError, TData>>, }
+    params?: GetAsistenciasAgenteAgenciaParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAsistenciasAgenteAgencia>>, TError, TData>>, }
 ) => {
 
 const {query: queryOptions} = options ?? {};
 
-  const queryKey =  queryOptions?.queryKey ?? getGetAsistenciasAgenteAgenciaQueryKey(idioma,pagina);
+  const queryKey =  queryOptions?.queryKey ?? getGetAsistenciasAgenteAgenciaQueryKey(idioma,params);
 
   
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getAsistenciasAgenteAgencia>>> = ({ signal }) => getAsistenciasAgenteAgencia(idioma,pagina, signal);
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getAsistenciasAgenteAgencia>>> = ({ signal }) => getAsistenciasAgenteAgencia(idioma,params, signal);
 
       
 
       
 
-   return  { queryKey, queryFn, enabled: !!(idioma && pagina), ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getAsistenciasAgenteAgencia>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+   return  { queryKey, queryFn, enabled: !!(idioma), ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getAsistenciasAgenteAgencia>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
 }
 
 export type GetAsistenciasAgenteAgenciaQueryResult = NonNullable<Awaited<ReturnType<typeof getAsistenciasAgenteAgencia>>>
@@ -1571,7 +1920,7 @@ export type GetAsistenciasAgenteAgenciaQueryError = null | null
 
 export function useGetAsistenciasAgenteAgencia<TData = Awaited<ReturnType<typeof getAsistenciasAgenteAgencia>>, TError = null | null>(
  idioma: string,
-    pagina: undefined |  number, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAsistenciasAgenteAgencia>>, TError, TData>> & Pick<
+    params: undefined |  GetAsistenciasAgenteAgenciaParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAsistenciasAgenteAgencia>>, TError, TData>> & Pick<
         DefinedInitialDataOptions<
           Awaited<ReturnType<typeof getAsistenciasAgenteAgencia>>,
           TError,
@@ -1582,7 +1931,7 @@ export function useGetAsistenciasAgenteAgencia<TData = Awaited<ReturnType<typeof
   ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 export function useGetAsistenciasAgenteAgencia<TData = Awaited<ReturnType<typeof getAsistenciasAgenteAgencia>>, TError = null | null>(
  idioma: string,
-    pagina?: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAsistenciasAgenteAgencia>>, TError, TData>> & Pick<
+    params?: GetAsistenciasAgenteAgenciaParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAsistenciasAgenteAgencia>>, TError, TData>> & Pick<
         UndefinedInitialDataOptions<
           Awaited<ReturnType<typeof getAsistenciasAgenteAgencia>>,
           TError,
@@ -1593,7 +1942,7 @@ export function useGetAsistenciasAgenteAgencia<TData = Awaited<ReturnType<typeof
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 export function useGetAsistenciasAgenteAgencia<TData = Awaited<ReturnType<typeof getAsistenciasAgenteAgencia>>, TError = null | null>(
  idioma: string,
-    pagina?: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAsistenciasAgenteAgencia>>, TError, TData>>, }
+    params?: GetAsistenciasAgenteAgenciaParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAsistenciasAgenteAgencia>>, TError, TData>>, }
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 /**
@@ -1602,11 +1951,11 @@ export function useGetAsistenciasAgenteAgencia<TData = Awaited<ReturnType<typeof
 
 export function useGetAsistenciasAgenteAgencia<TData = Awaited<ReturnType<typeof getAsistenciasAgenteAgencia>>, TError = null | null>(
  idioma: string,
-    pagina: number = 1, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAsistenciasAgenteAgencia>>, TError, TData>>, }
+    params?: GetAsistenciasAgenteAgenciaParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAsistenciasAgenteAgencia>>, TError, TData>>, }
  , queryClient?: QueryClient 
  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
-  const queryOptions = getGetAsistenciasAgenteAgenciaQueryOptions(idioma,pagina,options)
+  const queryOptions = getGetAsistenciasAgenteAgenciaQueryOptions(idioma,params,options)
 
   const query = useQuery(queryOptions , queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
@@ -1685,3 +2034,382 @@ export const useGetLeadEvento = <TError = null | null,
       return useMutation(mutationOptions , queryClient);
     }
     
+/**
+ * Devuelve un listado de clientes con información básica.
+ * @summary Listado de Clientes
+ */
+export const getClientes = (
+    idioma: string,
+    params?: GetClientesParams,
+ signal?: AbortSignal
+) => {
+      
+      
+      return customFetch<GetClientes200>(
+      {url: `/${idioma}/clientes`, method: 'GET',
+        params, signal
+    },
+      );
+    }
+  
+
+export const getGetClientesQueryKey = (idioma?: string,
+    params?: GetClientesParams,) => {
+    return [`/${idioma}/clientes`, ...(params ? [params]: [])] as const;
+    }
+
+    
+export const getGetClientesQueryOptions = <TData = Awaited<ReturnType<typeof getClientes>>, TError = null | null>(idioma: string,
+    params?: GetClientesParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getClientes>>, TError, TData>>, }
+) => {
+
+const {query: queryOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetClientesQueryKey(idioma,params);
+
+  
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getClientes>>> = ({ signal }) => getClientes(idioma,params, signal);
+
+      
+
+      
+
+   return  { queryKey, queryFn, enabled: !!(idioma), ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getClientes>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type GetClientesQueryResult = NonNullable<Awaited<ReturnType<typeof getClientes>>>
+export type GetClientesQueryError = null | null
+
+
+export function useGetClientes<TData = Awaited<ReturnType<typeof getClientes>>, TError = null | null>(
+ idioma: string,
+    params: undefined |  GetClientesParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getClientes>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getClientes>>,
+          TError,
+          Awaited<ReturnType<typeof getClientes>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetClientes<TData = Awaited<ReturnType<typeof getClientes>>, TError = null | null>(
+ idioma: string,
+    params?: GetClientesParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getClientes>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getClientes>>,
+          TError,
+          Awaited<ReturnType<typeof getClientes>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetClientes<TData = Awaited<ReturnType<typeof getClientes>>, TError = null | null>(
+ idioma: string,
+    params?: GetClientesParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getClientes>>, TError, TData>>, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/**
+ * @summary Listado de Clientes
+ */
+
+export function useGetClientes<TData = Awaited<ReturnType<typeof getClientes>>, TError = null | null>(
+ idioma: string,
+    params?: GetClientesParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getClientes>>, TError, TData>>, }
+ , queryClient?: QueryClient 
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getGetClientesQueryOptions(idioma,params,options)
+
+  const query = useQuery(queryOptions , queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  query.queryKey = queryOptions.queryKey ;
+
+  return query;
+}
+
+
+
+
+/**
+ * Devuelve un listado de ventas asociadas a un cliente específico, incluyendo detalles de los documentos y paginación.
+ * @summary Ventas por Cliente
+ */
+export const getClienteVentas = (
+    idioma: 'es' | 'en',
+    clienteId: string,
+    params?: GetClienteVentasParams,
+ signal?: AbortSignal
+) => {
+      
+      
+      return customFetch<GetClienteVentas200>(
+      {url: `/${idioma}/cliente-ventas/${clienteId}`, method: 'GET',
+        params, signal
+    },
+      );
+    }
+  
+
+export const getGetClienteVentasQueryKey = (idioma?: 'es' | 'en',
+    clienteId?: string,
+    params?: GetClienteVentasParams,) => {
+    return [`/${idioma}/cliente-ventas/${clienteId}`, ...(params ? [params]: [])] as const;
+    }
+
+    
+export const getGetClienteVentasQueryOptions = <TData = Awaited<ReturnType<typeof getClienteVentas>>, TError = null | null | null>(idioma: 'es' | 'en',
+    clienteId: string,
+    params?: GetClienteVentasParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getClienteVentas>>, TError, TData>>, }
+) => {
+
+const {query: queryOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetClienteVentasQueryKey(idioma,clienteId,params);
+
+  
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getClienteVentas>>> = ({ signal }) => getClienteVentas(idioma,clienteId,params, signal);
+
+      
+
+      
+
+   return  { queryKey, queryFn, enabled: !!(idioma && clienteId), ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getClienteVentas>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type GetClienteVentasQueryResult = NonNullable<Awaited<ReturnType<typeof getClienteVentas>>>
+export type GetClienteVentasQueryError = null | null | null
+
+
+export function useGetClienteVentas<TData = Awaited<ReturnType<typeof getClienteVentas>>, TError = null | null | null>(
+ idioma: 'es' | 'en',
+    clienteId: string,
+    params: undefined |  GetClienteVentasParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getClienteVentas>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getClienteVentas>>,
+          TError,
+          Awaited<ReturnType<typeof getClienteVentas>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetClienteVentas<TData = Awaited<ReturnType<typeof getClienteVentas>>, TError = null | null | null>(
+ idioma: 'es' | 'en',
+    clienteId: string,
+    params?: GetClienteVentasParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getClienteVentas>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getClienteVentas>>,
+          TError,
+          Awaited<ReturnType<typeof getClienteVentas>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetClienteVentas<TData = Awaited<ReturnType<typeof getClienteVentas>>, TError = null | null | null>(
+ idioma: 'es' | 'en',
+    clienteId: string,
+    params?: GetClienteVentasParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getClienteVentas>>, TError, TData>>, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/**
+ * @summary Ventas por Cliente
+ */
+
+export function useGetClienteVentas<TData = Awaited<ReturnType<typeof getClienteVentas>>, TError = null | null | null>(
+ idioma: 'es' | 'en',
+    clienteId: string,
+    params?: GetClienteVentasParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getClienteVentas>>, TError, TData>>, }
+ , queryClient?: QueryClient 
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getGetClienteVentasQueryOptions(idioma,clienteId,params,options)
+
+  const query = useQuery(queryOptions , queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  query.queryKey = queryOptions.queryKey ;
+
+  return query;
+}
+
+
+
+
+/**
+ * Devuelve los datos agregados del dashboard para el usuario autenticado.
+ * @summary Dashboard principal
+ */
+export const getDashboard = (
+    idioma: 'es' | 'en',
+ signal?: AbortSignal
+) => {
+      
+      
+      return customFetch<GetDashboard200>(
+      {url: `/${idioma}/dashboard`, method: 'GET', signal
+    },
+      );
+    }
+  
+
+export const getGetDashboardQueryKey = (idioma?: 'es' | 'en',) => {
+    return [`/${idioma}/dashboard`] as const;
+    }
+
+    
+export const getGetDashboardQueryOptions = <TData = Awaited<ReturnType<typeof getDashboard>>, TError = null | null>(idioma: 'es' | 'en', options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDashboard>>, TError, TData>>, }
+) => {
+
+const {query: queryOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetDashboardQueryKey(idioma);
+
+  
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getDashboard>>> = ({ signal }) => getDashboard(idioma, signal);
+
+      
+
+      
+
+   return  { queryKey, queryFn, enabled: !!(idioma), ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getDashboard>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type GetDashboardQueryResult = NonNullable<Awaited<ReturnType<typeof getDashboard>>>
+export type GetDashboardQueryError = null | null
+
+
+export function useGetDashboard<TData = Awaited<ReturnType<typeof getDashboard>>, TError = null | null>(
+ idioma: 'es' | 'en', options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDashboard>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getDashboard>>,
+          TError,
+          Awaited<ReturnType<typeof getDashboard>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetDashboard<TData = Awaited<ReturnType<typeof getDashboard>>, TError = null | null>(
+ idioma: 'es' | 'en', options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDashboard>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getDashboard>>,
+          TError,
+          Awaited<ReturnType<typeof getDashboard>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetDashboard<TData = Awaited<ReturnType<typeof getDashboard>>, TError = null | null>(
+ idioma: 'es' | 'en', options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDashboard>>, TError, TData>>, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/**
+ * @summary Dashboard principal
+ */
+
+export function useGetDashboard<TData = Awaited<ReturnType<typeof getDashboard>>, TError = null | null>(
+ idioma: 'es' | 'en', options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDashboard>>, TError, TData>>, }
+ , queryClient?: QueryClient 
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getGetDashboardQueryOptions(idioma,options)
+
+  const query = useQuery(queryOptions , queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  query.queryKey = queryOptions.queryKey ;
+
+  return query;
+}
+
+
+
+
+/**
+ * Devuelve la tasa de comisiones por tipo de plan para el usuario autenticado.
+ * @summary Tasa de comisiones
+ */
+export const getTasaComisiones = (
+    idioma: 'es' | 'en',
+ signal?: AbortSignal
+) => {
+      
+      
+      return customFetch<GetTasaComisiones200>(
+      {url: `/${idioma}/tasa-comisiones`, method: 'GET', signal
+    },
+      );
+    }
+  
+
+export const getGetTasaComisionesQueryKey = (idioma?: 'es' | 'en',) => {
+    return [`/${idioma}/tasa-comisiones`] as const;
+    }
+
+    
+export const getGetTasaComisionesQueryOptions = <TData = Awaited<ReturnType<typeof getTasaComisiones>>, TError = null | null>(idioma: 'es' | 'en', options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getTasaComisiones>>, TError, TData>>, }
+) => {
+
+const {query: queryOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetTasaComisionesQueryKey(idioma);
+
+  
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getTasaComisiones>>> = ({ signal }) => getTasaComisiones(idioma, signal);
+
+      
+
+      
+
+   return  { queryKey, queryFn, enabled: !!(idioma), ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getTasaComisiones>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type GetTasaComisionesQueryResult = NonNullable<Awaited<ReturnType<typeof getTasaComisiones>>>
+export type GetTasaComisionesQueryError = null | null
+
+
+export function useGetTasaComisiones<TData = Awaited<ReturnType<typeof getTasaComisiones>>, TError = null | null>(
+ idioma: 'es' | 'en', options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getTasaComisiones>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getTasaComisiones>>,
+          TError,
+          Awaited<ReturnType<typeof getTasaComisiones>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetTasaComisiones<TData = Awaited<ReturnType<typeof getTasaComisiones>>, TError = null | null>(
+ idioma: 'es' | 'en', options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getTasaComisiones>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getTasaComisiones>>,
+          TError,
+          Awaited<ReturnType<typeof getTasaComisiones>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetTasaComisiones<TData = Awaited<ReturnType<typeof getTasaComisiones>>, TError = null | null>(
+ idioma: 'es' | 'en', options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getTasaComisiones>>, TError, TData>>, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/**
+ * @summary Tasa de comisiones
+ */
+
+export function useGetTasaComisiones<TData = Awaited<ReturnType<typeof getTasaComisiones>>, TError = null | null>(
+ idioma: 'es' | 'en', options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getTasaComisiones>>, TError, TData>>, }
+ , queryClient?: QueryClient 
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getGetTasaComisionesQueryOptions(idioma,options)
+
+  const query = useQuery(queryOptions , queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  query.queryKey = queryOptions.queryKey ;
+
+  return query;
+}
+
+
+
+

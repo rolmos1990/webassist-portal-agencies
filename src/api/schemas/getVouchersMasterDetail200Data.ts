@@ -3,7 +3,7 @@
  * Do not edit manually.
  * WAC API
  * Api para uso interno WAC.
- * OpenAPI spec version: 1.0.1
+ * OpenAPI spec version: 1.0.16
  */
 import type { GetVouchersMasterDetail200DataVoucher } from './getVouchersMasterDetail200DataVoucher';
 import type { GetVouchersMasterDetail200DataItemsItem } from './getVouchersMasterDetail200DataItemsItem';

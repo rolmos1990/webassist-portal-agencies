@@ -8,7 +8,7 @@ import CreateAgentVertical from '../components/Forms/CreateAgentVertical';
 import { useTranslation } from 'react-i18next';
 import { getAsistenciasAgenteAgencia } from '../api/generated';
 import { useI18nCache } from '../i18n/i18nCacheProvider';
-import type { GetIdiomaAsistenciasPagina200DataItemsItem } from '../api/schemas';
+import type { GetAsistenciasAgenteAgencia200DataItemsItem } from '../api/schemas';
 import { toast } from '../services/toast';
 import type { SortDir } from '../components/DataTable';
 import { PATHS } from '../routes/Routes';
@@ -22,7 +22,7 @@ function AssistanceAgency() {
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
-  const [agentsData, setAgentsData] = useState<GetIdiomaAsistenciasPagina200DataItemsItem[]>([]);
+  const [agentsData, setAgentsData] = useState<GetAsistenciasAgenteAgencia200DataItemsItem[]>([]);
 
   useEffect(() => {
     onGetAgents();
@@ -56,8 +56,8 @@ function AssistanceAgency() {
 
   const onSortChange = (sort: { id: string; dir: SortDir }) => {
     const sortedData = [...agentsData].sort((a, b) => {
-      const valA = a[sort.id as keyof GetIdiomaAsistenciasPagina200DataItemsItem] ?? ''; 
-      const valB = b[sort.id as keyof GetIdiomaAsistenciasPagina200DataItemsItem] ?? '';
+      const valA = a[sort.id as keyof GetAsistenciasAgenteAgencia200DataItemsItem] ?? '';
+      const valB = b[sort.id as keyof GetAsistenciasAgenteAgencia200DataItemsItem] ?? '';
   
       const normalizedA = typeof valA === 'string' ? valA.toLowerCase() : valA;
       const normalizedB = typeof valB === 'string' ? valB.toLowerCase() : valB;

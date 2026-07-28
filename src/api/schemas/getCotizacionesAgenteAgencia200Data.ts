@@ -3,12 +3,12 @@
  * Do not edit manually.
  * WAC API
  * Api para uso interno WAC.
- * OpenAPI spec version: 1.0.1
+ * OpenAPI spec version: 1.0.16
  */
 import type { GetCotizacionesAgenteAgencia200DataItemsItem } from './getCotizacionesAgenteAgencia200DataItemsItem';
-import type { GetCotizacionesAgenteAgencia200DataPaginacion } from './getCotizacionesAgenteAgencia200DataPaginacion';
+import type { Paginacion } from './paginacion';
 
 export type GetCotizacionesAgenteAgencia200Data = {
   items?: GetCotizacionesAgenteAgencia200DataItemsItem[];
-  paginacion?: GetCotizacionesAgenteAgencia200DataPaginacion;
+  paginacion?: Paginacion;
 };

@@ -3,7 +3,7 @@
  * Do not edit manually.
  * WAC API
  * Api para uso interno WAC.
- * OpenAPI spec version: 1.0.1
+ * OpenAPI spec version: 1.0.16
  */
 
 export type GetAsistenciasAgenteAgencia200DataItemsItemVouchersItemLinksTarjetasEsItem = {

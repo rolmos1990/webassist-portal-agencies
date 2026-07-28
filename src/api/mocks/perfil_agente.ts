@@ -13,7 +13,6 @@ export const perfil_agente: GetPerfilAgente200 = {
       "imagen": "",
       "distribuidor": "1",
       "comision": "0.00",
-      "cambiar_password": "1",
       "rol": "1",
       "tipo_pago": "1",
       "qr": "agente_123.png",

@@ -13,7 +13,6 @@ export const agente_login: PostAgenteLogin200 = {
       "imagen": "",
       "distribuidor": "44",
       "comision": "0.00",
-      "cambiar_password": "0",
       "rol": "1",
       "tipo_pago": "2",
       "qr": "agente_197.png",

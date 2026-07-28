@@ -3,8 +3,9 @@
  * Do not edit manually.
  * WAC API
  * Api para uso interno WAC.
- * OpenAPI spec version: 1.0.1
+ * OpenAPI spec version: 1.0.16
  */
+import type { GetCobrandingConfig200DatosDescripcionesTiposPlanes } from './getCobrandingConfig200DatosDescripcionesTiposPlanes';
 
 export type GetCobrandingConfig200Datos = {
   id?: string;
@@ -15,17 +16,29 @@ export type GetCobrandingConfig200Datos = {
   color3?: string;
   color4?: string;
   logo?: string;
+  logo_size?: string;
+  fuente1?: string;
+  fuente2?: string;
+  icono?: string;
+  meta_description?: string;
+  counter1_value?: string;
+  counter1_append?: string;
+  counter1_texto?: string;
+  counter2_value?: string;
+  counter2_append?: string;
+  counter2_texto?: string;
   home_sec1_img?: string;
-  home_sec3_img1?: string;
-  home_sec3_img2?: string;
-  home_sec3_img3?: string;
+  /** @nullable */
+  home_sec3_img1?: string | null;
+  /** @nullable */
+  home_sec3_img2?: string | null;
+  /** @nullable */
+  home_sec3_img3?: string | null;
   home_bg_form?: string;
   /** @nullable */
   telefono?: string | null;
-  /** @nullable */
-  whatsapp?: string | null;
-  /** @nullable */
-  email?: string | null;
+  whatsapp?: string;
+  email?: string;
   nombre?: string;
   dominio?: string;
   home_titulo?: string;
@@ -46,4 +59,6 @@ export type GetCobrandingConfig200Datos = {
   footer_col?: string;
   planes?: string[];
   tipos_planes?: string[];
+  /** Descripciones de cada tipo de plan, keyeado por ID del tipo de plan */
+  descripciones_tipos_planes?: GetCobrandingConfig200DatosDescripcionesTiposPlanes;
 };

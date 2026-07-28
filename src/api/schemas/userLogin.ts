@@ -3,7 +3,7 @@
  * Do not edit manually.
  * WAC API
  * Api para uso interno WAC.
- * OpenAPI spec version: 1.0.1
+ * OpenAPI spec version: 1.0.16
  */
 
 export interface UserLogin {
@@ -19,7 +19,6 @@ export interface UserLogin {
   imagen?: string;
   distribuidor?: string;
   comision?: string;
-  cambiar_password?: string;
   rol?: string;
   tipo_pago?: string;
   qr?: string;
@@ -34,4 +33,5 @@ export interface UserLogin {
   idioma_user?: string | null;
   token_api?: string;
   roles?: string[];
+  url_cobranding?: string;
 }
