@@ -1,15 +1,15 @@
-import type { AgencyRow } from "../../data/agencyData";
+import type { GetAgenciasAgencia200DataItem } from "../../api/schemas";
 import { type ColumnDef } from "../DataTable";
 import RowActions from "../RowActions";
 import { StatusBadge } from "../StatusBadge";
-import { defaultStatusTheme } from "../StatusBadge/StatusBadgeThemes";
+import { statusAgentTheme } from "../StatusBadge/StatusBadgeThemes";
 
 type CreateColumnsDeps = {
   currency: (n: number) => string;
   t: (key: string) => string | React.ReactNode;
-  onEdit: (row: AgencyRow) => void;
-  onToggle: (row: AgencyRow) => void;
-  onDelete: (row: AgencyRow) => void;
+  onEdit: (row: GetAgenciasAgencia200DataItem) => void;
+  onToggle: (row: GetAgenciasAgencia200DataItem) => void;
+  onDelete: (row: GetAgenciasAgencia200DataItem) => void;
 };
 
 export function createAgencyColumns({
@@ -18,48 +18,48 @@ export function createAgencyColumns({
   onEdit,
   onToggle,
   onDelete,
-}: CreateColumnsDeps): ColumnDef<AgencyRow>[] {
+}: CreateColumnsDeps): ColumnDef<GetAgenciasAgencia200DataItem>[] {
   return [
     {
-      id: "name",
+      id: "nombre",
       label: t("agency.name"),
       width: "28%",
       sortable: true,
-      accessor: (row) => row.name,
+      accessor: (row) => row.nombre,
       align: "start",
     },
     {
-      id: "totalRevenue",
+      id: "total_ventas_monto",
       label: t("agency.totalRevenue"),
       width: "16%",
       sortable: true,
-      accessor: (row) => row.totalRevenue,
+      accessor: (row) => Number(row.total_ventas_monto ?? 0),
       align: "start",
-      render: (row) => currency(row.totalRevenue),
+      render: (row) => currency(Number(row.total_ventas_monto ?? 0)),
     },
     {
-      id: "totalCommission",
+      id: "total_comisiones",
       label: t("agency.totalCommission"),
       width: "20%",
       sortable: true,
-      accessor: (row) => row.totalCommission,
+      accessor: (row) => Number(row.total_comisiones ?? 0),
       align: "start",
-      render: (row) => currency(row.totalCommission),
+      render: (row) => currency(Number(row.total_comisiones ?? 0)),
     },
     {
-      id: "location",
+      id: "pais",
       label: t("agency.location"),
       width: "14%",
       sortable: true,
-      accessor: (row) => row.location,
+      accessor: (row) => row.pais,
       align: "center",
     },
     {
-      id: "totalPlans",
+      id: "total_ventas",
       label: t("agency.totalPlans"),
       width: "14%",
       sortable: true,
-      accessor: (row) => row.totalPlans,
+      accessor: (row) => Number(row.total_ventas ?? 0),
       align: "start",
     },
     {
@@ -69,7 +69,7 @@ export function createAgencyColumns({
       sortable: true,
       accessor: (row) => row.status,
       align: "end",
-      render: (row) => <StatusBadge status={row.status} theme={defaultStatusTheme} />,
+      render: (row) => <StatusBadge status={row.status ?? ""} theme={statusAgentTheme} />,
     },
     {
       id: "actions",
@@ -78,25 +78,25 @@ export function createAgencyColumns({
       align: "end",
       render: (row) => (
         <RowActions context={row}>
-          <RowActions.Item<AgencyRow>
+          <RowActions.Item<GetAgenciasAgencia200DataItem>
             icon="bi-pencil"
             onClick={onEdit}
           >
             {t("agency.edit")}
           </RowActions.Item>
 
-          <RowActions.Item<AgencyRow>
-            icon={row.status === "Active" ? "bi-toggle-on" : "bi-toggle-off"}
+          <RowActions.Item<GetAgenciasAgencia200DataItem>
+            icon={row.status === "1" ? "bi-toggle-on" : "bi-toggle-off"}
             onClick={onToggle}
           >
-            {row.status === "Active"
+            {row.status === "1"
               ? t("agency.markInactive")
               : t("agency.markActive")}
           </RowActions.Item>
 
           <RowActions.Divider />
 
-          <RowActions.Item<AgencyRow>
+          <RowActions.Item<GetAgenciasAgencia200DataItem>
             icon="bi-trash3"
             danger
             onClick={onDelete}

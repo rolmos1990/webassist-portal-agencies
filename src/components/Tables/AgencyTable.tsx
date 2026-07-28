@@ -1,6 +1,6 @@
 import { useCallback, useMemo } from "react";
 import { createAgencyColumns } from "./AgencyDataTableConfig";
-import type { AgencyRow } from "../../data/agencyData";
+import type { GetAgenciasAgencia200DataItem } from "../../api/schemas";
 import { useTranslation } from "react-i18next";
 import DataTable, { currency, type SortDir, type SortState } from "../DataTable";
 
@@ -18,22 +18,19 @@ type AgencyTablePagination = Omit<DataTablePaginationProps, 'defaultPage'> & {
 };
 
 type AgencyTableProps = {
-  data: AgencyRow[];
+  data: GetAgenciasAgencia200DataItem[];
   loading?: boolean;
   pagination?: AgencyTablePagination;
-  sort?: {
-    sortBy?: string;
-    sortDir?: SortDir;
-  };
+  sort?: SortState | null;
   onSortChange?: (sort: { id: string; dir: SortDir }) => void;
-  onEdit?: (row: AgencyRow) => void;
-  onToggle?: (row: AgencyRow) => void;
-  onDelete?: (row: AgencyRow) => void;
+  onEdit?: (row: GetAgenciasAgencia200DataItem) => void;
+  onToggle?: (row: GetAgenciasAgencia200DataItem) => void;
+  onDelete?: (row: GetAgenciasAgencia200DataItem) => void;
 };
 
-export function AgencyTable({ 
-  data, 
-  loading = false, 
+export function AgencyTable({
+  data,
+  loading = false,
   pagination,
   sort,
   onSortChange,
@@ -42,46 +39,36 @@ export function AgencyTable({
   onDelete: externalOnDelete
 }: AgencyTableProps) {
   const { t } = useTranslation("common");
-  
-  const handleEdit = useCallback((row: AgencyRow) => {
+
+  const handleEdit = useCallback((row: GetAgenciasAgencia200DataItem) => {
     externalOnEdit?.(row);
   }, [externalOnEdit]);
 
-  const handleToggle = useCallback((row: AgencyRow) => {
+  const handleToggle = useCallback((row: GetAgenciasAgencia200DataItem) => {
     externalOnToggle?.(row);
   }, [externalOnToggle]);
 
-  const handleDelete = useCallback((row: AgencyRow) => {
+  const handleDelete = useCallback((row: GetAgenciasAgencia200DataItem) => {
     externalOnDelete?.(row);
   }, [externalOnDelete]);
 
   const columns = useMemo(
-    () => createAgencyColumns({ 
-      currency, 
-      t, 
-      onEdit: handleEdit, 
-      onToggle: handleToggle, 
-      onDelete: handleDelete 
+    () => createAgencyColumns({
+      currency,
+      t,
+      onEdit: handleEdit,
+      onToggle: handleToggle,
+      onDelete: handleDelete
     }),
     [t, handleEdit, handleToggle, handleDelete]
   );
 
-  const defaultSort = useMemo<SortState | null>(() => {
-    if (sort?.sortBy) {
-      return {
-        id: sort.sortBy,
-        dir: sort.sortDir || 'asc'
-      };
-    }
-    return null;
-  }, [sort]);
-
   return (
-    <DataTable<AgencyRow> 
-      items={data} 
-      columns={columns} 
+    <DataTable<GetAgenciasAgencia200DataItem>
+      items={data}
+      columns={columns}
       loading={loading}
-      defaultSort={defaultSort}
+      sort={sort}
       onSortChange={onSortChange}
       pagination={pagination ? {
         totalPages: pagination.totalPages,
