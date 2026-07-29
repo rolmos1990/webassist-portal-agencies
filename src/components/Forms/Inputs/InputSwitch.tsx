@@ -27,7 +27,7 @@ const InputSwitch: React.FC<InputSwitchProps> = ({
 }) => {
   return (
     <div className={mainClassName}>
-      <label className="form-label d-block mb-2">{label}</label>
+      {label && <label className="form-label d-block mb-2">{label}</label>}
 
       <div className="form-check form-switch switch-lg">
         <input

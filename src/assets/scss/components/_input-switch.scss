@@ -1,4 +1,4 @@
-.switch-lg .form-check-input {
+.form-check.form-switch.switch-lg .form-check-input {
     /* === Configurable === */
     --track-w: 3.25rem;      /* ancho del track */
     --track-h: 1.75rem;      /* alto del track */
@@ -10,6 +10,7 @@
     height: var(--track-h);
     border-radius: var(--track-h);
     background-color: #fff;
+    background-image: none; /* anula el ícono SVG por defecto de Bootstrap */
     border: var(--bd) solid var(--bs-black);
     position: relative;
     outline: none;
@@ -21,7 +22,7 @@
   }
   
   /* Bolita OFF (negra) */
-  .switch-lg .form-check-input::after {
+  .form-check.form-switch.switch-lg .form-check-input::after {
     content: "";
     position: absolute;
     top: 50%;
@@ -35,13 +36,14 @@
   }
   
   /* Track ON */
-  .switch-lg .form-check-input:checked {
+  .form-check.form-switch.switch-lg .form-check-input:checked {
     background-color: #fff;
+    background-image: none;
     border-color: var(--bs-primary);
   }
   
   /* Bolita ON (primary) sin desbordar) */
-  .switch-lg .form-check-input:checked::after {
+  .form-check.form-switch.switch-lg .form-check-input:checked::after {
     background-color: var(--bs-primary);
     /* desplazamiento = track_w - knob - (2*gap) - (2*border) */
     transform: translate(

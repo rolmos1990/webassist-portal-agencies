@@ -1,6 +1,5 @@
 import { useEffect, useState, useRef } from "react";
 import { toast, type ToastType } from "../../services/toast";
-import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import { Toast as BSToast } from "bootstrap";
 

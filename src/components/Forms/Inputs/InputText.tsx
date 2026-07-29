@@ -29,9 +29,11 @@ const InputText: React.FC<InputTextProps> = ({
   className = '',
 }) => (
   <div className={mainClassName}>
-    <label htmlFor={name} className={`form-label ${labelClassName}`}>
-      {label}
-    </label>
+    {label && (
+      <label htmlFor={name} className={`form-label ${labelClassName}`}>
+        {label}
+      </label>
+    )}
 
     <div className="position-relative">
       {icon && (

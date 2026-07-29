@@ -51,7 +51,7 @@ const InputSelect: React.FC<InputSelectProps> = ({
 
   return (
     <div className={mainClassName}>
-      <label htmlFor={name} className="form-label">{label}</label>
+      {label && <label htmlFor={name} className="form-label">{label}</label>}
       <select
         id={name}
         disabled={disabled}
