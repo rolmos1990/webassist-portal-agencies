@@ -11,16 +11,18 @@ import { useTranslation } from 'react-i18next';
 
 export interface SettingsGeneralFormData {
   language: string;
-  defaultComissionRate: number;
-  renewalComissionRate: number;
-  minimiumRenevueTarget: number;
+  tipoPago?: string;
+  ultimoLogin?: string;
+  whatsapp?: string;
+  comision: number;
 }
 
 const schema = yup.object({
   language: yup.string().required('Language is required'),
-  defaultComissionRate: yup.number().required('Default Comission Rate is required'),
-  renewalComissionRate: yup.number().required('Renewal Comission Rate is required'),
-  minimiumRenevueTarget: yup.number().required('Minimum Revenue Target is required')
+  tipoPago: yup.string().optional(),
+  ultimoLogin: yup.string().optional(),
+  whatsapp: yup.string().optional(),
+  comision: yup.number().required('Commission is required')
 });
 
 interface Props {
@@ -80,9 +82,9 @@ export default function SettingsGeneralForm({ initialValues, onSubmit, onCancel 
       className="create-client-form canvas-body-inner d-flex flex-column h-100"
       noValidate
     >
-                   
+
       <h6 className="text-black fw-semibold mb-3 border-bottom pb-2">{t('user_preference')}</h6>
-      
+
       {/* --- Selects generados por configuración --- */}
       {SELECT_ROWS.map(({ label, name, options }) => (
         <RowView
@@ -106,7 +108,31 @@ export default function SettingsGeneralForm({ initialValues, onSubmit, onCancel 
         />
       ))}
 
-      {/* Commission & Revenue */}
+      {/* Payment Type (read-only, informativo desde el backend) */}
+      <RowView
+        label="Payment Type"
+        edit={false}
+        show={<span>{watched.tipoPago || '—'}</span>}
+        editNode={<span>{watched.tipoPago || '—'}</span>}
+      />
+
+      {/* Last Login (read-only, fecha formateada) */}
+      <RowView
+        label="Last Login"
+        edit={false}
+        show={<span>{watched.ultimoLogin || '—'}</span>}
+        editNode={<span>{watched.ultimoLogin || '—'}</span>}
+      />
+
+      {/* WhatsApp (read-only) */}
+      <RowView
+        label="WhatsApp"
+        edit={false}
+        show={<span>{watched.whatsapp || '—'}</span>}
+        editNode={<span>{watched.whatsapp || '—'}</span>}
+      />
+
+      {/* Commission */}
       <hr className="border-0" />
 
       <div className="mt-4 pt-2">
@@ -116,58 +142,14 @@ export default function SettingsGeneralForm({ initialValues, onSubmit, onCancel 
           label={t('default_commission_rate')}
           hint={''}
           edit={false}
-          show={<span>{watched.defaultComissionRate} %</span>}
+          show={<span>{watched.comision} %</span>}
           editNode={
             <InputWithAddon
-              name="defaultComissionRate"
+              name="comision"
               placeholder="0"
               endAdornment="%"
               register={register}
-              error={errors.defaultComissionRate}
-              // fuerza number en RHF
-              // @ts-expect-error RHF acepta valueAsNumber en register rules
-              rules={{ valueAsNumber: true }}
-            />
-          }
-        />
-
-        {/* Renewal Commission */}
-        <RowView
-          label={t('renewal_commission_rate')}
-          hint={t('')}
-          edit={false}
-          show={<span>{watched.renewalComissionRate} %</span>}
-          editNode={
-            <InputWithAddon
-              name="renewalComissionRate"
-              placeholder="0"
-              endAdornment="%"
-              register={register}
-              error={errors.renewalComissionRate}
-              // fuerza number en RHF
-              // @ts-expect-error RHF acepta valueAsNumber en register rules
-              rules={{ valueAsNumber: true }}
-            />
-          }
-        />
-
-        {/* Minimum Revenue Target */}
-        <RowView
-          label={t('minimum_revenue_target')}
-          hint={t('')}
-          edit={false}
-          show={
-            <span>
-                {watched.minimiumRenevueTarget ?? 0}
-            </span>
-          }
-          editNode={
-            <InputWithAddon
-              name="minimiumRenevueTarget"
-              placeholder="0"
-              endAdornment={"$"}
-              register={register}
-              error={errors.minimiumRenevueTarget}
+              error={errors.comision}
               // fuerza number en RHF
               // @ts-expect-error RHF acepta valueAsNumber en register rules
               rules={{ valueAsNumber: true }}
@@ -203,7 +185,7 @@ export default function SettingsGeneralForm({ initialValues, onSubmit, onCancel 
             </div>
           )}
         </div>
-      
+
           </form>
 
   );

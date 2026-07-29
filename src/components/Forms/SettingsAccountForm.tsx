@@ -6,27 +6,18 @@ import { useState } from 'react';
 import { RowView } from '../RowView';
 import { UIButton } from '../Button';
 import InputText from './Inputs/InputText';
-import InputTextarea from './Inputs/InputTextArea';
 import InputSwitch from './Inputs/InputSwitch';
 
 export interface SettingsAccountFormData {
-  companyName: string;
   email: string;
   phone?: string;
-  address?: string;
   emailNotifications: boolean;
-  smsNotifications: boolean;
-  appNotifications: boolean;
 }
 
 const schema = yup.object({
-  companyName: yup.string().trim().required('Company name is required'),
   email: yup.string().trim().email('Invalid email').required('Email is required'),
   phone: yup.string().trim().optional().matches(/^\+?[0-9\s-]*$/, 'Invalid phone'),
-  address: yup.string().trim().optional(),
   emailNotifications: yup.boolean().optional(),
-  smsNotifications: yup.boolean().optional(),
-  appNotifications: yup.boolean().optional(),
 });
 
 interface Props {
@@ -74,24 +65,6 @@ export default function SettingsAccountForm({
       onSubmit={handleSubmit(handleFormSubmit)} className="d-flex flex-column gap-3" noValidate>
       <h6 className="text-black fw-semibold mb-2 border-bottom pb-2">Account Settings</h6>
 
-      {/* Company Name */}
-      <RowView
-        label="Company Name"
-        edit={editable}
-        show={<span>{watched.companyName || '—'}</span>}
-        editNode={
-          <InputText
-            label=""
-            name="companyName"
-            placeholder="Company Name"
-            register={register}
-            error={errors.companyName}
-            mainClassName="mb-0"
-            className="rounded-pill"
-          />
-        }
-      />
-
       {/* Primary Contact Email */}
       <RowView
         label="Primary Contact Email"
@@ -130,25 +103,6 @@ export default function SettingsAccountForm({
         }
       />
 
-      {/* Address */}
-      <RowView
-        label="Address"
-        edit={editable}
-        show={<span style={{ whiteSpace: 'pre-line' }}>{watched.address || '—'}</span>}
-        editNode={
-          <InputTextarea
-            label=""
-            name="address"
-            placeholder="Street, building, apartment, city…"
-            rows={3}
-            maxLength={300}
-            register={register}
-            error={errors.address}
-            mainClassName="mb-0"
-            className="rounded-3"
-          />
-        }
-      />
       <hr className="border-0" />
       <h6 className="text-black fw-semibold mb-2 border-bottom pb-2">Notifications and Alerts</h6>
       <RowView
@@ -161,34 +115,6 @@ export default function SettingsAccountForm({
             name="emailNotifications"
             register={register}
             error={errors.emailNotifications as any}
-          />
-        }
-      />
-
-      <RowView
-        label="SMS Notifications"
-        edit={editable}
-        show={<span>{onOff(watched.smsNotifications)}</span>}
-        editNode={
-          <InputSwitch
-            label=""
-            name="smsNotifications"
-            register={register}
-            error={errors.smsNotifications as any}
-          />
-        }
-      />
-
-      <RowView
-        label="App Notifications"
-        edit={editable}
-        show={<span>{onOff(watched.appNotifications)}</span>}
-        editNode={
-          <InputSwitch
-            label=""
-            name="appNotifications"
-            register={register}
-            error={errors.appNotifications as any}
           />
         }
       />
