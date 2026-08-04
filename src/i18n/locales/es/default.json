@@ -1,0 +1,73 @@
+{
+  "sales":{
+    "planName":"Plan Name",
+    "saleAmount":"Sale Amount",
+    "unitQty":"Unit Qty",
+    "variationsPercent":"Variations Percent",
+    "unitPrice":"Unit Price",
+    "voucher":"Voucher"
+},
+  "quotes": {
+      "number": "Number",
+      "name": "Name",
+      "product": "Product",
+      "total": "Total"
+  },
+  "agency":{
+      "name":"Name",
+      "totalRevenue":"Total Revenue",
+      "totalCommission":"Total Commission",
+      "location":"Location",
+      "totalPlans":"Total Plans",
+      "status":"Status",
+      "actions":"Actions",
+      "edit":"Edit",
+      "delete":"Delete",
+      "markActive":"Mark as Active",
+      "markInactive":"Mark as Inactive"
+  },
+  "agents":{
+    "agentCode":"Agent Code",
+    "name":"Name",
+    "lastName":"Last Name",
+    "email":"Email",
+    "agencyName":"Agency Name",
+    "totalSales":"Total Sales",
+    "totalCommission":"Total Commission",
+    "status":"Status",
+    "actions":"Actions",
+    "edit":"Edit",
+    "delete":"Delete",
+    "markActive":"Mark as Active",
+    "markInactive":"Mark as Inactive"
+},
+"user": {
+  "name": "Name",
+  "email": "Email",
+  "phone": "Phone",
+  "city": "City",
+  "country": "Country",
+  "purchases": "Purchases",
+  "created": "Created",
+  "status": "Status",
+  "actions": "Actions",
+  "edit": "Edit",
+  "delete": "Delete",
+  "markActive": "Mark as Active",
+  "markInactive": "Mark as Inactive"
+},
+  "status": {
+    "active": "Active",
+    "inactive": "Inactive"
+  },
+  "dashboard": {
+    "kpis": {
+      "cantidad_ventas": "Cantidad de ventas",
+      "cantidad_vouchers": "Cantidad de vouchers",
+      "clientes": "Clientes",
+      "monto": "Monto",
+      "ticket_promedio": "Ticket promedio"
+    }
+  },
+  "noData": "No data available"
+}
