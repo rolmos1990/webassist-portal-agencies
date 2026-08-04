@@ -5,6 +5,7 @@ import iconArrow from '../assets/images/icons/arrow.svg';
 import iconDashboard from '../assets/images/icons/icon (9).svg';
 import iconAgencies from '../assets/images/icons/icon (8).svg';
 import iconAgents from '../assets/images/icons/icon (7).svg';
+import iconClients from '../assets/images/icons/icon (1).svg';
 //import iconSales from '../assets/images/icons/icon (5).svg';
 import iconNewQuote from '../assets/images/icons/icon (4).svg';
 import iconStandingQuote from '../assets/images/icons/icon (2).svg';
@@ -13,11 +14,14 @@ import SidebarItem from './SidebarItem';
 import { useTranslation } from 'react-i18next';
 import { useI18nCache } from '../i18n/i18nCacheProvider';
 import { PATHS } from '../routes/Routes';
+import { useSecurityStore } from '../stores/securityStore';
+import { SecurityRole } from '../stores/SecurityRole';
 
 function NavBar() {
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 991.98);
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const { lang } = useI18nCache();
+  const isAdmin = useSecurityStore((state) => state.hasRole(SecurityRole.AGENT_ADMIN));
 
   const { t } = useTranslation();
 
@@ -69,8 +73,13 @@ function NavBar() {
         <ul className="nav nav-pills flex-column mb-auto mt-3 ps-3">
         <SidebarItem icon={iconDashboard} label={t('menu.dashboard')} path={PATHS.dashboard.home()} />
         {/* <SidebarItem icon={iconSales} label={t('perfil')} path="/profile" /> */}
-        <SidebarItem icon={iconAgencies} label={t('menu.agencies')} path={PATHS.agencies.list()} />
-        <SidebarItem icon={iconAgents} label={t('menu.agents')} path={PATHS.agents.list()} />
+        <SidebarItem icon={iconClients} label={t('menu.clients')} path={PATHS.clients.list()} />
+        {isAdmin && (
+          <>
+            <SidebarItem icon={iconAgencies} label={t('menu.agencies')} path={PATHS.agencies.list()} />
+            <SidebarItem icon={iconAgents} label={t('menu.agents')} path={PATHS.agents.list()} />
+          </>
+        )}
         {/* <SidebarItem icon={iconAgents} label="Administrar Usuarios" path="/users" /> */}
         <SidebarItem icon={iconNewQuote} label={t('menu.myQuotes')} path={PATHS.quotes.mine()} />
         <SidebarItem icon={iconNewQuote} label={t('menu.agencyQuotes')} path={PATHS.quotes.agency()} />

@@ -47,6 +47,15 @@
     "markActive": "key_agents_markActive",
     "markInactive": "key_agents_markInactive"
   },
+  "clients": {
+    "id": "key_clients_id",
+    "name": "key_clients_name",
+    "email": "key_clients_email",
+    "gender": "key_clients_gender",
+    "country": "key_clients_country",
+    "birthDate": "key_clients_birthDate",
+    "salesAmount": "key_clients_salesAmount"
+  },
   "user": {
     "name": "key_user_name",
     "email": "key_user_email",
@@ -104,6 +113,7 @@
     "dashboard": "key_menu_dashboard",
     "agencies": "key_menu_agencies",
     "agents": "key_menu_agents",
+    "clients": "key_menu_clients",
     "myQuotes": "key_menu_myQuotes",
     "agencyQuotes": "key_menu_agencyQuotes",
     "myAssistances": "key_menu_myAssistances",

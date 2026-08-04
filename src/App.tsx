@@ -6,6 +6,8 @@ import LocaleGate from './routes/LocalGate';
 import AuthLayout from './layouts/AuthLayout';
 import DashboardLayout from './layouts/DashboardLayout';
 import PrivateRoute from './routes/PrivateRoute';
+import RoleRoute from './routes/RoleRoute';
+import { SecurityRole } from './stores/SecurityRole';
 
 // pages...
 import Login from './pages/Login';
@@ -14,6 +16,7 @@ import Agencies from './pages/Agencies';
 import AgencyDetail from './pages/AgencyDetail';
 import Agents from './pages/Agents';
 import AgentDetail from './pages/AgentDetail';
+import Clients from './pages/Clients';
 import ForgotPassword from './pages/ForgotPassword';
 import CreateNewPassword from './pages/CreateNewPassword';
 import AssistanceAgency from './pages/AssistanceAgency';
@@ -28,7 +31,9 @@ import Settings from './pages/Settings';
 // estilos/watchers
 import './assets/scss/main.scss';
 import { bootstrapAuthWatcher } from './stores/useAuthStore';
+import { bootstrapSecurityWatcher } from './stores/securityStore';
 bootstrapAuthWatcher();
+bootstrapSecurityWatcher();
 
 export default function App() {
   return (
@@ -48,10 +53,16 @@ export default function App() {
           <Route element={<PrivateRoute />}>
             <Route element={<DashboardLayout />}>
               <Route index element={<Dashboard />} />
-              <Route path="agencies" element={<Agencies />} />
-              <Route path="agency/:id" element={<AgencyDetail />} />
-              <Route path="agents" element={<Agents />} />
-              <Route path="agent/:id" element={<AgentDetail />} />
+
+              {/* Solo agente_administrador puede ver Agencias y Agentes */}
+              <Route element={<RoleRoute roles={[SecurityRole.AGENT_ADMIN]} />}>
+                <Route path="agencies" element={<Agencies />} />
+                <Route path="agency/:id" element={<AgencyDetail />} />
+                <Route path="agents" element={<Agents />} />
+                <Route path="agent/:id" element={<AgentDetail />} />
+              </Route>
+
+              <Route path="clients" element={<Clients />} />
               <Route path="renewals" element={<Renewals />} />
               <Route path="quotesAgencies" element={<QuotesAgency />} />
               <Route path="my-quotes" element={<MyQuotes />} />

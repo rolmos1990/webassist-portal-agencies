@@ -17,6 +17,8 @@ export type GetClientes200DataItemsItem = {
   nacimiento_ts?: string;
   telefono?: string;
   email?: string;
+  agente?: string;
+  fecha_nacimiento?: string;
   pais_nombre?: string;
   sexo_nombre?: string;
   ventas?: GetClientes200DataItemsItemVentas;

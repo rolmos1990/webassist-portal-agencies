@@ -47,6 +47,15 @@
       "markActive":"Mark as Active",
       "markInactive":"Mark as Inactive"
   },
+  "clients":{
+      "id":"ID",
+      "name":"Name",
+      "email":"Email",
+      "gender":"Gender",
+      "country":"Country",
+      "birthDate":"Birth Date",
+      "salesAmount":"Sales Amount"
+  },
   "user": {
     "name": "Name",
     "email": "Email",
@@ -104,6 +113,7 @@
     "dashboard": "Dashboard",
     "agencies": "Agencies",
     "agents": "Agents",
+    "clients": "Clients",
     "myQuotes": "My Quotes",
     "agencyQuotes": "All Quotes",
     "myAssistances": "My Assistances",

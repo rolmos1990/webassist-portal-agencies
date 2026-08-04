@@ -47,6 +47,15 @@
     "markActive":"Mark as Active",
     "markInactive":"Mark as Inactive"
 },
+  "clients":{
+    "id":"ID",
+    "name":"Nombre",
+    "email":"Correo",
+    "gender":"Sexo",
+    "country":"País",
+    "birthDate":"Fecha de Nacimiento",
+    "salesAmount":"Monto en Ventas"
+  },
 "user": {
   "name": "Name",
   "email": "Email",
@@ -104,6 +113,7 @@
     "dashboard": "Panel",
     "agencies": "Agencias",
     "agents": "Agentes",
+    "clients": "Clientes",
     "myQuotes": "Mis Cotizaciones",
     "agencyQuotes": "Todas las Cotizaciones",
     "myAssistances": "Mis Asistencias",

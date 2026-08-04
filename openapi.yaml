@@ -2044,6 +2044,11 @@ paths:
                                                             type: string
                                                         email:
                                                             type: string
+                                                        agente:
+                                                            type: string
+                                                        fecha_nacimiento:
+                                                            type: string
+                                                            example: "01/03/1999"
                                                         pais_nombre:
                                                             type: string
                                                         sexo_nombre:

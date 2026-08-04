@@ -38,6 +38,9 @@ const T = {
   agents: '/:lang/agents',
   agentDetail: '/:lang/agent/:id',
 
+  // Clients
+  clients: '/:lang/clients',
+
   // Assistances
   myAssistances: '/:lang/my-assistances',
   agencyAssistances: '/:lang/agency-assistances',
@@ -85,6 +88,9 @@ export const PATHS = {
   agents: {
     list: (lang?: Lang) => withLang(T.agents, {}, lang),
     detail: (id: any, lang?: Lang) => withLang(T.agentDetail, { id }, lang),
+  },
+  clients: {
+    list: (lang?: Lang) => withLang(T.clients, {}, lang),
   },
   assistances: {
     mine: (lang?: Lang) => withLang(T.myAssistances, {}, lang),

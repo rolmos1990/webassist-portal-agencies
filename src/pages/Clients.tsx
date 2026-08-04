@@ -1,51 +1,60 @@
-import { useState } from 'react';
-import Offcanvas from '../components/Offcanvas';
-import { customersData, type CustomerRow } from '../data/customerData';
-import { UIButton } from '../components/Button';
+import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import Breadcrumb from '../components/Breadcrumb';
+import { UIButton } from '../components/Button';
+import Offcanvas from '../components/Offcanvas';
 import CreateClientVertical from '../components/Forms/CreateClientVertical';
-import { CustomersTable } from '../components/Tables/CustomerTable';
-import { useNavigate } from 'react-router-dom';
-import { PATHS } from '../routes/Routes';
+import { ClientsTable } from '../components/Tables/ClientsTable';
+import { useI18nCache } from '../i18n/i18nCacheProvider';
+import { useGetClientes } from '../api/generated';
+import { GetClientesSort, GetClientesSortOrder } from '../api/schemas';
+import type { SortDir, SortState } from '../components/DataTable';
+import { toast } from '../services/toast';
+import { getApiErrorMessage } from '../api/errors/ApiError';
+
+const SORT_FIELD_BY_COLUMN: Record<string, GetClientesSort> = {
+  name: GetClientesSort.nombre,
+  email: GetClientesSort.email,
+  sexo_nombre: GetClientesSort.sexo,
+  pais_nombre: GetClientesSort.pais,
+  fecha_nacimiento: GetClientesSort.nacimiento,
+};
 
 function Clients() {
-  const [show, setShow] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [sort, setSort] = useState({ sortBy: 'name', sortDir: 'desc' as 'desc' | 'asc' });
+  const { lang } = useI18nCache();
+  const { t } = useTranslation();
 
-  const navigate = useNavigate();
+  const [show, setShow] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [sort, setSort] = useState<SortState | null>(null);
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
-  const handleSubmit = (data: any) => {
+  const handleSubmit = (data: unknown) => {
     console.log(data);
     handleClose();
   };
 
-  const handlePageChange = (page: number) => {
-    setCurrentPage(page);
-    // Here you would typically fetch data for the new page
-    console.log("Page changed to:", page);
-  };
+  const sortField = sort ? SORT_FIELD_BY_COLUMN[sort.id] : undefined;
+  const sortOrder = sort ? (sort.dir === 'asc' ? GetClientesSortOrder.ASC : GetClientesSortOrder.DESC) : undefined;
 
-  const handleSortChange = ({ id, dir }: { id: string; dir: 'desc' | 'asc' }) => {
-    setSort({ sortBy: id, sortDir: dir });
-    // Here you would typically refetch data with the new sort
-    console.log("Sort changed:", { sortBy: id, sortDir: dir });
-  };
+  const { data, isLoading, error } = useGetClientes(lang, {
+    pagina: currentPage,
+    ...(sortField ? { sort: sortField, sort_order: sortOrder } : {}),
+  });
 
-  const handleEdit = (row: CustomerRow) => {
-    navigate(PATHS.agencies.detail(row.id));
-  };
+  useEffect(() => {
+    if (error) {
+      toast.error("Error", getApiErrorMessage(error, t('error_generico')));
+    }
+  }, [error, t]);
 
-  const handleToggle = (row: CustomerRow) => {
-    console.log("Toggle", row);
-  };
+  const items = data?.data?.items ?? [];
+  const paginacion = data?.data?.paginacion;
 
-  const handleDelete = (row: CustomerRow) => {
-    console.log("Delete", row);
+  const onSortChange = (next: { id: string; dir: SortDir }) => {
+    setSort(next);
   };
 
   return (
@@ -64,36 +73,30 @@ function Clients() {
           <CreateClientVertical onSubmit={handleSubmit} onCancel={handleClose} />
         </Offcanvas>
 
-        <Breadcrumb 
-          title="Agencies" 
+        <Breadcrumb
+          title={t('menu.clients')}
           rightContent={
             <div className="d-flex gap-2">
-              <UIButton variant="outline-primary" icon="">
-                Filter By
-              </UIButton>
               <UIButton variant="dark" icon="" onClick={handleShow}>
                 Create a Client
               </UIButton>
             </div>
-          } 
+          }
         />
 
         <div className="card">
           <div className="card-body p-0">
-            <CustomersTable
-              data={customersData}
-              loading={loading}
+            <ClientsTable
+              data={items}
+              loading={isLoading}
               sort={sort}
-              onSortChange={handleSortChange}
-              onEdit={handleEdit}
-              onToggle={handleToggle}
-              onDelete={handleDelete}
+              onSortChange={onSortChange}
               pagination={{
-                totalPages: 11,
+                totalPages: paginacion?.cantidad_paginas ?? 1,
                 currentPage,
-                align: "center",
-                wrap: "none",
-                onChange: handlePageChange,
+                align: 'center',
+                wrap: 'none',
+                onChange: setCurrentPage,
               }}
             />
           </div>
