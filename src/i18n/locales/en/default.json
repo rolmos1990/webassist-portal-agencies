@@ -69,5 +69,15 @@
       "ticket_promedio": "Avg. Ticket"
     }
   },
+  "menu": {
+    "dashboard": "Dashboard",
+    "agencies": "Agencies",
+    "agents": "Agents",
+    "myQuotes": "My Quotes",
+    "agencyQuotes": "All Quotes",
+    "myAssistances": "My Assistances",
+    "agencyAssistances": "All Assistances",
+    "salesReport": "Sales Report"
+  },
   "noData": "No data available"
 }

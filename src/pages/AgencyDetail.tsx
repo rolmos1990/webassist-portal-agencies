@@ -9,7 +9,7 @@ import { subAgencyData } from '../data/subAgencyData';
 
 export default function AgencyDetail() {
 
-    const { t } = useTranslation("common");
+    const { t } = useTranslation();
     const [loading, setLoading] = useState(false);
     return (
     <div className="min-vh-100 bg-light">

@@ -6,7 +6,7 @@ import SettingsAgencyForm, { type SettingsAgencyFormData } from "../components/F
 import { t } from "i18next";
 import { useI18nCache } from "../i18n/i18nCacheProvider";
 import { useEffect, useState } from "react";
-import { getPerfilAgente, getPerfilAgencia } from "../api/generated";
+import { getPerfilAgente, getPerfilAgencia, useActualizarIdiomaAgente } from "../api/generated";
 import { toast } from "../services/toast";
 import { format } from "date-fns";
 
@@ -20,7 +20,8 @@ const formatLastLogin = (unixSeconds?: string): string => {
 export default function Settings() {
 
     const [loading, setLoading] = useState(false);
-    const { lang } = useI18nCache();
+    const { lang, setLang } = useI18nCache();
+    const { mutateAsync: actualizarIdioma } = useActualizarIdiomaAgente();
 
     const [generalProfile, setGeneralProfile] = useState<SettingsGeneralFormData>({
       language: "en",
@@ -46,8 +47,14 @@ export default function Settings() {
       direccion: "",
     });
 
-  const onGeneralSubmit = (data: SettingsGeneralFormData) => {
-    console.log(data);
+  const onGeneralSubmit = async (data: SettingsGeneralFormData) => {
+    if (data.language === lang) return;
+    try {
+      await actualizarIdioma({ idioma: lang, data: { idioma: data.language } });
+      setLang(data.language);
+    } catch {
+      toast.error("Error", t('error_generico'));
+    }
   };
 
   const onAccountSubmit = (data: SettingsAccountFormData) => {

@@ -7,13 +7,15 @@ export interface AgentPerformanceData {
   value: number;
 }
 
-interface AgentPerformanceSectionProps {
-  data: {
-    data: AgentPerformanceData[];
-  };
-}
+const agentPerformanceData: AgentPerformanceData[] = [
+  { name: "John Smith", subtitle: "Senior Agent", value: 8500 },
+  { name: "Sarah Johnson", subtitle: "Lead Agent", value: 7200 },
+  { name: "Mike Davis", subtitle: "Agent", value: 6800 },
+  { name: "Lisa Wilson", subtitle: "Junior Agent", value: 5400 },
+  { name: "Tom Brown", subtitle: "Agent", value: 4900 },
+];
 
-export default function AgentPerformanceSection({ data = { data: [] } }: AgentPerformanceSectionProps) {
+export default function AgentPerformanceSection() {
 
   return (
     <div className="p-3 bg-white rounded-2 w-100">
@@ -43,7 +45,7 @@ export default function AgentPerformanceSection({ data = { data: [] } }: AgentPe
       </div>
       <HorizontalBarChart
         id="agentPerformanceChart"
-        data={data.data || []}
+        data={agentPerformanceData}
         backgroundColor="#7cc249"
         height={450}
         maxValue={10000}

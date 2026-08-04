@@ -1,28 +1,39 @@
 import BarChart from '../common/BarChart';
 import type { ChartData, ChartOptions } from 'chart.js';
+import type { GetDashboard200DataComisionesItem } from '../../api/schemas';
 
 interface CommissionEarnedSectionProps {
-  data?: {
-    labels: string[];
-    datasets: Array<{
-      label: string;
-      data: number[];
-      backgroundColor: string | string[] | ((ctx: any) => string);
-    }>;
-  };
+  data?: GetDashboard200DataComisionesItem[];
+}
+
+function buildCommissionChartData(comisiones: GetDashboard200DataComisionesItem[]): ChartData<'bar'> {
+  const labels: string[] = [];
+  comisiones.forEach(item => {
+    (item.meses ?? []).forEach(mes => {
+      if (mes.nombre && !labels.includes(mes.nombre)) labels.push(mes.nombre);
+    });
+  });
+
+  const datasets = comisiones.map((item, index) => {
+    const montoByMonth = new Map((item.meses ?? []).map(mes => [mes.nombre, mes.monto ?? 0]));
+    const isLatestYear = index === comisiones.length - 1;
+
+    return {
+      label: item.ano ?? '',
+      backgroundColor: isLatestYear ? "#1e3a5c" : "#d3d3d3",
+      data: labels.map(label => montoByMonth.get(label) ?? 0),
+      borderRadius: 6,
+      barPercentage: 0.7,
+      categoryPercentage: 0.8,
+    };
+  });
+
+  return { labels, datasets };
 }
 
 export default function CommissionEarnedSection({ data }: CommissionEarnedSectionProps) {
   // Use provided data or fallback to default data
-  const chartData: ChartData<'bar'> = data ? {
-    labels: data.labels,
-    datasets: data.datasets.map(dataset => ({
-      ...dataset,
-      borderRadius: 6,
-      barPercentage: 0.7,
-      categoryPercentage: 0.8,
-    }))
-  } : {
+  const chartData: ChartData<'bar'> = data && data.length > 0 ? buildCommissionChartData(data) : {
     labels: [
       "Jan", "Feb", "Mar", "Apr", "May", "Jun",
       "Jul", "Aug", "Sep", "Oct"

@@ -2,9 +2,9 @@ import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
 import LanguageDetector from 'i18next-browser-languagedetector';
 
-// Importar traducciones
-import enCommon from './locales/en/common.json';
-import esCommon from './locales/es/common.json';
+// Traducciones por defecto (fallback antes/ante fallos de las traducciones dinámicas del backend)
+import enDefault from './locales/en/default.json';
+import esDefault from './locales/es/default.json';
 
 // Configuración de i18next
 i18n
@@ -21,8 +21,8 @@ i18n
       excludeCacheFor: ['cimode'],
     },
     resources: {
-      en: { common: enCommon },
-      es: { common: esCommon },
+      en: { translation: enDefault },
+      es: { translation: esDefault },
     },
   });
 

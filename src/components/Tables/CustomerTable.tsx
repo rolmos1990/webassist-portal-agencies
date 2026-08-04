@@ -41,7 +41,7 @@ export function CustomersTable({
   onToggle: externalOnToggle,
   onDelete: externalOnDelete
 }: CustomersTableProps) {
-  const { t } = useTranslation('common');
+  const { t } = useTranslation();
   const handleEdit = useCallback((row: CustomerRow) => {
     externalOnEdit?.(row);
   }, [externalOnEdit]);

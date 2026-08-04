@@ -38,7 +38,7 @@ export function AgencyTable({
   onToggle: externalOnToggle,
   onDelete: externalOnDelete
 }: AgencyTableProps) {
-  const { t } = useTranslation("common");
+  const { t } = useTranslation();
 
   const handleEdit = useCallback((row: GetAgenciasAgencia200DataItem) => {
     externalOnEdit?.(row);

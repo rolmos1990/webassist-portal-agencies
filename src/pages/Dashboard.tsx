@@ -2,14 +2,14 @@ import Breadcrumb from '../components/Breadcrumb';
 import { UIButton } from '../components/Button';
 import {
   DashboardHeader,
-  SalesTargetSection,
+  // SalesTargetSection,
   RevenueRenewalsSection,
   TopSellingPlansSection,
   KPIComparisonSection,
   CommissionEarnedSection,
-  QuotePerformanceSection,
-  AgentPerformanceSection,
-  AgencyPerformanceSection
+  // QuotePerformanceSection,
+  // AgentPerformanceSection,
+  // AgencyPerformanceSection
 } from '../components/dashboard';
 import CreateAgenciesVertical from '../components/Forms/CreateAgenciesVertical';
 import FilterByAgencyForm from '../components/Forms/FilterByAgencyForm';
@@ -87,21 +87,21 @@ function Dashboard() {
         <FilterByAgencyForm onSubmit={handleSubmit} onCancel={handleClose} />
         </Offcanvas>
 
-      <SalesTargetSection data={data.salesTarget} />
+      {/* <SalesTargetSection /> */}
 
       <div className="d-flex p-3 flex-column flex-xl-row gap-3">
-        <RevenueRenewalsSection data={data.revenueRenewals} />
-        <TopSellingPlansSection />
+        <RevenueRenewalsSection data={data.renovaciones} />
+        <TopSellingPlansSection items={data.top_planes} />
       </div>
       <div className="d-flex p-3 flex-column flex-xl-row gap-3">
-        <KPIComparisonSection />
-        <CommissionEarnedSection data={data.commissionEarned} />
+        <KPIComparisonSection data={data.kpis?.ventas} />
+        <CommissionEarnedSection data={data.comisiones} />
       </div>
-      <QuotePerformanceSection />
-      <div className="d-flex p-3 flex-column flex-xl-row gap-3">
-        <AgentPerformanceSection data={data.agentPerformance} />
+      {/* <QuotePerformanceSection /> */}
+      {/* <div className="d-flex p-3 flex-column flex-xl-row gap-3">
+        <AgentPerformanceSection />
         <AgencyPerformanceSection />
-      </div>  
+      </div> */}
       </div>
     </div>
   );

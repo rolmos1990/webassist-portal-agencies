@@ -35,7 +35,7 @@ export function QuotesTable({
   sort,
   onSortChange,
 }: QuotesTableProps) {
-  const { t } = useTranslation('common');
+  const { t } = useTranslation();
 
   const columns = useMemo(
     () => createQuotesColumns({ 

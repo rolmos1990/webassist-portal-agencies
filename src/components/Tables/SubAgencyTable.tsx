@@ -35,7 +35,7 @@ export function SubAgencyTable({
   sort,
   onSortChange,
 }: SubAgencyTableProps) {
-  const { t } = useTranslation('common');
+  const { t } = useTranslation();
 
   const columns = useMemo(
     () => createSubAgencyColumns({ 

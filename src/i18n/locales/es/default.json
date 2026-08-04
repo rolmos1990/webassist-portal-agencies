@@ -69,5 +69,15 @@
       "ticket_promedio": "Ticket promedio"
     }
   },
+  "menu": {
+    "dashboard": "Panel",
+    "agencies": "Agencias",
+    "agents": "Agentes",
+    "myQuotes": "Mis Cotizaciones",
+    "agencyQuotes": "Todas las Cotizaciones",
+    "myAssistances": "Mis Asistencias",
+    "agencyAssistances": "Todas las Asistencias",
+    "salesReport": "Reporte de Ventas"
+  },
   "noData": "No data available"
 }

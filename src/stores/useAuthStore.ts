@@ -8,6 +8,7 @@ export type User = {
   name?: string;
   roles?: string[];
   agencia: string;
+  idioma_user?: string | null;
 };
 
 type AuthState = {

@@ -1,39 +1,24 @@
-import { useState, useEffect } from 'react';
-import { DashboardService, type DashboardData } from '../services/dashboardService';
+import { useGetDashboard } from '../api/generated';
+import type { GetDashboard200Data } from '../api/schemas';
+import { useI18nCache } from '../i18n/i18nCacheProvider';
 
 interface UseDashboardDataReturn {
-  data: DashboardData | null;
+  data: GetDashboard200Data | undefined;
   loading: boolean;
   error: string | null;
-  refetch: () => Promise<void>;
+  refetch: () => void;
 }
 
 export function useDashboardData(): UseDashboardDataReturn {
-  const [data, setData] = useState<DashboardData | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const { lang } = useI18nCache();
+  const idioma = lang === 'en' ? 'en' : 'es';
 
-  const fetchData = async () => {
-    try {
-      setLoading(true);
-      setError(null);
-      const dashboardData = await DashboardService.getAllDashboardData();
-      setData(dashboardData);
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to fetch dashboard data');
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    fetchData();
-  }, []);
+  const { data, isLoading, error, refetch } = useGetDashboard(idioma);
 
   return {
-    data,
-    loading,
-    error,
-    refetch: fetchData,
+    data: data?.data,
+    loading: isLoading,
+    error: error ? (error as unknown as Error)?.message ?? 'Failed to fetch dashboard data' : null,
+    refetch: () => { void refetch(); },
   };
 }

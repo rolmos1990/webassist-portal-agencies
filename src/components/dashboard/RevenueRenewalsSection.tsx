@@ -1,14 +1,22 @@
 import LinkedIcon from '../../assets/images/icons/link-icon.svg';
+import type { GetDashboard200DataRenovaciones } from '../../api/schemas';
 
 interface RevenueRenewalsSectionProps {
-  data: {
-    totalRenewal: number;
-    monthlyGrowth: number;
-    yearlyGrowth: number;
-  };
+  data?: GetDashboard200DataRenovaciones;
 }
 
+const formatCurrency = (value?: number) =>
+  (value ?? 0).toLocaleString('en-US', {
+    style: 'currency',
+    currency: 'USD',
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  });
+
 export default function RevenueRenewalsSection({ data }: RevenueRenewalsSectionProps) {
+  const pendientes = data?.pendientes;
+  const completadas = data?.completadas;
+
   return (
     <div className="p-3 bg-white rounded-2 flex-fill" style={{ minWidth: 0, overflow: 'hidden' }}>
       <div className="d-flex justify-content-between align-items-start gap-3">
@@ -41,10 +49,13 @@ export default function RevenueRenewalsSection({ data }: RevenueRenewalsSectionP
             }}
           ></div>
           <div>
+            <div style={{ color: "#4b647e", fontSize: "11px", fontWeight: "600" }}>
+              Pending
+            </div>
             <div
               style={{ color: "#21272a", fontSize: "13px", fontWeight: "700" }}
             >
- ${data?.totalRenewal?.toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 2, maximumFractionDigits: 2 }) || '$0.00'}
+              {formatCurrency(pendientes?.monto)}
             </div>
             <div style={{ color: "#4b647e", fontSize: "11px" }}>
               Total renewal done
@@ -58,7 +69,7 @@ export default function RevenueRenewalsSection({ data }: RevenueRenewalsSectionP
                     fontWeight: "700"
                   }}
                 >
-                  $3,872.00
+                  {formatCurrency(pendientes?.comisiones)}
                 </div>
                 <div style={{ color: "#4b647e", fontSize: "11px" }}>
                   Total commissions earned
@@ -85,13 +96,16 @@ export default function RevenueRenewalsSection({ data }: RevenueRenewalsSectionP
             }}
           ></div>
           <div>
+            <div style={{ color: "#4b647e", fontSize: "11px", fontWeight: "600" }}>
+              Completed
+            </div>
             <div
               style={{ color: "#21272a", fontSize: "13px", fontWeight: "700" }}
             >
-              $52,424.00
+              {formatCurrency(completadas?.monto)}
             </div>
             <div style={{ color: "#4b647e", fontSize: "11px" }}>
-              Projected revenue for "2025"
+              Total renewal done
             </div>
             <div className="d-flex align-items-center gap-2 mt-2">
               <div>
@@ -102,10 +116,10 @@ export default function RevenueRenewalsSection({ data }: RevenueRenewalsSectionP
                     fontWeight: 700,
                   }}
                 >
-                  $1,423
+                  {formatCurrency(completadas?.comisiones)}
                 </div>
                 <div style={{ color: "#4b647e", fontSize: "11px" }}>
-                  Project commissions for "2025"
+                  Total commissions earned
                 </div>
               </div>
             </div>

@@ -1,0 +1,83 @@
+{
+  "sales": {
+    "planName": "key_sales_planName",
+    "saleAmount": "key_sales_saleAmount",
+    "unitQty": "key_sales_unitQty",
+    "variationsPercent": "key_sales_variationsPercent",
+    "unitPrice": "key_sales_unitPrice",
+    "voucher": "key_sales_voucher"
+  },
+  "quotes": {
+    "number": "key_quotes_number",
+    "name": "key_quotes_name",
+    "product": "key_quotes_product",
+    "total": "key_quotes_total"
+  },
+  "agency": {
+    "name": "key_agency_name",
+    "totalRevenue": "key_agency_totalRevenue",
+    "totalCommission": "key_agency_totalCommission",
+    "location": "key_agency_location",
+    "totalPlans": "key_agency_totalPlans",
+    "status": "key_agency_status",
+    "actions": "key_agency_actions",
+    "edit": "key_agency_edit",
+    "delete": "key_agency_delete",
+    "markActive": "key_agency_markActive",
+    "markInactive": "key_agency_markInactive"
+  },
+  "agents": {
+    "agentCode": "key_agents_agentCode",
+    "name": "key_agents_name",
+    "lastName": "key_agents_lastName",
+    "email": "key_agents_email",
+    "agencyName": "key_agents_agencyName",
+    "totalSales": "key_agents_totalSales",
+    "totalCommission": "key_agents_totalCommission",
+    "status": "key_agents_status",
+    "actions": "key_agents_actions",
+    "edit": "key_agents_edit",
+    "delete": "key_agents_delete",
+    "markActive": "key_agents_markActive",
+    "markInactive": "key_agents_markInactive"
+  },
+  "user": {
+    "name": "key_user_name",
+    "email": "key_user_email",
+    "phone": "key_user_phone",
+    "city": "key_user_city",
+    "country": "key_user_country",
+    "purchases": "key_user_purchases",
+    "created": "key_user_created",
+    "status": "key_user_status",
+    "actions": "key_user_actions",
+    "edit": "key_user_edit",
+    "delete": "key_user_delete",
+    "markActive": "key_user_markActive",
+    "markInactive": "key_user_markInactive"
+  },
+  "status": {
+    "active": "key_status_active",
+    "inactive": "key_status_inactive"
+  },
+  "dashboard": {
+    "kpis": {
+      "cantidad_ventas": "key_dashboard_kpis_cantidad_ventas",
+      "cantidad_vouchers": "key_dashboard_kpis_cantidad_vouchers",
+      "clientes": "key_dashboard_kpis_clientes",
+      "monto": "key_dashboard_kpis_monto",
+      "ticket_promedio": "key_dashboard_kpis_ticket_promedio"
+    }
+  },
+  "menu": {
+    "dashboard": "key_menu_dashboard",
+    "agencies": "key_menu_agencies",
+    "agents": "key_menu_agents",
+    "myQuotes": "key_menu_myQuotes",
+    "agencyQuotes": "key_menu_agencyQuotes",
+    "myAssistances": "key_menu_myAssistances",
+    "agencyAssistances": "key_menu_agencyAssistances",
+    "salesReport": "key_menu_salesReport"
+  },
+  "noData": "key_noData"
+}

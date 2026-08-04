@@ -5,8 +5,11 @@ import { useAuthStore } from "../stores/useAuthStore";
 import { ApiError } from "../api/errors/ApiError";
 import { toast } from "../services/toast";
 import { useTranslation } from "react-i18next";
+import { useI18nCache } from "../i18n/i18nCacheProvider";
 
 type LoginFormData = { email: string; password: string };
+
+const SUPPORTED_LANGS = ["es", "en"];
 
 const computeExpiresAt = (exp?: number | string | null) =>
   exp ? Date.now() + Number(exp) * 1000 : Date.now() + 60 * 60 * 1000;
@@ -17,6 +20,7 @@ export function useLogin() {
   const login = useAuthStore((s) => s.login);
   const { mutateAsync: postLogin, isPending } = usePostAgenteLogin();
   const { i18n, t } = useTranslation();
+  const { setLang } = useI18nCache();
 
   const idioma = useMemo(
     () => i18n.language.split("-")[0], 
@@ -46,6 +50,10 @@ export function useLogin() {
 
         login({ userToken: token, expiresAt, user });
 
+        if (user?.idioma_user && SUPPORTED_LANGS.includes(user.idioma_user)) {
+          setLang(user.idioma_user);
+        }
+
         const to = location?.state?.from?.pathname || "/";
         navigate(to, { replace: true });
 
@@ -60,7 +68,7 @@ export function useLogin() {
         return false;
       }
     },
-    [postLogin, idioma, login, location?.state, navigate, t]
+    [postLogin, idioma, login, location?.state, navigate, t, setLang]
   );
 
   return useMemo(

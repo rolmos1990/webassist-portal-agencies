@@ -35,7 +35,7 @@ export function SalesTable({
   sort,
   onSortChange,
 }: SalesTableProps) {
-  const { t } = useTranslation('common');
+  const { t } = useTranslation();
 
   const columns = useMemo(
     () => createSalesColumns({ 

@@ -67,18 +67,18 @@ function NavBar() {
           <img src={logo} alt="logo" />
         </a>
         <ul className="nav nav-pills flex-column mb-auto mt-3 ps-3">
-        <SidebarItem icon={iconDashboard} label={t('dashboard')} path={PATHS.dashboard.home()} />
+        <SidebarItem icon={iconDashboard} label={t('menu.dashboard')} path={PATHS.dashboard.home()} />
         {/* <SidebarItem icon={iconSales} label={t('perfil')} path="/profile" /> */}
-        <SidebarItem icon={iconAgencies} label={t('agencias')} path={PATHS.agencies.list()} />
-        <SidebarItem icon={iconAgents} label={t('agentes')} path={PATHS.agents.list()} />
+        <SidebarItem icon={iconAgencies} label={t('menu.agencies')} path={PATHS.agencies.list()} />
+        <SidebarItem icon={iconAgents} label={t('menu.agents')} path={PATHS.agents.list()} />
         {/* <SidebarItem icon={iconAgents} label="Administrar Usuarios" path="/users" /> */}
-        <SidebarItem icon={iconNewQuote} label={t('mis_cotizaciones')} path={PATHS.quotes.mine()} />
-        <SidebarItem icon={iconNewQuote} label={t('todas_cotizaciones')} path={PATHS.quotes.agency()} />
+        <SidebarItem icon={iconNewQuote} label={t('menu.myQuotes')} path={PATHS.quotes.mine()} />
+        <SidebarItem icon={iconNewQuote} label={t('menu.agencyQuotes')} path={PATHS.quotes.agency()} />
 
-        <SidebarItem icon={iconStandingQuote} label={t('mis_asistencias')} path={PATHS.assistances.mine()} />
-        <SidebarItem icon={iconStandingQuote} label={t('todas_asistencias')} path={PATHS.assistances.agency()} />
+        <SidebarItem icon={iconStandingQuote} label={t('menu.myAssistances')} path={PATHS.assistances.mine()} />
+        <SidebarItem icon={iconStandingQuote} label={t('menu.agencyAssistances')} path={PATHS.assistances.agency()} />
 
-        <SidebarItem icon={iconReports} label={t('reporte_ventas')} path={PATHS.reports()} />
+        <SidebarItem icon={iconReports} label={t('menu.salesReport')} path={PATHS.reports()} />
         </ul>
       </div>
     </div>
