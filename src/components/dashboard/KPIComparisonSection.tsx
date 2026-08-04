@@ -1,55 +1,22 @@
-import { useState } from 'react';
-import { useTranslation } from 'react-i18next';
 import BarChart from '../common/BarChart';
 import type { ChartData, ChartOptions } from 'chart.js';
-import type { GetDashboard200DataKpisVentas } from '../../api/schemas';
 
-interface KPIComparisonSectionProps {
-  data?: GetDashboard200DataKpisVentas;
+export type KPIView = 'monthly' | 'yearly';
+
+interface KPIComparisonSectionLabels {
+  title: string;
+  monthly: string;
+  yearly: string;
 }
 
-type KPIPeriod = {
-  cantidad_ventas?: number;
-  cantidad_vouchers?: number;
-  clientes?: number;
-  monto?: number;
-  ticket_promedio?: number;
-  nombre?: string;
-};
+interface KPIComparisonSectionProps {
+  labels: KPIComparisonSectionLabels;
+  chartData: ChartData<'bar'>;
+  view: KPIView;
+  onViewChange: (view: KPIView) => void;
+}
 
-type KPIView = 'monthly' | 'yearly';
-
-const KPI_FIELDS = ['cantidad_ventas', 'cantidad_vouchers', 'clientes', 'monto', 'ticket_promedio'] as const;
-
-export default function KPIComparisonSection({ data }: KPIComparisonSectionProps) {
-  const { t } = useTranslation();
-  const [view, setView] = useState<KPIView>('monthly');
-
-  const current: KPIPeriod | undefined = view === 'monthly' ? data?.mes : data?.ano;
-  const previous: KPIPeriod | undefined = view === 'monthly' ? data?.mes_anterior : data?.ano_anterior;
-
-  const chartData: ChartData<'bar'> = {
-    labels: KPI_FIELDS.map(field => t(`dashboard.kpis.${field}`)),
-    datasets: [
-      {
-        label: previous?.nombre ?? (view === 'monthly' ? 'Previous month' : 'Previous year'),
-        backgroundColor: "#d3d3d3",
-        data: KPI_FIELDS.map(field => previous?.[field] ?? 0),
-        borderRadius: 8,
-        barPercentage: 0.7,
-        categoryPercentage: 0.9,
-      },
-      {
-        label: current?.nombre ?? (view === 'monthly' ? 'Current month' : 'Current year'),
-        backgroundColor: "#4fc3f7",
-        data: KPI_FIELDS.map(field => current?.[field] ?? 0),
-        borderRadius: 8,
-        barPercentage: 0.7,
-        categoryPercentage: 0.9,
-      },
-    ],
-  };
-
+export default function KPIComparisonSection({ labels, chartData, view, onViewChange }: KPIComparisonSectionProps) {
   const chartOptions: ChartOptions<'bar'> = {
     scales: {
       y: {
@@ -76,13 +43,13 @@ export default function KPIComparisonSection({ data }: KPIComparisonSectionProps
             margin: 0,
           }}
         >
-          KPI Comparison
+          {labels.title}
         </h1>
         <div className="ms-auto">
           <div className="btn-group" role="group">
             <button
               type="button"
-              onClick={() => setView('monthly')}
+              onClick={() => onViewChange('monthly')}
               className={`btn btn-sm btn-outline-success chart-toggle-btn text-dark${view === 'monthly' ? ' active' : ''}`}
               style={{
                 height: "25px",
@@ -94,11 +61,11 @@ export default function KPIComparisonSection({ data }: KPIComparisonSectionProps
                 border: "1px solid #7cc249"
               }}
             >
-              Monthly
+              {labels.monthly}
             </button>
             <button
               type="button"
-              onClick={() => setView('yearly')}
+              onClick={() => onViewChange('yearly')}
               className={`btn text-dark btn-sm btn-outline-success chart-toggle-btn${view === 'yearly' ? ' active' : ''}`}
               style={{
                 height: "25px",
@@ -110,7 +77,7 @@ export default function KPIComparisonSection({ data }: KPIComparisonSectionProps
                 border: "1px solid #7cc249"
               }}
             >
-              Yearly
+              {labels.yearly}
             </button>
           </div>
         </div>

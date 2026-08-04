@@ -10,6 +10,7 @@ import { getAgenciasAgencia } from '../api/generated';
 import { useI18nCache } from '../i18n/i18nCacheProvider';
 import type { GetAgenciasAgencia200DataItem } from '../api/schemas';
 import { toast } from '../services/toast';
+import { getApiErrorMessage } from '../api/errors/ApiError';
 import type { SortDir } from '../components/DataTable';
 import { PATHS } from '../routes/Routes';
 
@@ -38,7 +39,7 @@ function Agencies() {
         setAgenciesData(res?.data ?? []);
       }
     } catch (e) {
-      toast.error("Error", t('error_generico'));
+      toast.error("Error", getApiErrorMessage(e, t('error_generico')));
     } finally {
       setLoading(false);
     }

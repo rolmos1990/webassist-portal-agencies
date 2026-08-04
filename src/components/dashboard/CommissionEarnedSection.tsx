@@ -1,82 +1,18 @@
 import BarChart from '../common/BarChart';
 import type { ChartData, ChartOptions } from 'chart.js';
-import type { GetDashboard200DataComisionesItem } from '../../api/schemas';
+
+interface CommissionEarnedSectionLabels {
+  title: string;
+  totalCommissions: string;
+  avgCommissions: string;
+}
 
 interface CommissionEarnedSectionProps {
-  data?: GetDashboard200DataComisionesItem[];
+  labels: CommissionEarnedSectionLabels;
+  chartData: ChartData<'bar'>;
 }
 
-function buildCommissionChartData(comisiones: GetDashboard200DataComisionesItem[]): ChartData<'bar'> {
-  const labels: string[] = [];
-  comisiones.forEach(item => {
-    (item.meses ?? []).forEach(mes => {
-      if (mes.nombre && !labels.includes(mes.nombre)) labels.push(mes.nombre);
-    });
-  });
-
-  const datasets = comisiones.map((item, index) => {
-    const montoByMonth = new Map((item.meses ?? []).map(mes => [mes.nombre, mes.monto ?? 0]));
-    const isLatestYear = index === comisiones.length - 1;
-
-    return {
-      label: item.ano ?? '',
-      backgroundColor: isLatestYear ? "#1e3a5c" : "#d3d3d3",
-      data: labels.map(label => montoByMonth.get(label) ?? 0),
-      borderRadius: 6,
-      barPercentage: 0.7,
-      categoryPercentage: 0.8,
-    };
-  });
-
-  return { labels, datasets };
-}
-
-export default function CommissionEarnedSection({ data }: CommissionEarnedSectionProps) {
-  // Use provided data or fallback to default data
-  const chartData: ChartData<'bar'> = data && data.length > 0 ? buildCommissionChartData(data) : {
-    labels: [
-      "Jan", "Feb", "Mar", "Apr", "May", "Jun",
-      "Jul", "Aug", "Sep", "Oct"
-    ],
-    datasets: [
-      {
-        label: "2023",
-        backgroundColor: "#d3d3d3",
-        data: [
-          9000, 8000, 6700, 7200, 8000, 8200, 7900, 7000, 6700, 8000,
-        ],
-        borderRadius: 6,
-        barPercentage: 0.7,
-        categoryPercentage: 0.8,
-      },
-      {
-        label: "2024",
-        backgroundColor: function (ctx: any) {
-          // Highlight Feb bar in green
-          var colors = [
-            "#1e3a5c",
-            "#7be495",
-            "#1e3a5c",
-            "#1e3a5c",
-            "#1e3a5c",
-            "#1e3a5c",
-            "#1e3a5c",
-            "#1e3a5c",
-            "#1e3a5c",
-            "#1e3a5c",
-          ];
-          return colors[ctx.dataIndex];
-        },
-        data: [
-          8500, 8200, 7500, 8000, 8500, 8600, 8300, 7800, 7600, 8200,
-        ],
-        borderRadius: 6,
-        barPercentage: 0.7,
-        categoryPercentage: 0.8,
-      },
-    ],
-  };
-
+export default function CommissionEarnedSection({ labels, chartData }: CommissionEarnedSectionProps) {
   const chartOptions: ChartOptions<'bar'> = {
     responsive: true,
     maintainAspectRatio: false,
@@ -105,7 +41,7 @@ export default function CommissionEarnedSection({ data }: CommissionEarnedSectio
           stepSize: 2000,
           font: { size: 13 },
         },
-        grid: { 
+        grid: {
           color: "#e0e0e0"
         },
         border: {
@@ -113,11 +49,11 @@ export default function CommissionEarnedSection({ data }: CommissionEarnedSectio
         },
       },
       x: {
-        grid: { 
-          display: false 
+        grid: {
+          display: false
         },
-        ticks: { 
-          font: { size: 13 } 
+        ticks: {
+          font: { size: 13 }
         },
       },
     },
@@ -138,7 +74,7 @@ export default function CommissionEarnedSection({ data }: CommissionEarnedSectio
               margin: "0"
             }}
           >
-            Total Commission Earned
+            {labels.title}
           </h1>
           <div
             className="d-flex align-items-center"
@@ -188,17 +124,17 @@ export default function CommissionEarnedSection({ data }: CommissionEarnedSectio
             style={{ gap: "16px", marginTop: "2px" }}
           >
             <span style={{ fontSize: "12px", color: "#4b647e" }}>
-              Total commissions
+              {labels.totalCommissions}
             </span>
             <span style={{ fontSize: "12px", color: "#4b647e" }}>
-              Avg. Commissions paid
+              {labels.avgCommissions}
             </span>
           </div>
         </div>
       </div>
-      
-      <BarChart 
-        data={chartData} 
+
+      <BarChart
+        data={chartData}
         options={chartOptions}
         height="420px"
         className="commission-chart"

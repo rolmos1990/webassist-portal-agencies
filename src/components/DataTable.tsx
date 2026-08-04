@@ -40,6 +40,8 @@ interface Props<T extends object> {
   sort?: SortState | null;
   defaultSort?: SortState | null;
   onSortChange?: (next: SortState) => void;
+  loadingMessage?: React.ReactNode;
+  emptyMessage?: React.ReactNode;
 }
 
 const textAlign = (align?: Align) =>
@@ -61,7 +63,9 @@ export default function DataTable<T extends object>({
   pagination,
   sort,
   defaultSort = null,
-  onSortChange
+  onSortChange,
+  loadingMessage = "Loading data…",
+  emptyMessage = "No data to display",
 }: Props<T>) {
 
   const [innerSort, setInnerSort] = useState<SortState | null>(defaultSort);
@@ -131,14 +135,14 @@ export default function DataTable<T extends object>({
               <td colSpan={colCount} className="text-center py-5">
                 <div className="d-inline-flex align-items-center gap-2">
                   <div className="spinner-border spinner-border-sm" role="status" aria-hidden="true" />
-                  <span className="text-muted">Loading data…</span>
+                  <span className="text-muted">{loadingMessage}</span>
                 </div>
               </td>
             </tr>
           ) : displayed.length === 0 ? (
             <tr>
               <td colSpan={colCount} className="text-center text-muted py-5">
-                No data to display
+                {emptyMessage}
               </td>
             </tr>
           ) : (

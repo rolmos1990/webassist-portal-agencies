@@ -14,7 +14,13 @@
       "total": "Total"
   },
   "agency":{
+      "id":"ID",
       "name":"Name",
+      "phone":"Teléfono",
+      "contact":"Contacto",
+      "commission":"Comisión (%)",
+      "paymentType":"Tipo de Pago",
+      "createdAt":"Fecha de Creación",
       "totalRevenue":"Total Revenue",
       "totalCommission":"Total Commission",
       "location":"Location",
@@ -57,8 +63,8 @@
   "markInactive": "Mark as Inactive"
 },
   "status": {
-    "active": "Active",
-    "inactive": "Inactive"
+    "active": "Activo",
+    "inactive": "Inactivo"
   },
   "dashboard": {
     "kpis": {
@@ -67,6 +73,31 @@
       "clientes": "Clientes",
       "monto": "Monto",
       "ticket_promedio": "Ticket promedio"
+    },
+    "revenueRenewals": {
+      "title": "Ingresos por Renovaciones",
+      "subtitle": "Ingresos generados por clientes a través de renovaciones",
+      "pending": "Pendientes",
+      "completed": "Completadas",
+      "pendingTotal": "Total renovación pendiente",
+      "completedTotal": "Total renovación completada",
+      "commissions": "Total comisiones ganadas"
+    },
+    "topSellingPlans": {
+      "title": "Planes Más Vendidos por Programa",
+      "subtitle": "Los 3 planes más vendidos en todos los programas",
+      "noData": "No hay datos de ventas disponibles",
+      "unitsSold": "Unidades Vendidas"
+    },
+    "kpiComparison": {
+      "title": "Comparación de KPI",
+      "monthly": "Mensual",
+      "yearly": "Anual"
+    },
+    "commissionEarned": {
+      "title": "Total de Comisiones Ganadas",
+      "totalCommissions": "Total de comisiones",
+      "avgCommissions": "Promedio de comisiones pagadas"
     }
   },
   "menu": {
@@ -79,5 +110,7 @@
     "agencyAssistances": "Todas las Asistencias",
     "salesReport": "Reporte de Ventas"
   },
-  "noData": "No data available"
+  "noData": "No data available",
+  "error_generico": "Ha ocurrido un error, inténtelo más tarde",
+  "error_desconocido": "Ha ocurrido un error inesperado"
 }

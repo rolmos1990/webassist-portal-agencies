@@ -9,6 +9,7 @@ import { useEffect, useState } from "react";
 import { getPerfilAgente, getPerfilAgencia, useActualizarIdiomaAgente } from "../api/generated";
 import { toast } from "../services/toast";
 import { format } from "date-fns";
+import { getApiErrorMessage } from "../api/errors/ApiError";
 
 const formatLastLogin = (unixSeconds?: string): string => {
   if (!unixSeconds) return "";
@@ -52,8 +53,8 @@ export default function Settings() {
     try {
       await actualizarIdioma({ idioma: lang, data: { idioma: data.language } });
       setLang(data.language);
-    } catch {
-      toast.error("Error", t('error_generico'));
+    } catch (e) {
+      toast.error("Error", getApiErrorMessage(e, t('error_generico')));
     }
   };
 
@@ -87,7 +88,7 @@ export default function Settings() {
         });
       }
       } catch (e) {
-      toast.error("Error", t('error_generico'));
+      toast.error("Error", getApiErrorMessage(e, t('error_generico')));
       } finally {
       setLoading(false);
       }
@@ -110,7 +111,7 @@ export default function Settings() {
         });
       }
       } catch (e) {
-      toast.error("Error", t('error_generico'));
+      toast.error("Error", getApiErrorMessage(e, t('error_generico')));
       }
   };
 

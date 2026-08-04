@@ -14,7 +14,13 @@
     "total": "key_quotes_total"
   },
   "agency": {
+    "id": "key_agency_id",
     "name": "key_agency_name",
+    "phone": "key_agency_phone",
+    "contact": "key_agency_contact",
+    "commission": "key_agency_commission",
+    "paymentType": "key_agency_paymentType",
+    "createdAt": "key_agency_createdAt",
     "totalRevenue": "key_agency_totalRevenue",
     "totalCommission": "key_agency_totalCommission",
     "location": "key_agency_location",
@@ -67,6 +73,31 @@
       "clientes": "key_dashboard_kpis_clientes",
       "monto": "key_dashboard_kpis_monto",
       "ticket_promedio": "key_dashboard_kpis_ticket_promedio"
+    },
+    "revenueRenewals": {
+      "title": "key_dashboard_revenueRenewals_title",
+      "subtitle": "key_dashboard_revenueRenewals_subtitle",
+      "pending": "key_dashboard_revenueRenewals_pending",
+      "completed": "key_dashboard_revenueRenewals_completed",
+      "pendingTotal": "key_dashboard_revenueRenewals_pendingTotal",
+      "completedTotal": "key_dashboard_revenueRenewals_completedTotal",
+      "commissions": "key_dashboard_revenueRenewals_commissions"
+    },
+    "topSellingPlans": {
+      "title": "key_dashboard_topSellingPlans_title",
+      "subtitle": "key_dashboard_topSellingPlans_subtitle",
+      "noData": "key_dashboard_topSellingPlans_noData",
+      "unitsSold": "key_dashboard_topSellingPlans_unitsSold"
+    },
+    "kpiComparison": {
+      "title": "key_dashboard_kpiComparison_title",
+      "monthly": "key_dashboard_kpiComparison_monthly",
+      "yearly": "key_dashboard_kpiComparison_yearly"
+    },
+    "commissionEarned": {
+      "title": "key_dashboard_commissionEarned_title",
+      "totalCommissions": "key_dashboard_commissionEarned_totalCommissions",
+      "avgCommissions": "key_dashboard_commissionEarned_avgCommissions"
     }
   },
   "menu": {
@@ -79,5 +110,7 @@
     "agencyAssistances": "key_menu_agencyAssistances",
     "salesReport": "key_menu_salesReport"
   },
-  "noData": "key_noData"
+  "noData": "key_noData",
+  "error_generico": "key_error_generico",
+  "error_desconocido": "key_error_desconocido"
 }

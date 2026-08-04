@@ -2,7 +2,7 @@ import { useCallback, useMemo } from "react";
 import { createAgencyColumns } from "./AgencyDataTableConfig";
 import type { GetAgenciasAgencia200DataItem } from "../../api/schemas";
 import { useTranslation } from "react-i18next";
-import DataTable, { currency, type SortDir, type SortState } from "../DataTable";
+import DataTable, { type SortDir, type SortState } from "../DataTable";
 
 // Define the PaginationProps interface to match the one in DataTable
 interface DataTablePaginationProps {
@@ -54,7 +54,6 @@ export function AgencyTable({
 
   const columns = useMemo(
     () => createAgencyColumns({
-      currency,
       t,
       onEdit: handleEdit,
       onToggle: handleToggle,
@@ -68,6 +67,7 @@ export function AgencyTable({
       items={data}
       columns={columns}
       loading={loading}
+      emptyMessage={t('noData')}
       sort={sort}
       onSortChange={onSortChange}
       pagination={pagination ? {

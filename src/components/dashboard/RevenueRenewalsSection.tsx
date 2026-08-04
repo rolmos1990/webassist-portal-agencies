@@ -1,31 +1,36 @@
 import LinkedIcon from '../../assets/images/icons/link-icon.svg';
-import type { GetDashboard200DataRenovaciones } from '../../api/schemas';
 
-interface RevenueRenewalsSectionProps {
-  data?: GetDashboard200DataRenovaciones;
+interface RevenueRenewalsSectionLabels {
+  title: string;
+  subtitle: string;
+  pending: string;
+  completed: string;
+  pendingTotal: string;
+  completedTotal: string;
+  commissions: string;
 }
 
-const formatCurrency = (value?: number) =>
-  (value ?? 0).toLocaleString('en-US', {
-    style: 'currency',
-    currency: 'USD',
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
-  });
+interface RevenueRenewalsSectionAmounts {
+  total: string;
+  commissions: string;
+}
 
-export default function RevenueRenewalsSection({ data }: RevenueRenewalsSectionProps) {
-  const pendientes = data?.pendientes;
-  const completadas = data?.completadas;
+interface RevenueRenewalsSectionProps {
+  labels: RevenueRenewalsSectionLabels;
+  pending: RevenueRenewalsSectionAmounts;
+  completed: RevenueRenewalsSectionAmounts;
+}
 
+export default function RevenueRenewalsSection({ labels, pending, completed }: RevenueRenewalsSectionProps) {
   return (
     <div className="p-3 bg-white rounded-2 flex-fill" style={{ minWidth: 0, overflow: 'hidden' }}>
       <div className="d-flex justify-content-between align-items-start gap-3">
         <div className="">
           <h1 className="p-0 m-0" style={{ fontSize: "14px", fontWeight: "600" }}>
-            Revenue From Renewals
+            {labels.title}
           </h1>
           <p className="p-0 m-0 mt-1" style={{ color: "#4b647e", fontSize: "13px" }}>
-            Income generated from customers through renewals
+            {labels.subtitle}
           </p>
         </div>
         <img src={LinkedIcon} alt="link-icon" />
@@ -50,15 +55,15 @@ export default function RevenueRenewalsSection({ data }: RevenueRenewalsSectionP
           ></div>
           <div>
             <div style={{ color: "#4b647e", fontSize: "11px", fontWeight: "600" }}>
-              Pending
+              {labels.pending}
             </div>
             <div
               style={{ color: "#21272a", fontSize: "13px", fontWeight: "700" }}
             >
-              {formatCurrency(pendientes?.monto)}
+              {pending.total}
             </div>
             <div style={{ color: "#4b647e", fontSize: "11px" }}>
-              Total renewal done
+              {labels.pendingTotal}
             </div>
             <div className="d-flex align-items-center gap-2 mt-2">
               <div>
@@ -69,10 +74,10 @@ export default function RevenueRenewalsSection({ data }: RevenueRenewalsSectionP
                     fontWeight: "700"
                   }}
                 >
-                  {formatCurrency(pendientes?.comisiones)}
+                  {pending.commissions}
                 </div>
                 <div style={{ color: "#4b647e", fontSize: "11px" }}>
-                  Total commissions earned
+                  {labels.commissions}
                 </div>
               </div>
             </div>
@@ -97,15 +102,15 @@ export default function RevenueRenewalsSection({ data }: RevenueRenewalsSectionP
           ></div>
           <div>
             <div style={{ color: "#4b647e", fontSize: "11px", fontWeight: "600" }}>
-              Completed
+              {labels.completed}
             </div>
             <div
               style={{ color: "#21272a", fontSize: "13px", fontWeight: "700" }}
             >
-              {formatCurrency(completadas?.monto)}
+              {completed.total}
             </div>
             <div style={{ color: "#4b647e", fontSize: "11px" }}>
-              Total renewal done
+              {labels.completedTotal}
             </div>
             <div className="d-flex align-items-center gap-2 mt-2">
               <div>
@@ -116,10 +121,10 @@ export default function RevenueRenewalsSection({ data }: RevenueRenewalsSectionP
                     fontWeight: 700,
                   }}
                 >
-                  {formatCurrency(completadas?.comisiones)}
+                  {completed.commissions}
                 </div>
                 <div style={{ color: "#4b647e", fontSize: "11px" }}>
-                  Total commissions earned
+                  {labels.commissions}
                 </div>
               </div>
             </div>

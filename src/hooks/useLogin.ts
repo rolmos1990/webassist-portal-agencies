@@ -2,7 +2,7 @@ import { useCallback, useMemo } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { usePostAgenteLogin } from "../api/generated";
 import { useAuthStore } from "../stores/useAuthStore";
-import { ApiError } from "../api/errors/ApiError";
+import { ApiError, getApiErrorMessage } from "../api/errors/ApiError";
 import { toast } from "../services/toast";
 import { useTranslation } from "react-i18next";
 import { useI18nCache } from "../i18n/i18nCacheProvider";
@@ -58,13 +58,9 @@ export function useLogin() {
         navigate(to, { replace: true });
 
         return true;
-      } catch (err: any) {
-        if (err instanceof ApiError) {
-          toast.error(t("login_agente"), err.message);
-        } else {
-          console.error("Unexpected Error:", err);
-          toast.error(t("login_agente"), t("error_desconocido"));
-        }
+      } catch (err) {
+        if (!(err instanceof ApiError)) console.error("Unexpected Error:", err);
+        toast.error(t("login_agente"), getApiErrorMessage(err, t("error_desconocido")));
         return false;
       }
     },

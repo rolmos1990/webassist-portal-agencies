@@ -14,7 +14,13 @@
       "total": "Total"
   },
   "agency":{
+      "id":"ID",
       "name":"Name",
+      "phone":"Phone",
+      "contact":"Contact",
+      "commission":"Commission (%)",
+      "paymentType":"Payment Type",
+      "createdAt":"Created",
       "totalRevenue":"Total Revenue",
       "totalCommission":"Total Commission",
       "location":"Location",
@@ -67,6 +73,31 @@
       "clientes": "Clients",
       "monto": "Amount",
       "ticket_promedio": "Avg. Ticket"
+    },
+    "revenueRenewals": {
+      "title": "Revenue From Renewals",
+      "subtitle": "Income generated from customers through renewals",
+      "pending": "Pending",
+      "completed": "Completed",
+      "pendingTotal": "Total renewal pending",
+      "completedTotal": "Total renewal done",
+      "commissions": "Total commissions earned"
+    },
+    "topSellingPlans": {
+      "title": "Top Selling Plans Per Program",
+      "subtitle": "Top 3 selling plans across all programs",
+      "noData": "No sales data available",
+      "unitsSold": "Units Sold"
+    },
+    "kpiComparison": {
+      "title": "KPI Comparison",
+      "monthly": "Monthly",
+      "yearly": "Yearly"
+    },
+    "commissionEarned": {
+      "title": "Total Commission Earned",
+      "totalCommissions": "Total commissions",
+      "avgCommissions": "Avg. Commissions paid"
     }
   },
   "menu": {
@@ -79,5 +110,7 @@
     "agencyAssistances": "All Assistances",
     "salesReport": "Sales Report"
   },
-  "noData": "No data available"
+  "noData": "No data available",
+  "error_generico": "An error occurred, please try again later",
+  "error_desconocido": "An unexpected error occurred"
 }
