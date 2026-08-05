@@ -120,6 +120,12 @@
     "agencyAssistances": "key_menu_agencyAssistances",
     "salesReport": "key_menu_salesReport"
   },
+  "sidebar": {
+    "collapse": "key_sidebar_collapse",
+    "expand": "key_sidebar_expand",
+    "openMenu": "key_sidebar_openMenu",
+    "closeMenu": "key_sidebar_closeMenu"
+  },
   "noData": "key_noData",
   "error_generico": "key_error_generico",
   "error_desconocido": "key_error_desconocido"

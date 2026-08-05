@@ -18,8 +18,12 @@ import { useSecurityStore } from '../stores/securityStore';
 import { SecurityRole } from '../stores/SecurityRole';
 
 function NavBar() {
-  const [isMobile, setIsMobile] = useState(window.innerWidth <= 991.98);
-  const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [width, setWidth] = useState(window.innerWidth);
+  // Drawer superpuesto: solo en teléfono (<768px). Arranca cerrado para no
+  // tapar el contenido al cargar la página en pantallas angostas.
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+  // Modo compacto de escritorio (solo íconos), alternable con el botón.
+  const [collapsed, setCollapsed] = useState(false);
   const { lang } = useI18nCache();
   const isAdmin = useSecurityStore((state) => state.hasRole(SecurityRole.AGENT_ADMIN));
 
@@ -28,66 +32,89 @@ function NavBar() {
   // Detecta tamaño de pantalla al cambiar el tamaño de ventana
   useEffect(() => {
     const handleResize = () => {
-      setIsMobile(window.innerWidth <= 991.98);
+      setWidth(window.innerWidth);
     };
 
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
+  // Teléfono: drawer superpuesto (show/hide), como siempre.
+  // Tablet: sidebar fijo y compacto, no expandible (sin drawer, sin overlay).
+  // Desktop: sidebar en flujo normal, alternable entre completo y compacto.
+  const isMobile = width <= 991.98;
+  const isTablet = width > 767.98 && width <= 991.98;
+  const isDesktop = width > 991.98;
+
   const handleSidebarToggle = () => {
     if (isMobile) {
       setSidebarOpen((prev) => !prev);
     } else {
-      setSidebarOpen((prev) => !prev);
+      setCollapsed((prev) => !prev);
     }
   };
+
+  // Solo íconos: en desktop cuando el usuario colapsa, y siempre en tablet.
+  const isCompact = isTablet || (isDesktop && collapsed);
 
   // Clases condicionales basadas en la lógica original
   const sidebarClassName = `
     d-flex flex-column flex-shrink-0 sidebar
-    ${isMobile ? (sidebarOpen ? 'show-sidebar' : '') : (sidebarOpen ? '' : 'hide-sidebar')}
+    ${isMobile ? (sidebarOpen ? 'show-sidebar' : '') : (collapsed ? 'sidebar-collapsed' : '')}
   `.trim();
 
   const toggleClassName = `
     sidebar-control position-absolute
-    ${sidebarOpen ? 'inverted-arrow' : ''}
-    ${!sidebarOpen ? 'right-0' : ''}
+    ${isMobile
+      ? (sidebarOpen ? 'inverted-arrow' : 'right-0')
+      : (collapsed ? 'collapsed' : 'inverted-arrow')}
   `.trim();
+
+  const isExpanded = isMobile ? sidebarOpen : !collapsed;
+  const toggleLabel = isMobile
+    ? (sidebarOpen ? t('sidebar.closeMenu') : t('sidebar.openMenu'))
+    : (collapsed ? t('sidebar.expand') : t('sidebar.collapse'));
 
   return (
     <div className="position-relative" style={{ width: 'fit-content', zIndex: 9999 }}>
-      <div
+      <button
+        type="button"
         className={toggleClassName}
         id="sidebarToggle"
         style={{ cursor: 'pointer' }}
         onClick={handleSidebarToggle}
+        aria-expanded={isExpanded}
+        aria-label={toggleLabel}
+        title={toggleLabel}
       >
-        <img src={iconArrow} alt="arrow" />
-      </div>
+        <img src={iconArrow} alt="" />
+      </button>
 
       <div className={sidebarClassName} id="sidebarMenu">
-        <a href="/" className="d-flex align-items-center p-3">
-          <img src={logo} alt="logo" />
+        <a
+          href="/"
+          className={`d-flex align-items-center p-3 ${isCompact ? 'justify-content-center' : ''}`}
+        >
+          <img src={logo} alt="We Assist" className="logo-full" />
         </a>
         <ul className="nav nav-pills flex-column mb-auto mt-3 ps-3">
-        <SidebarItem icon={iconDashboard} label={t('menu.dashboard')} path={PATHS.dashboard.home()} />
+        <SidebarItem icon={iconDashboard} label={t('menu.dashboard')} path={PATHS.dashboard.home()} collapsed={isCompact} />
         {/* <SidebarItem icon={iconSales} label={t('perfil')} path="/profile" /> */}
-        <SidebarItem icon={iconClients} label={t('menu.clients')} path={PATHS.clients.list()} />
+        <SidebarItem icon={iconClients} label={t('menu.clients')} path={PATHS.clients.list()} collapsed={isCompact} />
         {isAdmin && (
           <>
-            <SidebarItem icon={iconAgencies} label={t('menu.agencies')} path={PATHS.agencies.list()} />
-            <SidebarItem icon={iconAgents} label={t('menu.agents')} path={PATHS.agents.list()} />
+            <SidebarItem icon={iconAgencies} label={t('menu.agencies')} path={PATHS.agencies.list()} collapsed={isCompact} />
+            <SidebarItem icon={iconAgents} label={t('menu.agents')} path={PATHS.agents.list()} collapsed={isCompact} />
           </>
         )}
         {/* <SidebarItem icon={iconAgents} label="Administrar Usuarios" path="/users" /> */}
-        <SidebarItem icon={iconNewQuote} label={t('menu.myQuotes')} path={PATHS.quotes.mine()} />
-        <SidebarItem icon={iconNewQuote} label={t('menu.agencyQuotes')} path={PATHS.quotes.agency()} />
+        <SidebarItem icon={iconNewQuote} label={t('menu.myQuotes')} path={PATHS.quotes.mine()} collapsed={isCompact} />
+        <SidebarItem icon={iconNewQuote} label={t('menu.agencyQuotes')} path={PATHS.quotes.agency()} collapsed={isCompact} />
 
-        <SidebarItem icon={iconStandingQuote} label={t('menu.myAssistances')} path={PATHS.assistances.mine()} />
-        <SidebarItem icon={iconStandingQuote} label={t('menu.agencyAssistances')} path={PATHS.assistances.agency()} />
+        <SidebarItem icon={iconStandingQuote} label={t('menu.myAssistances')} path={PATHS.assistances.mine()} collapsed={isCompact} />
+        <SidebarItem icon={iconStandingQuote} label={t('menu.agencyAssistances')} path={PATHS.assistances.agency()} collapsed={isCompact} />
 
-        <SidebarItem icon={iconReports} label={t('menu.salesReport')} path={PATHS.reports()} />
+        <SidebarItem icon={iconReports} label={t('menu.salesReport')} path={PATHS.reports()} collapsed={isCompact} />
         </ul>
       </div>
     </div>

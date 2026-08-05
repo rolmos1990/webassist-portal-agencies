@@ -7,16 +7,19 @@
     height: 100vh;
     background: $color-sidebar;
     width: 280px;
-    transition: width 0.3s ease;
+    transition: width 0.25s ease;
     overflow: hidden;
     flex-shrink: 0;
 }
 
-.hide-sidebar {
-    width: 0;
-    min-width: 0;
-    padding: 0;
-    border: none;
+// Modo compacto de escritorio: solo íconos, ancho reducido.
+.sidebar.sidebar-collapsed {
+    width: 76px;
+
+    .logo-full {
+        max-width: 36px;
+        height: auto;
+    }
 }
 
 @media (max-width: 991.98px) {
@@ -45,6 +48,28 @@
     }
 }
 
+// Tablet (768px–991.98px): sidebar fijo y compacto, no expandible.
+// Va después del bloque mobile a propósito, para ganar por orden de cascada
+// y volver a poner #sidebarMenu en flujo normal (nada de overlay/position:fixed).
+@media (min-width: 768px) and (max-width: 991.98px) {
+    #sidebarMenu {
+        position: static;
+        width: 76px;
+        min-width: 76px;
+        padding: 0;
+        border: none;
+
+        .logo-full {
+            max-width: 36px;
+            height: auto;
+        }
+    }
+
+    .sidebar-control {
+        display: none;
+    }
+}
+
 /* ============================================================
    🧭 Sidebar Navigation
    ============================================================ */
@@ -55,6 +80,13 @@
         .icon {
             width: 24px;
             height: 24px;
+            flex-shrink: 0;
+        }
+
+        .nav-label {
+            white-space: nowrap;
+            opacity: 1;
+            transition: opacity 0.15s ease;
         }
 
         &.active,
@@ -63,8 +95,29 @@
             color: #ffffff;
         }
     }
+
+    // El texto se desvanece (opacity) más rápido que la reducción de ancho
+    // del sidebar (.25s), y colapsa su propio espacio para no dejar huecos.
+    .nav-link-collapsed {
+        .nav-label {
+            opacity: 0;
+            width: 0;
+            margin: 0;
+            overflow: hidden;
+            pointer-events: none;
+        }
+    }
 }
 
 h4 {
     font-family: $font-secondary;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .sidebar,
+    .sidebar-control,
+    .sidebar-control img,
+    .nav-pills .nav-link .nav-label {
+        transition: none;
+    }
 }

@@ -2,7 +2,7 @@
    🧩 Sidebar Toggle Button
    ============================================================ */
  @use '../abstracts/variables' as *;
- 
+
 .sidebar-control {
     position: fixed;
     top: 70px;
@@ -15,19 +15,25 @@
     background: $color-trip-bg;
     border-radius: 50%;
     border: 1px solid #e6e6e8;
+    padding: 0;
     z-index: 1200;
     cursor: pointer;
-    transition: left 0.3s ease;
+    transition: left 0.25s ease;
 
     &.right-0 {
         left: 20px;
+    }
+
+    // Modo compacto de escritorio: el sidebar mide 76px, no 0.
+    &.collapsed {
+        left: 86px;
     }
 
     img {
         width: 10px;
         height: 13px;
         transform: rotate(180deg);
-        transition: transform 0.3s ease;
+        transition: transform 0.25s ease;
     }
 
     &.inverted-arrow {

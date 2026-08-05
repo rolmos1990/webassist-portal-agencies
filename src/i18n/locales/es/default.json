@@ -120,6 +120,12 @@
     "agencyAssistances": "Todas las Asistencias",
     "salesReport": "Reporte de Ventas"
   },
+  "sidebar": {
+    "collapse": "Colapsar menú",
+    "expand": "Expandir menú",
+    "openMenu": "Abrir menú",
+    "closeMenu": "Cerrar menú"
+  },
   "noData": "No data available",
   "error_generico": "Ha ocurrido un error, inténtelo más tarde",
   "error_desconocido": "Ha ocurrido un error inesperado"
