@@ -34,7 +34,7 @@ export function I18nBootstrap() {
   }, [versionChanged, fetchedVersion, fetchedStrings, lang, setTranslations]);
 
   useEffect(() => {
-    const bundle = buildTranslationBundle(lang, translates);
+    const bundle = buildTranslationBundle(translates);
     i18n.addResourceBundle(lang, NAMESPACE, bundle, true, true);
   }, [lang, translates]);
 

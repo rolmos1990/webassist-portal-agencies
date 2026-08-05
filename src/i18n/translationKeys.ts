@@ -1,14 +1,13 @@
-import esKeys from './locales/es/keys.json';
-import enKeys from './locales/en/keys.json';
+import keys from './locales/keys.json';
 import type { LangStrings } from '../stores/translateStore';
 
 type KeysTree = { [key: string]: string | KeysTree };
 type Bundle = { [key: string]: string | Bundle };
 
-const KEYS_BY_LANG: Record<string, KeysTree> = {
-  es: esKeys,
-  en: enKeys,
-};
+// El mapeo dot-path -> key de servicio es el mismo sin importar el idioma;
+// lo único que cambia por idioma es `translates` (el texto que trae el backend)
+// y default.json (el fallback visual mientras no haya traducción del backend).
+const KEYS_TREE: KeysTree = keys;
 
 function resolveBundle(keysTree: KeysTree, translates: LangStrings): Bundle {
   const bundle: Bundle = {};
@@ -26,8 +25,6 @@ function resolveBundle(keysTree: KeysTree, translates: LangStrings): Bundle {
   return bundle;
 }
 
-export function buildTranslationBundle(lang: string, translates: LangStrings): Bundle {
-  const keysTree = KEYS_BY_LANG[lang];
-  if (!keysTree) return {};
-  return resolveBundle(keysTree, translates);
+export function buildTranslationBundle(translates: LangStrings): Bundle {
+  return resolveBundle(KEYS_TREE, translates);
 }
