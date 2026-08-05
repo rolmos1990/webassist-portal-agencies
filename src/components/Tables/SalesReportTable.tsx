@@ -2,7 +2,7 @@ import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import DataTable, { type SortDir, type SortState } from "../DataTable";
 import { createSalesReportColumns } from "./SalesReportDataTableConfig";
-import type { SalesReportRow } from "../../data/salesReportData";
+import type { ReporteVentasAgenciaResponseDataItemsItem } from "../../api/schemas";
 
 interface SalesReportTablePagination {
   totalPages: number;
@@ -13,13 +13,13 @@ interface SalesReportTablePagination {
 }
 
 type SalesReportTableProps = {
-  data: SalesReportRow[];
+  data: ReporteVentasAgenciaResponseDataItemsItem[];
   loading?: boolean;
   pagination?: SalesReportTablePagination;
   sort?: SortState | null;
   onSortChange?: (sort: { id: string; dir: SortDir }) => void;
-  selectedIds?: string[];
-  onSelectionChange?: (ids: string[]) => void;
+  selectedIds?: Array<string | number>;
+  onSelectionChange?: (ids: Array<string | number>) => void;
 };
 
 export function SalesReportTable({
@@ -36,15 +36,15 @@ export function SalesReportTable({
   const columns = useMemo(() => createSalesReportColumns({ t }), [t]);
 
   return (
-    <DataTable<SalesReportRow>
+    <DataTable<ReporteVentasAgenciaResponseDataItemsItem>
       items={data}
       columns={columns}
       loading={loading}
       emptyMessage={t("noData")}
       selectable
-      getRowId={(row) => row.id}
+      getRowId={(row, i) => row.id ?? row.voucher ?? i}
       selectedIds={selectedIds}
-      onSelectionChange={onSelectionChange as (ids: (string | number)[]) => void}
+      onSelectionChange={onSelectionChange}
       pagination={pagination ? {
         totalPages: pagination.totalPages,
         defaultPage: pagination.currentPage || 1,

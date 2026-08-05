@@ -1,5 +1,5 @@
 import { createRoot } from 'react-dom/client';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { QueryClientProvider } from '@tanstack/react-query';
 import { I18nextProvider } from 'react-i18next';
 import { setupWorker } from 'msw/browser';
 import { getWacApiMock } from '../src/api/generated.msw'; // nombre según tu target
@@ -15,9 +15,7 @@ import i18n from './i18n/i18n';
 import { I18nBootstrap } from './i18n/i18nBootstrap';
 import { I18nCacheProvider } from './i18n/i18nCacheProvider';
 import ToastProvider from './components/UI/ToastProvider';
-
-// Crear una instancia de QueryClient
-const queryClient = new QueryClient();
+import { queryClient } from './queryClient';
 
 async function enableMocksIfNeeded() {
   if (import.meta.env.VITE_API_MOCKS === 'on') {

@@ -162,11 +162,13 @@
   },
   "salesReport": {
     "filterBy": "Filter by",
-    "totalSales": "Total Sales",
-    "totalCommission": "Total Commission",
-    "balance": "Balance",
-    "agentsPayments": "Agents Payments",
-    "viewBreakup": "View Breakup"
+    "filterByDateLabel": "Filter by Date",
+    "applyFilter": "Apply Filters",
+    "cancelFilter": "Cancel",
+    "precio": "Price",
+    "costoAdministrativo": "Administrative Cost",
+    "baseComision": "Commission Basis",
+    "monto": "Amount"
   },
   "salesReportTable": {
     "voucher": "Voucher",
@@ -176,7 +178,7 @@
     "salePrice": "Sale Price",
     "processingCost": "Processing Cost",
     "commissionBasis": "Commission Basis",
-    "commission": "Commission"
+    "amount": "Amount"
   },
   "errors": {
     "sessionExpiredTitle": "Session Expired",

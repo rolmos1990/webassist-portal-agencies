@@ -73,9 +73,14 @@ export default function TablePagination({
   const safeTotal = Math.max(1, totalPages || 1);
   const [page, setPage] = useState<number>(clamp(defaultPage, 1, safeTotal));
 
+  // Todo consumidor de este componente pasa defaultPage como reflejo reactivo de
+  // su propio estado (defaultPage: pagination.currentPage). Antes solo se re-sincronizaba
+  // el estado interno al cambiar totalPages, así que un reset de página hecho por el padre
+  // (p.ej. al ordenar o filtrar) sin cambio de totalPages quedaba invisible: la fila mostrada
+  // cambiaba pero el indicador de página activa se congelaba en la página anterior.
   useEffect(() => {
-    setPage((p) => clamp(p, 1, Math.max(1, totalPages || 1)));
-  }, [totalPages]);
+    setPage(clamp(defaultPage, 1, Math.max(1, totalPages || 1)));
+  }, [defaultPage, totalPages]);
 
   const justify =
     align === "start" ? "justify-content-start" :

@@ -10,13 +10,29 @@ import { useTranslation } from "react-i18next";
 import { PATHS } from "../routes/Routes";
 import { useNavigate } from "react-router-dom";
 import { useMobileMenuStore } from "../stores/mobileMenuStore";
+import { usePostLogout } from "../api/generated";
+import { useI18nCache } from "../i18n/i18nCacheProvider";
 
 function Header() {
   const navigate = useNavigate();
   const logout = useAuthStore((s) => s.logout);
   const { t } = useTranslation();
+  const { lang } = useI18nCache();
+  const { mutateAsync: postLogout } = usePostLogout();
   const isMobileMenuOpen = useMobileMenuStore((s) => s.isMobileMenuOpen);
   const toggleMobileMenu = useMobileMenuStore((s) => s.toggleMobileMenu);
+
+  const handleLogout = async () => {
+    try {
+      // Best-effort: invalida el token también del lado del backend. Si falla
+      // (red caída, backend abajo), igual cerramos la sesión local.
+      await postLogout({ idioma: lang });
+    } catch {
+      // noop
+    } finally {
+      logout();
+    }
+  };
 
   const [notifications, setNotifications] = useState<NotificationItem[]>([
     //{ id: 1, title: "Target Achieved", time: "2 mins ago", message: "Congrats! You’ve hit 80%.", unread: true },
@@ -78,7 +94,7 @@ function Header() {
           <DropdownItem onClick={() => navigate(PATHS.settings())}>{t('settings')}</DropdownItem>
           <DropdownItem onClick={() => navigate(PATHS.settings())}>{t('profile')}</DropdownItem>
           <DropdownDivider />
-          <DropdownItem onClick={() => logout()}>Sign out</DropdownItem>
+          <DropdownItem onClick={handleLogout}>Sign out</DropdownItem>
         </Dropdown>
       </div>
     </header>

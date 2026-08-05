@@ -32,8 +32,10 @@ import Settings from './pages/Settings';
 import './assets/scss/main.scss';
 import { bootstrapAuthWatcher } from './stores/useAuthStore';
 import { bootstrapSecurityWatcher } from './stores/securityStore';
+import { bootstrapQueryClientWatcher } from './queryClient';
 bootstrapAuthWatcher();
 bootstrapSecurityWatcher();
+bootstrapQueryClientWatcher();
 
 export default function App() {
   return (

@@ -1,13 +1,20 @@
 import { type ColumnDef } from "../DataTable";
-import type { SalesReportRow } from "../../data/salesReportData";
+import type { ReporteVentasAgenciaResponseDataItemsItem } from "../../api/schemas";
 
 type CreateColumnsDeps = {
   t: (key: string) => string;
 };
 
-const usd = (n: number) => `USD$ ${n.toFixed(2)}`;
+export const usd = (n: number) => `USD$ ${n.toFixed(2)}`;
 
-export function createSalesReportColumns({ t }: CreateColumnsDeps): ColumnDef<SalesReportRow>[] {
+// "monto" llega como string del API; ante un valor no numérico se muestra 0.00
+// en vez de "USD$ NaN".
+export const toAmount = (value: unknown): number => {
+  const n = Number(value ?? 0);
+  return Number.isNaN(n) ? 0 : n;
+};
+
+export function createSalesReportColumns({ t }: CreateColumnsDeps): ColumnDef<ReporteVentasAgenciaResponseDataItemsItem>[] {
   return [
     {
       id: "voucher",
@@ -17,60 +24,60 @@ export function createSalesReportColumns({ t }: CreateColumnsDeps): ColumnDef<Sa
       align: "start",
     },
     {
-      id: "salesDate",
+      id: "fecha_venta",
       label: t("salesReportTable.salesDate"),
-      width: "12%",
-      accessor: (row) => row.salesDate,
+      width: "14%",
+      accessor: (row) => row.fecha_venta,
       align: "start",
     },
     {
-      id: "agency",
+      id: "agencia_nombre",
       label: t("salesReportTable.agency"),
-      width: "16%",
+      width: "15%",
       sortable: true,
-      accessor: (row) => row.agency,
+      accessor: (row) => row.agencia_nombre,
       align: "start",
     },
     {
-      id: "agent",
+      id: "agente_nombre",
       label: t("salesReportTable.agent"),
-      width: "16%",
+      width: "15%",
       sortable: true,
-      accessor: (row) => row.agent,
+      accessor: (row) => row.agente_nombre,
       align: "start",
     },
     {
-      id: "salePrice",
+      id: "precio_venta",
       label: t("salesReportTable.salePrice"),
-      width: "12%",
-      accessor: (row) => row.salePrice,
-      render: (row) => usd(row.salePrice),
+      width: "11%",
+      accessor: (row) => row.precio_venta,
+      render: (row) => usd(row.precio_venta ?? 0),
       align: "end",
     },
     {
-      id: "processingCost",
+      id: "costo_procesamiento",
       label: t("salesReportTable.processingCost"),
       width: "12%",
-      accessor: (row) => row.processingCost,
-      render: (row) => usd(row.processingCost),
+      accessor: (row) => row.costo_procesamiento,
+      render: (row) => usd(row.costo_procesamiento ?? 0),
       align: "end",
     },
     {
-      id: "commissionBasis",
+      id: "base_comision",
       label: t("salesReportTable.commissionBasis"),
       width: "12%",
       sortable: true,
-      accessor: (row) => row.commissionBasis,
-      render: (row) => usd(row.commissionBasis),
+      accessor: (row) => row.base_comision,
+      render: (row) => usd(row.base_comision ?? 0),
       align: "end",
     },
     {
-      id: "commission",
-      label: t("salesReportTable.commission"),
-      width: "10%",
+      id: "monto",
+      label: t("salesReportTable.amount"),
+      width: "9%",
       sortable: true,
-      accessor: (row) => row.commissionPercent,
-      render: (row) => `${row.commissionPercent.toFixed(2)}%`,
+      accessor: (row) => row.monto,
+      render: (row) => usd(toAmount(row.monto)),
       align: "end",
     },
   ];

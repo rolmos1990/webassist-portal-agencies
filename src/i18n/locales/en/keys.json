@@ -162,11 +162,13 @@
   },
   "salesReport": {
     "filterBy": "key_salesReport_filterBy",
-    "totalSales": "key_salesReport_totalSales",
-    "totalCommission": "key_salesReport_totalCommission",
-    "balance": "key_salesReport_balance",
-    "agentsPayments": "key_salesReport_agentsPayments",
-    "viewBreakup": "key_salesReport_viewBreakup"
+    "filterByDateLabel": "key_salesReport_filterByDateLabel",
+    "applyFilter": "key_salesReport_applyFilter",
+    "cancelFilter": "key_salesReport_cancelFilter",
+    "precio": "key_salesReport_precio",
+    "costoAdministrativo": "key_salesReport_costoAdministrativo",
+    "baseComision": "key_salesReport_baseComision",
+    "monto": "key_salesReport_monto"
   },
   "salesReportTable": {
     "voucher": "key_salesReportTable_voucher",
@@ -176,7 +178,7 @@
     "salePrice": "key_salesReportTable_salePrice",
     "processingCost": "key_salesReportTable_processingCost",
     "commissionBasis": "key_salesReportTable_commissionBasis",
-    "commission": "key_salesReportTable_commission"
+    "amount": "key_salesReportTable_amount"
   },
   "errors": {
     "sessionExpiredTitle": "key_errors_sessionExpiredTitle",
