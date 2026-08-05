@@ -30,9 +30,10 @@
         border: none;
     }
 
+    // Drawer: 80–88vw del ancho de pantalla, con tope de 320px.
     .sidebar.show-sidebar {
-        width: 280px;
-        min-width: 180px;
+        width: min(84vw, 320px);
+        min-width: 0;
         padding: initial;
         border: initial;
     }
@@ -45,6 +46,34 @@
         height: 100vh;
         background: $color-sidebar;
         z-index: 1050;
+    }
+}
+
+// Overlay del drawer móvil: debajo del sidebar (z-index 1050), encima del contenido.
+.sidebar-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.45);
+    z-index: 1040;
+}
+
+.sidebar-close-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    padding: 0;
+    border: 0;
+    border-radius: 50%;
+    background: transparent;
+    color: #ffffff;
+    font-size: 1.1rem;
+    flex-shrink: 0;
+
+    &:hover,
+    &:focus-visible {
+        background: rgba(255, 255, 255, 0.1);
     }
 }
 
@@ -63,10 +92,6 @@
             max-width: 36px;
             height: auto;
         }
-    }
-
-    .sidebar-control {
-        display: none;
     }
 }
 

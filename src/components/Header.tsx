@@ -1,4 +1,5 @@
 import { useState } from "react";
+import logo from "../assets/images/logo.png";
 import iconRounded from "../assets/images/icons/rounded-icon.svg";
 import Search from "./common/Search";
 import NotificationsDropdown from "./NotificationDropdown";
@@ -8,11 +9,14 @@ import { useAuthStore } from '../stores/useAuthStore';
 import { useTranslation } from "react-i18next";
 import { PATHS } from "../routes/Routes";
 import { useNavigate } from "react-router-dom";
+import { useMobileMenuStore } from "../stores/mobileMenuStore";
 
 function Header() {
   const navigate = useNavigate();
   const logout = useAuthStore((s) => s.logout);
   const { t } = useTranslation();
+  const isMobileMenuOpen = useMobileMenuStore((s) => s.isMobileMenuOpen);
+  const toggleMobileMenu = useMobileMenuStore((s) => s.toggleMobileMenu);
 
   const [notifications, setNotifications] = useState<NotificationItem[]>([
     //{ id: 1, title: "Target Achieved", time: "2 mins ago", message: "Congrats! You’ve hit 80%.", unread: true },
@@ -22,8 +26,22 @@ function Header() {
 
 
   return (
-    <header className="d-flex align-items-center bg-white justify-content-center justify-content-md-between py-3">
-      <div className="w-100 d-flex justify-content-center align-items-center ms-2 ms-md-0">
+    <header className="d-flex align-items-center bg-white justify-content-between py-3">
+      <button
+        type="button"
+        className="btn btn-link d-lg-none p-0 ms-3 me-2 text-dark"
+        onClick={toggleMobileMenu}
+        aria-expanded={isMobileMenuOpen}
+        aria-label={isMobileMenuOpen ? t('sidebar.closeMenu') : t('sidebar.openMenu')}
+      >
+        <i className="bi bi-list fs-2" aria-hidden="true" />
+      </button>
+
+      <a href="/" className="d-lg-none">
+        <img src={logo} alt="We Assist" style={{ height: 32 }} />
+      </a>
+
+      <div className="w-100 d-none d-lg-flex justify-content-center align-items-center ms-2 ms-md-0">
         <Search />
       </div>
 

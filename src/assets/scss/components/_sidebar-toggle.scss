@@ -20,11 +20,7 @@
     cursor: pointer;
     transition: left 0.25s ease;
 
-    &.right-0 {
-        left: 20px;
-    }
-
-    // Modo compacto de escritorio: el sidebar mide 76px, no 0.
+    // Modo compacto de escritorio: el sidebar mide 76px, no 280px.
     &.collapsed {
         left: 86px;
     }
@@ -43,13 +39,11 @@
     }
 }
 
+// Tablet y mobile (≤991.98px): no hay botón flotante. En tablet el sidebar es
+// fijo y no expandible; en mobile se abre/cierra con el botón hamburguesa del Header.
 @media (max-width: 991.98px) {
     .sidebar-control {
-        left: 20px;
-
-        &.right-0 {
-            left: 266px;
-        }
+        display: none;
     }
 
     .search-input {

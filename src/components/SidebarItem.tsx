@@ -7,11 +7,13 @@ type SidebarItemProps = {
   icon: string;
   label: string;
   path: string;
-  /** Modo compacto de escritorio: solo ícono, con tooltip al hover/focus. */
+  /** Modo compacto (tablet o escritorio colapsado): solo ícono, con tooltip al hover/focus. */
   collapsed?: boolean;
+  /** Se llama después de navegar. Usado para cerrar el drawer móvil al elegir una opción. */
+  onNavigate?: () => void;
 };
 
-const SidebarItem: FC<SidebarItemProps> = ({ icon, label, path, collapsed = false }) => {
+const SidebarItem: FC<SidebarItemProps> = ({ icon, label, path, collapsed = false, onNavigate }) => {
   const location = useLocation();
   const navigate = useNavigate();
   const linkRef = useRef<HTMLAnchorElement>(null);
@@ -21,6 +23,7 @@ const SidebarItem: FC<SidebarItemProps> = ({ icon, label, path, collapsed = fals
   const handleClick = (e: MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault();
     navigate(path);
+    onNavigate?.();
   };
 
   // El tooltip solo tiene sentido colapsado: expandido, el label ya es visible.
