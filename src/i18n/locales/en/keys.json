@@ -160,6 +160,24 @@
       "viewCertificate": "key_assistanceDetail_customerCard_viewCertificate"
     }
   },
+  "salesReport": {
+    "filterBy": "key_salesReport_filterBy",
+    "totalSales": "key_salesReport_totalSales",
+    "totalCommission": "key_salesReport_totalCommission",
+    "balance": "key_salesReport_balance",
+    "agentsPayments": "key_salesReport_agentsPayments",
+    "viewBreakup": "key_salesReport_viewBreakup"
+  },
+  "salesReportTable": {
+    "voucher": "key_salesReportTable_voucher",
+    "salesDate": "key_salesReportTable_salesDate",
+    "agency": "key_salesReportTable_agency",
+    "agent": "key_salesReportTable_agent",
+    "salePrice": "key_salesReportTable_salePrice",
+    "processingCost": "key_salesReportTable_processingCost",
+    "commissionBasis": "key_salesReportTable_commissionBasis",
+    "commission": "key_salesReportTable_commission"
+  },
   "noData": "key_noData",
   "error_generico": "key_error_generico",
   "error_desconocido": "key_error_desconocido"

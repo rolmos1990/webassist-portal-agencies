@@ -43,6 +43,10 @@ interface Props<T extends object> {
   onSortChange?: (next: SortState) => void;
   loadingMessage?: React.ReactNode;
   emptyMessage?: React.ReactNode;
+  selectable?: boolean;
+  getRowId?: (row: T, rowIndex: number) => string | number;
+  selectedIds?: Array<string | number>;
+  onSelectionChange?: (ids: Array<string | number>) => void;
 }
 
 const textAlign = (align?: Align) =>
@@ -67,10 +71,31 @@ export default function DataTable<T extends object>({
   onSortChange,
   loadingMessage = "Loading data…",
   emptyMessage = "No data to display",
+  selectable = false,
+  getRowId,
+  selectedIds,
+  onSelectionChange,
 }: Props<T>) {
 
   const [innerSort, setInnerSort] = useState<SortState | null>(defaultSort);
   const effectiveSort = sort ?? innerSort;
+
+  const [innerSelected, setInnerSelected] = useState<Set<string | number>>(new Set());
+  const effectiveSelected = selectedIds ? new Set(selectedIds) : innerSelected;
+
+  const rowId = (row: T, i: number) => (getRowId ? getRowId(row, i) : i);
+
+  const applySelection = (next: Set<string | number>) => {
+    if (selectedIds) onSelectionChange?.(Array.from(next));
+    else setInnerSelected(next);
+  };
+
+  const toggleRow = (id: string | number) => {
+    const next = new Set(effectiveSelected);
+    if (next.has(id)) next.delete(id);
+    else next.add(id);
+    applySelection(next);
+  };
 
   const toggleSort = (id: string) => {
     const next: SortState = (() => {
@@ -82,6 +107,17 @@ export default function DataTable<T extends object>({
   };
 
   const displayed = useMemo(() => items, [items]);
+
+  const allIds = useMemo(
+    () => displayed.map((row, i) => (getRowId ? getRowId(row, i) : i)),
+    [displayed, getRowId]
+  );
+  const allSelected = allIds.length > 0 && allIds.every((id) => effectiveSelected.has(id));
+  const someSelected = !allSelected && allIds.some((id) => effectiveSelected.has(id));
+
+  const toggleAll = () => {
+    applySelection(allSelected ? new Set() : new Set(allIds));
+  };
 
   const thBtn = (col: ColumnDef<T>) => {
     const isSorted = effectiveSort?.id === col.id;
@@ -110,13 +146,27 @@ export default function DataTable<T extends object>({
     );
   };
 
-  const colCount = columns.length;
+  const colCount = columns.length + (selectable ? 1 : 0);
 
   return (
     <div className="table-responsive">
       <table className="table table-hover align-middle mb-0 wac-data-table">
         <thead>
           <tr className="text-muted small">
+            {selectable && (
+              <th style={{ width: 40 }} scope="col">
+                <input
+                  type="checkbox"
+                  className="form-check-input"
+                  checked={allSelected}
+                  ref={(el) => {
+                    if (el) el.indeterminate = someSelected;
+                  }}
+                  onChange={toggleAll}
+                  aria-label="Select all rows"
+                />
+              </th>
+            )}
             {columns.map((col) => (
               <th
                 key={col.id}
@@ -149,6 +199,17 @@ export default function DataTable<T extends object>({
           ) : (
             displayed.map((row, i) => (
               <tr key={i}>
+                {selectable && (
+                  <td>
+                    <input
+                      type="checkbox"
+                      className="form-check-input"
+                      checked={effectiveSelected.has(rowId(row, i))}
+                      onChange={() => toggleRow(rowId(row, i))}
+                      aria-label={`Select row ${i + 1}`}
+                    />
+                  </td>
+                )}
                 {columns.map((col) => (
                   <td key={col.id} className={`${col.className ?? ""} ${textAlign(col.align)}`}>
                     {col.render

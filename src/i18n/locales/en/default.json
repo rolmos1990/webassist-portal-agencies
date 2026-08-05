@@ -160,6 +160,24 @@
       "viewCertificate": "View Certificate"
     }
   },
+  "salesReport": {
+    "filterBy": "Filter by",
+    "totalSales": "Total Sales",
+    "totalCommission": "Total Commission",
+    "balance": "Balance",
+    "agentsPayments": "Agents Payments",
+    "viewBreakup": "View Breakup"
+  },
+  "salesReportTable": {
+    "voucher": "Voucher",
+    "salesDate": "Sales Date",
+    "agency": "Agency",
+    "agent": "Agent",
+    "salePrice": "Sale Price",
+    "processingCost": "Processing Cost",
+    "commissionBasis": "Commission Basis",
+    "commission": "Commission"
+  },
   "noData": "No data available",
   "error_generico": "An error occurred, please try again later",
   "error_desconocido": "An unexpected error occurred"

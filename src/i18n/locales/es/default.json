@@ -160,6 +160,24 @@
       "viewCertificate": "Ver Certificado"
     }
   },
+  "salesReport": {
+    "filterBy": "Filtrar por",
+    "totalSales": "Ventas Totales",
+    "totalCommission": "Comisión Total",
+    "balance": "Balance",
+    "agentsPayments": "Pagos a Agentes",
+    "viewBreakup": "Ver Desglose"
+  },
+  "salesReportTable": {
+    "voucher": "Voucher",
+    "salesDate": "Fecha de Venta",
+    "agency": "Agencia",
+    "agent": "Agente",
+    "salePrice": "Precio de Venta",
+    "processingCost": "Costo de Procesamiento",
+    "commissionBasis": "Base de Comisión",
+    "commission": "Comisión"
+  },
   "noData": "No data available",
   "error_generico": "Ha ocurrido un error, inténtelo más tarde",
   "error_desconocido": "Ha ocurrido un error inesperado"
