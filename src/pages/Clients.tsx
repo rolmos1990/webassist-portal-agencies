@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { keepPreviousData } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
 import Breadcrumb from '../components/Breadcrumb';
 import { UIButton } from '../components/Button';
@@ -39,10 +40,20 @@ function Clients() {
   const sortField = sort ? SORT_FIELD_BY_COLUMN[sort.id] : undefined;
   const sortOrder = sort ? (sort.dir === 'asc' ? GetClientesSortOrder.ASC : GetClientesSortOrder.DESC) : undefined;
 
-  const { data, isLoading, error } = useGetClientes(lang, {
-    pagina: currentPage,
-    ...(sortField ? { sort: sortField, sort_order: sortOrder } : {}),
-  });
+  const { data, isLoading, error } = useGetClientes(
+    lang,
+    {
+      pagina: currentPage,
+      ...(sortField ? { sort: sortField, sort_order: sortOrder } : {}),
+    },
+    {
+      // Mantiene los datos (e items/paginacion) de la página anterior visibles
+      // mientras se carga la siguiente, en vez de vaciarlos a undefined. Sin esto,
+      // paginacion.cantidad_paginas cae momentáneamente al fallback de abajo (?? 1),
+      // y el paginador resetea su página activa a 1 en cada click.
+      query: { placeholderData: keepPreviousData },
+    }
+  );
 
   useEffect(() => {
     if (error) {
