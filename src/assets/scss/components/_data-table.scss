@@ -1,0 +1,32 @@
+/* ============================================================
+   📊 Data Table
+   ============================================================ */
+@use '../abstracts/variables' as *;
+
+.wac-data-table {
+    thead th {
+        padding-top: .75rem;
+        padding-bottom: .75rem;
+        padding-left: 1.25rem;
+        padding-right: 1.25rem;
+        font-weight: 600;
+        background-color: $color-bg-main;
+        border-bottom-color: rgba(0, 0, 0, .08);
+    }
+
+    tbody td {
+        padding-top: .85rem;
+        padding-bottom: .85rem;
+        padding-left: 1.25rem;
+        padding-right: 1.25rem;
+        border-bottom-color: rgba(0, 0, 0, .06);
+    }
+
+    tbody tr:last-child td {
+        border-bottom: 0;
+    }
+}
+
+.wac-data-table-footer {
+    background-color: $color-bg-main;
+}

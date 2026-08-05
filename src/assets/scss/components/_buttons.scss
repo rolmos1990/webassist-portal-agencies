@@ -16,4 +16,21 @@
             color: #ffffff;
         }
     }
+
+    // Botón CTA sólido (variant="dark" en UIButton). Mismo alto/padding que
+    // .btn-outline-primary para que ambos se vean consistentes uno al lado del otro.
+    &.btn-solid-primary {
+        font-weight: 500;
+        border: 1px solid $color-highlight;
+        background-color: $color-highlight;
+        color: #ffffff;
+        height: 32px;
+        padding: 0 16px;
+
+        &:hover {
+            background-color: #0b96c7;
+            border-color: #0b96c7;
+            color: #ffffff;
+        }
+    }
 }

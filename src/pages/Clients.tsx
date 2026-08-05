@@ -84,7 +84,7 @@ function Clients() {
           }
         />
 
-        <div className="card">
+        <div className="card border-0">
           <div className="card-body p-0">
             <ClientsTable
               data={items}

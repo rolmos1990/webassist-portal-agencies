@@ -1,6 +1,7 @@
 // DataTable.tsx
 import React, { useMemo, useState } from "react";
 import "../assets/scss/components/_row-actions.scss";
+import "../assets/scss/components/_data-table.scss";
 import TablePagination from "./TablePagination";
 
 type Align = "start" | "center" | "end";
@@ -48,7 +49,7 @@ const textAlign = (align?: Align) =>
   align === "end" ? "text-end" : align === "center" ? "text-center" : "text-start";
 
 const SortIcon: React.FC<{ dir?: SortDir }> = ({ dir }) => {
-  if (!dir) return <i className="bi bi-arrow-down-up ms-1 text-muted fs-bold" />;
+  if (!dir) return <i className="bi bi-chevron-down ms-1 text-muted small" />;
   return dir === "asc" ? (
     <i className="bi bi-arrow-up ms-1 text-muted fs-bold" />
   ) : (
@@ -113,7 +114,7 @@ export default function DataTable<T extends object>({
 
   return (
     <div className="table-responsive">
-      <table className="table table-hover align-middle mb-0">
+      <table className="table table-hover align-middle mb-0 wac-data-table">
         <thead>
           <tr className="text-muted small">
             {columns.map((col) => (
@@ -162,7 +163,7 @@ export default function DataTable<T extends object>({
       </table>
 
       {pagination && (
-        <div className="card-footer bg-body-tertiary px-0">
+        <div className="wac-data-table-footer px-0 pt-2">
           <TablePagination
             totalPages={pagination.totalPages}
             defaultPage={pagination.defaultPage ?? 1}

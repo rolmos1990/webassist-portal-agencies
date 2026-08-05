@@ -2,7 +2,7 @@
 import { type ColumnDef } from "../DataTable";
 import RowActions from "../RowActions";
 import { StatusBadge } from "../StatusBadge";
-import { statusAgentTheme } from "../StatusBadge/StatusBadgeThemes";
+import type { StatusTheme } from "../StatusBadge";
 import type { GetIdiomaAgentes200DataItem } from "../../api/schemas";
 
 type CreateColumnsDeps = {
@@ -20,6 +20,12 @@ export function createAgentColumns({
   onToggle,
   onDelete,
 }: CreateColumnsDeps): ColumnDef<GetIdiomaAgentes200DataItem>[] {
+  const agentStatusTheme: StatusTheme = {
+    "1": { tone: "success", label: t("status.active") },
+    "0": { tone: "secondary", label: t("status.inactive") },
+    default: { tone: "secondary" },
+  };
+
   return [
     {
       id: "codigo",
@@ -52,7 +58,7 @@ export function createAgentColumns({
       width: "14%",
       sortable: true,
       accessor: (row) => row.email,
-      align: "center",
+      align: "start",
     },
     {
       id: "rol",
@@ -69,16 +75,16 @@ export function createAgentColumns({
       sortable: true,
       accessor: (row) => row.comision,
       render: (row) => row.comision,
-      align: "start",
-    },    
+      align: "end",
+    },
     {
       id: "status",
       label: t("status"),
       width: "5%",
       sortable: true,
       accessor: (row) => row.status,
-      align: "end",
-      render: (row) => <StatusBadge status={row.status ?? ""} theme={statusAgentTheme} />,
+      align: "center",
+      render: (row) => <StatusBadge status={row.status ?? ""} theme={agentStatusTheme} />,
     },
     {
       id: "actions",
@@ -95,12 +101,12 @@ export function createAgentColumns({
           </RowActions.Item>
 
           <RowActions.Item<GetIdiomaAgentes200DataItem>
-            icon={row.status === "Active" ? "bi-toggle-on" : "bi-toggle-off"}
+            icon={row.status === "1" ? "bi-toggle-on" : "bi-toggle-off"}
             onClick={onToggle}
           >
-            {row.status === "Active"
-              ? t("activar")
-              : t("inactivar")}
+            {row.status === "1"
+              ? t("inactivar")
+              : t("activar")}
           </RowActions.Item>
 
           <RowActions.Divider />

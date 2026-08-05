@@ -109,7 +109,7 @@ function Agents() {
       >
         <CreateAgentVertical onSubmit={handleSubmit} onCancel={handleClose} />
         </Offcanvas>
-            <div className="card">
+            <div className="card border-0">
               <div className="card-body p-0">
               <AgentsTable
                   data={agentsData.slice((currentPage - 1) * 20, currentPage * 20)}

@@ -113,7 +113,7 @@ function Agencies() {
       >
         <CreateAgenciesVertical onSubmit={handleSubmit} onCancel={handleClose} locations={locations} />
         </Offcanvas>
-            <div className="card">
+            <div className="card border-0">
               <div className="card-body p-0">
               <AgencyTable
                   data={agenciesData.slice((currentPage - 1) * PAGE_SIZE, currentPage * PAGE_SIZE)}
