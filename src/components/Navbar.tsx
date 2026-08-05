@@ -129,10 +129,8 @@ function NavBar() {
             </>
           )}
           {/* <SidebarItem icon={iconAgents} label="Administrar Usuarios" path="/users" /> */}
-          <SidebarItem icon={iconNewQuote} label={t('menu.myQuotes')} path={PATHS.quotes.mine()} collapsed={isCompact} onNavigate={closeMobileMenu} />
           <SidebarItem icon={iconNewQuote} label={t('menu.agencyQuotes')} path={PATHS.quotes.agency()} collapsed={isCompact} onNavigate={closeMobileMenu} />
 
-          <SidebarItem icon={iconStandingQuote} label={t('menu.myAssistances')} path={PATHS.assistances.mine()} collapsed={isCompact} onNavigate={closeMobileMenu} />
           <SidebarItem icon={iconStandingQuote} label={t('menu.agencyAssistances')} path={PATHS.assistances.agency()} collapsed={isCompact} onNavigate={closeMobileMenu} />
 
           <SidebarItem icon={iconReports} label={t('menu.salesReport')} path={PATHS.reports()} collapsed={isCompact} onNavigate={closeMobileMenu} />

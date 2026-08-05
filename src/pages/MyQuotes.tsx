@@ -26,7 +26,7 @@ function MyQuotes() {
   return (
 <div className="min-vh-100 bg-light">
 <div className="container-fluid py-3 px-4">
-<Breadcrumb title={t("todas_cotizaciones")} rightContent={
+<Breadcrumb title={t("menu.myQuotes")} rightContent={
           <div className="d-flex gap-2">
         <UIButton
         variant="outline-primary"

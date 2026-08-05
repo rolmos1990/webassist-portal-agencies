@@ -33,19 +33,21 @@
       "markInactive":"Mark as Inactive"
   },
   "agents":{
-    "agentCode":"Agent Code",
-    "name":"Name",
-    "lastName":"Last Name",
-    "email":"Email",
-    "agencyName":"Agency Name",
-    "totalSales":"Total Sales",
-    "totalCommission":"Total Commission",
-    "status":"Status",
-    "actions":"Actions",
-    "edit":"Edit",
-    "delete":"Delete",
-    "markActive":"Mark as Active",
-    "markInactive":"Mark as Inactive"
+    "agentCode":"Código de Agente",
+    "name":"Nombre",
+    "lastName":"Apellido",
+    "email":"Correo",
+    "role":"Rol",
+    "commission":"Comisión",
+    "agencyName":"Nombre de Agencia",
+    "totalSales":"Ventas Totales",
+    "totalCommission":"Comisión Total",
+    "status":"Estado",
+    "actions":"Acciones",
+    "edit":"Editar",
+    "delete":"Eliminar",
+    "markActive":"Marcar como Activo",
+    "markInactive":"Marcar como Inactivo"
 },
   "clients":{
     "id":"ID",
@@ -115,9 +117,9 @@
     "agents": "Agentes",
     "clients": "Clientes",
     "myQuotes": "Mis Cotizaciones",
-    "agencyQuotes": "Todas las Cotizaciones",
+    "agencyQuotes": "Cotizaciones Agencia",
     "myAssistances": "Mis Asistencias",
-    "agencyAssistances": "Todas las Asistencias",
+    "agencyAssistances": "Asistencias Agencia",
     "salesReport": "Reporte de Ventas"
   },
   "sidebar": {
@@ -136,6 +138,27 @@
     "notDefined": "Sin Definir",
     "actions": "Acciones",
     "view": "Ver Asistencias"
+  },
+  "assistanceDetail": {
+    "back": "Atrás",
+    "resendVoucher": "Reenviar Voucher",
+    "viewMore": "Ver más",
+    "benefits": "Beneficios",
+    "issueDate": "Fecha de Emisión",
+    "departureLocation": "Lugar de Salida",
+    "destinationLocation": "Lugar de Destino",
+    "departureDate": "Fecha de Salida",
+    "returnDate": "Fecha de Regreso",
+    "reference": "Referencia",
+    "paymentId": "ID de Pago",
+    "customerCard": {
+      "passport": "Pasaporte del Viajero",
+      "phone": "Teléfono",
+      "email": "Correo",
+      "medicalInfo": "Información Médica del Viajero",
+      "viewCard": "Ver Tarjeta",
+      "viewCertificate": "Ver Certificado"
+    }
   },
   "noData": "No data available",
   "error_generico": "Ha ocurrido un error, inténtelo más tarde",

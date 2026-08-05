@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useLocation, useParams } from 'react-router-dom';
 import Breadcrumb from '../components/Breadcrumb';
 import { UIButton } from '../components/Button';
 import CustomerCard from '../components/CustomerCard';
@@ -6,24 +7,31 @@ import { HorizontalCardList, HorizontalCardListItem } from '../components/Horizo
 import { StatusBadge } from '../components/StatusBadge';
 import Offcanvas from '../components/Offcanvas';
 import { BenefitsExample } from '../examples/BenefitsExample';
-import { defaultStatusTheme } from '../components/StatusBadge/StatusBadgeThemes';
 import { useTranslation } from 'react-i18next';
+import { currency } from '../components/DataTable';
+import { useI18nCache } from '../i18n/i18nCacheProvider';
+import type { GetAsistenciasAgenteAgencia200DataItemsItem } from '../api/schemas';
 
 export default function AssistanceDetail() {
     const [show, setShow] = useState(false);
     const { t } = useTranslation();
-    const [travelers, setTravelers] = useState(2);                    
+    const { lang } = useI18nCache();
+    const { id } = useParams<{ id: string }>();
+    const location = useLocation();
+
+    const item = (location.state as { item?: GetAsistenciasAgenteAgencia200DataItemsItem } | null)?.item;
+    const vouchers = item?.vouchers ?? [];
 
     return (
 <div className="min-vh-100 bg-light">
   <div className="container-fluid py-3 px-4">
-        <Breadcrumb title="Back" hasBack rightContent={
+        <Breadcrumb title={t('assistanceDetail.back')} hasBack rightContent={
           <div className="d-flex gap-2">
         <UIButton
         variant="outline-primary"
         icon="bi bi-envelope"
         >
-        {t("reenviar_voucher")}
+        {t("assistanceDetail.resendVoucher")}
         </UIButton>
           </div>
         } />
@@ -31,7 +39,7 @@ export default function AssistanceDetail() {
         show={show}
         onHide={() => setShow(false)}
         placement="end"        // start | end | top | bottom
-        title={t("beneficios")}
+        title={t("assistanceDetail.benefits")}
         canClose={true}
         scroll={true}
         backdrop="static"      // true | false | 'static'
@@ -73,114 +81,93 @@ export default function AssistanceDetail() {
 
             <div className="col">
                 <h4 className="mb-2 d-flex flex-column flex-md-row align-items-center justify-content-center justify-content-md-start gap-2">
-              A93-E2B5K9
+              {item?.token ?? id ?? ""}
               <div className="ms-md-2 mt-2 mt-md-0">
-                <StatusBadge status={"Active"} theme={defaultStatusTheme} />
+                <StatusBadge status="" theme={{ default: { tone: "secondary", label: t("assistancesTable.notDefined") } }} />
               </div>
             </h4>
-        
 
-            <p className="mb-1 text-black pb-1">
-              Travel Trips per day <b>GOLD</b>
-            </p>
             <p className="mb-1 text-gray small pb-1">
-              USD 152.00 - {travelers} Traveller (s) 
+              {currency(Number(item?.total ?? 0))} - {vouchers.length} {t("assistancesTable.documents")}
             </p>
             <button
   type="button"
   onClick={() => setShow(true)}
   className="btn btn-link text-decoration-none text-primary p-0"
 >
-  {t("ver_mas")}
+  {t("assistanceDetail.viewMore")}
 </button>
             </div>
           </div>
                 <div className="flex-grow-1 border-bottom pb-3">
                                     <HorizontalCardList desktopCols={6}>
-                                    <HorizontalCardListItem 
-                                        title={t("fecha_emision")}
-                                        value={"08 Sep 2024"}
+                                    <HorizontalCardListItem
+                                        title={t("assistanceDetail.issueDate")}
+                                        value={item?.fecha ?? ""}
                                         icon={""}
                                       />
-                                      <HorizontalCardListItem 
-                                        title={t("lugar_salida")}
-                                        value={<span className="d-inline-flex align-items-center">
-                                                    <i className="bi bi-geo-alt me-2 text-success" />
-                                                    Panama
-                                                </span>}
+                                      <HorizontalCardListItem
+                                        title={t("assistanceDetail.departureLocation")}
+                                        value={""}
                                         icon={""}
                                       />
-                                      <HorizontalCardListItem 
-                                        title={t("lugar_destino")}
-                                        value={<span className="d-inline-flex align-items-center">
-                                                    <i className="bi bi-geo-alt me-2 text-success" />
-                                                    United States
-                                                </span>}
+                                      <HorizontalCardListItem
+                                        title={t("assistanceDetail.destinationLocation")}
+                                        value={""}
                                         icon={""}
                                       />
-                                      <HorizontalCardListItem 
-                                        title={t("fecha_salida")}
-                                        value={<span className="d-inline-flex align-items-center">
-                                                    <i className="bi bi-calendar3 me-2 text-success" />
-                                                    12 Dec 2025
-                                                </span>}
+                                      <HorizontalCardListItem
+                                        title={t("assistanceDetail.departureDate")}
+                                        value={""}
                                         icon={""}
                                       />
-                                      <HorizontalCardListItem 
-                                        title={t("fecha_regreso")}
-                                        value={<span className="d-inline-flex align-items-center">
-                                                    <i className="bi bi-calendar3 me-2 text-success" />
-                                                    20 Dec 2025
-                                                </span>}
+                                      <HorizontalCardListItem
+                                        title={t("assistanceDetail.returnDate")}
+                                        value={""}
                                         icon={""}
                                       />
-                                      <HorizontalCardListItem 
-                                        title={t("referencia")}
-                                        value={"22815"}
+                                      <HorizontalCardListItem
+                                        title={t("assistanceDetail.reference")}
+                                        value={""}
                                         icon={""}
                                       />
-                                      <HorizontalCardListItem 
-                                        title={t("id_pago")}
-                                        value={<span className="d-inline-flex align-items-center">
-                                                    <i className="bi bi-calendar3 me-2 text-success" />
-                                                    Credit Card (STS-GOSATWUGF9F)
-                                                </span>}
+                                      <HorizontalCardListItem
+                                        title={t("assistanceDetail.paymentId")}
+                                        value={""}
                                         icon={""}
                                       />
                                     </HorizontalCardList>
                 </div>
                 <div className="mt-4">
-                    <h5 className="mb-4">Traveler(s)</h5>
+                    <h5 className="mb-4">{t("assistancesTable.documents")}</h5>
                     <div className="row">
-                        <div className="col-12 col-md-5">
-                            <CustomerCard
-                                name="Iris Mabel Tejeira Diaz"
-                                gender="Male"
-                                idNumber="12345678"
-                                amount={1234.56}
-                                dob="24/12/1975"
-                                phone="+50768934567"
-                                email="matoectl@mail.com"
-                                medicalDetails="Controlled hypertension, Cancer Controlled, good standing letter is maintained health by family doctor"
-                                onViewCard={() => {}}
-                                onViewCertification={() => {}}
-                                currency="USD"
-                            />
-                        </div>
-                        <div className="col-12 col-md-5">
-                            <CustomerCard
-                                name="Tejeira Diaz"
-                                gender="Female"
-                                idNumber="12345678"
-                                amount={1234.56}
-                                dob="24/12/1975"
-                                phone="+50768934567"
-                                email="matoectl@mail.com"
-                                onViewCard={() => {}}
-                                onViewCertification={() => {}}
-                                currency="USD"
-                            />
-                        </div>
+                        {vouchers.length === 0 ? (
+                          <div className="col-12 text-muted small">{t("noData")}</div>
+                        ) : (
+                          vouchers.map((voucher, idx) => {
+                            const links = lang === 'en' ? voucher.links_tarjetas_en : voucher.links_tarjetas_es;
+                            const file = links?.[0]?.file;
+
+                            return (
+                              <div className="col-12 col-md-5" key={voucher.voucher ?? idx}>
+                                  <CustomerCard
+                                      name={voucher.nombre ?? ""}
+                                      gender=""
+                                      idNumber=""
+                                      amount={0}
+                                      dob=""
+                                      phone=""
+                                      email=""
+                                      onViewCard={() => {
+                                        if (file) window.open(file, '_blank', 'noopener,noreferrer');
+                                      }}
+                                      hideCertification
+                                      currency="USD"
+                                  />
+                              </div>
+                            );
+                          })
+                        )}
                     </div>
                 </div>
             </div>

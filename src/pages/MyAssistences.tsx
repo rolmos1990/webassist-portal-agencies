@@ -46,7 +46,7 @@ function MyAssistances() {
             <AgencyAssistanceTable
               data={items}
               loading={isLoading}
-              onShow={(row) => navigate(PATHS.assistances.detail(row.token))}
+              onShow={(row) => navigate(PATHS.assistances.detail(row.token), { state: { item: row } })}
               pagination={{
                 totalPages: paginacion?.cantidad_paginas ?? 1,
                 currentPage,

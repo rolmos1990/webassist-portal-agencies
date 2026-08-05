@@ -37,6 +37,8 @@
       "name":"Name",
       "lastName":"Last Name",
       "email":"Email",
+      "role":"Role",
+      "commission":"Commission",
       "agencyName":"Agency Name",
       "totalSales":"Total Sales",
       "totalCommission":"Total Commission",
@@ -115,9 +117,9 @@
     "agents": "Agents",
     "clients": "Clients",
     "myQuotes": "My Quotes",
-    "agencyQuotes": "All Quotes",
+    "agencyQuotes": "Agency Quotes",
     "myAssistances": "My Assistances",
-    "agencyAssistances": "All Assistances",
+    "agencyAssistances": "Agency Assistances",
     "salesReport": "Sales Report"
   },
   "sidebar": {
@@ -136,6 +138,27 @@
     "notDefined": "Not Defined",
     "actions": "Actions",
     "view": "View Assistances"
+  },
+  "assistanceDetail": {
+    "back": "Back",
+    "resendVoucher": "Resend Voucher",
+    "viewMore": "View More",
+    "benefits": "Benefits",
+    "issueDate": "Issue Date",
+    "departureLocation": "Departure Location",
+    "destinationLocation": "Destination Location",
+    "departureDate": "Departure Date",
+    "returnDate": "Return Date",
+    "reference": "Reference",
+    "paymentId": "Payment ID",
+    "customerCard": {
+      "passport": "Traveler Passport",
+      "phone": "Phone",
+      "email": "Email",
+      "medicalInfo": "Traveler Medical Info",
+      "viewCard": "View Card",
+      "viewCertificate": "View Certificate"
+    }
   },
   "noData": "No data available",
   "error_generico": "An error occurred, please try again later",

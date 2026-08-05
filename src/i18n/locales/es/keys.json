@@ -37,6 +37,8 @@
     "name": "key_agents_name",
     "lastName": "key_agents_lastName",
     "email": "key_agents_email",
+    "role": "key_agents_role",
+    "commission": "key_agents_commission",
     "agencyName": "key_agents_agencyName",
     "totalSales": "key_agents_totalSales",
     "totalCommission": "key_agents_totalCommission",
@@ -136,6 +138,27 @@
     "notDefined": "key_assistancesTable_notDefined",
     "actions": "key_assistancesTable_actions",
     "view": "key_assistancesTable_view"
+  },
+  "assistanceDetail": {
+    "back": "key_assistanceDetail_back",
+    "resendVoucher": "key_assistanceDetail_resendVoucher",
+    "viewMore": "key_assistanceDetail_viewMore",
+    "benefits": "key_assistanceDetail_benefits",
+    "issueDate": "key_assistanceDetail_issueDate",
+    "departureLocation": "key_assistanceDetail_departureLocation",
+    "destinationLocation": "key_assistanceDetail_destinationLocation",
+    "departureDate": "key_assistanceDetail_departureDate",
+    "returnDate": "key_assistanceDetail_returnDate",
+    "reference": "key_assistanceDetail_reference",
+    "paymentId": "key_assistanceDetail_paymentId",
+    "customerCard": {
+      "passport": "key_assistanceDetail_customerCard_passport",
+      "phone": "key_assistanceDetail_customerCard_phone",
+      "email": "key_assistanceDetail_customerCard_email",
+      "medicalInfo": "key_assistanceDetail_customerCard_medicalInfo",
+      "viewCard": "key_assistanceDetail_customerCard_viewCard",
+      "viewCertificate": "key_assistanceDetail_customerCard_viewCertificate"
+    }
   },
   "noData": "key_noData",
   "error_generico": "key_error_generico",

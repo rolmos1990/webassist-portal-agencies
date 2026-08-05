@@ -15,6 +15,7 @@ export interface CustomerCardProps {
   medicalDetails?: string;
   onViewCard?: () => void;
   onViewCertification?: () => void;
+  hideCertification?: boolean;
   currency?: string;
 }
 
@@ -48,6 +49,7 @@ export default function CustomerCard({
   medicalDetails = "",
   onViewCard,
   onViewCertification,
+  hideCertification = false,
   currency = "USD",
 }: CustomerCardProps) {
   const { t } = useTranslation();
@@ -93,15 +95,15 @@ export default function CustomerCard({
         {/* Info grid */}
         <div className="row g-3">
           <div className="col-12 col-md-4">
-            <div className="text-muted small">{t("pasaporte_viajero")}</div>
+            <div className="text-muted small">{t("assistanceDetail.customerCard.passport")}</div>
             <div>{dob}</div>
           </div>
           <div className="col-12 col-md-4">
-            <div className="text-muted small">{t("telefono")}</div>
+            <div className="text-muted small">{t("assistanceDetail.customerCard.phone")}</div>
             <div>{phone}</div>
           </div>
           <div className="col-12 col-md-4">
-            <div className="text-muted small">{t("correo")}</div>
+            <div className="text-muted small">{t("assistanceDetail.customerCard.email")}</div>
             <div className="text-truncate" title={email}>
               {email}
             </div>
@@ -110,7 +112,7 @@ export default function CustomerCard({
 
         {/* Medical section */}
         <div className="mt-4 mb-4">
-          <div className="text-black small">{t("medica_viajero")}</div>
+          <div className="text-black small">{t("assistanceDetail.customerCard.medicalInfo")}</div>
           {medicalDetails ? (
             <div className="text-muted small min-text-height min-lines-2">{medicalDetails}</div>
           ) : (
@@ -126,16 +128,18 @@ export default function CustomerCard({
             icon="bi bi-file-earmark-arrow-down"
             onClick={onViewCard}
           >
-            {t("ver_tarjeta")}
+            {t("assistanceDetail.customerCard.viewCard")}
           </UIButton>
-          <UIButton
-            type="button"
-            variant="outline-primary"
-            icon="bi bi-file-earmark-arrow-down"
-            onClick={onViewCertification}
-          >
-            {t("ver_certificacion")}
-          </UIButton>
+          {!hideCertification && (
+            <UIButton
+              type="button"
+              variant="outline-primary"
+              icon="bi bi-file-earmark-arrow-down"
+              onClick={onViewCertification}
+            >
+              {t("assistanceDetail.customerCard.viewCertificate")}
+            </UIButton>
+          )}
         </div>
       </div>
     </div>
