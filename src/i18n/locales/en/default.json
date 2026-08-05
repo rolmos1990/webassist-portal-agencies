@@ -178,6 +178,10 @@
     "commissionBasis": "Commission Basis",
     "commission": "Commission"
   },
+  "errors": {
+    "sessionExpiredTitle": "Session Expired",
+    "sessionExpired": "Your session has expired. Please sign in again."
+  },
   "noData": "No data available",
   "error_generico": "An error occurred, please try again later",
   "error_desconocido": "An unexpected error occurred"

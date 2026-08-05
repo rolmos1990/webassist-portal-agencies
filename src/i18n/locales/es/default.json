@@ -178,6 +178,10 @@
     "commissionBasis": "Base de Comisión",
     "commission": "Comisión"
   },
+  "errors": {
+    "sessionExpiredTitle": "Sesión finalizada",
+    "sessionExpired": "Tu sesión ha expirado. Por favor, inicia sesión nuevamente."
+  },
   "noData": "No data available",
   "error_generico": "Ha ocurrido un error, inténtelo más tarde",
   "error_desconocido": "Ha ocurrido un error inesperado"

@@ -178,6 +178,10 @@
     "commissionBasis": "key_salesReportTable_commissionBasis",
     "commission": "key_salesReportTable_commission"
   },
+  "errors": {
+    "sessionExpiredTitle": "key_errors_sessionExpiredTitle",
+    "sessionExpired": "key_errors_sessionExpired"
+  },
   "noData": "key_noData",
   "error_generico": "key_error_generico",
   "error_desconocido": "key_error_desconocido"

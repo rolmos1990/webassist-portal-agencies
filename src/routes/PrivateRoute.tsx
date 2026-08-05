@@ -23,7 +23,7 @@ const PrivateRoute = () => {
       location.pathname !== PATHS.auth.login();
 
     if (shouldNotify) {
-      toast.error("Disconnected", t("errors.sessionExpired"));
+      toast.error(t("errors.sessionExpiredTitle"), t("errors.sessionExpired"));
       markLogoutNotified();
     }
   }, [
