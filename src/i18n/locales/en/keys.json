@@ -126,6 +126,17 @@
     "openMenu": "key_sidebar_openMenu",
     "closeMenu": "key_sidebar_closeMenu"
   },
+  "assistancesTable": {
+    "issueDate": "key_assistancesTable_issueDate",
+    "documents": "key_assistancesTable_documents",
+    "orderNumber": "key_assistancesTable_orderNumber",
+    "name": "key_assistancesTable_name",
+    "total": "key_assistancesTable_total",
+    "status": "key_assistancesTable_status",
+    "notDefined": "key_assistancesTable_notDefined",
+    "actions": "key_assistancesTable_actions",
+    "view": "key_assistancesTable_view"
+  },
   "noData": "key_noData",
   "error_generico": "key_error_generico",
   "error_desconocido": "key_error_desconocido"

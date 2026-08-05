@@ -126,6 +126,17 @@
     "openMenu": "Open menu",
     "closeMenu": "Close menu"
   },
+  "assistancesTable": {
+    "issueDate": "Issue Date",
+    "documents": "Documents",
+    "orderNumber": "Order No.",
+    "name": "Name",
+    "total": "Total",
+    "status": "Status",
+    "notDefined": "Not Defined",
+    "actions": "Actions",
+    "view": "View Assistances"
+  },
   "noData": "No data available",
   "error_generico": "An error occurred, please try again later",
   "error_desconocido": "An unexpected error occurred"

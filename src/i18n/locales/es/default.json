@@ -126,6 +126,17 @@
     "openMenu": "Abrir menú",
     "closeMenu": "Cerrar menú"
   },
+  "assistancesTable": {
+    "issueDate": "Fecha de Emisión",
+    "documents": "Documentos",
+    "orderNumber": "Pedido N°",
+    "name": "Nombre",
+    "total": "Total",
+    "status": "Estado",
+    "notDefined": "Sin Definir",
+    "actions": "Acciones",
+    "view": "Ver Asistencias"
+  },
   "noData": "No data available",
   "error_generico": "Ha ocurrido un error, inténtelo más tarde",
   "error_desconocido": "Ha ocurrido un error inesperado"
