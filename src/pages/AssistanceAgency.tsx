@@ -12,11 +12,27 @@ import { useI18nCache } from '../i18n/i18nCacheProvider';
 import { toast } from '../services/toast';
 import { getApiErrorMessage } from '../api/errors/ApiError';
 import { PATHS } from '../routes/Routes';
+import FilterByPassengerForm from '../components/Forms/FilterByPassengerForm';
+import {
+  EMPTY_PASSENGER_FILTERS,
+  toAssistanceFilterParams,
+  type PassengerFilterValues,
+} from '../components/Forms/passengerFilters';
+import { useCountryOptions } from '../hooks/useCountryOptions';
 
 function AssistanceAgency() {
   const [show, setShow] = useState(false);
   const { lang } = useI18nCache();
   const [currentPage, setCurrentPage] = useState(1);
+  const [showFilter, setShowFilter] = useState(false);
+  const [filters, setFilters] = useState<PassengerFilterValues>(EMPTY_PASSENGER_FILTERS);
+  const countryOptions = useCountryOptions();
+
+  const handleApplyFilter = (values: PassengerFilterValues) => {
+    setFilters(values);
+    setCurrentPage(1);
+    setShowFilter(false);
+  };
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -30,7 +46,7 @@ function AssistanceAgency() {
 
   const { data, isLoading, error } = useGetAsistenciasAgenteAgencia(
     lang,
-    { pagina: currentPage },
+    { pagina: currentPage, ...toAssistanceFilterParams(filters) },
     {
       // Evita que paginacion.cantidad_paginas caiga al fallback (?? 1) mientras
       // carga la página siguiente, lo que resetearía el paginador a la página 1.
@@ -55,6 +71,7 @@ function AssistanceAgency() {
                 <UIButton
                 variant="outline-primary"
                 icon=""
+                onClick={() => setShowFilter(true)}
                 >
                 {t('filter_by')}
                 </UIButton>
@@ -78,6 +95,24 @@ function AssistanceAgency() {
         width="380px"
       >
         <CreateAgentVertical onSubmit={handleSubmit} onCancel={handleClose} />
+        </Offcanvas>
+        <Offcanvas
+          show={showFilter}
+          onHide={() => setShowFilter(false)}
+          placement="end"
+          title={t('filter_by')}
+          canClose={true}
+          scroll={true}
+          backdrop="static"
+          width="380px"
+        >
+          <FilterByPassengerForm
+            defaultValues={filters}
+            countryOptions={countryOptions}
+            showVoucher
+            onSubmit={handleApplyFilter}
+            onCancel={() => setShowFilter(false)}
+          />
         </Offcanvas>
             <div className="card">
               <div className="card-body p-0">

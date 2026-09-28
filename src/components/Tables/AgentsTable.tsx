@@ -2,7 +2,7 @@ import { useCallback, useMemo } from "react";
 import { createAgentColumns } from "./AgentsDataTableConfig";
 import { useTranslation } from "react-i18next";
 import DataTable, { currency, type SortDir, type SortState } from "../DataTable";
-import type { GetIdiomaAgentes200DataItem } from "../../api/schemas";
+import type { GetAgentesAgencia200DataItem } from "../../api/schemas";
 
 // Define the PaginationProps interface to match the one in DataTable
 interface DataTablePaginationProps {
@@ -18,14 +18,14 @@ type AgentsTablePagination = Omit<DataTablePaginationProps, 'defaultPage'> & {
 };
 
 type AgentsTableProps = {
-  data: GetIdiomaAgentes200DataItem[];
+  data: GetAgentesAgencia200DataItem[];
   loading?: boolean;
   pagination?: AgentsTablePagination;
   sort?: SortState | null;
   onSortChange?: (sort: { id: string; dir: SortDir }) => void;
-  onEdit?: (row: GetIdiomaAgentes200DataItem) => void;
-  onToggle?: (row: GetIdiomaAgentes200DataItem) => void;
-  onDelete?: (row: GetIdiomaAgentes200DataItem) => void;
+  onEdit?: (row: GetAgentesAgencia200DataItem) => void;
+  onToggle?: (row: GetAgentesAgencia200DataItem) => void;
+  onDelete?: (row: GetAgentesAgencia200DataItem) => void;
 };
 
 export function AgentsTable({ 
@@ -40,15 +40,15 @@ export function AgentsTable({
 }: AgentsTableProps) {
   const { t } = useTranslation();
 
-  const handleEdit = useCallback((row: GetIdiomaAgentes200DataItem) => {
+  const handleEdit = useCallback((row: GetAgentesAgencia200DataItem) => {
     externalOnEdit?.(row);
   }, [externalOnEdit]);
 
-  const handleToggle = useCallback((row: GetIdiomaAgentes200DataItem) => {
+  const handleToggle = useCallback((row: GetAgentesAgencia200DataItem) => {
     externalOnToggle?.(row);
   }, [externalOnToggle]);
 
-  const handleDelete = useCallback((row: GetIdiomaAgentes200DataItem) => {
+  const handleDelete = useCallback((row: GetAgentesAgencia200DataItem) => {
     externalOnDelete?.(row);
   }, [externalOnDelete]);
 
@@ -64,7 +64,7 @@ export function AgentsTable({
   );
 
   return (
-    <DataTable<GetIdiomaAgentes200DataItem> 
+    <DataTable<GetAgentesAgencia200DataItem> 
       items={data} 
       columns={columns} 
       loading={loading}

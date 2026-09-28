@@ -9,18 +9,16 @@ import Offcanvas from '../components/Offcanvas';
 import { BenefitsExample } from '../examples/BenefitsExample';
 import { useTranslation } from 'react-i18next';
 import { currency } from '../components/DataTable';
-import { useI18nCache } from '../i18n/i18nCacheProvider';
 import type { GetAsistenciasAgenteAgencia200DataItemsItem } from '../api/schemas';
 
 export default function AssistanceDetail() {
     const [show, setShow] = useState(false);
     const { t } = useTranslation();
-    const { lang } = useI18nCache();
     const { id } = useParams<{ id: string }>();
     const location = useLocation();
 
     const item = (location.state as { item?: GetAsistenciasAgenteAgencia200DataItemsItem } | null)?.item;
-    const vouchers = item?.vouchers ?? [];
+    const pasajeros = item?.pasajeros ?? [];
 
     return (
 <div className="min-vh-100 bg-light">
@@ -88,7 +86,7 @@ export default function AssistanceDetail() {
             </h4>
 
             <p className="mb-1 text-gray small pb-1">
-              {currency(Number(item?.total ?? 0))} - {vouchers.length} {t("assistancesTable.documents")}
+              {currency(Number(item?.total ?? 0))} - {pasajeros.length} {t("assistancesTable.documents")}
             </p>
             <button
   type="button"
@@ -141,17 +139,16 @@ export default function AssistanceDetail() {
                 <div className="mt-4">
                     <h5 className="mb-4">{t("assistancesTable.documents")}</h5>
                     <div className="row">
-                        {vouchers.length === 0 ? (
+                        {pasajeros.length === 0 ? (
                           <div className="col-12 text-muted small">{t("noData")}</div>
                         ) : (
-                          vouchers.map((voucher, idx) => {
-                            const links = lang === 'en' ? voucher.links_tarjetas_en : voucher.links_tarjetas_es;
-                            const file = links?.[0]?.file;
+                          pasajeros.map((pasajero, idx) => {
+                            const file = pasajero.documentos?.tarjeta;
 
                             return (
-                              <div className="col-12 col-md-5" key={voucher.voucher ?? idx}>
+                              <div className="col-12 col-md-5" key={pasajero.id ?? idx}>
                                   <CustomerCard
-                                      name={voucher.nombre ?? ""}
+                                      name={`${pasajero.nombre ?? ""} ${pasajero.apellido ?? ""}`.trim()}
                                       gender=""
                                       idNumber=""
                                       amount={0}

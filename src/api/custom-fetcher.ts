@@ -1,5 +1,5 @@
 import { useAuthStore } from "../stores/useAuthStore";
-import { ApiError } from "./errors/ApiError";
+import { API_ERROR_CODE, ApiError } from "./errors/ApiError";
 import { readEnv } from "../../env";
 
 
@@ -116,7 +116,8 @@ export const customFetch = async <TResponse = unknown>(
       const ct = response.headers.get("content-type") || "";
       if (ct.includes("application/json")) {
         const j = await response.json();
-        errorText = j?.message ?? j?.error ?? j?.msg ?? JSON.stringify(j);
+        // ErrorRespuesta del contrato trae el texto para mostrar en `mensaje`
+        errorText = j?.mensaje ?? j?.message ?? j?.error ?? j?.msg ?? JSON.stringify(j);
         throw new ApiError(errorText, response.status, j);
       } else {
         errorText = await response.text();
@@ -145,9 +146,11 @@ export const customFetch = async <TResponse = unknown>(
   const msg = lower(result?.msg);
   const err = lower(result?.error);
   
+  // 5002 = userToken inválido o expirado; los textos quedan como respaldo
   const sessionInvalidOrExpired =
     !isPublic &&
-    (mensajesSesionInvalida.some(m => m.toLowerCase() === msg) ||
+    (result?.error_code === API_ERROR_CODE.INVALID_USER_TOKEN ||
+     mensajesSesionInvalida.some(m => m.toLowerCase() === msg) ||
      mensajesSesionInvalida.some(m => m.toLowerCase() === err));
 
   if (sessionInvalidOrExpired) {
@@ -157,6 +160,7 @@ export const customFetch = async <TResponse = unknown>(
 
   if (result?.ok === false) {
     const message =
+      result?.mensaje ??
       result?.data?.error ??
       result?.msg ??
       result?.message ??

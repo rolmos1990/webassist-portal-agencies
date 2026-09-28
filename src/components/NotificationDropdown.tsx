@@ -12,6 +12,9 @@ export type NotificationItem = {
 
 interface Props {
   items: NotificationItem[];
+  /** Total para el badge (p. ej. pendientes del servicio); por defecto items.length */
+  count?: number;
+  /** Si no se envía, no se muestra el botón "See all" */
   onOpenAll?: () => void;
   onItemClick?: (item: NotificationItem, index: number, e: React.MouseEvent<HTMLButtonElement>) => void;
   closeOnItemClick?: boolean; // default: true
@@ -19,11 +22,12 @@ interface Props {
 
 export default function NotificationsDropdown({
   items,
+  count: countProp,
   onOpenAll,
   onItemClick,
   closeOnItemClick = true,
 }: Props) {
-  const count = items.length;
+  const count = countProp ?? items.length;
   const [render, setRender] = useState(false);
   const [visible, setVisible] = useState(false);
   const rootRef = useRef<HTMLDivElement>(null);
@@ -105,7 +109,7 @@ export default function NotificationsDropdown({
             <h6 className="mb-0 fw-semibold">
               Notifications{" "}
               <span className="badge bg-secondary-subtle text-secondary align-middle">
-                {items.length}
+                {count}
               </span>
             </h6>
           </div>
@@ -139,6 +143,7 @@ export default function NotificationsDropdown({
           </div>
 
           {/* Footer */}
+          {onOpenAll && (
           <div className="border-top text-center">
             <button
               type="button"
@@ -151,6 +156,7 @@ export default function NotificationsDropdown({
               See all
             </button>
           </div>
+          )}
         </div>
       )}
     </div>

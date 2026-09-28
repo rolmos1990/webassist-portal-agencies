@@ -11,9 +11,10 @@ import {
   KPIComparisonSection,
   CommissionEarnedSection,
   // QuotePerformanceSection,
-  // AgentPerformanceSection,
-  // AgencyPerformanceSection
+  AgentPerformanceSection,
+  AgencyPerformanceSection
 } from '../components/dashboard';
+import type { AgentPerformanceData } from '../components/dashboard/AgentPerformanceSection';
 import type { KPIView } from '../components/dashboard/KPIComparisonSection';
 import type { TopSellingPlanItem } from '../components/dashboard/TopSellingPlansSection';
 import CreateAgenciesVertical from '../components/Forms/CreateAgenciesVertical';
@@ -64,13 +65,30 @@ const COMMISSION_FALLBACK_CHART_DATA: ChartData<'bar'> = {
   ],
 };
 
-function formatCurrency(value: number | undefined, fractionDigits = 2): string {
-  return (value ?? 0).toLocaleString('en-US', {
+// El contrato permite number | string en algunos montos (renovaciones, top_planes).
+function formatCurrency(value: number | string | undefined, fractionDigits = 2): string {
+  const amount = Number(value ?? 0);
+  return (Number.isFinite(amount) ? amount : 0).toLocaleString('en-US', {
     style: 'currency',
     currency: 'USD',
     minimumFractionDigits: fractionDigits,
     maximumFractionDigits: fractionDigits,
   });
+}
+
+// Cantidad de filas del gráfico de desempeño (igual que el diseño original)
+const AGENCY_PERFORMANCE_ROWS = 6;
+const AGENT_PERFORMANCE_ROWS = 5;
+
+function buildPerformanceItems<T extends { total_ventas?: number }>(
+  items: T[] | undefined,
+  rows: number,
+  toRow: (item: T) => Omit<AgentPerformanceData, 'value'>
+): AgentPerformanceData[] {
+  return [...(items ?? [])]
+    .sort((a, b) => (b.total_ventas ?? 0) - (a.total_ventas ?? 0))
+    .slice(0, rows)
+    .map((item) => ({ ...toRow(item), value: item.total_ventas ?? 0 }));
 }
 
 function buildTopSellingPlanItems(
@@ -225,6 +243,18 @@ function Dashboard() {
     avgCommissions: t('dashboard.commissionEarned.avgCommissions'),
   };
 
+  // Sólo llegan para el agente administrador de la agencia (para el resto vienen vacíos)
+  const agencyPerformanceItems = buildPerformanceItems(
+    data.agency_performance?.items,
+    AGENCY_PERFORMANCE_ROWS,
+    (a) => ({ name: a.nombre ?? '', subtitle: a.padre?.nombre ?? '' })
+  );
+  const agentPerformanceItems = buildPerformanceItems(
+    data.agent_performance?.items,
+    AGENT_PERFORMANCE_ROWS,
+    (a) => ({ name: a.nombre_completo ?? `${a.nombre ?? ''} ${a.apellido ?? ''}`.trim(), subtitle: a.codigo ?? '' })
+  );
+
   const commissionChartData =
     data.comisiones && data.comisiones.length > 0
       ? buildCommissionChartData(data.comisiones)
@@ -280,10 +310,34 @@ function Dashboard() {
         <CommissionEarnedSection labels={commissionEarnedLabels} chartData={commissionChartData} />
       </div>
       {/* <QuotePerformanceSection /> */}
-      {/* <div className="d-flex p-3 flex-column flex-xl-row gap-3">
-        <AgentPerformanceSection />
-        <AgencyPerformanceSection />
-      </div> */}
+      {(agentPerformanceItems.length > 0 || agencyPerformanceItems.length > 0) && (
+        <div className="d-flex p-3 flex-column flex-xl-row gap-3">
+          {agentPerformanceItems.length > 0 && (
+            <AgentPerformanceSection
+              labels={{
+                title: t('dashboard.agentPerformance.title'),
+                totalSales: t('dashboard.agentPerformance.totalSales'),
+                totalCommissions: t('dashboard.agentPerformance.totalCommissions'),
+              }}
+              totalSales={formatCurrency(data.agent_performance?.totales?.total_ventas, 0)}
+              totalCommissions={formatCurrency(data.agent_performance?.totales?.total_comisiones_a_mi_agencia, 0)}
+              items={agentPerformanceItems}
+            />
+          )}
+          {agencyPerformanceItems.length > 0 && (
+            <AgencyPerformanceSection
+              labels={{
+                title: t('dashboard.agencyPerformance.title'),
+                totalSales: t('dashboard.agencyPerformance.totalSales'),
+                totalCommissions: t('dashboard.agencyPerformance.totalCommissions'),
+              }}
+              totalSales={formatCurrency(data.agency_performance?.totales?.total_ventas, 0)}
+              totalCommissions={formatCurrency(data.agency_performance?.totales?.total_comisiones_a_mi_agencia, 0)}
+              items={agencyPerformanceItems}
+            />
+          )}
+        </div>
+      )}
       </div>
     </div>
   );

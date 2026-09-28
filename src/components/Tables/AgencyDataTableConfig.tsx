@@ -70,9 +70,10 @@ export function createAgencyColumns({
       label: t("agency.paymentType"),
       width: "12%",
       sortable: true,
-      accessor: (row) => row.tipo_pago,
+      // nombre puede venir como false cuando el backend no encuentra el tipo de pago
+      accessor: (row) => (typeof row.tipo_pago?.nombre === "string" ? row.tipo_pago.nombre : ""),
       align: "start",
-      render: (row) => row.tipo_pago || "—",
+      render: (row) => (typeof row.tipo_pago?.nombre === "string" && row.tipo_pago.nombre) || "—",
     },
     {
       id: "fecha_creacion",
@@ -87,9 +88,15 @@ export function createAgencyColumns({
       label: t("agency.status"),
       width: "8%",
       sortable: true,
-      accessor: (row) => row.status,
+      accessor: (row) => row.status?.nombre,
       align: "center",
-      render: (row) => <StatusBadge status={row.status ?? ""} theme={agencyStatusTheme} />,
+      render: (row) => (
+        <StatusBadge
+          status={String(row.status?.id ?? "")}
+          label={row.status?.nombre || undefined}
+          theme={agencyStatusTheme}
+        />
+      ),
     },
     {
       id: "actions",
@@ -106,10 +113,10 @@ export function createAgencyColumns({
           </RowActions.Item>
 
           <RowActions.Item<GetAgenciasAgencia200DataItem>
-            icon={row.status === "1" ? "bi-toggle-on" : "bi-toggle-off"}
+            icon={row.status?.id === 1 ? "bi-toggle-on" : "bi-toggle-off"}
             onClick={onToggle}
           >
-            {row.status === "1"
+            {row.status?.id === 1
               ? t("agency.markInactive")
               : t("agency.markActive")}
           </RowActions.Item>

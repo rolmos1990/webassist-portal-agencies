@@ -47,7 +47,16 @@
     "edit": "key_agents_edit",
     "delete": "key_agents_delete",
     "markActive": "key_agents_markActive",
-    "markInactive": "key_agents_markInactive"
+    "markInactive": "key_agents_markInactive",
+    "roleAgent": "key_agents_roleAgent",
+    "roleAgentAdmin": "key_agents_roleAgentAdmin",
+    "created": "key_agents_created",
+    "updated": "key_agents_updated",
+    "tempPasswordTitle": "key_agents_tempPasswordTitle",
+    "tempPasswordHint": "key_agents_tempPasswordHint",
+    "copy": "key_agents_copy",
+    "copied": "key_agents_copied",
+    "close": "key_agents_close"
   },
   "clients": {
     "id": "key_clients_id",
@@ -109,6 +118,16 @@
       "title": "key_dashboard_commissionEarned_title",
       "totalCommissions": "key_dashboard_commissionEarned_totalCommissions",
       "avgCommissions": "key_dashboard_commissionEarned_avgCommissions"
+    },
+    "agentPerformance": {
+      "title": "key_dashboard_agentPerformance_title",
+      "totalSales": "key_dashboard_agentPerformance_totalSales",
+      "totalCommissions": "key_dashboard_agentPerformance_totalCommissions"
+    },
+    "agencyPerformance": {
+      "title": "key_dashboard_agencyPerformance_title",
+      "totalSales": "key_dashboard_agencyPerformance_totalSales",
+      "totalCommissions": "key_dashboard_agencyPerformance_totalCommissions"
     }
   },
   "menu": {
@@ -182,9 +201,40 @@
   },
   "errors": {
     "sessionExpiredTitle": "key_errors_sessionExpiredTitle",
-    "sessionExpired": "key_errors_sessionExpired"
+    "sessionExpired": "key_errors_sessionExpired",
+    "fieldReason": {
+      "requerido": "key_errors_fieldReason_requerido",
+      "invalido": "key_errors_fieldReason_invalido",
+      "duplicado": "key_errors_fieldReason_duplicado",
+      "excede_comision_agencia": "key_errors_fieldReason_excede_comision_agencia",
+      "no_permitido": "key_errors_fieldReason_no_permitido"
+    }
   },
   "noData": "key_noData",
   "error_generico": "key_error_generico",
-  "error_desconocido": "key_error_desconocido"
+  "error_desconocido": "key_error_desconocido",
+  "feedback": {
+    "savedTitle": "key_feedback_savedTitle",
+    "saved": "key_feedback_saved"
+  },
+  "filters": {
+    "voucher": "key_filters_voucher",
+    "name": "key_filters_name",
+    "passport": "key_filters_passport",
+    "country": "key_filters_country",
+    "nationality": "key_filters_nationality",
+    "all": "key_filters_all",
+    "clear": "key_filters_clear"
+  },
+  "search": {
+    "searching": "key_search_searching",
+    "noResults": "key_search_noResults",
+    "types": {
+      "agente": "key_search_types_agente",
+      "agencia": "key_search_types_agencia",
+      "asistencia": "key_search_types_asistencia",
+      "cotizacion": "key_search_types_cotizacion",
+      "cliente": "key_search_types_cliente"
+    }
+  }
 }

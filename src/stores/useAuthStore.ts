@@ -1,15 +1,24 @@
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
 import { subscribeWithSelector } from "zustand/middleware";
+import type { UserLogin } from "../api/schemas";
 
-export type User = {
-  id: string;
-  email: string;
-  name?: string;
-  roles?: string[];
-  agencia: string;
-  idioma_user?: string | null;
-};
+export type User = UserLogin;
+
+/**
+ * Valida en runtime que el usuario tenga el formato del contrato actual
+ * (id numérico y agencia como objeto { id, nombre }).
+ */
+export function isSessionUser(value: unknown): value is User {
+  if (!value || typeof value !== "object") return false;
+  const { id, agencia } = value as { id?: unknown; agencia?: unknown };
+  return (
+    typeof id === "number" &&
+    !!agencia &&
+    typeof agencia === "object" &&
+    typeof (agencia as { id?: unknown }).id === "number"
+  );
+}
 
 type AuthState = {
   userToken: string | null;
@@ -124,7 +133,12 @@ export const useAuthStore = create<AuthState>()(
 );
 
 export function bootstrapAuthWatcher() {
-  const { userToken, tokenExpiresAt, _startExpiryWatcher, isAuthenticated } = useAuthStore.getState();
+  const { userToken, tokenExpiresAt, _startExpiryWatcher, isAuthenticated, user, logout } = useAuthStore.getState();
+  // Sesión guardada con un formato que no corresponde al contrato actual → pedir login de nuevo
+  if (userToken && !isSessionUser(user)) {
+    logout();
+    return;
+  }
   if (userToken && tokenExpiresAt) _startExpiryWatcher();
   // Alinea flag tras recarga
   if (!!userToken !== isAuthenticated) {

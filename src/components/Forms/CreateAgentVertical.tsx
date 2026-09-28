@@ -1,50 +1,78 @@
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
+import { useTranslation } from 'react-i18next';
 import InputText from '../Forms/Inputs/InputText';
 import InputEmail from '../Forms/Inputs/InputEmail';
 import RadioGroup from '../Forms/Inputs/RadioGroup';
 import { UIButton } from '../Button';
+import { applyApiFieldErrors } from '../../api/errors/applyApiFieldErrors';
 
-interface CreateAgentFormData {
+export interface CreateAgentFormData {
   firstName: string;
   lastName: string;
   email: string;
-  phone: string;
-  location: string;
+  /** Porcentaje; vacío = el servicio asume 0 */
   commission: string;
   role: 'regular' | 'admin';
 }
 
 const schema = yup.object({
-  firstName: yup.string().required('First name is required'),
-  lastName: yup.string().required('Last name is required'),
-  email: yup.string().email('Invalid email').required('Email is required'),
-  phone: yup.string().required('Phone number is required'),
-  location: yup.string().required('Location is required'),
-  commission: yup.string().required('Commission is required'),
+  firstName: yup.string().trim().required('First name is required'),
+  lastName: yup.string().trim().required('Last name is required'),
+  email: yup.string().trim().email('Invalid email').required('Email is required'),
+  commission: yup
+    .string()
+    .trim()
+    .defined()
+    .matches(/^(\d+(\.\d+)?)?$/, 'Invalid commission'),
   role: yup.mixed<'regular' | 'admin'>().oneOf(['regular', 'admin']).required('Role is required'),
 });
 
+// campo de la API -> campo del formulario
+const API_FIELD_MAP = {
+  nombre: 'firstName',
+  apellido: 'lastName',
+  email: 'email',
+  comision: 'commission',
+  rol: 'role',
+} as const;
+
 interface Props {
-  onSubmit: (data: CreateAgentFormData) => void;
+  initialValues?: Partial<CreateAgentFormData>;
+  /** Si rechaza, el formulario se mantiene y muestra los errores por campo del servicio */
+  onSubmit: (data: CreateAgentFormData) => Promise<void> | void;
   onCancel: () => void;
 }
 
-export default function CreateAgentVertical({ onSubmit, onCancel }: Props) {
+const DEFAULT_VALUES: CreateAgentFormData = {
+  firstName: '',
+  lastName: '',
+  email: '',
+  commission: '',
+  role: 'regular',
+};
+
+export default function CreateAgentVertical({ initialValues, onSubmit, onCancel }: Props) {
+  const { t } = useTranslation();
   const {
     register,
     handleSubmit,
     reset,
+    setError,
     formState: { errors, isSubmitting },
   } = useForm<CreateAgentFormData>({
     resolver: yupResolver(schema),
-    defaultValues: { role: 'regular' },
+    defaultValues: { ...DEFAULT_VALUES, ...initialValues },
   });
 
-  const handleFormSubmit = (data: CreateAgentFormData) => {
-    onSubmit(data);
-    reset();
+  const handleFormSubmit = async (data: CreateAgentFormData) => {
+    try {
+      await onSubmit(data);
+      reset();
+    } catch (e) {
+      applyApiFieldErrors(e, setError, API_FIELD_MAP, t);
+    }
   };
 
   const handleCancel = () => {
@@ -86,27 +114,9 @@ export default function CreateAgentVertical({ onSubmit, onCancel }: Props) {
       />
 
       <InputText
-        name="phone"
-        label="Phone"
-        placeholder="+50766712785"
-        register={register}
-        mainClassName="mb-3"
-        error={errors.phone}
-      />
-
-      <InputText
-        name="location"
-        label="Location"
-        placeholder="Eg. La Palma, Panama"
-        register={register}
-        mainClassName="mb-3"
-        error={errors.location}
-      />
-
-      <InputText
         name="commission"
         label="Commission"
-        placeholder="Eg. 10%"
+        placeholder="Eg. 10"
         register={register}
         mainClassName="mb-3"
         error={errors.commission}

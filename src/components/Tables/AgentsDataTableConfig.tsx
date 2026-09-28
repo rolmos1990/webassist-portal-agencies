@@ -3,14 +3,15 @@ import { type ColumnDef } from "../DataTable";
 import RowActions from "../RowActions";
 import { StatusBadge } from "../StatusBadge";
 import type { StatusTheme } from "../StatusBadge";
-import type { GetIdiomaAgentes200DataItem } from "../../api/schemas";
+import type { GetAgentesAgencia200DataItem } from "../../api/schemas";
+import { parseSecurityRole, SecurityRole } from "../../stores/SecurityRole";
 
 type CreateColumnsDeps = {
   currency: (n: number) => string;
   t: (key: string) => string | React.ReactNode;
-  onEdit: (row: GetIdiomaAgentes200DataItem) => void;
-  onToggle: (row: GetIdiomaAgentes200DataItem) => void;
-  onDelete: (row: GetIdiomaAgentes200DataItem) => void;
+  onEdit: (row: GetAgentesAgencia200DataItem) => void;
+  onToggle: (row: GetAgentesAgencia200DataItem) => void;
+  onDelete: (row: GetAgentesAgencia200DataItem) => void;
 };
 
 export function createAgentColumns({
@@ -19,11 +20,18 @@ export function createAgentColumns({
   onEdit,
   onToggle,
   onDelete,
-}: CreateColumnsDeps): ColumnDef<GetIdiomaAgentes200DataItem>[] {
+}: CreateColumnsDeps): ColumnDef<GetAgentesAgencia200DataItem>[] {
   const agentStatusTheme: StatusTheme = {
     "1": { tone: "success", label: t("status.active") },
     "0": { tone: "secondary", label: t("status.inactive") },
     default: { tone: "secondary" },
+  };
+
+  const roleLabel = (row: GetAgentesAgencia200DataItem) => {
+    const role = parseSecurityRole(row.roles);
+    if (role === SecurityRole.AGENT_ADMIN) return t("agents.roleAgentAdmin");
+    if (role === SecurityRole.AGENT) return t("agents.roleAgent");
+    return "—";
   };
 
   return [
@@ -65,8 +73,9 @@ export function createAgentColumns({
       label: t("agents.role"),
       width: "12%",
       sortable: true,
-      accessor: (row) => row.rol,
+      accessor: (row) => parseSecurityRole(row.roles),
       align: "start",
+      render: (row) => roleLabel(row),
     },
     {
       id: "comision",
@@ -82,9 +91,15 @@ export function createAgentColumns({
       label: t("agents.status"),
       width: "5%",
       sortable: true,
-      accessor: (row) => row.status,
+      accessor: (row) => row.status?.nombre,
       align: "center",
-      render: (row) => <StatusBadge status={row.status ?? ""} theme={agentStatusTheme} />,
+      render: (row) => (
+        <StatusBadge
+          status={String(row.status?.id ?? "")}
+          label={row.status?.nombre || undefined}
+          theme={agentStatusTheme}
+        />
+      ),
     },
     {
       id: "actions",
@@ -93,25 +108,25 @@ export function createAgentColumns({
       align: "end",
       render: (row) => (
         <RowActions context={row}>
-          <RowActions.Item<GetIdiomaAgentes200DataItem>
+          <RowActions.Item<GetAgentesAgencia200DataItem>
             icon="bi-pencil"
             onClick={onEdit}
           >
             {t("agents.edit")}
           </RowActions.Item>
 
-          <RowActions.Item<GetIdiomaAgentes200DataItem>
-            icon={row.status === "1" ? "bi-toggle-on" : "bi-toggle-off"}
+          <RowActions.Item<GetAgentesAgencia200DataItem>
+            icon={row.status?.id === 1 ? "bi-toggle-on" : "bi-toggle-off"}
             onClick={onToggle}
           >
-            {row.status === "1"
+            {row.status?.id === 1
               ? t("agents.markInactive")
               : t("agents.markActive")}
           </RowActions.Item>
 
           <RowActions.Divider />
 
-          <RowActions.Item<GetIdiomaAgentes200DataItem>
+          <RowActions.Item<GetAgentesAgencia200DataItem>
             icon="bi-trash3"
             danger
             onClick={onDelete}

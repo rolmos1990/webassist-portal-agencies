@@ -5,29 +5,35 @@ import * as yup from 'yup';
 import { RowView } from '../RowView';
 import InputSelect, { type SelectOption } from './Inputs/InputSelect';
 import InputWithAddon from './Inputs/InputWithAddon';
-import { useState } from 'react';
+import InputText from './Inputs/InputText';
+import { useEffect, useState } from 'react';
 import { UIButton } from '../Button';
 import { useTranslation } from 'react-i18next';
+import { applyApiFieldErrors } from '../../api/errors/applyApiFieldErrors';
 
 export interface SettingsGeneralFormData {
   language: string;
-  tipoPago?: string;
-  ultimoLogin?: string;
-  whatsapp?: string;
+  tipoPago: string;
+  ultimoLogin: string;
+  whatsapp: string;
   comision: number;
 }
 
 const schema = yup.object({
   language: yup.string().required('Language is required'),
-  tipoPago: yup.string().optional(),
-  ultimoLogin: yup.string().optional(),
-  whatsapp: yup.string().optional(),
+  tipoPago: yup.string().defined(),
+  ultimoLogin: yup.string().defined(),
+  whatsapp: yup.string().trim().defined().matches(/^\+?[0-9\s-]*$/, 'Invalid phone'),
   comision: yup.number().required('Commission is required')
 });
 
+// campo de la API -> campo del formulario
+const API_FIELD_MAP = { whatsapp: 'whatsapp', idioma: 'language' } as const;
+
 interface Props {
   initialValues?: SettingsGeneralFormData;
-  onSubmit: (data: SettingsGeneralFormData) => void;
+  /** Si rechaza, el formulario sigue en edición y muestra los errores por campo del servicio */
+  onSubmit: (data: SettingsGeneralFormData) => Promise<void> | void;
   onCancel: () => void;
   isEditable: boolean;
 }
@@ -53,20 +59,30 @@ export default function SettingsGeneralForm({ initialValues, onSubmit, onCancel 
     handleSubmit,
     reset,
     control,
-    formState: { errors },
+    setError,
+    formState: { errors, isSubmitting },
   } = useForm<SettingsGeneralFormData>({
     resolver: yupResolver(schema),
     defaultValues: initialValues,
   });
+
+  // Los datos llegan/actualizan desde el servicio después del primer render
+  useEffect(() => {
+    reset(initialValues);
+  }, [initialValues, reset]);
 
   const watched = useWatch({ control });
 
   const [editable, setEditable] = useState(false);
 
 
-  const handleFormSubmit = (data: SettingsGeneralFormData) => {
-    onSubmit(data);
-    reset();
+  const handleFormSubmit = async (data: SettingsGeneralFormData) => {
+    try {
+      await onSubmit(data);
+      setEditable(false);
+    } catch (e) {
+      applyApiFieldErrors(e, setError, API_FIELD_MAP, t);
+    }
   };
 
   const handleCancel = () => {
@@ -124,12 +140,23 @@ export default function SettingsGeneralForm({ initialValues, onSubmit, onCancel 
         editNode={<span>{watched.ultimoLogin || '—'}</span>}
       />
 
-      {/* WhatsApp (read-only) */}
+      {/* WhatsApp */}
       <RowView
         label="WhatsApp"
-        edit={false}
+        edit={editable}
         show={<span>{watched.whatsapp || '—'}</span>}
-        editNode={<span>{watched.whatsapp || '—'}</span>}
+        editNode={
+          <InputText
+            label=""
+            name="whatsapp"
+            type="tel"
+            placeholder="+50767891234"
+            register={register}
+            error={errors.whatsapp}
+            mainClassName="mb-0"
+            className="rounded-pill"
+          />
+        }
       />
 
       {/* Commission */}
@@ -179,6 +206,7 @@ export default function SettingsGeneralForm({ initialValues, onSubmit, onCancel 
               <UIButton
                 variant="primary"
                 type="submit"
+                disabled={isSubmitting}
               >
                 {t('guardar')}
               </UIButton>

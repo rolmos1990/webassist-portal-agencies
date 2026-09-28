@@ -47,7 +47,16 @@
       "edit":"Edit",
       "delete":"Delete",
       "markActive":"Mark as Active",
-      "markInactive":"Mark as Inactive"
+      "markInactive":"Mark as Inactive",
+      "roleAgent":"Agent",
+      "roleAgentAdmin":"Agent Administrator",
+    "created": "Agent created",
+    "updated": "Agent updated",
+    "tempPasswordTitle": "Temporary password",
+    "tempPasswordHint": "Give it to the agent: it is shown only this time and must be changed on first sign in.",
+    "copy": "Copy",
+    "copied": "Password copied",
+    "close": "Close"
   },
   "clients":{
       "id":"ID",
@@ -109,6 +118,16 @@
       "title": "Total Commission Earned",
       "totalCommissions": "Total commissions",
       "avgCommissions": "Avg. Commissions paid"
+    },
+    "agentPerformance": {
+      "title": "Agent Performance",
+      "totalSales": "Total sales",
+      "totalCommissions": "Commissions to my agency"
+    },
+    "agencyPerformance": {
+      "title": "Agency Performance",
+      "totalSales": "Total sales",
+      "totalCommissions": "Commissions to my agency"
     }
   },
   "menu": {
@@ -182,9 +201,40 @@
   },
   "errors": {
     "sessionExpiredTitle": "Session Expired",
-    "sessionExpired": "Your session has expired. Please sign in again."
+    "sessionExpired": "Your session has expired. Please sign in again.",
+    "fieldReason": {
+      "requerido": "This field is required",
+      "invalido": "The value is not valid",
+      "duplicado": "It is already registered",
+      "excede_comision_agencia": "Exceeds the agency commission",
+      "no_permitido": "This field cannot be modified"
+    }
   },
   "noData": "No data available",
   "error_generico": "An error occurred, please try again later",
-  "error_desconocido": "An unexpected error occurred"
+  "error_desconocido": "An unexpected error occurred",
+  "feedback": {
+    "savedTitle": "Changes saved",
+    "saved": "The information was updated successfully."
+  },
+  "filters": {
+    "voucher": "Voucher",
+    "name": "Passenger name",
+    "passport": "Passport",
+    "country": "Departure or destination country",
+    "nationality": "Nationality",
+    "all": "All",
+    "clear": "Clear"
+  },
+  "search": {
+    "searching": "Searching…",
+    "noResults": "No results",
+    "types": {
+      "agente": "Agents",
+      "agencia": "Agencies",
+      "asistencia": "Assistances",
+      "cotizacion": "Quotes",
+      "cliente": "Clients"
+    }
+  }
 }

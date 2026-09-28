@@ -6,10 +6,20 @@ import SettingsAgencyForm, { type SettingsAgencyFormData } from "../components/F
 import { t } from "i18next";
 import { useI18nCache } from "../i18n/i18nCacheProvider";
 import { useEffect, useState } from "react";
-import { getPerfilAgente, getPerfilAgencia, useActualizarIdiomaAgente } from "../api/generated";
+import {
+  getPerfilAgente,
+  getPerfilAgencia,
+  useActualizarIdiomaAgente,
+  useActualizarPerfilAgencia,
+  useActualizarPerfilAgente,
+} from "../api/generated";
+import { useCountryOptions } from "../hooks/useCountryOptions";
+import type { AgenciaItem, AgenteItem } from "../api/schemas";
 import { toast } from "../services/toast";
 import { format } from "date-fns";
 import { getApiErrorMessage } from "../api/errors/ApiError";
+import { useSecurityStore } from "../stores/securityStore";
+import { SecurityRole } from "../stores/SecurityRole";
 
 const formatLastLogin = (unixSeconds?: string): string => {
   if (!unixSeconds) return "";
@@ -18,11 +28,40 @@ const formatLastLogin = (unixSeconds?: string): string => {
   return format(new Date(ms), "MMM dd, yyyy hh:mm a");
 };
 
+const toAccountProfile = (data?: AgenteItem): SettingsAccountFormData => ({
+  email: data?.email ?? "",
+  nombre: data?.nombre ?? "",
+  apellido: data?.apellido ?? "",
+  phone: data?.telefono ?? "",
+  pais: data?.pais?.id != null ? String(data.pais.id) : "",
+  correoAlternativo: data?.correo_renovaciones_alternativo ?? "",
+  emailNotifications: !!data?.recibir_correos_renovaciones,
+});
+
+const toAgencyProfile = (data?: AgenciaItem): SettingsAgencyFormData => ({
+  nombrePadre: data?.padre?.nombre ?? "",
+  nombre: data?.nombre ?? "",
+  razonSocial: data?.razon_social ?? "",
+  ruc: data?.ruc ?? "",
+  direccion: data?.direccion ?? "",
+  telefono: data?.telefono ?? "",
+  email: data?.email ?? "",
+  contacto: data?.contacto ?? "",
+  emailSecundario: data?.email_secundario ?? "",
+  sitioWeb: data?.sitio_web ?? "",
+  enviarCopiaVouchers: !!data?.enviar_copia_vouchers,
+});
+
 export default function Settings() {
 
     const [loading, setLoading] = useState(false);
     const { lang, setLang } = useI18nCache();
     const { mutateAsync: actualizarIdioma } = useActualizarIdiomaAgente();
+    const { mutateAsync: actualizarPerfilAgente } = useActualizarPerfilAgente();
+    const { mutateAsync: actualizarPerfilAgencia } = useActualizarPerfilAgencia();
+    const isAgentAdmin = useSecurityStore((s) => s.hasRole(SecurityRole.AGENT_ADMIN));
+
+    const countryOptions = useCountryOptions();
 
     const [generalProfile, setGeneralProfile] = useState<SettingsGeneralFormData>({
       language: "en",
@@ -32,38 +71,72 @@ export default function Settings() {
       comision: 0
     });
 
-    const [accountProfile, setAccountProfile] = useState<SettingsAccountFormData>({
-      email: "",
-      phone: "",
-      emailNotifications: false,
-    });
+    const [accountProfile, setAccountProfile] = useState<SettingsAccountFormData>(toAccountProfile());
 
-    const [agencyProfile, setAgencyProfile] = useState<SettingsAgencyFormData>({
-      nombrePadre: "",
-      nombre: "",
-      razonSocial: "",
-      ruc: "",
-      telefono: "",
-      email: "",
-      direccion: "",
-    });
+    const [agencyProfile, setAgencyProfile] = useState<SettingsAgencyFormData>(toAgencyProfile());
+
+  const notifySaved = () => toast.success(t("feedback.savedTitle"), t("feedback.saved"));
+
+  // Muestra el error y lo propaga para que el formulario marque los campos (errores por campo)
+  const failSave = (e: unknown): never => {
+    toast.error("Error", getApiErrorMessage(e, t('error_generico')));
+    throw e;
+  };
 
   const onGeneralSubmit = async (data: SettingsGeneralFormData) => {
-    if (data.language === lang) return;
     try {
-      await actualizarIdioma({ idioma: lang, data: { idioma: data.language } });
-      setLang(data.language);
+      if (data.whatsapp !== generalProfile.whatsapp) {
+        const res = await actualizarPerfilAgente({ idioma: lang, data: { whatsapp: data.whatsapp } });
+        setGeneralProfile((prev) => ({ ...prev, whatsapp: res.data?.whatsapp ?? data.whatsapp }));
+      }
+      if (data.language !== lang) {
+        await actualizarIdioma({ idioma: lang, data: { idioma: data.language } });
+        setLang(data.language);
+      }
+      notifySaved();
     } catch (e) {
-      toast.error("Error", getApiErrorMessage(e, t('error_generico')));
+      failSave(e);
     }
   };
 
-  const onAccountSubmit = (data: SettingsAccountFormData) => {
-    console.log(data);
+  const onAccountSubmit = async (data: SettingsAccountFormData) => {
+    try {
+      const res = await actualizarPerfilAgente({
+        idioma: lang,
+        data: {
+          nombre: data.nombre,
+          apellido: data.apellido,
+          telefono: data.phone,
+          pais: data.pais ? Number(data.pais) : undefined,
+          correo_renovaciones_alternativo: data.correoAlternativo,
+          recibir_correos_renovaciones: data.emailNotifications,
+        },
+      });
+      setAccountProfile(toAccountProfile(res.data));
+      notifySaved();
+    } catch (e) {
+      failSave(e);
+    }
   };
 
-  const onAgencySubmit = (data: SettingsAgencyFormData) => {
-    console.log(data);
+  const onAgencySubmit = async (data: SettingsAgencyFormData) => {
+    try {
+      const res = await actualizarPerfilAgencia({
+        idioma: lang,
+        data: {
+          telefono: data.telefono,
+          contacto: data.contacto,
+          email: data.email,
+          email_secundario: data.emailSecundario,
+          sitio_web: data.sitioWeb,
+          enviar_copia_vouchers: data.enviarCopiaVouchers,
+        },
+      });
+      setAgencyProfile(toAgencyProfile(res.data));
+      notifySaved();
+    } catch (e) {
+      failSave(e);
+    }
   };
 
   const onGetProfile = async () => {
@@ -75,17 +148,13 @@ export default function Settings() {
 
         setGeneralProfile({
           language: data?.idioma_user ?? "en",
-          tipoPago: data?.tipo_pago ?? "",
+          tipoPago: data?.tipo_pago?.nombre ?? "",
           ultimoLogin: formatLastLogin(data?.ultimo_login),
           whatsapp: data?.whatsapp ?? "",
           comision: Number(data?.comision ?? 0)
         });
 
-        setAccountProfile({
-          email: data?.email ?? "",
-          phone: data?.telefono ?? "",
-          emailNotifications: !!data?.recibir_correos_renovaciones,
-        });
+        setAccountProfile(toAccountProfile(data));
       }
       } catch (e) {
       toast.error("Error", getApiErrorMessage(e, t('error_generico')));
@@ -98,17 +167,7 @@ export default function Settings() {
       try {
       const res = await getPerfilAgencia(lang);
       if(res.ok){
-        const data = res.data;
-
-        setAgencyProfile({
-          nombrePadre: data?.nombre_padre ?? "",
-          nombre: data?.nombre ?? "",
-          razonSocial: data?.razon_social ?? "",
-          ruc: data?.ruc ?? "",
-          telefono: data?.telefono ?? "",
-          email: data?.email ?? "",
-          direccion: data?.direccion ?? "",
-        });
+        setAgencyProfile(toAgencyProfile(res.data));
       }
       } catch (e) {
       toast.error("Error", getApiErrorMessage(e, t('error_generico')));
@@ -193,6 +252,7 @@ export default function Settings() {
                                 <div className="my-4">
                                     <SettingsAccountForm
                                     initialValues={accountProfile}
+                                    countryOptions={countryOptions}
                                     onSubmit={onAccountSubmit}
                                     onCancel={() => {}}
                                     isEditable={false}
@@ -209,6 +269,7 @@ export default function Settings() {
                                 onSubmit={onAgencySubmit}
                                 onCancel={() => {}}
                                 isEditable={false}
+                                canEdit={isAgentAdmin}
                                 />
                             )
                         }

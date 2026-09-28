@@ -41,9 +41,12 @@ export function createAgencyAssistanceColumns({
       id: "nombre",
       label: t("assistancesTable.name"),
       width: "18%",
-      // No siempre el primer voucher trae el nombre: se toma el primero
+      // No siempre el primer pasajero trae el nombre: se toma el primero
       // del arreglo que efectivamente tenga un nombre no vacío.
-      accessor: (row) => row.vouchers?.find((v) => v.nombre)?.nombre,
+      accessor: (row) => {
+        const pasajero = row.pasajeros?.find((p) => p.nombre);
+        return pasajero ? `${pasajero.nombre ?? ""} ${pasajero.apellido ?? ""}`.trim() : undefined;
+      },
       align: "start",
     },
     {

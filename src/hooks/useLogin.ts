@@ -1,7 +1,7 @@
 import { useCallback, useMemo } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { usePostAgenteLogin } from "../api/generated";
-import { useAuthStore } from "../stores/useAuthStore";
+import { isSessionUser, useAuthStore } from "../stores/useAuthStore";
 import { ApiError, getApiErrorMessage } from "../api/errors/ApiError";
 import { toast } from "../services/toast";
 import { useTranslation } from "react-i18next";
@@ -40,13 +40,10 @@ export function useLogin() {
         const exp = res?.exp ?? res?.expires_in;
         const expiresAt = computeExpiresAt(exp);
 
-        const user =
-          res?.data ?? {
-            id: String(res?.id ?? email),
-            email,
-            name: res?.name,
-            roles: res?.roles,
-          };
+        const user = res?.data;
+        if (!token || !isSessionUser(user)) {
+          throw new Error("Respuesta de login con formato no reconocido");
+        }
 
         login({ userToken: token, expiresAt, user });
 

@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useMemo } from "react";
+import { useQueryClient } from "@tanstack/react-query";
 import logo from "../assets/images/logo.png";
 import iconRounded from "../assets/images/icons/rounded-icon.svg";
-import Search from "./common/Search";
+import GlobalSearch from "./common/GlobalSearch";
 import NotificationsDropdown from "./NotificationDropdown";
 import type { NotificationItem } from "./NotificationDropdown";
 import Dropdown, { DropdownDivider, DropdownItem } from "./Dropdown";
@@ -10,7 +11,14 @@ import { useTranslation } from "react-i18next";
 import { PATHS } from "../routes/Routes";
 import { useNavigate } from "react-router-dom";
 import { useMobileMenuStore } from "../stores/mobileMenuStore";
-import { usePostLogout } from "../api/generated";
+import {
+  getGetNotificacionesQueryKey,
+  useGetNotificaciones,
+  useMarcarNotificacionLeida,
+  usePostLogout,
+} from "../api/generated";
+import { toast } from "../services/toast";
+import { getApiErrorMessage } from "../api/errors/ApiError";
 import { useI18nCache } from "../i18n/i18nCacheProvider";
 
 function Header() {
@@ -34,11 +42,33 @@ function Header() {
     }
   };
 
-  const [notifications, setNotifications] = useState<NotificationItem[]>([
-    //{ id: 1, title: "Target Achieved", time: "2 mins ago", message: "Congrats! You’ve hit 80%.", unread: true },
-    //{ id: 2, title: "Agent Joined", time: "1 hr ago", message: "Sarah Parker joined your team.", unread: true },
-    //{ id: 3, title: "New Program Added", time: "3 hr ago", message: "“Premium Travel Care” is now available." },
-  ]);
+  // Por defecto el servicio devuelve sólo las pendientes; `pendientes` trae siempre el total
+  const queryClient = useQueryClient();
+  const { data: notificacionesRes } = useGetNotificaciones(lang);
+  const { mutateAsync: marcarLeida } = useMarcarNotificacionLeida();
+
+  const notifications = useMemo<NotificationItem[]>(
+    () =>
+      (notificacionesRes?.data?.items ?? [])
+        .filter((n) => n.id != null)
+        .map((n) => ({
+          id: n.id as number,
+          title: n.texto ?? "",
+          time: n.fecha ?? "",
+          unread: !n.leida,
+        })),
+    [notificacionesRes]
+  );
+
+  const handleNotificationClick = async (item: NotificationItem) => {
+    if (!item.unread) return;
+    try {
+      await marcarLeida({ idioma: lang, id: Number(item.id) });
+      await queryClient.invalidateQueries({ queryKey: getGetNotificacionesQueryKey(lang) });
+    } catch (e) {
+      toast.error("Error", getApiErrorMessage(e, t('error_generico')));
+    }
+  };
 
 
   return (
@@ -58,7 +88,7 @@ function Header() {
       </a>
 
       <div className="w-100 d-none d-lg-flex justify-content-center align-items-center ms-2 ms-md-0">
-        <Search />
+        <GlobalSearch />
       </div>
 
       <div
@@ -70,13 +100,8 @@ function Header() {
         {/* 🔔 Notificaciones */}
         <NotificationsDropdown
           items={notifications}
-          onItemClick={(item) => {
-            navigate(PATHS.agencies.detail(item.id));
-            setNotifications((prev) =>
-              prev.map((n) => (n.id === item.id ? { ...n, unread: false } : n))
-            );
-          }}
-          onOpenAll={() => navigate(PATHS.agencies.list())}
+          count={notificacionesRes?.data?.pendientes ?? notifications.length}
+          onItemClick={handleNotificationClick}
         />
 
         <Dropdown

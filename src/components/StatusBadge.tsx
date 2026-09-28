@@ -21,7 +21,10 @@ export type StatusTheme = Record<string, ThemeEntry> & {
 };
 
 export interface StatusBadgeProps {
+  /** clave con la que se resuelve el theme (color), p. ej. el id del status */
   status: string;
+  /** texto a mostrar; si viene, tiene prioridad sobre el label del theme */
+  label?: React.ReactNode;
   theme?: StatusTheme;
   variant?: Variant;
   size?: "sm" | "md";
@@ -98,6 +101,7 @@ function classesFor(tone: Tone, variant: Variant) {
 
 export const StatusBadge: React.FC<StatusBadgeProps> = ({
   status,
+  label: labelProp,
   theme,
   variant = "soft",
   size = "md",
@@ -108,7 +112,8 @@ export const StatusBadge: React.FC<StatusBadgeProps> = ({
   const base = classesFor(cfg.tone, variant);
 
   const label =
-    typeof cfg.label === "function" ? cfg.label(status) : (cfg.label ?? status);
+    labelProp ??
+    (typeof cfg.label === "function" ? cfg.label(status) : (cfg.label ?? status));
 
   const dotSize = size === "sm" ? 6 : 8;
   const pad = size === "sm" ? "py-1 px-2" : "py-1 px-3";

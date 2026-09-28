@@ -47,7 +47,16 @@
     "edit":"Editar",
     "delete":"Eliminar",
     "markActive":"Marcar como Activo",
-    "markInactive":"Marcar como Inactivo"
+    "markInactive":"Marcar como Inactivo",
+    "roleAgent":"Agente",
+    "roleAgentAdmin":"Agente Administrador",
+    "created": "Agente creado",
+    "updated": "Agente actualizado",
+    "tempPasswordTitle": "Contraseña temporal",
+    "tempPasswordHint": "Entrégala al agente: sólo se muestra esta vez y deberá cambiarla en su primer ingreso.",
+    "copy": "Copiar",
+    "copied": "Contraseña copiada",
+    "close": "Cerrar"
 },
   "clients":{
     "id":"ID",
@@ -109,6 +118,16 @@
       "title": "Total de Comisiones Ganadas",
       "totalCommissions": "Total de comisiones",
       "avgCommissions": "Promedio de comisiones pagadas"
+    },
+    "agentPerformance": {
+      "title": "Desempeño de Agentes",
+      "totalSales": "Ventas totales",
+      "totalCommissions": "Comisiones para mi agencia"
+    },
+    "agencyPerformance": {
+      "title": "Desempeño de Agencias",
+      "totalSales": "Ventas totales",
+      "totalCommissions": "Comisiones para mi agencia"
     }
   },
   "menu": {
@@ -182,9 +201,40 @@
   },
   "errors": {
     "sessionExpiredTitle": "Sesión finalizada",
-    "sessionExpired": "Tu sesión ha expirado. Por favor, inicia sesión nuevamente."
+    "sessionExpired": "Tu sesión ha expirado. Por favor, inicia sesión nuevamente.",
+    "fieldReason": {
+      "requerido": "Este campo es obligatorio",
+      "invalido": "El valor no es válido",
+      "duplicado": "Ya está registrado",
+      "excede_comision_agencia": "Supera la comisión de la agencia",
+      "no_permitido": "No está permitido modificar este campo"
+    }
   },
   "noData": "No data available",
   "error_generico": "Ha ocurrido un error, inténtelo más tarde",
-  "error_desconocido": "Ha ocurrido un error inesperado"
+  "error_desconocido": "Ha ocurrido un error inesperado",
+  "feedback": {
+    "savedTitle": "Cambios guardados",
+    "saved": "La información se actualizó correctamente."
+  },
+  "filters": {
+    "voucher": "Voucher",
+    "name": "Nombre del pasajero",
+    "passport": "Pasaporte",
+    "country": "País de salida o destino",
+    "nationality": "Nacionalidad",
+    "all": "Todos",
+    "clear": "Limpiar"
+  },
+  "search": {
+    "searching": "Buscando…",
+    "noResults": "Sin resultados",
+    "types": {
+      "agente": "Agentes",
+      "agencia": "Agencias",
+      "asistencia": "Asistencias",
+      "cotizacion": "Cotizaciones",
+      "cliente": "Clientes"
+    }
+  }
 }
