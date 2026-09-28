@@ -172,7 +172,7 @@ export default function AssistanceDetail({ kind = 'assistance' }: Props) {
         title={t("assistanceDetail.benefits")}
         canClose={true}
         scroll={true}
-        backdrop="static"      // true | false | 'static'
+        backdrop={true}        // click/tap fuera del panel lo cierra (panel de solo lectura)
         width="380px"
       >
         <div className="container-fluid">
