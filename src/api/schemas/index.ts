@@ -3,33 +3,112 @@
  * Do not edit manually.
  * WAC API
  * Api para uso interno WAC.
- * OpenAPI spec version: 1.0.16
+
+## Errores
+
+Todas las respuestas de error salen en JSON con la misma forma: `ok` en `false`, un `mensaje` para mostrar y un `error_code` para decidir en el front.
+
+| error_code | HTTP | Cuándo |
+| --- | --- | --- |
+| 5000 | 302 | Falta el token de la API o no es válido (header `Authorization: Bearer`) |
+| 5001 | 200 | El idioma del path no está soportado |
+| 5002 | 200 | El `userToken` del agente no es válido o expiró |
+| 5003 | 404 | El endpoint solicitado no existe |
+| 5004 | 405 | El método HTTP no está permitido para ese endpoint |
+| 5005 | 500 | Error interno al procesar la solicitud |
+
+Los códigos 5001 y 5002 son de negocio y viajan con HTTP 200: hay que mirar siempre el campo `ok`, no sólo el status.
+
+Los códigos 5003, 5004 y 5005 los resuelve el manejador global, así que pueden aparecer en cualquier endpoint.
+
+Cuando el error es de validación de campos, además de `error` viene `errores`, un objeto con un motivo por campo (`requerido`, `invalido`, `duplicado`, `excede_comision_agencia`, `no_permitido`).
+
+En el ambiente de desarrollo las respuestas 500 agregan `error` y `archivo` con el detalle técnico; en producción no.
+
+ * OpenAPI spec version: 1.0.25
  */
 
+export * from './actualizarAgentePorIdBody';
+export * from './actualizarAgenteResponse';
+export * from './actualizarAgenteResponseErrores';
 export * from './actualizarIdiomaAgente200';
 export * from './actualizarIdiomaAgenteBody';
+export * from './actualizarPerfilAgencia200';
+export * from './actualizarPerfilAgencia200Errores';
+export * from './actualizarPerfilAgenciaBody';
+export * from './actualizarPerfilAgenteBody';
+export * from './agenciaItem';
+export * from './agenciaItemCiudad';
+export * from './agenciaItemCobrandingActivo';
+export * from './agenciaItemCodigoPostal';
+export * from './agenciaItemEstado';
+export * from './agenciaItemLogo';
+export * from './agenciaItemPadre';
+export * from './agenciaItemPais';
+export * from './agenciaItemSitioWeb';
+export * from './agenciaItemStatus';
+export * from './agenciaItemTipo';
+export * from './agenciaItemTipoPago';
+export * from './agenciaItemTipoPagoNombre';
+export * from './agenteItem';
+export * from './agenteItemAgencia';
+export * from './agenteItemEmailBienvenida';
+export * from './agenteItemIdioma';
+export * from './agenteItemPais';
+export * from './agenteItemPaisNombre';
+export * from './agenteItemStatus';
+export * from './agenteItemTipoPago';
+export * from './busquedaItem';
+export * from './busquedaItemTipo';
+export * from './crearAgente200';
+export * from './crearAgente200Errores';
+export * from './crearAgenteBody';
 export * from './detenerRecordatorioRenovacion200';
 export * from './detenerRecordatorioRenovacionBody';
+export * from './errorInternoResponse';
+export * from './errorRespuesta';
 export * from './getAgenciasAgencia200';
 export * from './getAgenciasAgencia200DataItem';
+export * from './getAgenciasAgencia200DataItemAllOf';
 export * from './getAgentesAgencia200';
 export * from './getAgentesAgencia200DataItem';
+export * from './getAgentesAgencia200DataItemAllOf';
 export * from './getAgentesAgenciaParams';
 export * from './getAsistenciasAgenteAgencia200';
 export * from './getAsistenciasAgenteAgencia200Data';
 export * from './getAsistenciasAgenteAgencia200DataItemsItem';
+export * from './getAsistenciasAgenteAgencia200DataItemsItemPagosItem';
+export * from './getAsistenciasAgenteAgencia200DataItemsItemPagosItemDevolucionDe';
+export * from './getAsistenciasAgenteAgencia200DataItemsItemPagosItemMetodoPago';
+export * from './getAsistenciasAgenteAgencia200DataItemsItemPagosItemReciboCliente';
+export * from './getAsistenciasAgenteAgencia200DataItemsItemPaisDestino';
+export * from './getAsistenciasAgenteAgencia200DataItemsItemPaisOrigen';
+export * from './getAsistenciasAgenteAgencia200DataItemsItemPasajerosItem';
+export * from './getAsistenciasAgenteAgencia200DataItemsItemPasajerosItemDocumentos';
+export * from './getAsistenciasAgenteAgencia200DataItemsItemPasajerosItemPais';
+export * from './getAsistenciasAgenteAgencia200DataItemsItemPasajerosItemSexo';
+export * from './getAsistenciasAgenteAgencia200DataItemsItemPlan';
+export * from './getAsistenciasAgenteAgencia200DataItemsItemPlanTipo';
+export * from './getAsistenciasAgenteAgencia200DataItemsItemVoucher';
+export * from './getAsistenciasAgenteAgencia200DataItemsItemVoucherMaster';
 export * from './getAsistenciasAgenteAgencia200DataItemsItemVouchersItem';
 export * from './getAsistenciasAgenteAgencia200DataItemsItemVouchersItemLinksTarjetasEnItem';
 export * from './getAsistenciasAgenteAgencia200DataItemsItemVouchersItemLinksTarjetasEsItem';
 export * from './getAsistenciasAgenteAgencia200DataItemsItemVouchersItemPdfVouchers';
 export * from './getAsistenciasAgenteAgencia200DataPaginacion';
 export * from './getAsistenciasAgenteAgenciaParams';
+export * from './getBeneficiosCliente200';
+export * from './getBeneficiosCliente200DataItem';
 export * from './getBuscarVoucher200';
 export * from './getBuscarVoucher200DocumentosItem';
 export * from './getBuscarVoucher200DocumentosItemLinksTarjetasEnItem';
 export * from './getBuscarVoucher200DocumentosItemLinksTarjetasEsItem';
 export * from './getBuscarVoucher200DocumentosItemPdfVouchers';
 export * from './getBuscarVoucherParams';
+export * from './getBusqueda200';
+export * from './getBusqueda200Errores';
+export * from './getBusqueda200Totales';
+export * from './getBusquedaParams';
 export * from './getClienteVentas200';
 export * from './getClienteVentas200Data';
 export * from './getClienteVentas200DataItemsItem';
@@ -48,14 +127,39 @@ export * from './getClientesSortOrder';
 export * from './getCobrandingConfig200';
 export * from './getCobrandingConfig200Datos';
 export * from './getCobrandingConfig200DatosDescripcionesTiposPlanes';
+export * from './getCobrandingConfig200DatosHomeSec3Img1';
+export * from './getCobrandingConfig200DatosHomeSec3Img2';
+export * from './getCobrandingConfig200DatosHomeSec3Img3';
+export * from './getCobrandingConfig200DatosTelefono';
 export * from './getCobrandingConfigBody';
 export * from './getCotizacionesAgenteAgencia200';
 export * from './getCotizacionesAgenteAgencia200Data';
 export * from './getCotizacionesAgenteAgencia200DataItemsItem';
+export * from './getCotizacionesAgenteAgencia200DataItemsItemAgente';
+export * from './getCotizacionesAgenteAgencia200DataItemsItemLineasItem';
+export * from './getCotizacionesAgenteAgencia200DataItemsItemLineasItemFechaRegreso';
+export * from './getCotizacionesAgenteAgencia200DataItemsItemLineasItemFechaSalida';
+export * from './getCotizacionesAgenteAgencia200DataItemsItemLineasItemPais';
+export * from './getCotizacionesAgenteAgencia200DataItemsItemLineasItemPaisDestino';
+export * from './getCotizacionesAgenteAgencia200DataItemsItemLineasItemPasajerosItem';
+export * from './getCotizacionesAgenteAgencia200DataItemsItemLineasItemPasajerosItemFechaNacimiento';
+export * from './getCotizacionesAgenteAgencia200DataItemsItemLineasItemPasajerosItemPais';
+export * from './getCotizacionesAgenteAgencia200DataItemsItemLineasItemPasajerosItemSexo';
+export * from './getCotizacionesAgenteAgencia200DataItemsItemLineasItemPasajerosItemUpgradesItem';
+export * from './getCotizacionesAgenteAgencia200DataItemsItemLineasItemPlan';
+export * from './getCotizacionesAgenteAgencia200DataItemsItemVoucherMaster';
 export * from './getCotizacionesAgenteAgencia200DataPaginacion';
 export * from './getCotizacionesAgenteAgenciaParams';
 export * from './getDashboard200';
 export * from './getDashboard200Data';
+export * from './getDashboard200DataAgencyPerformance';
+export * from './getDashboard200DataAgencyPerformanceItemsItem';
+export * from './getDashboard200DataAgencyPerformanceItemsItemAllOf';
+export * from './getDashboard200DataAgencyPerformanceTotales';
+export * from './getDashboard200DataAgentPerformance';
+export * from './getDashboard200DataAgentPerformanceItemsItem';
+export * from './getDashboard200DataAgentPerformanceItemsItemAllOf';
+export * from './getDashboard200DataAgentPerformanceTotales';
 export * from './getDashboard200DataComisionesItem';
 export * from './getDashboard200DataComisionesItemMesesItem';
 export * from './getDashboard200DataKpis';
@@ -64,10 +168,19 @@ export * from './getDashboard200DataKpisVentasAno';
 export * from './getDashboard200DataKpisVentasAnoAnterior';
 export * from './getDashboard200DataKpisVentasMes';
 export * from './getDashboard200DataKpisVentasMesAnterior';
+export * from './getDashboard200DataProgramsPerformanceItem';
 export * from './getDashboard200DataRenovaciones';
 export * from './getDashboard200DataRenovacionesCompletadas';
+export * from './getDashboard200DataRenovacionesCompletadasCantidad';
+export * from './getDashboard200DataRenovacionesCompletadasComisiones';
+export * from './getDashboard200DataRenovacionesCompletadasMonto';
 export * from './getDashboard200DataRenovacionesPendientes';
+export * from './getDashboard200DataRenovacionesPendientesCantidad';
+export * from './getDashboard200DataRenovacionesPendientesComisiones';
+export * from './getDashboard200DataRenovacionesPendientesMonto';
 export * from './getDashboard200DataTopPlanesItem';
+export * from './getDashboard200DataTopPlanesItemMonto';
+export * from './getDashboard200DataTopPlanesItemVentas';
 export * from './getDocumentosVoucher200';
 export * from './getDocumentosVoucher200DocumentosItem';
 export * from './getDocumentosVoucher200DocumentosItemLinksTarjetasEnItem';
@@ -122,17 +235,31 @@ export * from './getLangStringsVersion200';
 export * from './getLangStringsVersion200Data';
 export * from './getLeadEvento200';
 export * from './getLeadEventoBody';
+export * from './getNotificaciones200';
+export * from './getNotificaciones200Data';
+export * from './getNotificacionesLeidas';
+export * from './getNotificacionesParams';
+export * from './getPaises200';
+export * from './getPaises200DataItem';
 export * from './getPerfilAgencia200';
 export * from './getPerfilAgencia200Data';
 export * from './getPerfilAgente200';
 export * from './getRenovacionesPendientes200';
 export * from './getRenovacionesPendientes200Data';
 export * from './getRenovacionesPendientes200DataItemsItem';
+export * from './getRenovacionesPendientes200DataItemsItemEtapaNombre';
+export * from './getRenovacionesPendientes200DataItemsItemTsCierre';
 export * from './getRenovacionesPendientes200DataItemsItemVentaDatos';
+export * from './getRenovacionesPendientes200DataItemsItemVentaDatosCobradaRecibo';
 export * from './getRenovacionesPendientes200DataItemsItemVentaDatosDocumentosItem';
 export * from './getRenovacionesPendientes200DataItemsItemVentaDatosDocumentosItemLinksTarjetasEnItem';
 export * from './getRenovacionesPendientes200DataItemsItemVentaDatosDocumentosItemLinksTarjetasEsItem';
 export * from './getRenovacionesPendientes200DataItemsItemVentaDatosDocumentosItemPdfVouchers';
+export * from './getRenovacionesPendientes200DataItemsItemVentaDatosFechaCancelacionTs';
+export * from './getRenovacionesPendientes200DataItemsItemVentaDatosPagadaCheque';
+export * from './getRenovacionesPendientes200DataItemsItemVentaDatosRenovacionDe';
+export * from './getRenovacionesPendientes200DataItemsItemVentaDatosVoucherMaster';
+export * from './getRenovacionesPendientes200DataItemsItemVentaRenovacion';
 export * from './getStatusCodes200';
 export * from './getStatusCodes200Data';
 export * from './getStatusCodes200DataCarritosItem';
@@ -145,7 +272,15 @@ export * from './getVouchersMaster200DataItem';
 export * from './getVouchersMasterDetail200';
 export * from './getVouchersMasterDetail200Data';
 export * from './getVouchersMasterDetail200DataItemsItem';
+export * from './getVouchersMasterDetail200DataItemsItemCobradaRecibo';
+export * from './getVouchersMasterDetail200DataItemsItemFechaCancelacionTs';
+export * from './getVouchersMasterDetail200DataItemsItemPagadaCheque';
+export * from './getVouchersMasterDetail200DataItemsItemRenovacionDe';
 export * from './getVouchersMasterDetail200DataVoucher';
+export * from './marcarNotificacionLeida200';
+export * from './metodoNoPermitidoResponse';
+export * from './notificacionItem';
+export * from './notificacionItemTsLeido';
 export * from './paginacion';
 export * from './postAgenteLogin200';
 export * from './postAgenteLoginBody';
@@ -155,13 +290,16 @@ export * from './postIdiomaLogin200';
 export * from './postIdiomaLoginBody';
 export * from './postIdiomaLogout200';
 export * from './postLogout200';
+export * from './programPerformancePeriodo';
 export * from './reporteVentasAgenciaResponse';
 export * from './reporteVentasAgenciaResponseData';
 export * from './reporteVentasAgenciaResponseDataAcums';
 export * from './reporteVentasAgenciaResponseDataItemsItem';
 export * from './respuesta';
 export * from './respuestaItem';
+export * from './rutaNoEncontradaResponse';
 export * from './user';
 export * from './userAgente';
 export * from './userLogin';
+export * from './userLoginAllOf';
 export * from './userTokenHeaderParameter';

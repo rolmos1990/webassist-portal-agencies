@@ -33,7 +33,6 @@ export default {
           useExamples: false,            // usa example/examples del spec si existen
           generateEachHttpStatus: true, // mocks para todos los responses del spec
           properties: {
-            '/.*\\.id$/': () => faker.string.uuid(),      // cualquier propiedad que termine en "id"
             email: () => faker.internet.email(),          // propiedad "email"
             '/user\\.name/': 'Ramon',                     // ruta exacta user.name
           },

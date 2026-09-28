@@ -3,7 +3,29 @@
  * Do not edit manually.
  * WAC API
  * Api para uso interno WAC.
- * OpenAPI spec version: 1.0.16
+
+## Errores
+
+Todas las respuestas de error salen en JSON con la misma forma: `ok` en `false`, un `mensaje` para mostrar y un `error_code` para decidir en el front.
+
+| error_code | HTTP | Cuándo |
+| --- | --- | --- |
+| 5000 | 302 | Falta el token de la API o no es válido (header `Authorization: Bearer`) |
+| 5001 | 200 | El idioma del path no está soportado |
+| 5002 | 200 | El `userToken` del agente no es válido o expiró |
+| 5003 | 404 | El endpoint solicitado no existe |
+| 5004 | 405 | El método HTTP no está permitido para ese endpoint |
+| 5005 | 500 | Error interno al procesar la solicitud |
+
+Los códigos 5001 y 5002 son de negocio y viajan con HTTP 200: hay que mirar siempre el campo `ok`, no sólo el status.
+
+Los códigos 5003, 5004 y 5005 los resuelve el manejador global, así que pueden aparecer en cualquier endpoint.
+
+Cuando el error es de validación de campos, además de `error` viene `errores`, un objeto con un motivo por campo (`requerido`, `invalido`, `duplicado`, `excede_comision_agencia`, `no_permitido`).
+
+En el ambiente de desarrollo las respuestas 500 agregan `error` y `archivo` con el detalle técnico; en producción no.
+
+ * OpenAPI spec version: 1.0.25
  */
 import type { GetCobrandingConfig200Datos } from './getCobrandingConfig200Datos';
 

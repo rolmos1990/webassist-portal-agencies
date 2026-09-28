@@ -6,313 +6,269 @@ export const asistencias_agente_agencia: GetAsistenciasAgenteAgencia200 = {
         "items": [
             {
                 "token": "A93-KML9DE",
-                "total": "2600.00",
+                "total": 2600,
                 "fecha": "18/07/2025 03:19 pm",
-                "vouchers": [
+                "voucher": {
+                    "codigo": "A93-KML9DE",
+                    "pdf": "https://www.weassistgroup.com/vouchers/voucher_A93-KML9DE_es.pdf"
+                },
+                "pasajeros": [
                     {
-                        "nombre": "RAHEL HANI HAUPTMANN",
-                        "voucher": "A93-KML9DE",
-                        "pdf_vouchers": {
-                            "es": "https://www.weassistgroup.com/vouchers/voucher_A93-KML9DE_es.pdf",
-                            "en": "https://www.weassistgroup.com/vouchers/voucher_A93-KML9DE_en.pdf"
-                        },
-                        "links_tarjetas_es": [
-                            {
-                                "nombre": "RAHEL HANI HAUPTMANN",
-                                "file": "https://www.weassistgroup.com/vouchers/card_A93-KML9DE_1_es.pdf"
-                            },
-                            {
-                                "nombre": "BERNHARD HANI",
-                                "file": "https://www.weassistgroup.com/vouchers/card_A93-KML9DE_2_es.pdf"
-                            }
-                        ],
-                        "links_tarjetas_en": [
-                            {
-                                "nombre": "RAHEL HANI HAUPTMANN",
-                                "file": "https://www.weassistgroup.com/vouchers/card_A93-KML9DE_1_en.pdf"
-                            },
-                            {
-                                "nombre": "BERNHARD HANI",
-                                "file": "https://www.weassistgroup.com/vouchers/card_A93-KML9DE_2_en.pdf"
-                            }
-                        ]
+                        "id": 1,
+                        "nombre": "RAHEL HANI",
+                        "apellido": "HAUPTMANN",
+                        "documentos": {
+                            "tarjeta": "https://www.weassistgroup.com/vouchers/card_A93-KML9DE_1_es.pdf",
+                            "certificacion": ""
+                        }
+                    },
+                    {
+                        "id": 2,
+                        "nombre": "BERNHARD",
+                        "apellido": "HANI",
+                        "documentos": {
+                            "tarjeta": "https://www.weassistgroup.com/vouchers/card_A93-KML9DE_2_es.pdf",
+                            "certificacion": ""
+                        }
                     }
                 ]
             },
             {
                 "token": "A93-H1880L",
-                "total": "339.90",
+                "total": 339.9,
                 "fecha": "26/08/2025 10:08 am",
-                "vouchers": [
+                "voucher": {
+                    "codigo": "A93-H1880L",
+                    "pdf": "https://www.weassistgroup.com/vouchers/voucher_A93-H1880L_es.pdf"
+                },
+                "pasajeros": [
                     {
-                        "nombre": "MARIA FERNANDA PLATA BURGOS",
-                        "voucher": "A93-H1880L",
-                        "pdf_vouchers": {
-                            "es": "https://www.weassistgroup.com/vouchers/voucher_A93-H1880L_es.pdf",
-                            "en": "https://www.weassistgroup.com/vouchers/voucher_A93-H1880L_en.pdf"
-                        },
-                        "links_tarjetas_es": [
-                            {
-                                "nombre": "MARIA FERNANDA PLATA BURGOS",
-                                "file": "https://www.weassistgroup.com/vouchers/card_A93-H1880L_1_es.pdf"
-                            },
-                            {
-                                "nombre": "JOSE MARIA GONZALEZ",
-                                "file": "https://www.weassistgroup.com/vouchers/card_A93-H1880L_2_es.pdf"
-                            },
-                            {
-                                "nombre": "ANALIDA CORRO",
-                                "file": "https://www.weassistgroup.com/vouchers/card_A93-H1880L_3_es.pdf"
-                            },
-                            {
-                                "nombre": "JOSE RODOLFO DE LA GUARDIA CAMPANGANI",
-                                "file": "https://www.weassistgroup.com/vouchers/card_A93-H1880L_4_es.pdf"
-                            },
-                            {
-                                "nombre": "MARIA LORENA ARIAS FABREGA",
-                                "file": "https://www.weassistgroup.com/vouchers/card_A93-H1880L_5_es.pdf"
-                            },
-                            {
-                                "nombre": "FERNANDO ERNESTO MOTTA SANCHEZ",
-                                "file": "https://www.weassistgroup.com/vouchers/card_A93-H1880L_6_es.pdf"
-                            }
-                        ],
-                        "links_tarjetas_en": [
-                            {
-                                "nombre": "MARIA FERNANDA PLATA BURGOS",
-                                "file": "https://www.weassistgroup.com/vouchers/card_A93-H1880L_1_en.pdf"
-                            },
-                            {
-                                "nombre": "JOSE MARIA GONZALEZ",
-                                "file": "https://www.weassistgroup.com/vouchers/card_A93-H1880L_2_en.pdf"
-                            },
-                            {
-                                "nombre": "ANALIDA CORRO",
-                                "file": "https://www.weassistgroup.com/vouchers/card_A93-H1880L_3_en.pdf"
-                            },
-                            {
-                                "nombre": "JOSE RODOLFO DE LA GUARDIA CAMPANGANI",
-                                "file": "https://www.weassistgroup.com/vouchers/card_A93-H1880L_4_en.pdf"
-                            },
-                            {
-                                "nombre": "MARIA LORENA ARIAS FABREGA",
-                                "file": "https://www.weassistgroup.com/vouchers/card_A93-H1880L_5_en.pdf"
-                            },
-                            {
-                                "nombre": "FERNANDO ERNESTO MOTTA SANCHEZ",
-                                "file": "https://www.weassistgroup.com/vouchers/card_A93-H1880L_6_en.pdf"
-                            }
-                        ]
+                        "id": 1,
+                        "nombre": "MARIA FERNANDA",
+                        "apellido": "PLATA BURGOS",
+                        "documentos": {
+                            "tarjeta": "https://www.weassistgroup.com/vouchers/card_A93-H1880L_1_es.pdf",
+                            "certificacion": ""
+                        }
+                    },
+                    {
+                        "id": 2,
+                        "nombre": "JOSE MARIA",
+                        "apellido": "GONZALEZ",
+                        "documentos": {
+                            "tarjeta": "https://www.weassistgroup.com/vouchers/card_A93-H1880L_2_es.pdf",
+                            "certificacion": ""
+                        }
+                    },
+                    {
+                        "id": 3,
+                        "nombre": "ANALIDA",
+                        "apellido": "CORRO",
+                        "documentos": {
+                            "tarjeta": "https://www.weassistgroup.com/vouchers/card_A93-H1880L_3_es.pdf",
+                            "certificacion": ""
+                        }
+                    },
+                    {
+                        "id": 4,
+                        "nombre": "JOSE RODOLFO DE",
+                        "apellido": "LA GUARDIA CAMPANGANI",
+                        "documentos": {
+                            "tarjeta": "https://www.weassistgroup.com/vouchers/card_A93-H1880L_4_es.pdf",
+                            "certificacion": ""
+                        }
+                    },
+                    {
+                        "id": 5,
+                        "nombre": "MARIA LORENA",
+                        "apellido": "ARIAS FABREGA",
+                        "documentos": {
+                            "tarjeta": "https://www.weassistgroup.com/vouchers/card_A93-H1880L_5_es.pdf",
+                            "certificacion": ""
+                        }
+                    },
+                    {
+                        "id": 6,
+                        "nombre": "FERNANDO ERNESTO",
+                        "apellido": "MOTTA SANCHEZ",
+                        "documentos": {
+                            "tarjeta": "https://www.weassistgroup.com/vouchers/card_A93-H1880L_6_es.pdf",
+                            "certificacion": ""
+                        }
                     }
                 ]
             },
             {
                 "token": "A93-F6H3DI",
-                "total": "226.60",
+                "total": 226.6,
                 "fecha": "26/08/2025 10:21 am",
-                "vouchers": [
+                "voucher": {
+                    "codigo": "A93-F6H3DI",
+                    "pdf": "https://www.weassistgroup.com/vouchers/voucher_A93-F6H3DI_es.pdf"
+                },
+                "pasajeros": [
                     {
-                        "nombre": "RICARDO FERNANDEZ",
-                        "voucher": "A93-F6H3DI",
-                        "pdf_vouchers": {
-                            "es": "https://www.weassistgroup.com/vouchers/voucher_A93-F6H3DI_es.pdf",
-                            "en": "https://www.weassistgroup.com/vouchers/voucher_A93-F6H3DI_en.pdf"
-                        },
-                        "links_tarjetas_es": [
-                            {
-                                "nombre": "RICARDO FERNANDEZ",
-                                "file": "https://www.weassistgroup.com/vouchers/card_A93-F6H3DI_1_es.pdf"
-                            },
-                            {
-                                "nombre": "GABRIELA MIRO",
-                                "file": "https://www.weassistgroup.com/vouchers/card_A93-F6H3DI_2_es.pdf"
-                            },
-                            {
-                                "nombre": "RAMON GARCIA DE PAREDES",
-                                "file": "https://www.weassistgroup.com/vouchers/card_A93-F6H3DI_3_es.pdf"
-                            },
-                            {
-                                "nombre": "LIZ MARIE VEGA",
-                                "file": "https://www.weassistgroup.com/vouchers/card_A93-F6H3DI_4_es.pdf"
-                            }
-                        ],
-                        "links_tarjetas_en": [
-                            {
-                                "nombre": "RICARDO FERNANDEZ",
-                                "file": "https://www.weassistgroup.com/vouchers/card_A93-F6H3DI_1_en.pdf"
-                            },
-                            {
-                                "nombre": "GABRIELA MIRO",
-                                "file": "https://www.weassistgroup.com/vouchers/card_A93-F6H3DI_2_en.pdf"
-                            },
-                            {
-                                "nombre": "RAMON GARCIA DE PAREDES",
-                                "file": "https://www.weassistgroup.com/vouchers/card_A93-F6H3DI_3_en.pdf"
-                            },
-                            {
-                                "nombre": "LIZ MARIE VEGA",
-                                "file": "https://www.weassistgroup.com/vouchers/card_A93-F6H3DI_4_en.pdf"
-                            }
-                        ]
+                        "id": 1,
+                        "nombre": "RICARDO",
+                        "apellido": "FERNANDEZ",
+                        "documentos": {
+                            "tarjeta": "https://www.weassistgroup.com/vouchers/card_A93-F6H3DI_1_es.pdf",
+                            "certificacion": ""
+                        }
+                    },
+                    {
+                        "id": 2,
+                        "nombre": "GABRIELA",
+                        "apellido": "MIRO",
+                        "documentos": {
+                            "tarjeta": "https://www.weassistgroup.com/vouchers/card_A93-F6H3DI_2_es.pdf",
+                            "certificacion": ""
+                        }
+                    },
+                    {
+                        "id": 3,
+                        "nombre": "RAMON GARCIA",
+                        "apellido": "DE PAREDES",
+                        "documentos": {
+                            "tarjeta": "https://www.weassistgroup.com/vouchers/card_A93-F6H3DI_3_es.pdf",
+                            "certificacion": ""
+                        }
+                    },
+                    {
+                        "id": 4,
+                        "nombre": "LIZ MARIE",
+                        "apellido": "VEGA",
+                        "documentos": {
+                            "tarjeta": "https://www.weassistgroup.com/vouchers/card_A93-F6H3DI_4_es.pdf",
+                            "certificacion": ""
+                        }
                     }
                 ]
             },
             {
                 "token": "A93-I30HL6",
-                "total": "251.25",
+                "total": 251.25,
                 "fecha": "12/09/2025 02:32 pm",
-                "vouchers": [
+                "voucher": {
+                    "codigo": "A93-I30HL6",
+                    "pdf": "https://www.weassistgroup.com/vouchers/voucher_A93-I30HL6_es.pdf"
+                },
+                "pasajeros": [
                     {
-                        "nombre": "Johanna Buese",
-                        "voucher": "A93-I30HL6",
-                        "pdf_vouchers": {
-                            "es": "https://www.weassistgroup.com/vouchers/voucher_A93-I30HL6_es.pdf",
-                            "en": "https://www.weassistgroup.com/vouchers/voucher_A93-I30HL6_en.pdf"
-                        },
-                        "links_tarjetas_es": [
-                            {
-                                "nombre": "JOHANNA BUESE",
-                                "file": "https://www.weassistgroup.com/vouchers/card_A93-I30HL6_1_es.pdf"
-                            }
-                        ],
-                        "links_tarjetas_en": [
-                            {
-                                "nombre": "JOHANNA BUESE",
-                                "file": "https://www.weassistgroup.com/vouchers/card_A93-I30HL6_1_en.pdf"
-                            }
-                        ]
+                        "id": 1,
+                        "nombre": "JOHANNA",
+                        "apellido": "BUESE",
+                        "documentos": {
+                            "tarjeta": "https://www.weassistgroup.com/vouchers/card_A93-I30HL6_1_es.pdf",
+                            "certificacion": ""
+                        }
                     }
                 ]
             },
             {
                 "token": "A93-JHGAK0",
-                "total": "1240.00",
+                "total": 1240,
                 "fecha": "15/09/2025 07:58 pm",
-                "vouchers": [
+                "voucher": {
+                    "codigo": "A93-JHGAK0",
+                    "pdf": "https://www.weassistgroup.com/vouchers/voucher_A93-JHGAK0_es.pdf"
+                },
+                "pasajeros": [
                     {
-                        "nombre": "Melissa De la Guardia",
-                        "voucher": "A93-JHGAK0",
-                        "pdf_vouchers": {
-                            "es": "https://www.weassistgroup.com/vouchers/voucher_A93-JHGAK0_es.pdf",
-                            "en": "https://www.weassistgroup.com/vouchers/voucher_A93-JHGAK0_en.pdf"
-                        },
-                        "links_tarjetas_es": [
-                            {
-                                "nombre": "MELISSA DE LA GUARDIA",
-                                "file": "https://www.weassistgroup.com/vouchers/card_A93-JHGAK0_1_es.pdf"
-                            },
-                            {
-                                "nombre": "RAMON GARCIA DE PAREDES",
-                                "file": "https://www.weassistgroup.com/vouchers/card_A93-JHGAK0_2_es.pdf"
-                            }
-                        ],
-                        "links_tarjetas_en": [
-                            {
-                                "nombre": "MELISSA DE LA GUARDIA",
-                                "file": "https://www.weassistgroup.com/vouchers/card_A93-JHGAK0_1_en.pdf"
-                            },
-                            {
-                                "nombre": "RAMON GARCIA DE PAREDES",
-                                "file": "https://www.weassistgroup.com/vouchers/card_A93-JHGAK0_2_en.pdf"
-                            }
-                        ]
+                        "id": 1,
+                        "nombre": "MELISSA DE",
+                        "apellido": "LA GUARDIA",
+                        "documentos": {
+                            "tarjeta": "https://www.weassistgroup.com/vouchers/card_A93-JHGAK0_1_es.pdf",
+                            "certificacion": ""
+                        }
+                    },
+                    {
+                        "id": 2,
+                        "nombre": "RAMON GARCIA",
+                        "apellido": "DE PAREDES",
+                        "documentos": {
+                            "tarjeta": "https://www.weassistgroup.com/vouchers/card_A93-JHGAK0_2_es.pdf",
+                            "certificacion": ""
+                        }
                     }
                 ]
             },
             {
                 "token": "A93-561C1I",
-                "total": "44.25",
+                "total": 44.25,
                 "fecha": "22/09/2025 07:49 am",
-                "vouchers": [
+                "voucher": {
+                    "codigo": "A93-561C1I",
+                    "pdf": "https://www.weassistgroup.com/vouchers/voucher_A93-561C1I_es.pdf"
+                },
+                "pasajeros": [
                     {
-                        "nombre": "Andrea Vargas Rivillas",
-                        "voucher": "A93-561C1I",
-                        "pdf_vouchers": {
-                            "es": "https://www.weassistgroup.com/vouchers/voucher_A93-561C1I_es.pdf",
-                            "en": "https://www.weassistgroup.com/vouchers/voucher_A93-561C1I_en.pdf"
-                        },
-                        "links_tarjetas_es": [
-                            {
-                                "nombre": "ANDREA VARGAS RIVILLAS",
-                                "file": "https://www.weassistgroup.com/vouchers/card_A93-561C1I_1_es.pdf"
-                            }
-                        ],
-                        "links_tarjetas_en": [
-                            {
-                                "nombre": "ANDREA VARGAS RIVILLAS",
-                                "file": "https://www.weassistgroup.com/vouchers/card_A93-561C1I_1_en.pdf"
-                            }
-                        ]
+                        "id": 1,
+                        "nombre": "ANDREA VARGAS",
+                        "apellido": "RIVILLAS",
+                        "documentos": {
+                            "tarjeta": "https://www.weassistgroup.com/vouchers/card_A93-561C1I_1_es.pdf",
+                            "certificacion": ""
+                        }
                     }
                 ]
             },
             {
                 "token": "A93-IM4283",
-                "total": "141.60",
+                "total": 141.6,
                 "fecha": "06/10/2025 12:06 pm",
-                "vouchers": [
+                "voucher": {
+                    "codigo": "A93-IM4283",
+                    "pdf": "https://www.weassistgroup.com/vouchers/voucher_A93-IM4283_es.pdf"
+                },
+                "pasajeros": [
                     {
-                        "nombre": "Francies Carles",
-                        "voucher": "A93-IM4283",
-                        "pdf_vouchers": {
-                            "es": "https://www.weassistgroup.com/vouchers/voucher_A93-IM4283_es.pdf",
-                            "en": "https://www.weassistgroup.com/vouchers/voucher_A93-IM4283_en.pdf"
-                        },
-                        "links_tarjetas_es": [
-                            {
-                                "nombre": "FRANCIES CARLES",
-                                "file": "https://www.weassistgroup.com/vouchers/card_A93-IM4283_1_es.pdf"
-                            },
-                            {
-                                "nombre": "CARLOS CORDERO",
-                                "file": "https://www.weassistgroup.com/vouchers/card_A93-IM4283_2_es.pdf"
-                            }
-                        ],
-                        "links_tarjetas_en": [
-                            {
-                                "nombre": "FRANCIES CARLES",
-                                "file": "https://www.weassistgroup.com/vouchers/card_A93-IM4283_1_en.pdf"
-                            },
-                            {
-                                "nombre": "CARLOS CORDERO",
-                                "file": "https://www.weassistgroup.com/vouchers/card_A93-IM4283_2_en.pdf"
-                            }
-                        ]
+                        "id": 1,
+                        "nombre": "FRANCIES",
+                        "apellido": "CARLES",
+                        "documentos": {
+                            "tarjeta": "https://www.weassistgroup.com/vouchers/card_A93-IM4283_1_es.pdf",
+                            "certificacion": ""
+                        }
+                    },
+                    {
+                        "id": 2,
+                        "nombre": "CARLOS",
+                        "apellido": "CORDERO",
+                        "documentos": {
+                            "tarjeta": "https://www.weassistgroup.com/vouchers/card_A93-IM4283_2_es.pdf",
+                            "certificacion": ""
+                        }
                     }
                 ]
             },
             {
                 "token": "A93-7EF130",
-                "total": "152.00",
+                "total": 152,
                 "fecha": "15/10/2025 03:38 pm",
-                "vouchers": [
+                "voucher": {
+                    "codigo": "A93-7EF130",
+                    "pdf": "https://www.weassistgroup.com/vouchers/voucher_A93-7EF130_es.pdf"
+                },
+                "pasajeros": [
                     {
-                        "nombre": "Anyoavell Peralta",
-                        "voucher": "A93-7EF130",
-                        "pdf_vouchers": {
-                            "es": "https://www.weassistgroup.com/vouchers/voucher_A93-7EF130_es.pdf",
-                            "en": "https://www.weassistgroup.com/vouchers/voucher_A93-7EF130_en.pdf"
-                        },
-                        "links_tarjetas_es": [
-                            {
-                                "nombre": "ANYOAVELL PERALTA",
-                                "file": "https://www.weassistgroup.com/vouchers/card_A93-7EF130_1_es.pdf"
-                            },
-                            {
-                                "nombre": "ERICK ABDIEL CISNEROS",
-                                "file": "https://www.weassistgroup.com/vouchers/card_A93-7EF130_2_es.pdf"
-                            }
-                        ],
-                        "links_tarjetas_en": [
-                            {
-                                "nombre": "ANYOAVELL PERALTA",
-                                "file": "https://www.weassistgroup.com/vouchers/card_A93-7EF130_1_en.pdf"
-                            },
-                            {
-                                "nombre": "ERICK ABDIEL CISNEROS",
-                                "file": "https://www.weassistgroup.com/vouchers/card_A93-7EF130_2_en.pdf"
-                            }
-                        ]
+                        "id": 1,
+                        "nombre": "ANYOAVELL",
+                        "apellido": "PERALTA",
+                        "documentos": {
+                            "tarjeta": "https://www.weassistgroup.com/vouchers/card_A93-7EF130_1_es.pdf",
+                            "certificacion": ""
+                        }
+                    },
+                    {
+                        "id": 2,
+                        "nombre": "ERICK ABDIEL",
+                        "apellido": "CISNEROS",
+                        "documentos": {
+                            "tarjeta": "https://www.weassistgroup.com/vouchers/card_A93-7EF130_2_es.pdf",
+                            "certificacion": ""
+                        }
                     }
                 ]
             }
@@ -323,4 +279,4 @@ export const asistencias_agente_agencia: GetAsistenciasAgenteAgencia200 = {
             "cantidad_total": 8
         }
     }
-}
+};

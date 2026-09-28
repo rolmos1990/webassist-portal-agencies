@@ -3,12 +3,37 @@
  * Do not edit manually.
  * WAC API
  * Api para uso interno WAC.
- * OpenAPI spec version: 1.0.16
+
+## Errores
+
+Todas las respuestas de error salen en JSON con la misma forma: `ok` en `false`, un `mensaje` para mostrar y un `error_code` para decidir en el front.
+
+| error_code | HTTP | Cuándo |
+| --- | --- | --- |
+| 5000 | 302 | Falta el token de la API o no es válido (header `Authorization: Bearer`) |
+| 5001 | 200 | El idioma del path no está soportado |
+| 5002 | 200 | El `userToken` del agente no es válido o expiró |
+| 5003 | 404 | El endpoint solicitado no existe |
+| 5004 | 405 | El método HTTP no está permitido para ese endpoint |
+| 5005 | 500 | Error interno al procesar la solicitud |
+
+Los códigos 5001 y 5002 son de negocio y viajan con HTTP 200: hay que mirar siempre el campo `ok`, no sólo el status.
+
+Los códigos 5003, 5004 y 5005 los resuelve el manejador global, así que pueden aparecer en cualquier endpoint.
+
+Cuando el error es de validación de campos, además de `error` viene `errores`, un objeto con un motivo por campo (`requerido`, `invalido`, `duplicado`, `excede_comision_agencia`, `no_permitido`).
+
+En el ambiente de desarrollo las respuestas 500 agregan `error` y `archivo` con el detalle técnico; en producción no.
+
+ * OpenAPI spec version: 1.0.25
  */
 import type { GetDashboard200DataRenovaciones } from './getDashboard200DataRenovaciones';
 import type { GetDashboard200DataTopPlanesItem } from './getDashboard200DataTopPlanesItem';
 import type { GetDashboard200DataKpis } from './getDashboard200DataKpis';
 import type { GetDashboard200DataComisionesItem } from './getDashboard200DataComisionesItem';
+import type { GetDashboard200DataAgencyPerformance } from './getDashboard200DataAgencyPerformance';
+import type { GetDashboard200DataAgentPerformance } from './getDashboard200DataAgentPerformance';
+import type { GetDashboard200DataProgramsPerformanceItem } from './getDashboard200DataProgramsPerformanceItem';
 
 export type GetDashboard200Data = {
   renovaciones?: GetDashboard200DataRenovaciones;
@@ -16,4 +41,10 @@ export type GetDashboard200Data = {
   kpis?: GetDashboard200DataKpis;
   comisiones?: GetDashboard200DataComisionesItem[];
   meta_ventas_mensual?: number;
+  /** Performance de las agencias hijas; vacío ({}) cuando el usuario autenticado no es una agencia */
+  agency_performance?: GetDashboard200DataAgencyPerformance;
+  /** Performance de los agentes de la agencia; vacío ({}) cuando el usuario autenticado no es una agencia */
+  agent_performance?: GetDashboard200DataAgentPerformance;
+  /** Performance por tipo de plan, en 4 periodos: 'ytd' (año actual completo), 'mes_actual', 'mes_anterior' y 'ano_anterior'. Comparando 'mes_actual' contra 'mes_anterior' se obtiene el Month over Month, y 'ytd' contra 'ano_anterior' el Year over Year. */
+  programs_performance?: GetDashboard200DataProgramsPerformanceItem[];
 };
