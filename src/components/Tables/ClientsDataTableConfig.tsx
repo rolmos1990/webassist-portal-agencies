@@ -1,5 +1,6 @@
 import type { GetClientes200DataItemsItem } from "../../api/schemas";
 import { type ColumnDef } from "../DataTable";
+import RowActions from "../RowActions";
 
 // nacimiento_ts no tiene formato documentado: si es un unix timestamp (segundos)
 // se formatea como dd/mm/yyyy (UTC, para no correr el día); si no, se muestra tal cual.
@@ -16,11 +17,13 @@ const formatBirthDate = (value?: string) => {
 type CreateColumnsDeps = {
   currency: (n: number) => string;
   t: (key: string) => string | React.ReactNode;
+  onShow: (row: GetClientes200DataItemsItem) => void;
 };
 
 export function createClientsColumns({
   currency,
   t,
+  onShow,
 }: CreateColumnsDeps): ColumnDef<GetClientes200DataItemsItem>[] {
   return [
     {
@@ -77,6 +80,22 @@ export function createClientsColumns({
       width: "12%",
       align: "end",
       render: (row) => currency(Number(row.ventas?.precio ?? 0)),
+    },
+    {
+      id: "actions",
+      label: <span className="visually-hidden">{t("clients.actions")}</span>,
+      width: 36,
+      align: "end",
+      render: (row) => (
+        <RowActions context={row}>
+          <RowActions.Item<GetClientes200DataItemsItem>
+            icon="bi-eye"
+            onClick={onShow}
+          >
+            {t("clients.view")}
+          </RowActions.Item>
+        </RowActions>
+      ),
     },
   ];
 }

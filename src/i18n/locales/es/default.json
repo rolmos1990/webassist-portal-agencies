@@ -65,7 +65,9 @@
     "gender":"Sexo",
     "country":"País",
     "birthDate":"Fecha de Nacimiento",
-    "salesAmount":"Monto en Ventas"
+    "salesAmount":"Monto en Ventas",
+    "actions":"Acciones",
+    "view":"Ver"
   },
 "user": {
   "name": "Name",
@@ -170,7 +172,13 @@
     "returnDate": "Fecha de Regreso",
     "reference": "Referencia",
     "paymentId": "ID de Pago",
+    "modifyVoucher": "Modificar Datos del Voucher",
+    "rePurchase": "Recomprar",
+    "downloadVoucher": "Descargar Voucher",
+    "travellers": "Viajero(s)",
+    "paymentConfirmation": "Confirmación de Pago",
     "customerCard": {
+      "dob": "Fecha de Nacimiento",
       "passport": "Pasaporte del Viajero",
       "phone": "Teléfono",
       "email": "Correo",
@@ -213,6 +221,10 @@
   "noData": "No data available",
   "error_generico": "Ha ocurrido un error, inténtelo más tarde",
   "error_desconocido": "Ha ocurrido un error inesperado",
+  "quotes": {
+    "actions": "Acciones",
+    "view": "Ver"
+  },
   "feedback": {
     "savedTitle": "Cambios guardados",
     "saved": "La información se actualizó correctamente."

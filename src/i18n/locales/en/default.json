@@ -65,7 +65,9 @@
       "gender":"Gender",
       "country":"Country",
       "birthDate":"Birth Date",
-      "salesAmount":"Sales Amount"
+      "salesAmount":"Sales Amount",
+      "actions":"Actions",
+      "view":"View"
   },
   "user": {
     "name": "Name",
@@ -170,7 +172,13 @@
     "returnDate": "Return Date",
     "reference": "Reference",
     "paymentId": "Payment ID",
+    "modifyVoucher": "Modify Voucher Data",
+    "rePurchase": "Re Purchase",
+    "downloadVoucher": "Download Voucher",
+    "travellers": "Traveller(s)",
+    "paymentConfirmation": "Payment Confirmation",
     "customerCard": {
+      "dob": "DOB",
       "passport": "Traveler Passport",
       "phone": "Phone",
       "email": "Email",
@@ -213,6 +221,10 @@
   "noData": "No data available",
   "error_generico": "An error occurred, please try again later",
   "error_desconocido": "An unexpected error occurred",
+  "quotes": {
+    "actions": "Actions",
+    "view": "View"
+  },
   "feedback": {
     "savedTitle": "Changes saved",
     "saved": "The information was updated successfully."

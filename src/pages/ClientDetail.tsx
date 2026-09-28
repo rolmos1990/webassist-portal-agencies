@@ -1,4 +1,6 @@
-import { useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { CardAvatar } from '../components/CardAvatar';
 import { HorizontalCardList, HorizontalCardListItem } from '../components/HorizontalCardList';
 import { TabPanel } from '../components/TabPanel';
@@ -6,18 +8,55 @@ import ListGroup from '../components/ListGroup/ListGroup';
 import ListItem from '../components/ListGroup/ListItem';
 import ListContent from '../components/ListGroup/ListContent';
 import { StatusBadge } from '../components/StatusBadge';
-import { PlanListDataExample } from '../examples/planListExample';
-import { StadingQuotesExample } from '../examples/stadingQuotes';
 import Breadcrumb from '../components/Breadcrumb';
 import { defaultStatusTheme } from '../components/StatusBadge/StatusBadgeThemes';
 import { PATHS } from '../routes/Routes';
+import { currency } from '../components/DataTable';
+import { planNames } from '../components/Tables/AgencyQuotesDataTableConfig';
+import { useGetAsistenciasAgenteAgencia, useGetCotizacionesAgenteAgencia } from '../api/generated';
+import type { GetClientes200DataItemsItem } from '../api/schemas';
+import { useI18nCache } from '../i18n/i18nCacheProvider';
+import { toast } from '../services/toast';
+import { getApiErrorMessage } from '../api/errors/ApiError';
 
 export default function ClientDetail() {
     const navigate = useNavigate();
+    const location = useLocation();
+    const { t } = useTranslation();
+    const { lang } = useI18nCache();
+
+    // No hay endpoint de detalle de cliente: el item llega desde la lista de clientes
+    const item = (location.state as { item?: GetClientes200DataItemsItem } | null)?.item;
+
+    // /asistencias y /cotizaciones no filtran por id de cliente: se filtra por su pasaporte
+    const pasaporte = item?.pasaporte?.trim() || undefined;
+
+    const asistencias = useGetAsistenciasAgenteAgencia(
+      lang,
+      { pasaporte },
+      { query: { enabled: !!pasaporte } }
+    );
+    const cotizaciones = useGetCotizacionesAgenteAgencia(
+      lang,
+      { pasaporte },
+      { query: { enabled: !!pasaporte } }
+    );
+
+    useEffect(() => {
+      const error = asistencias.error ?? cotizaciones.error;
+      if (error) {
+        toast.error("Error", getApiErrorMessage(error, t('error_generico')));
+      }
+    }, [asistencias.error, cotizaciones.error, t]);
+
+    const planes = asistencias.data?.data?.items ?? [];
+    const quotes = cotizaciones.data?.data?.items ?? [];
 
     const noContent = <div className="border rounded-4 p-4 text-muted">
-                        No standing quotes yet.
-                      </div>;                        
+                        {t('noData')}
+                      </div>;
+
+    const loadingContent = <div className="my-4"><div className="spinner-border" role="status" /></div>;
 
     return (
 <div className="min-vh-100 bg-light">
@@ -34,61 +73,70 @@ export default function ClientDetail() {
         } />
         <div className="card shadow">
             <div className="p-4">
-                <CardAvatar 
+                <CardAvatar
                   avatarUrl="https://placehold.co/80x80"
-                  name="Mateo Castillo"
-                  status="Active"
-                  email="matoectl@mail.com"
-                  phone="+50768934567"
-                  location="La Palma, Panama"
+                  name={`${item?.nombre ?? ''} ${item?.apellido ?? ''}`.trim() || '—'}
+                  status="__Active"
+                  email={item?.email || '—'}
+                  phone={item?.telefono || '—'}
+                  location={item?.pais_nombre || '—'}
                 />
                 <div className="">
                     <HorizontalCardList desktopCols={5}>
-                      <HorizontalCardListItem 
+                      <HorizontalCardListItem
                         title="Total Premiums Paid"
-                        value="$1529.00"
+                        value={currency(Number(item?.ventas?.precio ?? 0))}
                         icon={""}
                       />
-                      <HorizontalCardListItem 
+                      <HorizontalCardListItem
                         title="Standing Quote Value"
-                        value="$344.25"
+                        value="__$344.25"
                         icon={""}
                       />
-                      <HorizontalCardListItem 
+                      <HorizontalCardListItem
                         title="Total Commission Earned"
-                        value="$344.25"
+                        value="__$344.25"
                         icon={""}
                         tooltip="Total commission earned from all policies"
                       />
-                      <HorizontalCardListItem 
+                      <HorizontalCardListItem
                         title="Number of Purchases"
-                        value="5"
+                        value={String(item?.ventas?.cantidad ?? 0)}
                         icon={""}
                       />
-                      <HorizontalCardListItem 
+                      <HorizontalCardListItem
                         title="Active Plans"
-                        value="2"
+                        value="__2"
                         icon={""}
                       />
                     </HorizontalCardList>
                 </div>
 
                 <div className="mt-4">
-                    <TabPanel 
+                    <TabPanel
                       tabs={[
                         {
                           id: 'plan-list',
                           title: 'Plan List',
-                          content: (
+                          content: asistencias.isLoading ? loadingContent : planes.length === 0 ? noContent : (
                             <ListGroup>
-                              {PlanListDataExample().map((plan, index) => (
-                                <ListItem key={index} onClick={() => navigate(PATHS.agencies.detail(123))}>
-                                  <ListContent title="Plan Number" colSize={6}>{plan.planNumber}</ListContent>
-                                  <ListContent title="Plan Name" colSize={6}>{plan.planName}</ListContent>
-                                  <ListContent title="Status" colSize={6}><StatusBadge status={plan.status} theme={defaultStatusTheme} /></ListContent>
-                                  <ListContent title="Start Date" colSize={6}>{plan.startDate}</ListContent>
-                                  <ListContent title="End Date" colSize={6}>{plan.endDate}</ListContent>
-                                  <ListContent title="Amount Paid" colSize={6} isLast>{plan.amountPaid}</ListContent>
+                              {planes.map((plan, index) => (
+                                <ListItem
+                                  key={plan.token ?? index}
+                                  onClick={() => navigate(PATHS.assistances.detail(plan.token), { state: { item: plan } })}
+                                >
+                                  <ListContent title="Plan Number" colSize={6}>{plan.voucher?.codigo ?? plan.token}</ListContent>
+                                  <ListContent title="Plan Name" colSize={6}>{plan.plan?.nombre}</ListContent>
+                                  <ListContent title="Status" colSize={6}>
+                                    <StatusBadge
+                                      status={plan.cancelada ? 'Inactive' : 'Active'}
+                                      label={plan.cancelada ? 'Cancelled' : 'Active'}
+                                      theme={defaultStatusTheme}
+                                    />
+                                  </ListContent>
+                                  <ListContent title="Start Date" colSize={6}>{plan.fecha_inicio}</ListContent>
+                                  <ListContent title="End Date" colSize={6}>{plan.fecha_fin}</ListContent>
+                                  <ListContent title="Amount Paid" colSize={6} isLast>{currency(Number(plan.total ?? 0))}</ListContent>
                                 </ListItem>
                               ))}
                             </ListGroup>
@@ -97,18 +145,25 @@ export default function ClientDetail() {
                         {
                           id: 'standing-quotes',
                           title: 'Standing Quotes',
-                          content: (
+                          content: cotizaciones.isLoading ? loadingContent : quotes.length === 0 ? noContent : (
                             <ListGroup>
-                          {StadingQuotesExample().map((plan, index) => (
-                            <ListItem key={index}>
-                              <ListContent title="Plan Name" colSize={6}>{plan.planName}</ListContent>
-                              <ListContent title="Travelers Number" colSize={6}>{plan.travelersNumber}</ListContent>
-                              <ListContent title="Quote Amount" colSize={6}>{plan.quoteAmount}</ListContent>
-                              <ListContent title="Start Date" colSize={6}>{plan.startDate}</ListContent>
-                              <ListContent title="End Date" colSize={6}>{plan.endDate}</ListContent>
-                              <ListContent title="Quote Amount" colSize={6} isLast>{plan.quoteAmount}</ListContent>
+                          {quotes.map((quote, index) => {
+                            const primeraLinea = quote.lineas?.[0];
+                            const travelers = (quote.lineas ?? []).reduce((acc, l) => acc + (l.pasajeros?.length ?? 0), 0);
+                            return (
+                            <ListItem
+                              key={quote.token ?? index}
+                              onClick={quote.token ? () => navigate(PATHS.quotes.detail(quote.token as string), { state: { item: quote } }) : undefined}
+                            >
+                              <ListContent title="Plan Name" colSize={6}>{planNames(quote)}</ListContent>
+                              <ListContent title="Travelers Number" colSize={6}>{travelers}</ListContent>
+                              <ListContent title="Quote Amount" colSize={6}>{currency(Number(quote.total ?? 0))}</ListContent>
+                              <ListContent title="Start Date" colSize={6}>{primeraLinea?.fecha_salida ?? '—'}</ListContent>
+                              <ListContent title="End Date" colSize={6}>{primeraLinea?.fecha_regreso ?? '—'}</ListContent>
+                              <ListContent title="Quote Amount" colSize={6} isLast>{currency(Number(quote.total ?? 0))}</ListContent>
                             </ListItem>
-                          ))}
+                            );
+                          })}
                         </ListGroup>
                         )}
                       ]}

@@ -12,6 +12,8 @@ import {
 import Offcanvas from '../components/Offcanvas';
 import { AgencyQuotesTable } from '../components/Tables/AgencyQuotesTable';
 import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router-dom';
+import { PATHS } from '../routes/Routes';
 import { useGetCotizacionesAgenteAgencia } from '../api/generated';
 import { useI18nCache } from '../i18n/i18nCacheProvider';
 import { useCountryOptions } from '../hooks/useCountryOptions';
@@ -24,6 +26,7 @@ function MyQuotes() {
   const [filters, setFilters] = useState<PassengerFilterValues>(EMPTY_PASSENGER_FILTERS);
   const [currentPage, setCurrentPage] = useState(1);
   const { t } = useTranslation();
+  const navigate = useNavigate();
   const { lang } = useI18nCache();
   const countryOptions = useCountryOptions();
 
@@ -120,6 +123,7 @@ function MyQuotes() {
               <AgencyQuotesTable
                   data={items}
                   loading={isLoading}
+                  onShow={(row) => { if (row.token) navigate(PATHS.quotes.detail(row.token), { state: { item: row } }); }}
                   pagination={{
                       totalPages: paginacion?.cantidad_paginas ?? 1,
                       currentPage,

@@ -17,6 +17,7 @@ import AgencyDetail from './pages/AgencyDetail';
 import Agents from './pages/Agents';
 import AgentDetail from './pages/AgentDetail';
 import Clients from './pages/Clients';
+import ClientDetail from './pages/ClientDetail';
 import ForgotPassword from './pages/ForgotPassword';
 import CreateNewPassword from './pages/CreateNewPassword';
 import AssistanceAgency from './pages/AssistanceAgency';
@@ -65,12 +66,14 @@ export default function App() {
               </Route>
 
               <Route path="clients" element={<Clients />} />
+              <Route path="client/:id" element={<ClientDetail />} />
               <Route path="renewals" element={<Renewals />} />
               <Route path="quotesAgencies" element={<QuotesAgency />} />
               <Route path="my-quotes" element={<MyQuotes />} />
               <Route path="my-assistances" element={<MyAssistances />} />
               <Route path="agency-assistances" element={<AssistanceAgency />} />
               <Route path="assistance/:id" element={<AssistanceAgencyDetail />} />
+              <Route path="quote/:id" element={<AssistanceAgencyDetail kind="quote" />} />
               <Route path="reports" element={<SalesReports />} />
               <Route path="settings" element={<Settings />} />
             </Route>

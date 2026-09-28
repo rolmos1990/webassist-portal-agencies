@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useCallback, useMemo } from "react";
 import { createClientsColumns } from "./ClientsDataTableConfig";
 import type { GetClientes200DataItemsItem } from "../../api/schemas";
 import { useTranslation } from "react-i18next";
@@ -22,6 +22,7 @@ type ClientsTableProps = {
   pagination?: ClientsTablePagination;
   sort?: SortState | null;
   onSortChange?: (sort: { id: string; dir: SortDir }) => void;
+  onShow?: (row: GetClientes200DataItemsItem) => void;
 };
 
 export function ClientsTable({
@@ -30,12 +31,17 @@ export function ClientsTable({
   pagination,
   sort,
   onSortChange,
+  onShow: externalOnShow,
 }: ClientsTableProps) {
   const { t } = useTranslation();
 
+  const handleShow = useCallback((row: GetClientes200DataItemsItem) => {
+    externalOnShow?.(row);
+  }, [externalOnShow]);
+
   const columns = useMemo(
-    () => createClientsColumns({ currency, t }),
-    [t]
+    () => createClientsColumns({ currency, t, onShow: handleShow }),
+    [t, handleShow]
   );
 
   return (

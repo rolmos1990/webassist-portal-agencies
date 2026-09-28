@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { keepPreviousData } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router-dom';
 import Breadcrumb from '../components/Breadcrumb';
 import { UIButton } from '../components/Button';
 import Offcanvas from '../components/Offcanvas';
@@ -10,6 +11,7 @@ import { useI18nCache } from '../i18n/i18nCacheProvider';
 import { useGetClientes } from '../api/generated';
 import { GetClientesSort, GetClientesSortOrder } from '../api/schemas';
 import type { SortDir, SortState } from '../components/DataTable';
+import { PATHS } from '../routes/Routes';
 import { toast } from '../services/toast';
 import { getApiErrorMessage } from '../api/errors/ApiError';
 
@@ -24,6 +26,7 @@ const SORT_FIELD_BY_COLUMN: Record<string, GetClientesSort> = {
 function Clients() {
   const { lang } = useI18nCache();
   const { t } = useTranslation();
+  const navigate = useNavigate();
 
   const [show, setShow] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
@@ -102,6 +105,7 @@ function Clients() {
               loading={isLoading}
               sort={sort}
               onSortChange={onSortChange}
+              onShow={(row) => { if (row.id) navigate(PATHS.clients.detail(row.id), { state: { item: row } }); }}
               pagination={{
                 totalPages: paginacion?.cantidad_paginas ?? 1,
                 currentPage,

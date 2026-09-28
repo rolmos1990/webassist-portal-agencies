@@ -8,7 +8,8 @@ export interface CustomerCardProps {
   name: string;
   gender: Gender;
   idNumber: string;
-  amount: number;
+  /** null = no mostrar el precio */
+  amount: number | null;
   dob: string;
   phone: string;
   email: string;
@@ -16,6 +17,7 @@ export interface CustomerCardProps {
   onViewCard?: () => void;
   onViewCertification?: () => void;
   hideCertification?: boolean;
+  hideCard?: boolean;
   currency?: string;
 }
 
@@ -50,10 +52,11 @@ export default function CustomerCard({
   onViewCard,
   onViewCertification,
   hideCertification = false,
+  hideCard = false,
   currency = "USD",
 }: CustomerCardProps) {
   const { t } = useTranslation();
-  const { whole, cents } = formatAmountParts(amount, currency);
+  const { whole, cents } = formatAmountParts(amount ?? 0, currency);
 
   return (
     <div className="card shadow-sm rounded-4 customer-card">
@@ -83,10 +86,14 @@ export default function CustomerCard({
 
           {/* Price */}
           <div className="text-end">
-            <div className="fs-5 fw-semibold lh-1 price">
-              {whole}.
-              <span className="cents align-text-top">{cents}</span>
-            </div>
+            {amount === null ? (
+              <div className="fs-5 fw-semibold lh-1 price">—</div>
+            ) : (
+              <div className="fs-5 fw-semibold lh-1 price">
+                {whole}.
+                <span className="cents align-text-top">{cents}</span>
+              </div>
+            )}
           </div>
         </div>
 
@@ -95,7 +102,7 @@ export default function CustomerCard({
         {/* Info grid */}
         <div className="row g-3">
           <div className="col-12 col-md-4">
-            <div className="text-muted small">{t("assistanceDetail.customerCard.passport")}</div>
+            <div className="text-muted small">{t("assistanceDetail.customerCard.dob")}</div>
             <div>{dob}</div>
           </div>
           <div className="col-12 col-md-4">
@@ -122,14 +129,16 @@ export default function CustomerCard({
 
         {/* Actions */}
         <div className="mt-3 d-flex gap-2">
-          <UIButton
-            type="button"
-            variant="outline-primary"
-            icon="bi bi-file-earmark-arrow-down"
-            onClick={onViewCard}
-          >
-            {t("assistanceDetail.customerCard.viewCard")}
-          </UIButton>
+          {!hideCard && (
+            <UIButton
+              type="button"
+              variant="outline-primary"
+              icon="bi bi-file-earmark-arrow-down"
+              onClick={onViewCard}
+            >
+              {t("assistanceDetail.customerCard.viewCard")}
+            </UIButton>
+          )}
           {!hideCertification && (
             <UIButton
               type="button"

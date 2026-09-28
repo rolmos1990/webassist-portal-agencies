@@ -65,7 +65,9 @@
     "gender": "key_clients_gender",
     "country": "key_clients_country",
     "birthDate": "key_clients_birthDate",
-    "salesAmount": "key_clients_salesAmount"
+    "salesAmount": "key_clients_salesAmount",
+    "actions": "key_clients_actions",
+    "view": "key_clients_view"
   },
   "user": {
     "name": "key_user_name",
@@ -170,7 +172,13 @@
     "returnDate": "key_assistanceDetail_returnDate",
     "reference": "key_assistanceDetail_reference",
     "paymentId": "key_assistanceDetail_paymentId",
+    "modifyVoucher": "key_assistanceDetail_modifyVoucher",
+    "rePurchase": "key_assistanceDetail_rePurchase",
+    "downloadVoucher": "key_assistanceDetail_downloadVoucher",
+    "travellers": "key_assistanceDetail_travellers",
+    "paymentConfirmation": "key_assistanceDetail_paymentConfirmation",
     "customerCard": {
+      "dob": "key_assistanceDetail_customerCard_dob",
       "passport": "key_assistanceDetail_customerCard_passport",
       "phone": "key_assistanceDetail_customerCard_phone",
       "email": "key_assistanceDetail_customerCard_email",
@@ -213,6 +221,10 @@
   "noData": "key_noData",
   "error_generico": "key_error_generico",
   "error_desconocido": "key_error_desconocido",
+  "quotes": {
+    "actions": "key_quotes_actions",
+    "view": "key_quotes_view"
+  },
   "feedback": {
     "savedTitle": "key_feedback_savedTitle",
     "saved": "key_feedback_saved"

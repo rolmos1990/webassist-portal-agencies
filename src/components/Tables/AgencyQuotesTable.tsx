@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useCallback, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import DataTable, { currency } from "../DataTable";
 import { createAgencyQuotesColumns } from "./AgencyQuotesDataTableConfig";
@@ -21,12 +21,17 @@ type AgencyQuotesTableProps = {
   data: GetCotizacionesAgenteAgencia200DataItemsItem[];
   loading?: boolean;
   pagination?: AgencyQuotesTablePagination;
+  onShow?: (row: GetCotizacionesAgenteAgencia200DataItemsItem) => void;
 };
 
-export function AgencyQuotesTable({ data, loading = false, pagination }: AgencyQuotesTableProps) {
+export function AgencyQuotesTable({ data, loading = false, pagination, onShow: externalOnShow }: AgencyQuotesTableProps) {
   const { t } = useTranslation();
 
-  const columns = useMemo(() => createAgencyQuotesColumns({ currency, t }), [t]);
+  const handleShow = useCallback((row: GetCotizacionesAgenteAgencia200DataItemsItem) => {
+    externalOnShow?.(row);
+  }, [externalOnShow]);
+
+  const columns = useMemo(() => createAgencyQuotesColumns({ currency, t, onShow: handleShow }), [t, handleShow]);
 
   return (
     <DataTable<GetCotizacionesAgenteAgencia200DataItemsItem>
