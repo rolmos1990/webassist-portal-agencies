@@ -123,7 +123,10 @@ export default function ClientDetail() {
                               {planes.map((plan, index) => (
                                 <ListItem
                                   key={plan.token ?? index}
-                                  onClick={() => navigate(PATHS.assistances.detail(plan.token), { state: { item: plan } })}
+                                  onClick={() => navigate(
+                                    item?.id && plan.token ? PATHS.clients.assistance(item.id, plan.token) : PATHS.assistances.detail(plan.token),
+                                    { state: { item: plan } }
+                                  )}
                                 >
                                   <ListContent title="Plan Number" colSize={6}>{plan.voucher?.codigo ?? plan.token}</ListContent>
                                   <ListContent title="Plan Name" colSize={6}>{plan.plan?.nombre}</ListContent>
@@ -153,7 +156,10 @@ export default function ClientDetail() {
                             return (
                             <ListItem
                               key={quote.token ?? index}
-                              onClick={quote.token ? () => navigate(PATHS.quotes.detail(quote.token as string), { state: { item: quote } }) : undefined}
+                              onClick={quote.token ? () => navigate(
+                                item?.id ? PATHS.clients.quote(item.id, quote.token as string) : PATHS.quotes.detail(quote.token as string),
+                                { state: { item: quote } }
+                              ) : undefined}
                             >
                               <ListContent title="Plan Name" colSize={6}>{planNames(quote)}</ListContent>
                               <ListContent title="Travelers Number" colSize={6}>{travelers}</ListContent>

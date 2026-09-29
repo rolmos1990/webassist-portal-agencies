@@ -187,6 +187,21 @@
       "viewCertificate": "key_assistanceDetail_customerCard_viewCertificate"
     }
   },
+  "quoteDetail": {
+    "back": "key_quoteDetail_back",
+    "totalQuote": "key_quoteDetail_totalQuote",
+    "travellers": "key_quoteDetail_travellers",
+    "upgrades": "key_quoteDetail_upgrades",
+    "travellerUnit": "key_quoteDetail_travellerUnit",
+    "yearsOld": "key_quoteDetail_yearsOld",
+    "currency": "key_quoteDetail_currency",
+    "ageRanges": {
+      "upTo65": "key_quoteDetail_ageRanges_upTo65",
+      "from66To74": "key_quoteDetail_ageRanges_from66To74",
+      "from75To85": "key_quoteDetail_ageRanges_from75To85",
+      "over85": "key_quoteDetail_ageRanges_over85"
+    }
+  },
   "salesReport": {
     "filterBy": "key_salesReport_filterBy",
     "filterByDateLabel": "key_salesReport_filterByDateLabel",

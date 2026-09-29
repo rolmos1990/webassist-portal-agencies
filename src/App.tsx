@@ -23,6 +23,7 @@ import CreateNewPassword from './pages/CreateNewPassword';
 import AssistanceAgency from './pages/AssistanceAgency';
 import AssistanceAgencyDetail from './pages/AssistanceDetail';
 import QuotesAgency from './pages/QuotesAgency';
+import QuoteDetail from './pages/QuoteDetail';
 import MyAssistances from './pages/MyAssistences';
 import MyQuotes from './pages/MyQuotes';
 import SalesReports from './pages/SalesReports';
@@ -67,6 +68,8 @@ export default function App() {
 
               <Route path="clients" element={<Clients />} />
               <Route path="client/:id" element={<ClientDetail />} />
+              <Route path="client/:clientId/assistance/:id" element={<AssistanceAgencyDetail />} />
+              <Route path="client/:clientId/quote/:id" element={<QuoteDetail />} />
               <Route path="renewals" element={<Renewals />} />
               <Route path="quotesAgencies" element={<QuotesAgency />} />
               <Route path="my-quotes" element={<MyQuotes />} />

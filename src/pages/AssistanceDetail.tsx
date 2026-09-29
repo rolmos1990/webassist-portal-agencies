@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
 import Breadcrumb from '../components/Breadcrumb';
 import { UIButton } from '../components/Button';
-import CustomerCard from '../components/CustomerCard';
+import TravelersList from '../components/TravelersList';
 import { HorizontalCardList, HorizontalCardListItem } from '../components/HorizontalCardList';
 import { StatusBadge } from '../components/StatusBadge';
 import Offcanvas from '../components/Offcanvas';
@@ -38,7 +38,7 @@ interface Props {
 export default function AssistanceDetail({ kind = 'assistance' }: Props) {
     const [show, setShow] = useState(false);
     const { t } = useTranslation();
-    const { id } = useParams<{ id: string }>();
+    const { id, clientId } = useParams<{ id: string; clientId?: string }>();
     const location = useLocation();
 
     // No hay endpoint de detalle: el item llega desde la lista (asistencias o cotizaciones)
@@ -52,7 +52,11 @@ export default function AssistanceDetail({ kind = 'assistance' }: Props) {
 
     // Se consultan al entrar al voucher para que el panel "Ver más" ya tenga los datos.
     // Sólo asistencias: las cotizaciones no tienen id de pasajero.
-    const benefitsParams = voucher.benefits;
+    // Desde el detalle del cliente el id viene en la URL; desde los listados se usa el del primer pasajero.
+    const benefitsParams = voucher.benefits && {
+      voucher: voucher.benefits.voucher,
+      clientId: clientId ?? voucher.benefits.clientId,
+    };
     const beneficios = useGetBeneficiosCliente(
       lang,
       benefitsParams?.voucher ?? '',
@@ -112,37 +116,6 @@ export default function AssistanceDetail({ kind = 'assistance' }: Props) {
             />
           )}
         </HorizontalCardList>
-      </div>
-    );
-
-    const renderTravelers = (block: VoucherBlock) => (
-      <div className="mt-4">
-        <h5 className="mb-4">{t("assistanceDetail.travellers")}</h5>
-        <div className="row g-3">
-          {block.travelers.length === 0 ? (
-            <div className="col-12 text-muted small">{t("noData")}</div>
-          ) : (
-            block.travelers.map((traveler) => (
-              <div className="col-12 col-md-5" key={traveler.key}>
-                <CustomerCard
-                  name={traveler.name}
-                  gender={traveler.gender}
-                  idNumber={traveler.idNumber}
-                  amount={traveler.amount}
-                  dob={traveler.dob}
-                  phone={traveler.phone}
-                  email={traveler.email}
-                  medicalDetails={traveler.medicalDetails}
-                  onViewCard={() => openInNewTab(traveler.cardUrl)}
-                  onViewCertification={() => openInNewTab(traveler.certificationUrl)}
-                  hideCard={!voucher.hasDocuments}
-                  hideCertification={!voucher.hasDocuments}
-                  currency="USD"
-                />
-              </div>
-            ))
-          )}
-        </div>
       </div>
     );
 
@@ -269,7 +242,7 @@ export default function AssistanceDetail({ kind = 'assistance' }: Props) {
               {/* Cotización con varias líneas: cada línea con su plan, datos y pasajeros */}
               {multipleBlocks && <h6 className="fw-semibold mt-3 mb-2">{block.planName}</h6>}
               {renderStrip(block, idx === 0)}
-              {renderTravelers(block)}
+              <TravelersList travelers={block.travelers} hideDocuments={!voucher.hasDocuments} />
             </div>
           ))}
             </div>
