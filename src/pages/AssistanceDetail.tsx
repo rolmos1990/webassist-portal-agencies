@@ -14,7 +14,7 @@ import type {
   GetCotizacionesAgenteAgencia200DataItemsItem,
 } from '../api/schemas';
 import { fromAsistencia, fromCotizacion, type VoucherBlock, type VoucherKind } from '../adapters/voucherDetail';
-import { useGetBeneficiosCliente } from '../api/generated';
+import { useGetAsistenciasAgenteAgencia, useGetBeneficiosCliente } from '../api/generated';
 import { useI18nCache } from '../i18n/i18nCacheProvider';
 import { toast } from '../services/toast';
 import { getApiErrorMessage } from '../api/errors/ApiError';
@@ -43,12 +43,25 @@ export default function AssistanceDetail({ kind = 'assistance' }: Props) {
 
     // No hay endpoint de detalle: el item llega desde la lista (asistencias o cotizaciones)
     const state = location.state as { item?: unknown } | null;
+    const { lang } = useI18nCache();
+
+    // Sin item en state (planes activos del cliente, recarga o link directo) la asistencia se busca por voucher
+    const searchByVoucher = kind === 'assistance' && !state?.item && !!id;
+    const asistencias = useGetAsistenciasAgenteAgencia(
+      lang,
+      { voucher: id },
+      { query: { enabled: searchByVoucher } }
+    );
+    // Se exige coincidencia exacta para no mostrar otro voucher si el filtro fuera parcial
+    const asistencia = searchByVoucher
+      ? asistencias.data?.data?.items?.find((i) => i.token === id || i.voucher?.codigo === id)
+      : (state?.item as GetAsistenciasAgenteAgencia200DataItemsItem | undefined);
+
     const voucher = kind === 'quote'
       ? fromCotizacion(state?.item as GetCotizacionesAgenteAgencia200DataItemsItem | undefined)
-      : fromAsistencia(state?.item as GetAsistenciasAgenteAgencia200DataItemsItem | undefined);
+      : fromAsistencia(asistencia);
     const code = state?.item ? voucher.code : (id ?? voucher.code);
     const multipleBlocks = voucher.blocks.length > 1;
-    const { lang } = useI18nCache();
 
     // Se consultan al entrar al voucher para que el panel "Ver más" ya tenga los datos.
     // Sólo asistencias: las cotizaciones no tienen id de pasajero.
@@ -70,6 +83,12 @@ export default function AssistanceDetail({ kind = 'assistance' }: Props) {
         toast.error("Error", getApiErrorMessage(beneficios.error, t('error_generico')));
       }
     }, [beneficios.error, t]);
+
+    useEffect(() => {
+      if (asistencias.error) {
+        toast.error("Error", getApiErrorMessage(asistencias.error, t('error_generico')));
+      }
+    }, [asistencias.error, t]);
 
     const renderStrip = (block: VoucherBlock, withGeneralData: boolean) => (
       <div className="flex-grow-1 border-bottom pb-3">
@@ -118,6 +137,21 @@ export default function AssistanceDetail({ kind = 'assistance' }: Props) {
         </HorizontalCardList>
       </div>
     );
+
+    if (searchByVoucher && asistencias.isLoading) {
+      return (
+<div className="min-vh-100 bg-light">
+  <div className="container-fluid py-3 px-4">
+        <Breadcrumb title={t('assistanceDetail.back')} hasBack />
+        <div className="card shadow">
+            <div className="p-4">
+              <div className="spinner-border" role="status" />
+            </div>
+        </div>
+  </div>
+</div>
+      );
+    }
 
     return (
 <div className="min-vh-100 bg-light">

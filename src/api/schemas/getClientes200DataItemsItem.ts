@@ -16,6 +16,7 @@ Todas las respuestas de error salen en JSON con la misma forma: `ok` en `false`,
 | 5003 | 404 | El endpoint solicitado no existe |
 | 5004 | 405 | El método HTTP no está permitido para ese endpoint |
 | 5005 | 500 | Error interno al procesar la solicitud |
+| 5006 | 200 | El plan no existe o no está habilitado para el usuario de la API |
 
 Los códigos 5001 y 5002 son de negocio y viajan con HTTP 200: hay que mirar siempre el campo `ok`, no sólo el status.
 
@@ -25,21 +26,29 @@ Cuando el error es de validación de campos, además de `error` viene `errores`,
 
 En el ambiente de desarrollo las respuestas 500 agregan `error` y `archivo` con el detalle técnico; en producción no.
 
- * OpenAPI spec version: 1.0.25
+ * OpenAPI spec version: 1.0.28
  */
+import type { GetClientes200DataItemsItemSexo } from './getClientes200DataItemsItemSexo';
+import type { GetClientes200DataItemsItemPaisId } from './getClientes200DataItemsItemPaisId';
+import type { GetClientes200DataItemsItemAgente } from './getClientes200DataItemsItemAgente';
 import type { GetClientes200DataItemsItemVentas } from './getClientes200DataItemsItemVentas';
+import type { GetClientes200DataItemsItemPlanesActivosItem } from './getClientes200DataItemsItemPlanesActivosItem';
 
 export type GetClientes200DataItemsItem = {
-  id?: string;
-  sexo?: string;
-  pais_id?: string;
+  id?: number;
+  sexo?: GetClientes200DataItemsItemSexo;
+  /** País del cliente */
+  pais_id?: GetClientes200DataItemsItemPaisId;
   pasaporte?: string;
   nombre?: string;
   apellido?: string;
-  nacimiento_ts?: string;
   telefono?: string;
   email?: string;
-  pais_nombre?: string;
-  sexo_nombre?: string;
+  /** Agente que registró al cliente */
+  agente?: GetClientes200DataItemsItemAgente;
+  fecha_nacimiento?: string;
+  /** Resumen de todas las ventas de la persona (mismo pasaporte y país), del agente o de toda la agencia si es administrador */
   ventas?: GetClientes200DataItemsItemVentas;
+  /** Ventas no canceladas del cliente cuya vigencia incluye el día de hoy, del agente o de toda la agencia si es administrador */
+  planes_activos?: GetClientes200DataItemsItemPlanesActivosItem[];
 };

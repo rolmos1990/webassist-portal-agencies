@@ -16,6 +16,7 @@ Todas las respuestas de error salen en JSON con la misma forma: `ok` en `false`,
 | 5003 | 404 | El endpoint solicitado no existe |
 | 5004 | 405 | El método HTTP no está permitido para ese endpoint |
 | 5005 | 500 | Error interno al procesar la solicitud |
+| 5006 | 200 | El plan no existe o no está habilitado para el usuario de la API |
 
 Los códigos 5001 y 5002 son de negocio y viajan con HTTP 200: hay que mirar siempre el campo `ok`, no sólo el status.
 
@@ -25,13 +26,20 @@ Cuando el error es de validación de campos, además de `error` viene `errores`,
 
 En el ambiente de desarrollo las respuestas 500 agregan `error` y `archivo` con el detalle técnico; en producción no.
 
- * OpenAPI spec version: 1.0.25
+ * OpenAPI spec version: 1.0.28
  */
 import type { GetClienteVentas200Data } from './getClienteVentas200Data';
-import type { User } from './user';
+import type { UserLogin } from './userLogin';
 
 export type GetClienteVentas200 = {
   ok?: boolean;
+  /** En el caso ok false llega como array vacío */
   data?: GetClienteVentas200Data;
-  usuario?: User;
+  usuario?: UserLogin;
+  /** Sólo con error_code 5001 */
+  mensaje?: string;
+  /** Motivo del error: usuario no válido (5002) o cliente sin ventas visibles (sin error_code) */
+  error?: string;
+  /** 5001 idioma no soportado, 5002 usuario no válido. El caso sin ventas no trae error_code. */
+  error_code?: number;
 };

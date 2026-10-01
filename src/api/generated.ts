@@ -16,6 +16,7 @@ Todas las respuestas de error salen en JSON con la misma forma: `ok` en `false`,
 | 5003 | 404 | El endpoint solicitado no existe |
 | 5004 | 405 | El método HTTP no está permitido para ese endpoint |
 | 5005 | 500 | Error interno al procesar la solicitud |
+| 5006 | 200 | El plan no existe o no está habilitado para el usuario de la API |
 
 Los códigos 5001 y 5002 son de negocio y viajan con HTTP 200: hay que mirar siempre el campo `ok`, no sólo el status.
 
@@ -25,7 +26,7 @@ Cuando el error es de validación de campos, además de `error` viene `errores`,
 
 En el ambiente de desarrollo las respuestas 500 agregan `error` y `archivo` con el detalle técnico; en producción no.
 
- * OpenAPI spec version: 1.0.25
+ * OpenAPI spec version: 1.0.28
  */
 import {
   useMutation,
@@ -89,6 +90,7 @@ import type {
   GetPaises200,
   GetPerfilAgencia200,
   GetPerfilAgente200,
+  GetPlanBeneficios200,
   GetRenovacionesPendientes200,
   GetStatusCodes200,
   GetTasaComisiones200,
@@ -2494,6 +2496,102 @@ export function useGetBeneficiosCliente<TData = Awaited<ReturnType<typeof getBen
 
 
 /**
+ * Obtiene los beneficios de un plan, separados en principales y adicionales. Sólo responde planes habilitados para el usuario de la API (los mismos de tipos_planes); si no, devuelve error_code 5006. Sólo se incluyen beneficios con valor cargado para el plan.
+ * @summary Beneficios de un Plan
+ */
+export const getPlanBeneficios = (
+    idioma: string,
+    idPlan: number,
+ signal?: AbortSignal
+) => {
+      
+      
+      return customFetch<GetPlanBeneficios200>(
+      {url: `/${idioma}/plan-beneficios/${idPlan}`, method: 'GET', signal
+    },
+      );
+    }
+  
+
+export const getGetPlanBeneficiosQueryKey = (idioma?: string,
+    idPlan?: number,) => {
+    return [`/${idioma}/plan-beneficios/${idPlan}`] as const;
+    }
+
+    
+export const getGetPlanBeneficiosQueryOptions = <TData = Awaited<ReturnType<typeof getPlanBeneficios>>, TError = RutaNoEncontradaResponse | MetodoNoPermitidoResponse | ErrorInternoResponse>(idioma: string,
+    idPlan: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getPlanBeneficios>>, TError, TData>>, }
+) => {
+
+const {query: queryOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetPlanBeneficiosQueryKey(idioma,idPlan);
+
+  
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getPlanBeneficios>>> = ({ signal }) => getPlanBeneficios(idioma,idPlan, signal);
+
+      
+
+      
+
+   return  { queryKey, queryFn, enabled: !!(idioma && idPlan), ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getPlanBeneficios>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type GetPlanBeneficiosQueryResult = NonNullable<Awaited<ReturnType<typeof getPlanBeneficios>>>
+export type GetPlanBeneficiosQueryError = RutaNoEncontradaResponse | MetodoNoPermitidoResponse | ErrorInternoResponse
+
+
+export function useGetPlanBeneficios<TData = Awaited<ReturnType<typeof getPlanBeneficios>>, TError = RutaNoEncontradaResponse | MetodoNoPermitidoResponse | ErrorInternoResponse>(
+ idioma: string,
+    idPlan: number, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getPlanBeneficios>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getPlanBeneficios>>,
+          TError,
+          Awaited<ReturnType<typeof getPlanBeneficios>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetPlanBeneficios<TData = Awaited<ReturnType<typeof getPlanBeneficios>>, TError = RutaNoEncontradaResponse | MetodoNoPermitidoResponse | ErrorInternoResponse>(
+ idioma: string,
+    idPlan: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getPlanBeneficios>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getPlanBeneficios>>,
+          TError,
+          Awaited<ReturnType<typeof getPlanBeneficios>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetPlanBeneficios<TData = Awaited<ReturnType<typeof getPlanBeneficios>>, TError = RutaNoEncontradaResponse | MetodoNoPermitidoResponse | ErrorInternoResponse>(
+ idioma: string,
+    idPlan: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getPlanBeneficios>>, TError, TData>>, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/**
+ * @summary Beneficios de un Plan
+ */
+
+export function useGetPlanBeneficios<TData = Awaited<ReturnType<typeof getPlanBeneficios>>, TError = RutaNoEncontradaResponse | MetodoNoPermitidoResponse | ErrorInternoResponse>(
+ idioma: string,
+    idPlan: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getPlanBeneficios>>, TError, TData>>, }
+ , queryClient?: QueryClient 
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getGetPlanBeneficiosQueryOptions(idioma,idPlan,options)
+
+  const query = useQuery(queryOptions , queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  query.queryKey = queryOptions.queryKey ;
+
+  return query;
+}
+
+
+
+
+/**
  * Registra un lead de evento
  * @summary Lead
  */
@@ -2561,7 +2659,7 @@ export const useGetLeadEvento = <TError = null | RutaNoEncontradaResponse | Meto
     }
     
 /**
- * Devuelve un listado de clientes con información básica.
+ * Devuelve el listado paginado (25 por página) de clientes del agente. Si el agente es administrador de su agencia, incluye los clientes de todos los agentes de la agencia.
  * @summary Listado de Clientes
  */
 export const getClientes = (
@@ -2658,19 +2756,19 @@ export function useGetClientes<TData = Awaited<ReturnType<typeof getClientes>>, 
 
 
 /**
- * Devuelve un listado de ventas asociadas a un cliente específico, incluyendo detalles de los documentos y paginación.
+ * Devuelve las ventas paginadas (25 por página, de la más reciente a la más antigua) de un cliente, con los links a sus documentos. Incluye todas las ventas de la persona (mismo pasaporte y país) del agente, o de toda su agencia si el agente es administrador. El cliente tiene que ser del agente o de su agencia; si no, o si no tiene ventas, responde ok false.
  * @summary Ventas por Cliente
  */
 export const getClienteVentas = (
     idioma: 'es' | 'en',
-    clienteId: string,
+    cliente: number,
     params?: GetClienteVentasParams,
  signal?: AbortSignal
 ) => {
       
       
       return customFetch<GetClienteVentas200>(
-      {url: `/${idioma}/cliente-ventas/${clienteId}`, method: 'GET',
+      {url: `/${idioma}/cliente-ventas/${cliente}`, method: 'GET',
         params, signal
     },
       );
@@ -2678,39 +2776,39 @@ export const getClienteVentas = (
   
 
 export const getGetClienteVentasQueryKey = (idioma?: 'es' | 'en',
-    clienteId?: string,
+    cliente?: number,
     params?: GetClienteVentasParams,) => {
-    return [`/${idioma}/cliente-ventas/${clienteId}`, ...(params ? [params]: [])] as const;
+    return [`/${idioma}/cliente-ventas/${cliente}`, ...(params ? [params]: [])] as const;
     }
 
     
-export const getGetClienteVentasQueryOptions = <TData = Awaited<ReturnType<typeof getClienteVentas>>, TError = null | null | MetodoNoPermitidoResponse | null>(idioma: 'es' | 'en',
-    clienteId: string,
+export const getGetClienteVentasQueryOptions = <TData = Awaited<ReturnType<typeof getClienteVentas>>, TError = RutaNoEncontradaResponse | MetodoNoPermitidoResponse | ErrorInternoResponse>(idioma: 'es' | 'en',
+    cliente: number,
     params?: GetClienteVentasParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getClienteVentas>>, TError, TData>>, }
 ) => {
 
 const {query: queryOptions} = options ?? {};
 
-  const queryKey =  queryOptions?.queryKey ?? getGetClienteVentasQueryKey(idioma,clienteId,params);
+  const queryKey =  queryOptions?.queryKey ?? getGetClienteVentasQueryKey(idioma,cliente,params);
 
   
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getClienteVentas>>> = ({ signal }) => getClienteVentas(idioma,clienteId,params, signal);
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getClienteVentas>>> = ({ signal }) => getClienteVentas(idioma,cliente,params, signal);
 
       
 
       
 
-   return  { queryKey, queryFn, enabled: !!(idioma && clienteId), ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getClienteVentas>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+   return  { queryKey, queryFn, enabled: !!(idioma && cliente), ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getClienteVentas>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
 }
 
 export type GetClienteVentasQueryResult = NonNullable<Awaited<ReturnType<typeof getClienteVentas>>>
-export type GetClienteVentasQueryError = null | null | MetodoNoPermitidoResponse | null
+export type GetClienteVentasQueryError = RutaNoEncontradaResponse | MetodoNoPermitidoResponse | ErrorInternoResponse
 
 
-export function useGetClienteVentas<TData = Awaited<ReturnType<typeof getClienteVentas>>, TError = null | null | MetodoNoPermitidoResponse | null>(
+export function useGetClienteVentas<TData = Awaited<ReturnType<typeof getClienteVentas>>, TError = RutaNoEncontradaResponse | MetodoNoPermitidoResponse | ErrorInternoResponse>(
  idioma: 'es' | 'en',
-    clienteId: string,
+    cliente: number,
     params: undefined |  GetClienteVentasParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getClienteVentas>>, TError, TData>> & Pick<
         DefinedInitialDataOptions<
           Awaited<ReturnType<typeof getClienteVentas>>,
@@ -2720,9 +2818,9 @@ export function useGetClienteVentas<TData = Awaited<ReturnType<typeof getCliente
       >, }
  , queryClient?: QueryClient
   ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useGetClienteVentas<TData = Awaited<ReturnType<typeof getClienteVentas>>, TError = null | null | MetodoNoPermitidoResponse | null>(
+export function useGetClienteVentas<TData = Awaited<ReturnType<typeof getClienteVentas>>, TError = RutaNoEncontradaResponse | MetodoNoPermitidoResponse | ErrorInternoResponse>(
  idioma: 'es' | 'en',
-    clienteId: string,
+    cliente: number,
     params?: GetClienteVentasParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getClienteVentas>>, TError, TData>> & Pick<
         UndefinedInitialDataOptions<
           Awaited<ReturnType<typeof getClienteVentas>>,
@@ -2732,9 +2830,9 @@ export function useGetClienteVentas<TData = Awaited<ReturnType<typeof getCliente
       >, }
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useGetClienteVentas<TData = Awaited<ReturnType<typeof getClienteVentas>>, TError = null | null | MetodoNoPermitidoResponse | null>(
+export function useGetClienteVentas<TData = Awaited<ReturnType<typeof getClienteVentas>>, TError = RutaNoEncontradaResponse | MetodoNoPermitidoResponse | ErrorInternoResponse>(
  idioma: 'es' | 'en',
-    clienteId: string,
+    cliente: number,
     params?: GetClienteVentasParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getClienteVentas>>, TError, TData>>, }
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
@@ -2742,14 +2840,14 @@ export function useGetClienteVentas<TData = Awaited<ReturnType<typeof getCliente
  * @summary Ventas por Cliente
  */
 
-export function useGetClienteVentas<TData = Awaited<ReturnType<typeof getClienteVentas>>, TError = null | null | MetodoNoPermitidoResponse | null>(
+export function useGetClienteVentas<TData = Awaited<ReturnType<typeof getClienteVentas>>, TError = RutaNoEncontradaResponse | MetodoNoPermitidoResponse | ErrorInternoResponse>(
  idioma: 'es' | 'en',
-    clienteId: string,
+    cliente: number,
     params?: GetClienteVentasParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getClienteVentas>>, TError, TData>>, }
  , queryClient?: QueryClient 
  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
-  const queryOptions = getGetClienteVentasQueryOptions(idioma,clienteId,params,options)
+  const queryOptions = getGetClienteVentasQueryOptions(idioma,cliente,params,options)
 
   const query = useQuery(queryOptions , queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 

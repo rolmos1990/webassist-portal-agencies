@@ -10,7 +10,7 @@ Update the API integration using the OpenAPI-first workflow.
 
 Before modifying anything:
 
-1. Read openapi.yml.
+1. Read openapi.json.
 2. Read orval.config.ts.
 3. Identify generated output directories.
 4. Inspect package.json scripts.

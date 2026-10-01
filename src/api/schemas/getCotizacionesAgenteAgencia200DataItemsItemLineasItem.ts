@@ -16,6 +16,7 @@ Todas las respuestas de error salen en JSON con la misma forma: `ok` en `false`,
 | 5003 | 404 | El endpoint solicitado no existe |
 | 5004 | 405 | El método HTTP no está permitido para ese endpoint |
 | 5005 | 500 | Error interno al procesar la solicitud |
+| 5006 | 200 | El plan no existe o no está habilitado para el usuario de la API |
 
 Los códigos 5001 y 5002 son de negocio y viajan con HTTP 200: hay que mirar siempre el campo `ok`, no sólo el status.
 
@@ -25,7 +26,7 @@ Cuando el error es de validación de campos, además de `error` viene `errores`,
 
 En el ambiente de desarrollo las respuestas 500 agregan `error` y `archivo` con el detalle técnico; en producción no.
 
- * OpenAPI spec version: 1.0.25
+ * OpenAPI spec version: 1.0.28
  */
 import type { GetCotizacionesAgenteAgencia200DataItemsItemLineasItemPlan } from './getCotizacionesAgenteAgencia200DataItemsItemLineasItemPlan';
 import type { GetCotizacionesAgenteAgencia200DataItemsItemLineasItemPais } from './getCotizacionesAgenteAgencia200DataItemsItemLineasItemPais';
@@ -37,12 +38,19 @@ import type { GetCotizacionesAgenteAgencia200DataItemsItemLineasItemPasajerosIte
 export type GetCotizacionesAgenteAgencia200DataItemsItemLineasItem = {
   id?: number;
   plan?: GetCotizacionesAgenteAgencia200DataItemsItemLineasItemPlan;
+  /** Precio de la línea con el descuento aplicado */
   precio_unitario?: number;
+  /** Precio de la línea sin descuento */
   precio_unitario_regular?: number;
+  /** precio_unitario_regular - precio_unitario */
+  descuento?: number;
   pais?: GetCotizacionesAgenteAgencia200DataItemsItemLineasItemPais;
   pais_destino?: GetCotizacionesAgenteAgencia200DataItemsItemLineasItemPaisDestino;
   fecha_salida?: GetCotizacionesAgenteAgencia200DataItemsItemLineasItemFechaSalida;
   fecha_regreso?: GetCotizacionesAgenteAgencia200DataItemsItemLineasItemFechaRegreso;
+  /** Cantidad de pasajeros cotizados en la línea */
+  cantidad_pasajeros?: number;
+  /** Un elemento por pasajero cotizado, aunque todavía no se hayan cargado sus datos (datos_completos false). En ese caso los campos de datos personales vienen vacíos. */
   pasajeros?: GetCotizacionesAgenteAgencia200DataItemsItemLineasItemPasajerosItem[];
   contacto?: string;
   contacto_telefono?: string;

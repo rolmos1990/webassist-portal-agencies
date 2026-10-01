@@ -1,6 +1,6 @@
 /**
  * Roles de negocio soportados por el frontend.
- * El backend no expone un enum formal (openapi.yaml no restringe `roles`),
+ * El backend no expone un enum formal (openapi.json no restringe `roles`),
  * por eso el valor crudo se trata como no confiable y se parsea en el borde.
  *
  * Se usa un objeto `as const` en vez de `enum`: el tsconfig de este proyecto

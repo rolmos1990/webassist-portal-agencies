@@ -53,7 +53,7 @@ Do not redesign or restructure the entire application.
 
 - OpenAPI is the source of truth for API contracts.
 - Orval-generated files must not be edited manually.
-- Update openapi.yml first.
+- Update openapi.json first.
 - Run the configured Orval generator afterward.
 - Adapt handwritten application code to the generated types and hooks.
 - Never fix generated-code errors directly inside generated files.

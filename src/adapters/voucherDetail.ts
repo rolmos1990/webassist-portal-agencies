@@ -140,11 +140,12 @@ export function fromCotizacion(item?: GetCotizacionesAgenteAgencia200DataItemsIt
       return: orEmpty(linea.fecha_regreso),
       travelers: (linea.pasajeros ?? []).map((p, idx) => ({
         key: `${lineIdx}-${idx}`,
-        name: fullName(p.nombre, p.apellido),
+        // Sin datos cargados el servicio arma "Pasajero N (rango de edad)" en nombre_mostrar
+        name: p.datos_completos === false ? orEmpty(p.nombre_mostrar) : fullName(p.nombre, p.apellido),
         gender: orEmpty(p.sexo?.nombre),
         idNumber: orEmpty(p.pasaporte),
-        // precio unitario de la línea (por pasajero)
-        amount: Number(linea.precio_unitario ?? 0),
+        // precio final del pasajero (con upgrades y descuento)
+        amount: Number(p.precio ?? 0),
         dob: orEmpty(p.fecha_nacimiento),
         phone: orEmpty(p.telefono),
         email: orEmpty(p.email),

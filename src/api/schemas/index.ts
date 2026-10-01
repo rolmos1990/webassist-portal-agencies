@@ -16,6 +16,7 @@ Todas las respuestas de error salen en JSON con la misma forma: `ok` en `false`,
 | 5003 | 404 | El endpoint solicitado no existe |
 | 5004 | 405 | El método HTTP no está permitido para ese endpoint |
 | 5005 | 500 | Error interno al procesar la solicitud |
+| 5006 | 200 | El plan no existe o no está habilitado para el usuario de la API |
 
 Los códigos 5001 y 5002 son de negocio y viajan con HTTP 200: hay que mirar siempre el campo `ok`, no sólo el status.
 
@@ -25,7 +26,7 @@ Cuando el error es de validación de campos, además de `error` viene `errores`,
 
 En el ambiente de desarrollo las respuestas 500 agregan `error` y `archivo` con el detalle técnico; en producción no.
 
- * OpenAPI spec version: 1.0.25
+ * OpenAPI spec version: 1.0.28
  */
 
 export * from './actualizarAgentePorIdBody';
@@ -115,11 +116,19 @@ export * from './getClienteVentas200DataItemsItem';
 export * from './getClienteVentas200DataItemsItemDocumentosItem';
 export * from './getClienteVentas200DataItemsItemDocumentosItemLinksTarjetasEnItem';
 export * from './getClienteVentas200DataItemsItemDocumentosItemLinksTarjetasEsItem';
+export * from './getClienteVentas200DataItemsItemDocumentosItemOneOf';
+export * from './getClienteVentas200DataItemsItemDocumentosItemOneOfLinksTarjetasItem';
+export * from './getClienteVentas200DataItemsItemDocumentosItemOneOfThree';
 export * from './getClienteVentas200DataItemsItemDocumentosItemPdfVouchers';
 export * from './getClienteVentasParams';
 export * from './getClientes200';
 export * from './getClientes200Data';
 export * from './getClientes200DataItemsItem';
+export * from './getClientes200DataItemsItemAgente';
+export * from './getClientes200DataItemsItemPaisId';
+export * from './getClientes200DataItemsItemPlanesActivosItem';
+export * from './getClientes200DataItemsItemPlanesActivosItemPlan';
+export * from './getClientes200DataItemsItemSexo';
 export * from './getClientes200DataItemsItemVentas';
 export * from './getClientesParams';
 export * from './getClientesSort';
@@ -136,6 +145,9 @@ export * from './getCotizacionesAgenteAgencia200';
 export * from './getCotizacionesAgenteAgencia200Data';
 export * from './getCotizacionesAgenteAgencia200DataItemsItem';
 export * from './getCotizacionesAgenteAgencia200DataItemsItemAgente';
+export * from './getCotizacionesAgenteAgencia200DataItemsItemCodigoDescuento';
+export * from './getCotizacionesAgenteAgencia200DataItemsItemCodigoDescuentoAnyOf';
+export * from './getCotizacionesAgenteAgencia200DataItemsItemCodigoDescuentoAnyOfTipo';
 export * from './getCotizacionesAgenteAgencia200DataItemsItemLineasItem';
 export * from './getCotizacionesAgenteAgencia200DataItemsItemLineasItemFechaRegreso';
 export * from './getCotizacionesAgenteAgencia200DataItemsItemLineasItemFechaSalida';
@@ -144,6 +156,7 @@ export * from './getCotizacionesAgenteAgencia200DataItemsItemLineasItemPaisDesti
 export * from './getCotizacionesAgenteAgencia200DataItemsItemLineasItemPasajerosItem';
 export * from './getCotizacionesAgenteAgencia200DataItemsItemLineasItemPasajerosItemFechaNacimiento';
 export * from './getCotizacionesAgenteAgencia200DataItemsItemLineasItemPasajerosItemPais';
+export * from './getCotizacionesAgenteAgencia200DataItemsItemLineasItemPasajerosItemRangoEdad';
 export * from './getCotizacionesAgenteAgencia200DataItemsItemLineasItemPasajerosItemSexo';
 export * from './getCotizacionesAgenteAgencia200DataItemsItemLineasItemPasajerosItemUpgradesItem';
 export * from './getCotizacionesAgenteAgencia200DataItemsItemLineasItemPlan';
@@ -244,6 +257,10 @@ export * from './getPaises200DataItem';
 export * from './getPerfilAgencia200';
 export * from './getPerfilAgencia200Data';
 export * from './getPerfilAgente200';
+export * from './getPlanBeneficios200';
+export * from './getPlanBeneficios200Data';
+export * from './getPlanBeneficios200DataBeneficiosAdicionalesItem';
+export * from './getPlanBeneficios200DataBeneficiosPrincipalesItem';
 export * from './getRenovacionesPendientes200';
 export * from './getRenovacionesPendientes200Data';
 export * from './getRenovacionesPendientes200DataItemsItem';

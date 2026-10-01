@@ -2,7 +2,7 @@ import express from 'express';
 import { OpenAPIBackend } from 'openapi-backend';
 
 const api = new OpenAPIBackend({
-  definition: './openapi.yaml',
+  definition: './openapi.json',
   quick: true,              // compila rápido
 });
 

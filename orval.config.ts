@@ -15,7 +15,7 @@ import { faker } from '@faker-js/faker';
 
 export default {
   weassist: {
-    input: './openapi.yaml',
+    input: './openapi.json',
     output: {
       target: './src/api/generated.ts',
       schemas: './src/api/schemas',

@@ -16,6 +16,7 @@ Todas las respuestas de error salen en JSON con la misma forma: `ok` en `false`,
 | 5003 | 404 | El endpoint solicitado no existe |
 | 5004 | 405 | El método HTTP no está permitido para ese endpoint |
 | 5005 | 500 | Error interno al procesar la solicitud |
+| 5006 | 200 | El plan no existe o no está habilitado para el usuario de la API |
 
 Los códigos 5001 y 5002 son de negocio y viajan con HTTP 200: hay que mirar siempre el campo `ok`, no sólo el status.
 
@@ -25,14 +26,21 @@ Cuando el error es de validación de campos, además de `error` viene `errores`,
 
 En el ambiente de desarrollo las respuestas 500 agregan `error` y `archivo` con el detalle técnico; en producción no.
 
- * OpenAPI spec version: 1.0.25
+ * OpenAPI spec version: 1.0.28
  */
+import type { GetCotizacionesAgenteAgencia200DataItemsItemLineasItemPasajerosItemRangoEdad } from './getCotizacionesAgenteAgencia200DataItemsItemLineasItemPasajerosItemRangoEdad';
 import type { GetCotizacionesAgenteAgencia200DataItemsItemLineasItemPasajerosItemFechaNacimiento } from './getCotizacionesAgenteAgencia200DataItemsItemLineasItemPasajerosItemFechaNacimiento';
 import type { GetCotizacionesAgenteAgencia200DataItemsItemLineasItemPasajerosItemPais } from './getCotizacionesAgenteAgencia200DataItemsItemLineasItemPasajerosItemPais';
 import type { GetCotizacionesAgenteAgencia200DataItemsItemLineasItemPasajerosItemSexo } from './getCotizacionesAgenteAgencia200DataItemsItemLineasItemPasajerosItemSexo';
 import type { GetCotizacionesAgenteAgencia200DataItemsItemLineasItemPasajerosItemUpgradesItem } from './getCotizacionesAgenteAgencia200DataItemsItemLineasItemPasajerosItemUpgradesItem';
 
 export type GetCotizacionesAgenteAgencia200DataItemsItemLineasItemPasajerosItem = {
+  numero?: number;
+  /** Nombre y apellido si ya están cargados; si no, "Pasajero N (rango de edad)" como en el cotizador del sitio */
+  nombre_mostrar?: string;
+  /** true si el pasajero ya tiene nombre cargado */
+  datos_completos?: boolean;
+  rango_edad?: GetCotizacionesAgenteAgencia200DataItemsItemLineasItemPasajerosItemRangoEdad;
   nombre?: string;
   apellido?: string;
   pasaporte?: string;
@@ -42,5 +50,16 @@ export type GetCotizacionesAgenteAgencia200DataItemsItemLineasItemPasajerosItem 
   telefono?: string;
   email?: string;
   condicion_medica?: string;
+  tiene_upgrades?: boolean;
   upgrades?: GetCotizacionesAgenteAgencia200DataItemsItemLineasItemPasajerosItemUpgradesItem[];
+  /** Precio del plan para el pasajero, sin upgrades */
+  precio_base?: number;
+  /** Suma de los upgrades del pasajero */
+  precio_upgrades?: number;
+  /** Precio del pasajero incluyendo upgrades, sin descuento (precio_base + precio_upgrades) */
+  precio_regular?: number;
+  /** Parte del descuento de la línea que le toca al pasajero, repartida en proporción a su precio_regular */
+  descuento?: number;
+  /** Precio final del pasajero con descuento. La suma de los pasajeros coincide con precio_unitario de la línea */
+  precio?: number;
 };

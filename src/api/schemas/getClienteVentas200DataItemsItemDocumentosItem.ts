@@ -16,6 +16,7 @@ Todas las respuestas de error salen en JSON con la misma forma: `ok` en `false`,
 | 5003 | 404 | El endpoint solicitado no existe |
 | 5004 | 405 | El método HTTP no está permitido para ese endpoint |
 | 5005 | 500 | Error interno al procesar la solicitud |
+| 5006 | 200 | El plan no existe o no está habilitado para el usuario de la API |
 
 Los códigos 5001 y 5002 son de negocio y viajan con HTTP 200: hay que mirar siempre el campo `ok`, no sólo el status.
 
@@ -25,16 +26,9 @@ Cuando el error es de validación de campos, además de `error` viene `errores`,
 
 En el ambiente de desarrollo las respuestas 500 agregan `error` y `archivo` con el detalle técnico; en producción no.
 
- * OpenAPI spec version: 1.0.25
+ * OpenAPI spec version: 1.0.28
  */
-import type { GetClienteVentas200DataItemsItemDocumentosItemPdfVouchers } from './getClienteVentas200DataItemsItemDocumentosItemPdfVouchers';
-import type { GetClienteVentas200DataItemsItemDocumentosItemLinksTarjetasEsItem } from './getClienteVentas200DataItemsItemDocumentosItemLinksTarjetasEsItem';
-import type { GetClienteVentas200DataItemsItemDocumentosItemLinksTarjetasEnItem } from './getClienteVentas200DataItemsItemDocumentosItemLinksTarjetasEnItem';
+import type { GetClienteVentas200DataItemsItemDocumentosItemOneOf } from './getClienteVentas200DataItemsItemDocumentosItemOneOf';
+import type { GetClienteVentas200DataItemsItemDocumentosItemOneOfThree } from './getClienteVentas200DataItemsItemDocumentosItemOneOfThree';
 
-export type GetClienteVentas200DataItemsItemDocumentosItem = {
-  nombre?: string;
-  voucher?: string;
-  pdf_vouchers?: GetClienteVentas200DataItemsItemDocumentosItemPdfVouchers;
-  links_tarjetas_es?: GetClienteVentas200DataItemsItemDocumentosItemLinksTarjetasEsItem[];
-  links_tarjetas_en?: GetClienteVentas200DataItemsItemDocumentosItemLinksTarjetasEnItem[];
-};
+export type GetClienteVentas200DataItemsItemDocumentosItem = GetClienteVentas200DataItemsItemDocumentosItemOneOf | GetClienteVentas200DataItemsItemDocumentosItemOneOfThree;
