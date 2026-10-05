@@ -2,6 +2,7 @@ import { type ColumnDef } from "../DataTable";
 import type { GetAsistenciasAgenteAgencia200DataItemsItem } from "../../api/schemas";
 import RowActions from "../RowActions";
 import { StatusBadge } from "../StatusBadge";
+import { saleStatusTheme } from "../StatusBadge/StatusBadgeThemes";
 
 type CreateColumnsDeps = {
   currency: (n: number) => string;
@@ -61,11 +62,14 @@ export function createAgencyAssistanceColumns({
       id: "status",
       label: t("assistancesTable.status"),
       width: "10%",
+      accessor: (row) => row.status?.nombre ?? "",
       align: "center",
-      // No hay un campo de estado asociado todavía: se muestra un estado
-      // genérico gris hasta que el servicio lo entregue.
-      render: () => (
-        <StatusBadge status="" theme={{ default: { tone: "secondary", label: t("assistancesTable.notDefined") } }} />
+      render: (row) => (
+        <StatusBadge
+          status={row.status?.codigo ?? ""}
+          label={row.status?.nombre || t("assistancesTable.notDefined")}
+          theme={saleStatusTheme}
+        />
       ),
     },
     {

@@ -87,7 +87,7 @@ export default function SettingsAgencyForm({
 
   const watched = useWatch({ control });
   const [editable, setEditable] = useState<boolean>(isEditable);
-  const yesNo = (v?: boolean) => (v ? 'Enabled' : 'Disabled');
+  const yesNo = (v?: boolean) => (v ? t('common.enabled') : t('common.disabled'));
 
   const handleFormSubmit = async (data: SettingsAgencyFormData) => {
     try {
@@ -141,23 +141,23 @@ export default function SettingsAgencyForm({
   return (
     <form
       onSubmit={handleSubmit(handleFormSubmit)} className="d-flex flex-column gap-3" noValidate>
-      <h6 className="text-black fw-semibold mb-2 border-bottom pb-2">Agency Settings</h6>
+      <h6 className="text-black fw-semibold mb-2 border-bottom pb-2">{t('settingsPage.agency.title')}</h6>
 
-      {readOnlyRow('Name of Primary Producer / Agency', watched.nombrePadre)}
-      {readOnlyRow('Agency Name', watched.nombre)}
-      {readOnlyRow('Legal Name (Razón Social)', watched.razonSocial)}
-      {readOnlyRow('RUC / TIN / DNI', watched.ruc)}
+      {readOnlyRow(t('settingsPage.agency.parentAgency'), watched.nombrePadre)}
+      {readOnlyRow(t('settingsPage.agency.agencyName'), watched.nombre)}
+      {readOnlyRow(t('settingsPage.agency.legalName'), watched.razonSocial)}
+      {readOnlyRow(t('settingsPage.agency.ruc'), watched.ruc)}
 
-      {textRow('Phone', 'telefono', '+50767891234', 'tel')}
-      {textRow('Contact', 'contacto', 'Contact')}
-      {textRow('Email', 'email', 'email@company.com', 'email')}
-      {textRow('Secondary Email', 'emailSecundario', 'email@company.com', 'email')}
-      {textRow('Website', 'sitioWeb', 'https://www.company.com')}
+      {textRow(t('settingsPage.agency.phone'), 'telefono', '+50767891234', 'tel')}
+      {textRow(t('settingsPage.agency.contact'), 'contacto', t('settingsPage.agency.contact'))}
+      {textRow(t('settingsPage.agency.email'), 'email', 'email@company.com', 'email')}
+      {textRow(t('settingsPage.agency.secondaryEmail'), 'emailSecundario', 'email@company.com', 'email')}
+      {textRow(t('settingsPage.agency.website'), 'sitioWeb', 'https://www.company.com')}
 
-      {readOnlyRow('Address', watched.direccion, true)}
+      {readOnlyRow(t('settingsPage.agency.address'), watched.direccion, true)}
 
       <RowView
-        label="Send Voucher Copies"
+        label={t('settingsPage.agency.sendVoucherCopies')}
         edit={editable}
         show={<span>{yesNo(watched.enviarCopiaVouchers)}</span>}
         editNode={
@@ -174,15 +174,15 @@ export default function SettingsAgencyForm({
         <div className="bg-transparent d-flex justify-content-end mt-2">
           {!editable ? (
             <UIButton variant="primary" onClick={() => setEditable(true)} type="button">
-              Edit
+              {t('common.edit')}
             </UIButton>
           ) : (
             <div className="d-flex gap-2">
               <UIButton variant="outline-secondary" onClick={handleCancel} type="button">
-                Cancel
+                {t('common.cancel')}
               </UIButton>
               <UIButton variant="primary" type="submit" disabled={isSubmitting}>
-                Save
+                {t('common.save')}
               </UIButton>
             </div>
           )}

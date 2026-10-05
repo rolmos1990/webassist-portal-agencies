@@ -38,7 +38,7 @@ export type VoucherBlock = {
 
 export type VoucherView = {
   code: string;
-  /** clave del theme de StatusBadge (color) y texto a mostrar */
+  /** clave del theme de StatusBadge (color) y texto a mostrar; vacíos si el servicio no los envía */
   statusKey: string;
   statusLabel: string;
   planTitle: string;
@@ -73,8 +73,9 @@ export function fromAsistencia(item?: GetAsistenciasAgenteAgencia200DataItemsIte
 
   return {
     code: item?.voucher?.codigo ?? item?.token ?? EMPTY,
-    statusKey: item?.cancelada ? "Inactive" : "Active",
-    statusLabel: item?.cancelada ? "Cancelled" : "Active",
+    // Igual que el listado: color por status.codigo y texto de status.nombre
+    statusKey: item?.status?.codigo ?? "",
+    statusLabel: item?.status?.nombre ?? "",
     planTitle: orEmpty(item?.plan?.nombre),
     total: showPrices ? Number(item?.total ?? 0) : null,
     travelersCount: pasajeros.length,

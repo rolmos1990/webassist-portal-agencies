@@ -79,7 +79,7 @@ export default function SettingsAccountForm({
 
   const watched = useWatch({ control });
   const [editable, setEditable] = useState<boolean>(isEditable);
-  const onOff = (v?: boolean) => (v ? 'Enabled' : 'Disabled');
+  const onOff = (v?: boolean) => (v ? t('common.enabled') : t('common.disabled'));
   const countryName = countryOptions.find((o) => String(o.value) === watched.pais)?.label;
 
   const handleFormSubmit = async (data: SettingsAccountFormData) => {
@@ -100,11 +100,11 @@ export default function SettingsAccountForm({
   return (
     <form
       onSubmit={handleSubmit(handleFormSubmit)} className="d-flex flex-column gap-3" noValidate>
-      <h6 className="text-black fw-semibold mb-2 border-bottom pb-2">Account Settings</h6>
+      <h6 className="text-black fw-semibold mb-2 border-bottom pb-2">{t('settingsPage.account.title')}</h6>
 
       {/* Primary Contact Email (read-only: se cambia sólo desde un administrador) */}
       <RowView
-        label="Primary Contact Email"
+        label={t('settingsPage.account.primaryEmail')}
         edit={false}
         show={<span>{watched.email || '—'}</span>}
         editNode={<span>{watched.email || '—'}</span>}
@@ -112,14 +112,14 @@ export default function SettingsAccountForm({
 
       {/* Name */}
       <RowView
-        label="Name"
+        label={t('settingsPage.account.name')}
         edit={editable}
         show={<span>{watched.nombre || '—'}</span>}
         editNode={
           <InputText
             label=""
             name="nombre"
-            placeholder="Name"
+            placeholder={t('settingsPage.account.name')}
             register={register}
             error={errors.nombre}
             mainClassName="mb-0"
@@ -130,14 +130,14 @@ export default function SettingsAccountForm({
 
       {/* Last name */}
       <RowView
-        label="Last Name"
+        label={t('settingsPage.account.lastName')}
         edit={editable}
         show={<span>{watched.apellido || '—'}</span>}
         editNode={
           <InputText
             label=""
             name="apellido"
-            placeholder="Last Name"
+            placeholder={t('settingsPage.account.lastName')}
             register={register}
             error={errors.apellido}
             mainClassName="mb-0"
@@ -148,7 +148,7 @@ export default function SettingsAccountForm({
 
       {/* Phone */}
       <RowView
-        label="Phone"
+        label={t('settingsPage.account.phone')}
         edit={editable}
         show={<span>{watched.phone || '—'}</span>}
         editNode={
@@ -167,7 +167,7 @@ export default function SettingsAccountForm({
 
       {/* Country */}
       <RowView
-        label="Country"
+        label={t('settingsPage.account.country')}
         edit={editable}
         show={<span>{countryName || '—'}</span>}
         editNode={
@@ -177,7 +177,7 @@ export default function SettingsAccountForm({
             options={countryOptions}
             register={register}
             error={errors.pais}
-            emptyOptionLabel="Select a country"
+            emptyOptionLabel={t('common.selectCountry')}
             mainClassName="mb-0"
             className="w-auto"
             minWidth={260}
@@ -186,9 +186,9 @@ export default function SettingsAccountForm({
       />
 
       <hr className="border-0" />
-      <h6 className="text-black fw-semibold mb-2 border-bottom pb-2">Notifications and Alerts</h6>
+      <h6 className="text-black fw-semibold mb-2 border-bottom pb-2">{t('settingsPage.account.notifications')}</h6>
       <RowView
-        label="Email Notifications"
+        label={t('settingsPage.account.emailNotifications')}
         edit={editable}
         show={<span>{onOff(watched.emailNotifications)}</span>}
         editNode={
@@ -203,7 +203,7 @@ export default function SettingsAccountForm({
 
       {/* Alternative renewals email */}
       <RowView
-        label="Alternative Renewals Email"
+        label={t('settingsPage.account.alternativeRenewalsEmail')}
         edit={editable}
         show={<span>{watched.correoAlternativo || '—'}</span>}
         editNode={
@@ -223,15 +223,15 @@ export default function SettingsAccountForm({
       <div className="bg-transparent d-flex justify-content-end mt-2">
         {!editable ? (
           <UIButton variant="primary" onClick={() => setEditable(true)} type="button">
-            Edit
+            {t('common.edit')}
           </UIButton>
         ) : (
           <div className="d-flex gap-2">
             <UIButton variant="outline-secondary" onClick={handleCancel} type="button">
-              Cancel
+              {t('common.cancel')}
             </UIButton>
             <UIButton variant="primary" type="submit" disabled={isSubmitting}>
-              Save
+              {t('common.save')}
             </UIButton>
           </div>
         )}

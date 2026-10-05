@@ -23,15 +23,15 @@ export function ProfileSection({ title, editable = false, submitting = false, on
         {onEdit && (
           !editable ? (
             <UIButton variant="outline-primary" icon="bi bi-pencil" onClick={onEdit} type="button">
-              {t('editar')}
+              {t('common.edit')}
             </UIButton>
           ) : (
             <div className="d-flex gap-2">
               <UIButton variant="outline-secondary" onClick={onCancel} type="button">
-                {t('cancelar')}
+                {t('common.cancel')}
               </UIButton>
               <UIButton variant="primary" type="submit" disabled={submitting}>
-                {t('guardar')}
+                {t('common.save')}
               </UIButton>
             </div>
           )

@@ -282,17 +282,21 @@
   "noData": "No hay datos disponibles",
   "error_generico": "Ha ocurrido un error, inténtelo más tarde",
   "error_desconocido": "Ha ocurrido un error inesperado",
+  "general": "General",
+  "cuenta": "Cuenta",
+  "agencia": "Agencia",
+  "manage_your_account_settings": "Administra la configuración de tu cuenta",
+  "user_preference": "Preferencias de Usuario",
+  "comission_and_revenue_settings": "Configuración de Comisiones e Ingresos",
+  "default_commission_rate": "Porcentaje de Comisión por Defecto",
   "agencias": "Agencias",
   "agencias_filter_by": "Filtrar por",
   "crear_agencia": "Crear Agencia",
   "agentes": "Agentes",
   "create_new_agent": "Crear Nuevo Agente",
   "filter_by": "Filtrar por",
-  "datatable_previous": "Anterior",
-  "datatable_next": "Siguiente",
-  "editar": "Editar",
-  "cancelar": "Cancelar",
-  "guardar": "Guardar",
+  "filtrar_por": "Filtrar por",
+  "create_new_agency": "Crear Nueva Agencia",
   "settings": "Configuración",
   "profile": "Mi Perfil",
   "feedback": {
@@ -341,5 +345,49 @@
     "postalCode": "Código Postal",
     "languageSettings": "Configuración de Idioma",
     "language": "Idioma"
+  },
+  "common": {
+    "search": "Buscar...",
+    "previous": "Anterior",
+    "next": "Siguiente",
+    "edit": "Editar",
+    "cancel": "Cancelar",
+    "save": "Guardar",
+    "enabled": "Activado",
+    "disabled": "Desactivado",
+    "selectCountry": "Seleccione un país"
+  },
+  "settingsPage": {
+    "general": {
+      "language": "Idioma",
+      "paymentType": "Tipo de Pago",
+      "lastLogin": "Último Ingreso",
+      "whatsapp": "WhatsApp"
+    },
+    "account": {
+      "title": "Configuración de la Cuenta",
+      "primaryEmail": "Correo de Contacto Principal",
+      "name": "Nombre",
+      "lastName": "Apellido",
+      "phone": "Teléfono",
+      "country": "País",
+      "notifications": "Notificaciones y Alertas",
+      "emailNotifications": "Notificaciones por Correo",
+      "alternativeRenewalsEmail": "Correo Alternativo de Renovaciones"
+    },
+    "agency": {
+      "title": "Configuración de la Agencia",
+      "parentAgency": "Productor Principal / Agencia",
+      "agencyName": "Nombre de la Agencia",
+      "legalName": "Razón Social",
+      "ruc": "RUC / TIN / DNI",
+      "phone": "Teléfono",
+      "contact": "Contacto",
+      "email": "Correo",
+      "secondaryEmail": "Correo Secundario",
+      "website": "Sitio Web",
+      "address": "Dirección",
+      "sendVoucherCopies": "Enviar Copia de Vouchers"
+    }
   }
 }

@@ -84,7 +84,7 @@ export default function ProfileAddressForm({ initialValues, countryOptions, onSu
               options={countryOptions}
               register={register}
               error={errors.pais}
-              emptyOptionLabel="Select a country"
+              emptyOptionLabel={t('common.selectCountry')}
               mainClassName="mb-0"
               className="w-auto"
               minWidth={260}

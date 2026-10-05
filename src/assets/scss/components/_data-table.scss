@@ -12,6 +12,15 @@
         font-weight: 600;
         background-color: $color-bg-main;
         border-bottom-color: rgba(0, 0, 0, .08);
+        // Bootstrap alinea el thead abajo: con títulos de distinto largo quedaban desfasados
+        vertical-align: middle;
+        // Títulos en una sola línea (el ícono de orden queda pegado al texto);
+        // si no entran, .table-responsive agrega scroll horizontal
+        white-space: nowrap;
+
+        .btn {
+            white-space: nowrap;
+        }
     }
 
     tbody td {

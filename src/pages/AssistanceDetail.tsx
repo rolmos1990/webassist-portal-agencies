@@ -8,7 +8,7 @@ import { StatusBadge } from '../components/StatusBadge';
 import Offcanvas from '../components/Offcanvas';
 import { useTranslation } from 'react-i18next';
 import { currency } from '../components/DataTable';
-import { defaultStatusTheme } from '../components/StatusBadge/StatusBadgeThemes';
+import { defaultStatusTheme, saleStatusTheme } from '../components/StatusBadge/StatusBadgeThemes';
 import type {
   GetAsistenciasAgenteAgencia200DataItemsItem,
   GetCotizacionesAgenteAgencia200DataItemsItem,
@@ -227,7 +227,11 @@ export default function AssistanceDetail({ kind = 'assistance' }: Props) {
                 <h4 className="mb-2 d-flex flex-column flex-md-row align-items-center justify-content-center justify-content-md-start gap-2">
               {code}
               <div className="ms-md-2 mt-2 mt-md-0">
-                <StatusBadge status={voucher.statusKey} label={voucher.statusLabel} theme={defaultStatusTheme} />
+                <StatusBadge
+                  status={voucher.statusKey}
+                  label={voucher.statusLabel || t('assistancesTable.notDefined')}
+                  theme={kind === 'quote' ? defaultStatusTheme : saleStatusTheme}
+                />
               </div>
             </h4>
 

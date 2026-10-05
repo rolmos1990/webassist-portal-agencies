@@ -282,17 +282,21 @@
   "noData": "No data available",
   "error_generico": "An error occurred, please try again later",
   "error_desconocido": "An unexpected error occurred",
+  "general": "General",
+  "cuenta": "Account",
+  "agencia": "Agency",
+  "manage_your_account_settings": "Manage your account settings",
+  "user_preference": "User Preferences",
+  "comission_and_revenue_settings": "Commission and Revenue Settings",
+  "default_commission_rate": "Default Commission Rate",
   "agencias": "Agencies",
   "agencias_filter_by": "Filter by",
   "crear_agencia": "Create Agency",
   "agentes": "Agents",
   "create_new_agent": "Create New Agent",
   "filter_by": "Filter by",
-  "datatable_previous": "Previous",
-  "datatable_next": "Next",
-  "editar": "Edit",
-  "cancelar": "Cancel",
-  "guardar": "Save",
+  "filtrar_por": "Filter by",
+  "create_new_agency": "Create New Agency",
   "settings": "Settings",
   "profile": "My Profile",
   "feedback": {
@@ -341,5 +345,49 @@
     "postalCode": "Postal Code",
     "languageSettings": "Language Settings",
     "language": "Language"
+  },
+  "common": {
+    "search": "Search...",
+    "previous": "Previous",
+    "next": "Next",
+    "edit": "Edit",
+    "cancel": "Cancel",
+    "save": "Save",
+    "enabled": "Enabled",
+    "disabled": "Disabled",
+    "selectCountry": "Select a country"
+  },
+  "settingsPage": {
+    "general": {
+      "language": "Language",
+      "paymentType": "Payment Type",
+      "lastLogin": "Last Login",
+      "whatsapp": "WhatsApp"
+    },
+    "account": {
+      "title": "Account Settings",
+      "primaryEmail": "Primary Contact Email",
+      "name": "Name",
+      "lastName": "Last Name",
+      "phone": "Phone",
+      "country": "Country",
+      "notifications": "Notifications and Alerts",
+      "emailNotifications": "Email Notifications",
+      "alternativeRenewalsEmail": "Alternative Renewals Email"
+    },
+    "agency": {
+      "title": "Agency Settings",
+      "parentAgency": "Name of Primary Producer / Agency",
+      "agencyName": "Agency Name",
+      "legalName": "Legal Name",
+      "ruc": "RUC / TIN / DNI",
+      "phone": "Phone",
+      "contact": "Contact",
+      "email": "Email",
+      "secondaryEmail": "Secondary Email",
+      "website": "Website",
+      "address": "Address",
+      "sendVoucherCopies": "Send Voucher Copies"
+    }
   }
 }

@@ -8,3 +8,11 @@ export const defaultStatusTheme: StatusTheme = {
   Error:    { tone: "danger",  label: "Error" },
   default:  { tone: "info" },
 };
+
+// Status de una venta/asistencia (StatusVenta.codigo); el texto viene en status.nombre
+export const saleStatusTheme: StatusTheme = {
+  activa:    "success",
+  vencida:   "warning",
+  cancelada: "danger",
+  default:   "secondary",
+};

@@ -7,8 +7,8 @@
     },
     "info": {
         "title": "WAC API",
-        "description": "Api para uso interno WAC.\n\n## Errores\n\nTodas las respuestas de error salen en JSON con la misma forma: `ok` en `false`, un `mensaje` para mostrar y un `error_code` para decidir en el front.\n\n| error_code | HTTP | Cuándo |\n| --- | --- | --- |\n| 5000 | 302 | Falta el token de la API o no es válido (header `Authorization: Bearer`) |\n| 5001 | 200 | El idioma del path no está soportado |\n| 5002 | 200 | El `userToken` del agente no es válido o expiró |\n| 5003 | 404 | El endpoint solicitado no existe |\n| 5004 | 405 | El método HTTP no está permitido para ese endpoint |\n| 5005 | 500 | Error interno al procesar la solicitud |\n| 5006 | 200 | El plan no existe o no está habilitado para el usuario de la API |\n\nLos códigos 5001 y 5002 son de negocio y viajan con HTTP 200: hay que mirar siempre el campo `ok`, no sólo el status.\n\nLos códigos 5003, 5004 y 5005 los resuelve el manejador global, así que pueden aparecer en cualquier endpoint.\n\nCuando el error es de validación de campos, además de `error` viene `errores`, un objeto con un motivo por campo (`requerido`, `invalido`, `duplicado`, `excede_comision_agencia`, `no_permitido`).\n\nEn el ambiente de desarrollo las respuestas 500 agregan `error` y `archivo` con el detalle técnico; en producción no.\n",
-        "version": "1.0.28",
+        "description": "Api para uso interno WAC.\n\n## Errores\n\nTodas las respuestas de error salen en JSON con la misma forma: `ok` en `false`, un `mensaje` para mostrar y un `error_code` para decidir en el front.\n\n| error_code | HTTP | Cuándo |\n| --- | --- | --- |\n| 5000 | 302 | Falta el token de la API o no es válido (header `Authorization: Bearer`) |\n| 5001 | 200 | El idioma del path no está soportado |\n| 5002 | 200 | El `userToken` del agente no es válido o expiró |\n| 5003 | 404 | El endpoint solicitado no existe |\n| 5004 | 405 | El método HTTP no está permitido para ese endpoint |\n| 5005 | 500 | Error interno al procesar la solicitud |\n| 5006 | 200 | El plan no existe o no está habilitado para el usuario de la API |\n| 5007 | 200 | El cliente no existe o no es del agente (ni de su agencia, si es administrador) |\n\nLos códigos 5001 y 5002 son de negocio y viajan con HTTP 200: hay que mirar siempre el campo `ok`, no sólo el status.\n\nLos códigos 5003, 5004 y 5005 los resuelve el manejador global, así que pueden aparecer en cualquier endpoint.\n\nCuando el error es de validación de campos, además de `error` viene `errores`, un objeto con un motivo por campo (`requerido`, `invalido`, `duplicado`, `excede_comision_agencia`, `no_permitido`).\n\nEn el ambiente de desarrollo las respuestas 500 agregan `error` y `archivo` con el detalle técnico; en producción no.\n",
+        "version": "1.1.0",
         "contact": {
             "name": "Pixel Media Publicidad",
             "url": "https://www.pixelmedia.com.pa",
@@ -3834,7 +3834,7 @@
                             "type": "string",
                             "format": "date"
                         },
-                        "description": "Fecha de inicio para filtrar cotizaciones (formato DD/MM/YYYY)"
+                        "description": "Fecha de compra desde (formato DD/MM/YYYY, incluye el día completo)"
                     },
                     {
                         "name": "fecha_final",
@@ -3844,7 +3844,7 @@
                             "type": "string",
                             "format": "date"
                         },
-                        "description": "Fecha de fin para filtrar cotizaciones (formato DD/MM/YYYY)"
+                        "description": "Fecha de compra hasta (formato DD/MM/YYYY, incluye el día completo)"
                     },
                     {
                         "name": "voucher",
@@ -4194,6 +4194,9 @@
                                                                 "examples": [
                                                                     false
                                                                 ]
+                                                            },
+                                                            "status": {
+                                                                "$ref": "#/components/schemas/StatusVenta"
                                                             },
                                                             "pasajeros": {
                                                                 "type": "array",
@@ -5182,6 +5185,188 @@
                                             "type": "integer",
                                             "description": "5001 idioma no soportado, 5002 usuario no válido. El caso sin ventas no trae error_code.",
                                             "examples": [5002]
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/RutaNoEncontrada"
+                    },
+                    "405": {
+                        "$ref": "#/components/responses/MetodoNoPermitido"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/ErrorInterno"
+                    }
+                }
+            }
+        },
+        "/{idioma}/cliente-historial/{cliente}": {
+            "get": {
+                "summary": "Historial de Cliente",
+                "description": "Devuelve todas las compras de un cliente, paginadas (25 por página, de la más reciente a la más antigua), con el status de cada una y la fecha de ese status.\n\nIncluye todas las ventas de la persona (mismo pasaporte y país) del agente, o de toda su agencia si el agente es administrador. El cliente tiene que ser del agente o de su agencia; si no, responde `ok: false` con `error_code` 5007.\n\nEl status de cada compra se explica en el schema `StatusVenta`.\n\nUn cliente sin compras responde `ok: true` con `items` vacío.",
+                "tags": ["Emisiones"],
+                "operationId": "getClienteHistorial",
+                "parameters": [
+                    {
+                        "name": "idioma",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "enum": ["es", "en"]
+                        },
+                        "description": "El código del idioma"
+                    },
+                    {
+                        "name": "cliente",
+                        "in": "path",
+                        "required": true,
+                        "description": "ID del cliente (el id que devuelve /clientes)",
+                        "schema": {
+                            "type": "integer",
+                            "examples": [1234]
+                        }
+                    },
+                    {
+                        "name": "pagina",
+                        "in": "query",
+                        "required": false,
+                        "description": "Número de la página para la paginación.",
+                        "schema": {
+                            "type": "integer",
+                            "default": 1,
+                            "examples": [1]
+                        }
+                    },
+                    {
+                        "$ref": "#/components/parameters/userTokenHeader"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Historial de compras del cliente. Si el cliente no es del usuario, sale ok false con error_code 5007.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "ok": {
+                                            "type": "boolean",
+                                            "examples": [true]
+                                        },
+                                        "data": {
+                                            "type": "object",
+                                            "properties": {
+                                                "items": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "object",
+                                                        "properties": {
+                                                            "voucher": {
+                                                                "type": "object",
+                                                                "properties": {
+                                                                    "codigo": {
+                                                                        "type": "string",
+                                                                        "examples": [
+                                                                            "ABC-12345"
+                                                                        ]
+                                                                    },
+                                                                    "pdf": {
+                                                                        "type": "string",
+                                                                        "format": "uri",
+                                                                        "description": "PDF del voucher en el idioma del path",
+                                                                        "examples": [
+                                                                            "https://example.com/vouchers/voucher_ABC-12345_es.pdf"
+                                                                        ]
+                                                                    }
+                                                                }
+                                                            },
+                                                            "plan": {
+                                                                "type": "object",
+                                                                "properties": {
+                                                                    "id": {
+                                                                        "type": "integer",
+                                                                        "examples": [
+                                                                            12
+                                                                        ]
+                                                                    },
+                                                                    "nombre": {
+                                                                        "type": "string",
+                                                                        "description": "Nombre completo del plan",
+                                                                        "examples": [
+                                                                            "Travel Plus - Plan 50K"
+                                                                        ]
+                                                                    }
+                                                                }
+                                                            },
+                                                            "fecha_compra": {
+                                                                "type": "string",
+                                                                "description": "Fecha y hora de la venta",
+                                                                "examples": [
+                                                                    "2025-10-31 07:00 am"
+                                                                ]
+                                                            },
+                                                            "fecha_inicio": {
+                                                                "type": "string",
+                                                                "description": "Inicio de vigencia",
+                                                                "examples": [
+                                                                    "01/11/2025"
+                                                                ]
+                                                            },
+                                                            "fecha_fin": {
+                                                                "type": "string",
+                                                                "description": "Fin de vigencia",
+                                                                "examples": [
+                                                                    "15/11/2025"
+                                                                ]
+                                                            },
+                                                            "mostrar_precios": {
+                                                                "type": "boolean",
+                                                                "description": "false si la venta se emitió con los precios ocultos; en ese caso total viene en 0",
+                                                                "examples": [
+                                                                    true
+                                                                ]
+                                                            },
+                                                            "total": {
+                                                                "type": "number",
+                                                                "description": "Precio de la venta, redondeado a 2 decimales",
+                                                                "examples": [
+                                                                    100.5
+                                                                ]
+                                                            },
+                                                            "status": {
+                                                                "$ref": "#/components/schemas/StatusVenta"
+                                                            }
+                                                        }
+                                                    }
+                                                },
+                                                "paginacion": {
+                                                    "$ref": "#/components/schemas/Paginacion"
+                                                }
+                                            }
+                                        },
+                                        "usuario": {
+                                            "$ref": "#/components/schemas/UserLogin"
+                                        },
+                                        "mensaje": {
+                                            "type": "string",
+                                            "description": "Con error_code 5001 o 5007",
+                                            "examples": [
+                                                "Cliente no encontrado"
+                                            ]
+                                        },
+                                        "error": {
+                                            "type": "string",
+                                            "description": "Con error_code 5002",
+                                            "examples": ["Usuario inválido"]
+                                        },
+                                        "error_code": {
+                                            "type": "integer",
+                                            "description": "5001 idioma no soportado, 5002 usuario no válido, 5007 cliente no encontrado o no es del usuario",
+                                            "examples": [5007]
                                         }
                                     }
                                 }
@@ -6785,6 +6970,27 @@
                         "type": "string",
                         "description": "Texto secundario para desambiguar, con las partes disponibles separadas por \" · \". Puede venir vacío.",
                         "examples": ["Juan Pérez · Plan Ejemplo · 01/09/2026"]
+                    }
+                }
+            },
+            "StatusVenta": {
+                "type": "object",
+                "description": "Status de una venta y la fecha que le corresponde.\n\n| codigo | Cuándo | fecha |\n| --- | --- | --- |\n| `activa` | No está cancelada y su vigencia termina hoy o después. Incluye las que todavía no empiezan | Fin de vigencia (`dd/mm/aaaa`) |\n| `vencida` | No está cancelada y su vigencia terminó antes de hoy | Fin de vigencia (`dd/mm/aaaa`) |\n| `cancelada` | La venta fue cancelada | Fecha y hora de cancelación; `null` si la venta no la tiene registrada |",
+                "properties": {
+                    "codigo": {
+                        "type": "string",
+                        "enum": ["activa", "vencida", "cancelada"],
+                        "examples": ["vencida"]
+                    },
+                    "nombre": {
+                        "type": "string",
+                        "description": "Nombre del status en el idioma del path",
+                        "examples": ["Vencida"]
+                    },
+                    "fecha": {
+                        "type": ["string", "null"],
+                        "description": "Fin de vigencia si es activa o vencida; fecha y hora de cancelación si es cancelada (null si no está registrada)",
+                        "examples": ["15/11/2025"]
                     }
                 }
             }

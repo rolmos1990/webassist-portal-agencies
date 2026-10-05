@@ -40,7 +40,7 @@ interface Props {
 
 const LANGUAGE_OPTS: SelectOption[] = [
   { value: 'en', label: 'English' },
-  { value: 'es', label: 'Spanish' },
+  { value: 'es', label: 'Español' },
 ];
 
 const SELECT_ROWS: Array<{
@@ -48,7 +48,7 @@ const SELECT_ROWS: Array<{
   name: keyof SettingsGeneralFormData;
   options: SelectOption[];
 }> = [
-  { label: 'Language', name: 'language', options: LANGUAGE_OPTS }
+  { label: 'settingsPage.general.language', name: 'language', options: LANGUAGE_OPTS }
 ];
 
 
@@ -105,9 +105,9 @@ export default function SettingsGeneralForm({ initialValues, onSubmit, onCancel 
       {SELECT_ROWS.map(({ label, name, options }) => (
         <RowView
           key={name as string}
-          label={label}
+          label={t(label)}
           edit={editable}
-          show={<span>{String((watched as any)?.[name] ?? '')}</span>}
+          show={<span>{options.find((o) => String(o.value) === String(watched[name] ?? ''))?.label ?? '—'}</span>}
           editNode={
             <InputSelect
               label=""
@@ -126,7 +126,7 @@ export default function SettingsGeneralForm({ initialValues, onSubmit, onCancel 
 
       {/* Payment Type (read-only, informativo desde el backend) */}
       <RowView
-        label="Payment Type"
+        label={t('settingsPage.general.paymentType')}
         edit={false}
         show={<span>{watched.tipoPago || '—'}</span>}
         editNode={<span>{watched.tipoPago || '—'}</span>}
@@ -134,7 +134,7 @@ export default function SettingsGeneralForm({ initialValues, onSubmit, onCancel 
 
       {/* Last Login (read-only, fecha formateada) */}
       <RowView
-        label="Last Login"
+        label={t('settingsPage.general.lastLogin')}
         edit={false}
         show={<span>{watched.ultimoLogin || '—'}</span>}
         editNode={<span>{watched.ultimoLogin || '—'}</span>}
@@ -142,7 +142,7 @@ export default function SettingsGeneralForm({ initialValues, onSubmit, onCancel 
 
       {/* WhatsApp */}
       <RowView
-        label="WhatsApp"
+        label={t('settingsPage.general.whatsapp')}
         edit={editable}
         show={<span>{watched.whatsapp || '—'}</span>}
         editNode={
@@ -192,7 +192,7 @@ export default function SettingsGeneralForm({ initialValues, onSubmit, onCancel 
               onClick={() => setEditable(true)}
               type="button"
             >
-              {t('editar')}
+              {t('common.edit')}
             </UIButton>
           ) : (
             <div className="d-flex gap-2">
@@ -201,14 +201,14 @@ export default function SettingsGeneralForm({ initialValues, onSubmit, onCancel 
                 onClick={() => handleCancel()}
                 type="button"
               >
-                {t('cancelar')}
+                {t('common.cancel')}
               </UIButton>
               <UIButton
                 variant="primary"
                 type="submit"
                 disabled={isSubmitting}
               >
-                {t('guardar')}
+                {t('common.save')}
               </UIButton>
             </div>
           )}

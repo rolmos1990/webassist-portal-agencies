@@ -115,7 +115,7 @@ export default function TablePagination({
         }}
       >
         <i className="bi bi-chevron-left me-2" aria-hidden="true" />
-        <span>{t('datatable_previous')}</span>
+        <span>{t('common.previous')}</span>
       </a>
     </li>
   );
@@ -134,7 +134,7 @@ export default function TablePagination({
           if (!isLast) gotoPage(page + 1);
         }}
       >
-        <span className="me-2">{t('datatable_next')}</span>
+        <span className="me-2">{t('common.next')}</span>
         <i className="bi bi-chevron-right" aria-hidden="true" />
       </a>
     </li>

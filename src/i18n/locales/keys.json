@@ -282,17 +282,21 @@
   "noData": "key_noData",
   "error_generico": "key_error_generico",
   "error_desconocido": "key_error_desconocido",
+  "general": "key_general",
+  "cuenta": "key_cuenta",
+  "agencia": "key_agencia",
+  "manage_your_account_settings": "key_manage_your_account_settings",
+  "user_preference": "key_user_preference",
+  "comission_and_revenue_settings": "key_comission_and_revenue_settings",
+  "default_commission_rate": "key_default_commission_rate",
   "agencias": "key_agencias",
   "agencias_filter_by": "key_agencias_filter_by",
   "crear_agencia": "key_crear_agencia",
   "agentes": "key_agentes",
   "create_new_agent": "key_create_new_agent",
   "filter_by": "key_filter_by",
-  "datatable_previous": "key_datatable_previous",
-  "datatable_next": "key_datatable_next",
-  "editar": "key_editar",
-  "cancelar": "key_cancelar",
-  "guardar": "key_guardar",
+  "filtrar_por": "key_filtrar_por",
+  "create_new_agency": "key_create_new_agency",
   "settings": "key_settings",
   "profile": "key_profile",
   "feedback": {
@@ -341,5 +345,49 @@
     "postalCode": "key_myProfile_postalCode",
     "languageSettings": "key_myProfile_languageSettings",
     "language": "key_myProfile_language"
+  },
+  "common": {
+    "search": "key_common_search",
+    "previous": "key_common_previous",
+    "next": "key_common_next",
+    "edit": "key_common_edit",
+    "cancel": "key_common_cancel",
+    "save": "key_common_save",
+    "enabled": "key_common_enabled",
+    "disabled": "key_common_disabled",
+    "selectCountry": "key_common_selectCountry"
+  },
+  "settingsPage": {
+    "general": {
+      "language": "key_settingsPage_general_language",
+      "paymentType": "key_settingsPage_general_paymentType",
+      "lastLogin": "key_settingsPage_general_lastLogin",
+      "whatsapp": "key_settingsPage_general_whatsapp"
+    },
+    "account": {
+      "title": "key_settingsPage_account_title",
+      "primaryEmail": "key_settingsPage_account_primaryEmail",
+      "name": "key_settingsPage_account_name",
+      "lastName": "key_settingsPage_account_lastName",
+      "phone": "key_settingsPage_account_phone",
+      "country": "key_settingsPage_account_country",
+      "notifications": "key_settingsPage_account_notifications",
+      "emailNotifications": "key_settingsPage_account_emailNotifications",
+      "alternativeRenewalsEmail": "key_settingsPage_account_alternativeRenewalsEmail"
+    },
+    "agency": {
+      "title": "key_settingsPage_agency_title",
+      "parentAgency": "key_settingsPage_agency_parentAgency",
+      "agencyName": "key_settingsPage_agency_agencyName",
+      "legalName": "key_settingsPage_agency_legalName",
+      "ruc": "key_settingsPage_agency_ruc",
+      "phone": "key_settingsPage_agency_phone",
+      "contact": "key_settingsPage_agency_contact",
+      "email": "key_settingsPage_agency_email",
+      "secondaryEmail": "key_settingsPage_agency_secondaryEmail",
+      "website": "key_settingsPage_agency_website",
+      "address": "key_settingsPage_agency_address",
+      "sendVoucherCopies": "key_settingsPage_agency_sendVoucherCopies"
+    }
   }
 }

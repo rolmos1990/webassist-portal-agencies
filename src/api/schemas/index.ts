@@ -17,6 +17,7 @@ Todas las respuestas de error salen en JSON con la misma forma: `ok` en `false`,
 | 5004 | 405 | El método HTTP no está permitido para ese endpoint |
 | 5005 | 500 | Error interno al procesar la solicitud |
 | 5006 | 200 | El plan no existe o no está habilitado para el usuario de la API |
+| 5007 | 200 | El cliente no existe o no es del agente (ni de su agencia, si es administrador) |
 
 Los códigos 5001 y 5002 son de negocio y viajan con HTTP 200: hay que mirar siempre el campo `ok`, no sólo el status.
 
@@ -26,7 +27,7 @@ Cuando el error es de validación de campos, además de `error` viene `errores`,
 
 En el ambiente de desarrollo las respuestas 500 agregan `error` y `archivo` con el detalle técnico; en producción no.
 
- * OpenAPI spec version: 1.0.28
+ * OpenAPI spec version: 1.1.0
  */
 
 export * from './actualizarAgentePorIdBody';
@@ -110,6 +111,12 @@ export * from './getBusqueda200';
 export * from './getBusqueda200Errores';
 export * from './getBusqueda200Totales';
 export * from './getBusquedaParams';
+export * from './getClienteHistorial200';
+export * from './getClienteHistorial200Data';
+export * from './getClienteHistorial200DataItemsItem';
+export * from './getClienteHistorial200DataItemsItemPlan';
+export * from './getClienteHistorial200DataItemsItemVoucher';
+export * from './getClienteHistorialParams';
 export * from './getClienteVentas200';
 export * from './getClienteVentas200Data';
 export * from './getClienteVentas200DataItemsItem';
@@ -315,6 +322,9 @@ export * from './reporteVentasAgenciaResponseDataItemsItem';
 export * from './respuesta';
 export * from './respuestaItem';
 export * from './rutaNoEncontradaResponse';
+export * from './statusVenta';
+export * from './statusVentaCodigo';
+export * from './statusVentaFecha';
 export * from './user';
 export * from './userAgente';
 export * from './userLogin';

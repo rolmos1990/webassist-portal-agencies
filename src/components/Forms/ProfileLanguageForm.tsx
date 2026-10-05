@@ -22,7 +22,7 @@ const API_FIELD_MAP = { idioma: 'language' } as const;
 // Mismas opciones que SettingsGeneralForm
 const LANGUAGE_OPTS: SelectOption[] = [
   { value: 'en', label: 'English' },
-  { value: 'es', label: 'Spanish' },
+  { value: 'es', label: 'Español' },
 ];
 
 interface Props {
