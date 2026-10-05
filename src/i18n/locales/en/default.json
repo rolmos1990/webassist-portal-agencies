@@ -59,6 +59,21 @@
     "close": "Close",
     "show": "Show",
     "hide": "Hide",
+    "view": "View agent",
+    "detail": {
+      "back": "Back",
+      "totalSales": "Total Sales",
+      "standingQuoteValue": "Standing Quote Value",
+      "totalCommissionEarned": "Total Commission Earned",
+      "totalCommissionHint": "Total commission earned from all policies",
+      "role": "Role",
+      "reportingAgents": "Reporting Agents",
+      "dateJoined": "Date Joined",
+      "quotes": "Quotes",
+      "sales": "Sales",
+      "viewProfile": "View Profile",
+      "notFound": "Agent not found"
+    },
     "form": {
       "firstName": "First Name",
       "lastName": "Last Name",

@@ -1,9 +1,10 @@
+import { Avatar } from "./Avatar";
 import { StatusBadge } from "./StatusBadge";
 import type { StatusBadgeProps } from "./StatusBadge";
 import { defaultStatusTheme } from "./StatusBadge/StatusBadgeThemes";
 
 interface CardAvatarProps {
-  avatarUrl: string;
+  avatarUrl?: string;
   name: string;
   status: StatusBadgeProps['status'];
   email: string;
@@ -26,12 +27,7 @@ export const CardAvatar = ({
       <div className="card-body">
         <div className="d-flex flex-column flex-md-row gap-3 align-items-start">
           <div className="flex-shrink-0">
-            <img
-              src={avatarUrl}
-              alt={`${name}'s profile`}
-              className="rounded-circle img-fluid"
-              style={{ width: '80px', height: '80px', objectFit: 'cover' }}
-            />
+            <Avatar src={avatarUrl} name={name} size={80} />
           </div>
 
           <div className="flex-grow-1 text-center text-md-start">

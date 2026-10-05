@@ -1,5 +1,6 @@
 // ContactCard.tsx
 import React from "react";
+import { Avatar } from "./Avatar";
 import { UIButton } from "./Button";
 
 type Icon = React.ReactNode;
@@ -15,7 +16,7 @@ type ActionButton =
 
 export interface ContactCardProps {
   name: string;
-  photoUrl: string;
+  photoUrl?: string;
   status?: React.ReactNode;
   items?: FieldItem[];
   action?: ActionButton;
@@ -36,12 +37,7 @@ export default function ContactCard({
         <div className="row g-3">
           {/* Avatar arriba-izquierda */}
           <div className="col-auto">
-            <img
-              src={photoUrl}
-              alt={`Photo of ${name}`}
-              className="rounded-circle object-fit-cover shadow-0 contact-card__avatar"
-              style={{ width: 48, height: 48 }}
-            />
+            <Avatar src={photoUrl} name={name} size={48} className="shadow-0 contact-card__avatar" />
           </div>
 
           {/* Texto a la derecha */}

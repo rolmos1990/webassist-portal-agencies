@@ -9,6 +9,7 @@ import { parseSecurityRole, SecurityRole } from "../../stores/SecurityRole";
 type CreateColumnsDeps = {
   currency: (n: number) => string;
   t: (key: string) => string | React.ReactNode;
+  onView: (row: GetAgentesAgencia200DataItem) => void;
   onEdit: (row: GetAgentesAgencia200DataItem) => void;
   onToggle: (row: GetAgentesAgencia200DataItem) => void;
 };
@@ -22,6 +23,7 @@ export const isAgentActive = (row: GetAgentesAgencia200DataItem) =>
 export function createAgentColumns({
   currency,
   t,
+  onView,
   onEdit,
   onToggle,
 }: CreateColumnsDeps): ColumnDef<GetAgentesAgencia200DataItem>[] {
@@ -122,6 +124,13 @@ export function createAgentColumns({
       align: "end",
       render: (row) => (
         <RowActions context={row}>
+          <RowActions.Item<GetAgentesAgencia200DataItem>
+            icon="bi-eye"
+            onClick={onView}
+          >
+            {t("agents.view")}
+          </RowActions.Item>
+
           <RowActions.Item<GetAgentesAgencia200DataItem>
             icon="bi-pencil"
             onClick={onEdit}

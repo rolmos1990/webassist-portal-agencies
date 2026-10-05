@@ -59,6 +59,21 @@
     "close": "Cerrar",
     "show": "Mostrar",
     "hide": "Ocultar",
+    "view": "Ver agente",
+    "detail": {
+      "back": "Atrás",
+      "totalSales": "Ventas Totales",
+      "standingQuoteValue": "Valor de Cotizaciones Vigentes",
+      "totalCommissionEarned": "Comisión Total Ganada",
+      "totalCommissionHint": "Comisión total ganada por todas las pólizas",
+      "role": "Rol",
+      "reportingAgents": "Agentes de la Agencia",
+      "dateJoined": "Fecha de Ingreso",
+      "quotes": "Cotizaciones",
+      "sales": "Ventas",
+      "viewProfile": "Ver perfil",
+      "notFound": "No se encontró el agente"
+    },
     "form": {
       "firstName": "Nombre",
       "lastName": "Apellido",

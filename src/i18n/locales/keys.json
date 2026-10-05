@@ -59,6 +59,21 @@
     "close": "key_agents_close",
     "show": "key_agents_show",
     "hide": "key_agents_hide",
+    "view": "key_agents_view",
+    "detail": {
+      "back": "key_agents_detail_back",
+      "totalSales": "key_agents_detail_totalSales",
+      "standingQuoteValue": "key_agents_detail_standingQuoteValue",
+      "totalCommissionEarned": "key_agents_detail_totalCommissionEarned",
+      "totalCommissionHint": "key_agents_detail_totalCommissionHint",
+      "role": "key_agents_detail_role",
+      "reportingAgents": "key_agents_detail_reportingAgents",
+      "dateJoined": "key_agents_detail_dateJoined",
+      "quotes": "key_agents_detail_quotes",
+      "sales": "key_agents_detail_sales",
+      "viewProfile": "key_agents_detail_viewProfile",
+      "notFound": "key_agents_detail_notFound"
+    },
     "form": {
       "firstName": "key_agents_form_firstName",
       "lastName": "key_agents_form_lastName",

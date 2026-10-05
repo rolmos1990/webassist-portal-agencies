@@ -23,6 +23,7 @@ type AgentsTableProps = {
   pagination?: AgentsTablePagination;
   sort?: SortState | null;
   onSortChange?: (sort: { id: string; dir: SortDir }) => void;
+  onView?: (row: GetAgentesAgencia200DataItem) => void;
   onEdit?: (row: GetAgentesAgencia200DataItem) => void;
   onToggle?: (row: GetAgentesAgencia200DataItem) => void;
 };
@@ -33,10 +34,15 @@ export function AgentsTable({
   pagination,
   sort,
   onSortChange,
+  onView: externalOnView,
   onEdit: externalOnEdit,
   onToggle: externalOnToggle,
 }: AgentsTableProps) {
   const { t } = useTranslation();
+
+  const handleView = useCallback((row: GetAgentesAgencia200DataItem) => {
+    externalOnView?.(row);
+  }, [externalOnView]);
 
   const handleEdit = useCallback((row: GetAgentesAgencia200DataItem) => {
     externalOnEdit?.(row);
@@ -50,10 +56,11 @@ export function AgentsTable({
     () => createAgentColumns({ 
       currency, 
       t, 
+      onView: handleView,
       onEdit: handleEdit, 
       onToggle: handleToggle,
     }),
-    [t, handleEdit, handleToggle]
+    [t, handleView, handleEdit, handleToggle]
   );
 
   return (

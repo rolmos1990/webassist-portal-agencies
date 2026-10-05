@@ -10,9 +10,10 @@ interface TabPanelProps {
   }[];
   defaultActiveTab?: string;
   className?: string;
+  onTabChange?: (id: string) => void;
 }
 
-export const TabPanel = ({ tabs, defaultActiveTab, className = '' }: TabPanelProps) => {
+export const TabPanel = ({ tabs, defaultActiveTab, className = '', onTabChange }: TabPanelProps) => {
   const [activeTab, setActiveTab] = useState(defaultActiveTab || (tabs.length > 0 ? tabs[0].id : ''));
 
   if (tabs.length === 0) return null;
@@ -31,7 +32,10 @@ export const TabPanel = ({ tabs, defaultActiveTab, className = '' }: TabPanelPro
               role="tab"
               aria-controls={tab.id}
               aria-selected={activeTab === tab.id}
-              onClick={() => setActiveTab(tab.id)}
+              onClick={() => {
+                setActiveTab(tab.id);
+                onTabChange?.(tab.id);
+              }}
             >
               {tab.title}
             </button>

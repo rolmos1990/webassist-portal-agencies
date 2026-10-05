@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
+import { useNavigate } from 'react-router-dom';
 import Breadcrumb from '../components/Breadcrumb';
 import { UIButton } from '../components/Button';
 import Offcanvas from '../components/Offcanvas';
@@ -21,6 +22,7 @@ import { useAuthStore } from '../stores/useAuthStore';
 import { parseSecurityRole, SecurityRole } from '../stores/SecurityRole';
 import { isAgentActive } from '../components/Tables/AgentsDataTableConfig';
 import type { SortDir } from '../components/DataTable';
+import { PATHS } from '../routes/Routes';
 
 // Valores del contrato para POST /agentes y /agente/{id}
 const AGENT_ROLE_ID = { AGENT: 1, ADMIN: 2 } as const;
@@ -72,6 +74,7 @@ function Agents() {
   const { lang } = useI18nCache();
   const { t } = useTranslation();
   const queryClient = useQueryClient();
+  const navigate = useNavigate();
   const [currentPage, setCurrentPage] = useState(1);
   const [sort, setSort] = useState<{ id: string; dir: SortDir } | null>(null);
 
@@ -125,6 +128,9 @@ function Agents() {
     setEditingAgent(null);
     setFormKey((k) => k + 1);
     setShow(true);
+  };
+  const handleView = (row: GetAgentesAgencia200DataItem) => {
+    if (row.id != null) navigate(PATHS.agents.detail(row.id));
   };
   const handleEdit = (row: GetAgentesAgencia200DataItem) => {
     setEditingAgent(row);
@@ -295,6 +301,7 @@ function Agents() {
                   data={agents.slice((currentPage - 1) * PAGE_SIZE, currentPage * PAGE_SIZE)}
                   loading={isLoading}
                   sort={sort}
+                  onView={handleView}
                   onEdit={handleEdit}
                   onToggle={handleToggle}
                   onSortChange={setSort}
