@@ -30,7 +30,18 @@
       "edit":"Edit",
       "delete":"Delete",
       "markActive":"Mark as Active",
-      "markInactive":"Mark as Inactive"
+      "markInactive":"Mark as Inactive",
+      "totalCommissionGenerated": "Comisión Total Generada",
+      "detail": {
+        "back": "Atrás",
+        "notFound": "Agencia no encontrada",
+        "totalSales": "Ventas Totales",
+        "standingQuoteValue": "Valor de Cotizaciones Vigentes",
+        "totalCommissionEarned": "Comisión Total Ganada",
+        "numberOfAgents": "Número de Agentes",
+        "commissionPercentage": "Porcentaje de Comisión",
+        "subAgencies": "Sub Agencias"
+      }
   },
   "agents":{
     "agentCode":"Código de Agente",

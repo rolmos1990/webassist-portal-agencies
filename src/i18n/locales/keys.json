@@ -30,7 +30,18 @@
     "edit": "key_agency_edit",
     "delete": "key_agency_delete",
     "markActive": "key_agency_markActive",
-    "markInactive": "key_agency_markInactive"
+    "markInactive": "key_agency_markInactive",
+    "totalCommissionGenerated": "key_agency_totalCommissionGenerated",
+    "detail": {
+      "back": "key_agency_detail_back",
+      "notFound": "key_agency_detail_notFound",
+      "totalSales": "key_agency_detail_totalSales",
+      "standingQuoteValue": "key_agency_detail_standingQuoteValue",
+      "totalCommissionEarned": "key_agency_detail_totalCommissionEarned",
+      "numberOfAgents": "key_agency_detail_numberOfAgents",
+      "commissionPercentage": "key_agency_detail_commissionPercentage",
+      "subAgencies": "key_agency_detail_subAgencies"
+    }
   },
   "agents": {
     "agentCode": "key_agents_agentCode",

@@ -1,5 +1,5 @@
 import type { GetAgenciasAgencia200DataItem } from "../../api/schemas";
-import { type ColumnDef } from "../DataTable";
+import { currency, type ColumnDef } from "../DataTable";
 import RowActions from "../RowActions";
 import { StatusBadge } from "../StatusBadge";
 import type { StatusTheme } from "../StatusBadge";
@@ -25,45 +25,12 @@ export function createAgencyColumns({
 
   return [
     {
-      id: "id",
-      label: t("agency.id"),
-      width: "6%",
-      sortable: true,
-      accessor: (row) => row.id,
-      align: "start",
-    },
-    {
       id: "nombre",
       label: t("agency.name"),
-      width: "18%",
+      width: "20%",
       sortable: true,
       accessor: (row) => row.nombre,
       align: "start",
-    },
-    {
-      id: "telefono",
-      label: t("agency.phone"),
-      width: "14%",
-      sortable: true,
-      accessor: (row) => row.telefono,
-      align: "start",
-    },
-    {
-      id: "contacto",
-      label: t("agency.contact"),
-      width: "14%",
-      sortable: true,
-      accessor: (row) => row.contacto,
-      align: "start",
-    },
-    {
-      id: "comision",
-      label: t("agency.commission"),
-      width: "10%",
-      sortable: true,
-      accessor: (row) => row.comision,
-      align: "center",
-      render: (row) => `${row.comision ?? 0}%`,
     },
     {
       id: "tipo_pago",
@@ -76,12 +43,40 @@ export function createAgencyColumns({
       render: (row) => (typeof row.tipo_pago?.nombre === "string" && row.tipo_pago.nombre) || "—",
     },
     {
-      id: "fecha_creacion",
-      label: t("agency.createdAt"),
-      width: "12%",
+      id: "comision",
+      label: t("agency.commission"),
+      width: "10%",
       sortable: true,
-      accessor: (row) => row.fecha_creacion,
+      accessor: (row) => row.comision,
+      align: "center",
+      render: (row) => `${row.comision ?? 0}%`,
+    },
+    {
+      id: "total_ventas_monto",
+      label: t("agency.totalRevenue"),
+      width: "14%",
+      sortable: true,
+      accessor: (row) => Number(row.total_ventas_monto ?? 0),
       align: "start",
+      render: (row) => currency(Number(row.total_ventas_monto ?? 0)),
+    },
+    {
+      id: "total_comisiones",
+      label: t("agency.totalCommissionGenerated"),
+      width: "16%",
+      sortable: true,
+      accessor: (row) => Number(row.total_comisiones ?? 0),
+      align: "start",
+      render: (row) => currency(Number(row.total_comisiones ?? 0)),
+    },
+    {
+      id: "ciudad",
+      label: t("agency.location"),
+      width: "18%",
+      sortable: true,
+      accessor: (row) => row.ciudad ?? "",
+      align: "start",
+      render: (row) => [row.ciudad, row.direccion].filter(Boolean).join(" / ") || "—",
     },
     {
       id: "status",
