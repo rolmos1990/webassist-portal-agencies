@@ -56,7 +56,25 @@
     "tempPasswordHint": "key_agents_tempPasswordHint",
     "copy": "key_agents_copy",
     "copied": "key_agents_copied",
-    "close": "key_agents_close"
+    "close": "key_agents_close",
+    "show": "key_agents_show",
+    "hide": "key_agents_hide",
+    "form": {
+      "firstName": "key_agents_form_firstName",
+      "lastName": "key_agents_form_lastName",
+      "email": "key_agents_form_email",
+      "phone": "key_agents_form_phone",
+      "whatsapp": "key_agents_form_whatsapp",
+      "language": "key_agents_form_language",
+      "selectLanguage": "key_agents_form_selectLanguage",
+      "alternateEmail": "key_agents_form_alternateEmail",
+      "receiveRenewals": "key_agents_form_receiveRenewals",
+      "active": "key_agents_form_active",
+      "commission": "key_agents_form_commission",
+      "role": "key_agents_form_role",
+      "cancel": "key_agents_form_cancel",
+      "save": "key_agents_form_save"
+    }
   },
   "clients": {
     "id": "key_clients_id",

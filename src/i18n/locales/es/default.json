@@ -53,10 +53,28 @@
     "created": "Agente creado",
     "updated": "Agente actualizado",
     "tempPasswordTitle": "Contraseña temporal",
-    "tempPasswordHint": "Entrégala al agente: sólo se muestra esta vez y deberá cambiarla en su primer ingreso.",
+    "tempPasswordHint": "Esta es la clave temporal que el administrador debe entregarle al agente. Sólo se muestra esta vez y deberá cambiarla en su primer ingreso.",
     "copy": "Copiar",
     "copied": "Contraseña copiada",
-    "close": "Cerrar"
+    "close": "Cerrar",
+    "show": "Mostrar",
+    "hide": "Ocultar",
+    "form": {
+      "firstName": "Nombre",
+      "lastName": "Apellido",
+      "email": "Correo",
+      "phone": "Teléfono",
+      "whatsapp": "WhatsApp",
+      "language": "Idioma",
+      "selectLanguage": "Selecciona un idioma",
+      "alternateEmail": "Correo alternativo para renovaciones",
+      "receiveRenewals": "Recibir correos de renovaciones",
+      "active": "Activo",
+      "commission": "Porcentaje de comisión",
+      "role": "Rol",
+      "cancel": "Cancelar",
+      "save": "Guardar"
+    }
 },
   "clients":{
     "id":"ID",

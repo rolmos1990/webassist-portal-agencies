@@ -25,7 +25,6 @@ type AgentsTableProps = {
   onSortChange?: (sort: { id: string; dir: SortDir }) => void;
   onEdit?: (row: GetAgentesAgencia200DataItem) => void;
   onToggle?: (row: GetAgentesAgencia200DataItem) => void;
-  onDelete?: (row: GetAgentesAgencia200DataItem) => void;
 };
 
 export function AgentsTable({ 
@@ -36,7 +35,6 @@ export function AgentsTable({
   onSortChange,
   onEdit: externalOnEdit,
   onToggle: externalOnToggle,
-  onDelete: externalOnDelete
 }: AgentsTableProps) {
   const { t } = useTranslation();
 
@@ -48,19 +46,14 @@ export function AgentsTable({
     externalOnToggle?.(row);
   }, [externalOnToggle]);
 
-  const handleDelete = useCallback((row: GetAgentesAgencia200DataItem) => {
-    externalOnDelete?.(row);
-  }, [externalOnDelete]);
-
   const columns = useMemo(
     () => createAgentColumns({ 
       currency, 
       t, 
       onEdit: handleEdit, 
-      onToggle: handleToggle, 
-      onDelete: handleDelete 
+      onToggle: handleToggle,
     }),
-    [t, handleEdit, handleToggle, handleDelete]
+    [t, handleEdit, handleToggle]
   );
 
   return (

@@ -13,6 +13,7 @@ interface UIModalProps {
   backdrop?: true | false | "static"; // true = cierra al hacer click fuera
   keyboard?: boolean;          // cerrar con ESC
   className?: string;
+  children?: React.ReactNode;  // contenido extra bajo el subtitle
 }
 
 const CircleStatusIcon: React.FC<{ kind: StatusIcon }> = ({ kind }) => {
@@ -59,6 +60,7 @@ const UIModal: React.FC<UIModalProps> = ({
   backdrop = true,
   keyboard = true,
   className = "",
+  children,
 }) => {
   const wrapperRef = useRef<HTMLDivElement>(null);
 
@@ -149,6 +151,8 @@ const UIModal: React.FC<UIModalProps> = ({
                   {subtitle}
                 </p>
               )}
+
+              {children}
 
               {primaryLabel && (
                 <button

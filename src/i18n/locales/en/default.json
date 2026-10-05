@@ -53,10 +53,28 @@
     "created": "Agent created",
     "updated": "Agent updated",
     "tempPasswordTitle": "Temporary password",
-    "tempPasswordHint": "Give it to the agent: it is shown only this time and must be changed on first sign in.",
+    "tempPasswordHint": "This is the temporary password the administrator must give to the agent. It is shown only this time and must be changed on first sign in.",
     "copy": "Copy",
     "copied": "Password copied",
-    "close": "Close"
+    "close": "Close",
+    "show": "Show",
+    "hide": "Hide",
+    "form": {
+      "firstName": "First Name",
+      "lastName": "Last Name",
+      "email": "Email",
+      "phone": "Phone",
+      "whatsapp": "WhatsApp",
+      "language": "Language",
+      "selectLanguage": "Select a language",
+      "alternateEmail": "Alternative renewals email",
+      "receiveRenewals": "Receive renewal emails",
+      "active": "Active",
+      "commission": "Commission percentage",
+      "role": "Role",
+      "cancel": "Cancel",
+      "save": "Save"
+    }
   },
   "clients":{
       "id":"ID",

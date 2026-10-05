@@ -64,10 +64,6 @@ function RowActionsRoot<T>({
     };
   }, [autoClose, popperConfig]);
 
-  const handleToggle = () => {
-    dropdownRef.current?.toggle();
-  };
-
   return (
     <RAContext.Provider value={context}>
       <div className="dropdown">
@@ -75,9 +71,11 @@ function RowActionsRoot<T>({
           ref={btnRef}
           type="button"
           className="btn btn-sm btn-link text-muted p-0"
+          // Bootstrap abre/cierra con este atributo y, gracias a él, cierra el menú
+          // al hacer click fuera o en una opción (autoClose)
+          data-bs-toggle="dropdown"
           aria-expanded="false"
           aria-controls={id}
-          onClick={handleToggle}
         >
           <i className="bi bi-three-dots-vertical fs-5" />
         </button>

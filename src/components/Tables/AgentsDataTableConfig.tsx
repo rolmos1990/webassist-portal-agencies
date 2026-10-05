@@ -1,4 +1,4 @@
-//import type { AgentRow } from "../../data/agentData";
+import { OverlayTrigger, Tooltip } from "react-bootstrap";
 import { type ColumnDef } from "../DataTable";
 import RowActions from "../RowActions";
 import { StatusBadge } from "../StatusBadge";
@@ -11,27 +11,30 @@ type CreateColumnsDeps = {
   t: (key: string) => string | React.ReactNode;
   onEdit: (row: GetAgentesAgencia200DataItem) => void;
   onToggle: (row: GetAgentesAgencia200DataItem) => void;
-  onDelete: (row: GetAgentesAgencia200DataItem) => void;
 };
+
+const AGENT_STATUS_ACTIVE = 1;
+
+/** El id puede llegar como número o como texto ("1") desde el backend */
+export const isAgentActive = (row: GetAgentesAgencia200DataItem) =>
+  Number(row.status?.id) === AGENT_STATUS_ACTIVE;
 
 export function createAgentColumns({
   currency,
   t,
   onEdit,
   onToggle,
-  onDelete,
 }: CreateColumnsDeps): ColumnDef<GetAgentesAgencia200DataItem>[] {
   const agentStatusTheme: StatusTheme = {
     "1": { tone: "success", label: t("status.active") },
-    "0": { tone: "secondary", label: t("status.inactive") },
+    "2": { tone: "secondary", label: t("status.inactive") },
     default: { tone: "secondary" },
   };
 
-  const roleLabel = (row: GetAgentesAgencia200DataItem) => {
-    const role = parseSecurityRole(row.roles);
-    if (role === SecurityRole.AGENT_ADMIN) return t("agents.roleAgentAdmin");
-    if (role === SecurityRole.AGENT) return t("agents.roleAgent");
-    return "—";
+  // El rol se muestra como badge para que se lea como un tipo de agente
+  const agentRoleTheme: StatusTheme = {
+    [SecurityRole.AGENT_ADMIN]: { tone: "primary", label: t("agents.roleAgentAdmin"), showDot: false },
+    [SecurityRole.AGENT]: { tone: "secondary", label: t("agents.roleAgent"), showDot: false },
   };
 
   return [
@@ -42,40 +45,55 @@ export function createAgentColumns({
       sortable: true,
       accessor: (row) => row.codigo,
       align: "start",
+      render: (row) => <span className="small text-secondary">{row.codigo}</span>,
     },
     {
       id: "name",
       label: t("agents.name"),
-      width: "26%",
-      sortable: false,
-      accessor: (row) => row.nombre,
+      width: "30%",
+      sortable: true,
+      accessor: (row) => `${row.nombre ?? ""} ${row.apellido ?? ""}`.trim(),
       align: "start",
+      render: (row) => {
+        const role = parseSecurityRole(row.roles);
+        return (
+          <div className="lh-sm">
+            <div className="fw-semibold">{`${row.nombre ?? ""} ${row.apellido ?? ""}`.trim() || "—"}</div>
+            <div className="small text-muted">{row.email}</div>
+            {role && (
+              <StatusBadge status={role} theme={agentRoleTheme} size="sm" className="mt-1" />
+            )}
+          </div>
+        );
+      },
     },
     {
-      id: "lastName",
-      label: t("agents.lastName"),
+      id: "agencia",
+      label: t("agents.agencyName"),
       width: "18%",
-      sortable: false,
-      accessor: (row) => row.apellido,
+      sortable: true,
+      accessor: (row) => row.agencia?.nombre,
       align: "start",
-      render: (row) => row.apellido,
+      render: (row) => row.agencia?.nombre ?? "—",
     },
     {
-      id: "email",
-      label: t("agents.email"),
+      id: "total_ventas",
+      label: t("agents.totalSales"),
       width: "14%",
       sortable: true,
-      accessor: (row) => row.email,
-      align: "start",
-    },
-    {
-      id: "rol",
-      label: t("agents.role"),
-      width: "12%",
-      sortable: true,
-      accessor: (row) => parseSecurityRole(row.roles),
-      align: "start",
-      render: (row) => roleLabel(row),
+      accessor: (row) => row.total_ventas,
+      align: "end",
+      // El monto de las ventas se muestra en el tooltip para no saturar la tabla
+      render: (row) => (
+        <OverlayTrigger
+          placement="top"
+          overlay={<Tooltip id={`agent-sales-${row.id}`}>{currency(row.total_ventas_monto ?? 0)}</Tooltip>}
+        >
+          <span className="text-decoration-underline" style={{ textDecorationStyle: "dotted", cursor: "help" }}>
+            {row.total_ventas ?? 0}
+          </span>
+        </OverlayTrigger>
+      ),
     },
     {
       id: "comision",
@@ -83,22 +101,18 @@ export function createAgentColumns({
       width: "12%",
       sortable: true,
       accessor: (row) => row.comision,
-      render: (row) => row.comision,
       align: "end",
+      render: (row) => (row.comision != null ? `${row.comision}%` : "—"),
     },
     {
       id: "status",
       label: t("agents.status"),
-      width: "5%",
+      width: "10%",
       sortable: true,
       accessor: (row) => row.status?.nombre,
       align: "center",
       render: (row) => (
-        <StatusBadge
-          status={String(row.status?.id ?? "")}
-          label={row.status?.nombre || undefined}
-          theme={agentStatusTheme}
-        />
+        <StatusBadge status={String(row.status?.id ?? "")} theme={agentStatusTheme} />
       ),
     },
     {
@@ -116,22 +130,12 @@ export function createAgentColumns({
           </RowActions.Item>
 
           <RowActions.Item<GetAgentesAgencia200DataItem>
-            icon={row.status?.id === 1 ? "bi-toggle-on" : "bi-toggle-off"}
+            icon={isAgentActive(row) ? "bi-toggle-on" : "bi-toggle-off"}
             onClick={onToggle}
           >
-            {row.status?.id === 1
+            {isAgentActive(row)
               ? t("agents.markInactive")
               : t("agents.markActive")}
-          </RowActions.Item>
-
-          <RowActions.Divider />
-
-          <RowActions.Item<GetAgentesAgencia200DataItem>
-            icon="bi-trash3"
-            danger
-            onClick={onDelete}
-          >
-            {t("agents.delete")}
           </RowActions.Item>
         </RowActions>
       ),
