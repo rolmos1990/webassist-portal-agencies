@@ -5,7 +5,6 @@ import { UIButton } from '../components/Button';
 import Offcanvas from '../components/Offcanvas';
 import { useNavigate } from 'react-router-dom';
 import { AgencyAssistanceTable } from '../components/Tables/AgencyAssistanceTable';
-import CreateAgentVertical from '../components/Forms/CreateAgentVertical';
 import { useTranslation } from 'react-i18next';
 import { useGetAsistenciasAgenteAgencia } from '../api/generated';
 import { useI18nCache } from '../i18n/i18nCacheProvider';
@@ -21,7 +20,6 @@ import {
 import { useCountryOptions } from '../hooks/useCountryOptions';
 
 function AssistanceAgency() {
-  const [show, setShow] = useState(false);
   const { lang } = useI18nCache();
   const [currentPage, setCurrentPage] = useState(1);
   const [showFilter, setShowFilter] = useState(false);
@@ -34,15 +32,8 @@ function AssistanceAgency() {
     setShowFilter(false);
   };
 
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
-
   const navigate = useNavigate();
   const { t } = useTranslation();
-
-  const handleSubmit = () => {
-    handleClose();
-  };
 
   const { data, isLoading, error } = useGetAsistenciasAgenteAgencia(
     lang,
@@ -75,27 +66,8 @@ function AssistanceAgency() {
                 >
                 {t('filter_by')}
                 </UIButton>
-                <UIButton
-                variant="dark"
-                icon=""
-                onClick={handleShow}
-                >
-                {t('create_new_agent')}
-                </UIButton>
                   </div>
         } />      
-        <Offcanvas
-        show={show}
-        onHide={() => setShow(false)}
-        placement="end"
-        title={t('create_new_agent')}
-        canClose={true}
-        scroll={true}
-        backdrop="static"
-        width="380px"
-      >
-        <CreateAgentVertical onSubmit={handleSubmit} onCancel={handleClose} />
-        </Offcanvas>
         <Offcanvas
           show={showFilter}
           onHide={() => setShowFilter(false)}

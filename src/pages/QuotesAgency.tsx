@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import { keepPreviousData } from '@tanstack/react-query';
 import Breadcrumb from '../components/Breadcrumb';
 import { UIButton } from '../components/Button';
-import CreateAgenciesVertical from '../components/Forms/CreateAgenciesVertical';
 import FilterByPassengerForm from '../components/Forms/FilterByPassengerForm';
 import {
   EMPTY_PASSENGER_FILTERS,
@@ -21,7 +20,6 @@ import { toast } from '../services/toast';
 import { getApiErrorMessage } from '../api/errors/ApiError';
 
 function QuotesAgency() {
-  const [show, setShow] = useState(false);
   const [showFilter, setShowFilter] = useState(false);
   const [filters, setFilters] = useState<PassengerFilterValues>(EMPTY_PASSENGER_FILTERS);
   const [currentPage, setCurrentPage] = useState(1);
@@ -30,23 +28,11 @@ function QuotesAgency() {
   const { lang } = useI18nCache();
   const countryOptions = useCountryOptions();
 
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
-
-  const handleSubmit = (data: any) => {
-    handleClose();
-  };
-
   const handleApplyFilter = (values: PassengerFilterValues) => {
     setFilters(values);
     setCurrentPage(1);
     setShowFilter(false);
   };
-
-  const locations = [
-    { value: 'pa-panama', label: 'Panama' },
-    { value: 'pa-colon', label: 'Colón' },
-  ];
 
   const { data, isLoading, error } = useGetCotizacionesAgenteAgencia(
     lang,
@@ -79,27 +65,8 @@ function QuotesAgency() {
         >
         {t("filtrar_por")}
         </UIButton>
-        <UIButton
-        variant="dark"
-        icon=""
-        onClick={handleShow}
-        >
-        {t("create_new_agency")}
-        </UIButton>
           </div>
         } />      
-        <Offcanvas
-        show={show}
-        onHide={() => setShow(false)}
-        placement="end"
-        title="Create New Agent"
-        canClose={true}
-        scroll={true}
-        backdrop="static"
-        width="380px"
-      >
-        <CreateAgenciesVertical onSubmit={handleSubmit} onCancel={handleClose} locations={locations} />
-        </Offcanvas>
         <Offcanvas
         show={showFilter}
         onHide={() => setShowFilter(false)}
