@@ -11,7 +11,9 @@
     "number": "key_quotes_number",
     "name": "key_quotes_name",
     "product": "key_quotes_product",
-    "total": "key_quotes_total"
+    "total": "key_quotes_total",
+      "actions": "key_quotes_actions",
+      "view": "key_quotes_view"
   },
   "agency": {
     "id": "key_agency_id",
@@ -280,10 +282,19 @@
   "noData": "key_noData",
   "error_generico": "key_error_generico",
   "error_desconocido": "key_error_desconocido",
-  "quotes": {
-    "actions": "key_quotes_actions",
-    "view": "key_quotes_view"
-  },
+  "agencias": "key_agencias",
+  "agencias_filter_by": "key_agencias_filter_by",
+  "crear_agencia": "key_crear_agencia",
+  "agentes": "key_agentes",
+  "create_new_agent": "key_create_new_agent",
+  "filter_by": "key_filter_by",
+  "datatable_previous": "key_datatable_previous",
+  "datatable_next": "key_datatable_next",
+  "editar": "key_editar",
+  "cancelar": "key_cancelar",
+  "guardar": "key_guardar",
+  "settings": "key_settings",
+  "profile": "key_profile",
   "feedback": {
     "savedTitle": "key_feedback_savedTitle",
     "saved": "key_feedback_saved"
@@ -307,5 +318,28 @@
       "cotizacion": "key_search_types_cotizacion",
       "cliente": "key_search_types_cliente"
     }
+  },
+  "myProfile": {
+    "back": "key_myProfile_back",
+    "title": "key_myProfile_title",
+    "changePhoto": "key_myProfile_changePhoto",
+    "personalInformation": "key_myProfile_personalInformation",
+    "firstName": "key_myProfile_firstName",
+    "lastName": "key_myProfile_lastName",
+    "dateOfBirth": "key_myProfile_dateOfBirth",
+    "email": "key_myProfile_email",
+    "phone": "key_myProfile_phone",
+    "userRole": "key_myProfile_userRole",
+    "whatsapp": "key_myProfile_whatsapp",
+    "renewalEmails": "key_myProfile_renewalEmails",
+    "alternativeRenewalsEmail": "key_myProfile_alternativeRenewalsEmail",
+    "enabled": "key_myProfile_enabled",
+    "disabled": "key_myProfile_disabled",
+    "address": "key_myProfile_address",
+    "country": "key_myProfile_country",
+    "city": "key_myProfile_city",
+    "postalCode": "key_myProfile_postalCode",
+    "languageSettings": "key_myProfile_languageSettings",
+    "language": "key_myProfile_language"
   }
 }

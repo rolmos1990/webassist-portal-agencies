@@ -60,6 +60,7 @@ const T = {
   // Reports & Settings
   reports: '/:lang/reports',
   settings: '/:lang/settings',
+  profile: '/:lang/profile',
 
   // Not Found
   notFound: '/:lang/404',
@@ -116,5 +117,6 @@ export const PATHS = {
   },
   reports: (lang?: Lang) => withLang(T.reports, {}, lang),
   settings: (lang?: Lang) => withLang(T.settings, {}, lang),
+  profile: (lang?: Lang) => withLang(T.profile, {}, lang),
   notFound: (lang?: Lang) => withLang(T.notFound, {}, lang),
 } as const;

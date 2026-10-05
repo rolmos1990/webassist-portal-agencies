@@ -117,7 +117,7 @@ function Header() {
           }
         >
           <DropdownItem onClick={() => navigate(PATHS.settings())}>{t('settings')}</DropdownItem>
-          <DropdownItem onClick={() => navigate(PATHS.settings())}>{t('profile')}</DropdownItem>
+          <DropdownItem onClick={() => navigate(PATHS.profile())}>{t('profile')}</DropdownItem>
           <DropdownDivider />
           <DropdownItem onClick={handleLogout}>Sign out</DropdownItem>
         </Dropdown>

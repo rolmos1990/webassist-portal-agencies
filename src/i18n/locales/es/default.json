@@ -8,29 +8,31 @@
     "voucher":"Voucher"
 },
   "quotes": {
-      "number": "Number",
-      "name": "Name",
-      "product": "Product",
-      "total": "Total"
+      "number": "Número",
+      "name": "Nombre",
+      "product": "Producto",
+      "total": "Total",
+      "actions": "Acciones",
+      "view": "Ver"
   },
   "agency":{
       "id":"ID",
-      "name":"Name",
+      "name":"Nombre",
       "phone":"Teléfono",
       "contact":"Contacto",
       "commission":"Comisión (%)",
       "paymentType":"Tipo de Pago",
       "createdAt":"Fecha de Creación",
-      "totalRevenue":"Total Revenue",
-      "totalCommission":"Total Commission",
-      "location":"Location",
-      "totalPlans":"Total Plans",
-      "status":"Status",
-      "actions":"Actions",
-      "edit":"Edit",
-      "delete":"Delete",
-      "markActive":"Mark as Active",
-      "markInactive":"Mark as Inactive",
+      "totalRevenue":"Ingresos Totales",
+      "totalCommission":"Comisión Total",
+      "location":"Ubicación",
+      "totalPlans":"Total de Planes",
+      "status":"Estado",
+      "actions":"Acciones",
+      "edit":"Editar",
+      "delete":"Eliminar",
+      "markActive":"Marcar como Activo",
+      "markInactive":"Marcar como Inactivo",
       "totalCommissionGenerated": "Comisión Total Generada",
       "detail": {
         "back": "Atrás",
@@ -277,13 +279,22 @@
       "no_permitido": "No está permitido modificar este campo"
     }
   },
-  "noData": "No data available",
+  "noData": "No hay datos disponibles",
   "error_generico": "Ha ocurrido un error, inténtelo más tarde",
   "error_desconocido": "Ha ocurrido un error inesperado",
-  "quotes": {
-    "actions": "Acciones",
-    "view": "Ver"
-  },
+  "agencias": "Agencias",
+  "agencias_filter_by": "Filtrar por",
+  "crear_agencia": "Crear Agencia",
+  "agentes": "Agentes",
+  "create_new_agent": "Crear Nuevo Agente",
+  "filter_by": "Filtrar por",
+  "datatable_previous": "Anterior",
+  "datatable_next": "Siguiente",
+  "editar": "Editar",
+  "cancelar": "Cancelar",
+  "guardar": "Guardar",
+  "settings": "Configuración",
+  "profile": "Mi Perfil",
   "feedback": {
     "savedTitle": "Cambios guardados",
     "saved": "La información se actualizó correctamente."
@@ -307,5 +318,28 @@
       "cotizacion": "Cotizaciones",
       "cliente": "Clientes"
     }
+  },
+  "myProfile": {
+    "back": "Atrás",
+    "title": "Mi Perfil",
+    "changePhoto": "Cambiar foto",
+    "personalInformation": "Información Personal",
+    "firstName": "Nombre",
+    "lastName": "Apellido",
+    "dateOfBirth": "Fecha de nacimiento",
+    "email": "Correo",
+    "phone": "Teléfono",
+    "userRole": "Rol de usuario",
+    "whatsapp": "WhatsApp",
+    "renewalEmails": "Correos de renovación",
+    "alternativeRenewalsEmail": "Correo alternativo de renovaciones",
+    "enabled": "Activado",
+    "disabled": "Desactivado",
+    "address": "Dirección",
+    "country": "País",
+    "city": "Ciudad",
+    "postalCode": "Código Postal",
+    "languageSettings": "Configuración de Idioma",
+    "language": "Idioma"
   }
 }

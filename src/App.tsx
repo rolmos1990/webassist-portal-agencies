@@ -29,6 +29,7 @@ import MyQuotes from './pages/MyQuotes';
 import SalesReports from './pages/SalesReports';
 import Renewals from './pages/Renewals';
 import Settings from './pages/Settings';
+import Profile from './pages/Profile';
 
 // estilos/watchers
 import './assets/scss/main.scss';
@@ -79,6 +80,7 @@ export default function App() {
               <Route path="quote/:id" element={<AssistanceAgencyDetail kind="quote" />} />
               <Route path="reports" element={<SalesReports />} />
               <Route path="settings" element={<Settings />} />
+              <Route path="profile" element={<Profile />} />
             </Route>
           </Route>
 

@@ -20,28 +20,28 @@ export function createAgencyQuotesColumns({
   return [
     {
       id: "token",
-      label: t("numero"),
+      label: t("quotes.number"),
       width: "12%",
       accessor: (row) => row.token,
       align: "start",
     },
     {
       id: "nombre",
-      label: t("nombre"),
+      label: t("quotes.name"),
       width: "22%",
       accessor: (row) => `${row.nombre ?? ""} ${row.apellido ?? ""}`.trim(),
       align: "start",
     },
     {
       id: "producto",
-      label: t("producto"),
+      label: t("quotes.product"),
       width: "51%",
       accessor: (row) => planNames(row),
       align: "start",
     },
     {
       id: "total",
-      label: t("total"),
+      label: t("quotes.total"),
       width: "15%",
       accessor: (row) => row.total,
       align: "end",

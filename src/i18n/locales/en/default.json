@@ -11,7 +11,9 @@
       "number": "Number",
       "name": "Name",
       "product": "Product",
-      "total": "Total"
+      "total": "Total",
+      "actions": "Actions",
+      "view": "View"
   },
   "agency":{
       "id":"ID",
@@ -280,10 +282,19 @@
   "noData": "No data available",
   "error_generico": "An error occurred, please try again later",
   "error_desconocido": "An unexpected error occurred",
-  "quotes": {
-    "actions": "Actions",
-    "view": "View"
-  },
+  "agencias": "Agencies",
+  "agencias_filter_by": "Filter by",
+  "crear_agencia": "Create Agency",
+  "agentes": "Agents",
+  "create_new_agent": "Create New Agent",
+  "filter_by": "Filter by",
+  "datatable_previous": "Previous",
+  "datatable_next": "Next",
+  "editar": "Edit",
+  "cancelar": "Cancel",
+  "guardar": "Save",
+  "settings": "Settings",
+  "profile": "My Profile",
   "feedback": {
     "savedTitle": "Changes saved",
     "saved": "The information was updated successfully."
@@ -307,5 +318,28 @@
       "cotizacion": "Quotes",
       "cliente": "Clients"
     }
+  },
+  "myProfile": {
+    "back": "Back",
+    "title": "My Profile",
+    "changePhoto": "Change photo",
+    "personalInformation": "Personal Information",
+    "firstName": "First Name",
+    "lastName": "Last Name",
+    "dateOfBirth": "Date of birth",
+    "email": "Email",
+    "phone": "Phone Number",
+    "userRole": "User role",
+    "whatsapp": "WhatsApp",
+    "renewalEmails": "Renewal emails",
+    "alternativeRenewalsEmail": "Alternative Renewals Email",
+    "enabled": "Enabled",
+    "disabled": "Disabled",
+    "address": "Address",
+    "country": "Country",
+    "city": "City",
+    "postalCode": "Postal Code",
+    "languageSettings": "Language Settings",
+    "language": "Language"
   }
 }
