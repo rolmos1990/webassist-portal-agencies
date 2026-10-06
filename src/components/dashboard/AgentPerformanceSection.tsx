@@ -14,6 +14,7 @@ export interface PerformanceSectionProps {
     title: string;
     totalSales: string;
     totalCommissions: string;
+    noData: string;
   };
   /** Montos ya formateados */
   totalSales: string;
@@ -30,7 +31,7 @@ export default function AgentPerformanceSection({ labels, totalSales, totalCommi
         <h1 className="p-0 m-0" style={{ fontSize: 14, fontWeight: 600 }}>
           {labels.title}
         </h1>
-        <img src={LinkedIcon} alt="link-icon" />
+        <img src={LinkedIcon} alt="" />
       </div>
       <div className="d-flex align-items-center gap-3 mt-3">
         <div className="">
@@ -50,14 +51,20 @@ export default function AgentPerformanceSection({ labels, totalSales, totalCommi
           </div>
         </div>
       </div>
-      <HorizontalBarChart
-        id="agentPerformanceChart"
-        data={items}
-        backgroundColor="#7cc249"
-        height={450}
-        maxValue={maxValue}
-        stepSize={stepSize}
-      />
+      {items.length === 0 ? (
+        <p className="p-0 m-0 mt-3" style={{ color: "#4b647e", fontSize: "13px" }}>
+          {labels.noData}
+        </p>
+      ) : (
+        <HorizontalBarChart
+          id="agentPerformanceChart"
+          data={items}
+          backgroundColor="#7cc249"
+          height={450}
+          maxValue={maxValue}
+          stepSize={stepSize}
+        />
+      )}
     </div>
   );
 }

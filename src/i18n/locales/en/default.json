@@ -170,12 +170,14 @@
     "agentPerformance": {
       "title": "Agent Performance",
       "totalSales": "Total sales",
-      "totalCommissions": "Commissions to my agency"
+      "totalCommissions": "Commissions to my agency",
+      "noData": "No agent sales data available"
     },
     "agencyPerformance": {
       "title": "Agency Performance",
       "totalSales": "Total sales",
-      "totalCommissions": "Commissions to my agency"
+      "totalCommissions": "Commissions to my agency",
+      "noData": "No agency sales data available"
     }
   },
   "menu": {

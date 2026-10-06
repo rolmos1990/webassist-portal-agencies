@@ -12,7 +12,7 @@ export default function AgencyPerformanceSection({ labels, totalSales, totalComm
         <h1 className="p-0 m-0" style={{ fontSize: 14, fontWeight: 600 }}>
           {labels.title}
         </h1>
-        <img src={LinkedIcon} alt="link-icon" />
+        <img src={LinkedIcon} alt="" />
       </div>
       <div className="d-flex align-items-center gap-3 mt-3">
         <div className="">
@@ -30,14 +30,20 @@ export default function AgencyPerformanceSection({ labels, totalSales, totalComm
           </span>
         </div>
       </div>
-      <HorizontalBarChart
-        id="agencyPerformanceChart"
-        data={items}
-        backgroundColor="#4fc3f7"
-        height={450}
-        maxValue={maxValue}
-        stepSize={stepSize}
-      />
+      {items.length === 0 ? (
+        <p className="p-0 m-0 mt-3" style={{ color: "#4b647e", fontSize: "13px" }}>
+          {labels.noData}
+        </p>
+      ) : (
+        <HorizontalBarChart
+          id="agencyPerformanceChart"
+          data={items}
+          backgroundColor="#4fc3f7"
+          height={450}
+          maxValue={maxValue}
+          stepSize={stepSize}
+        />
+      )}
     </div>
   );
 }

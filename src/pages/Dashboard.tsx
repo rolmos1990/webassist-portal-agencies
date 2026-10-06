@@ -78,7 +78,7 @@ function formatCurrency(value: number | string | undefined, fractionDigits = 2):
 
 // Cantidad de filas del gráfico de desempeño (igual que el diseño original)
 const AGENCY_PERFORMANCE_ROWS = 6;
-const AGENT_PERFORMANCE_ROWS = 5;
+const AGENT_PERFORMANCE_ROWS = 6;
 
 function buildPerformanceItems<T extends { total_ventas?: number }>(
   items: T[] | undefined,
@@ -252,7 +252,7 @@ function Dashboard() {
   const agentPerformanceItems = buildPerformanceItems(
     data.agent_performance?.items,
     AGENT_PERFORMANCE_ROWS,
-    (a) => ({ name: a.nombre_completo ?? `${a.nombre ?? ''} ${a.apellido ?? ''}`.trim(), subtitle: a.codigo ?? '' })
+    (a) => ({ name: a.nombre_completo ?? `${a.nombre ?? ''} ${a.apellido ?? ''}`.trim(), subtitle: a.agencia?.nombre ?? '' })
   );
 
   const commissionChartData =
@@ -310,34 +310,30 @@ function Dashboard() {
         <CommissionEarnedSection labels={commissionEarnedLabels} chartData={commissionChartData} />
       </div>
       {/* <QuotePerformanceSection /> */}
-      {(agentPerformanceItems.length > 0 || agencyPerformanceItems.length > 0) && (
-        <div className="d-flex p-3 flex-column flex-xl-row gap-3">
-          {agentPerformanceItems.length > 0 && (
-            <AgentPerformanceSection
-              labels={{
-                title: t('dashboard.agentPerformance.title'),
-                totalSales: t('dashboard.agentPerformance.totalSales'),
-                totalCommissions: t('dashboard.agentPerformance.totalCommissions'),
-              }}
-              totalSales={formatCurrency(data.agent_performance?.totales?.total_ventas, 0)}
-              totalCommissions={formatCurrency(data.agent_performance?.totales?.total_comisiones_a_mi_agencia, 0)}
-              items={agentPerformanceItems}
-            />
-          )}
-          {agencyPerformanceItems.length > 0 && (
-            <AgencyPerformanceSection
-              labels={{
-                title: t('dashboard.agencyPerformance.title'),
-                totalSales: t('dashboard.agencyPerformance.totalSales'),
-                totalCommissions: t('dashboard.agencyPerformance.totalCommissions'),
-              }}
-              totalSales={formatCurrency(data.agency_performance?.totales?.total_ventas, 0)}
-              totalCommissions={formatCurrency(data.agency_performance?.totales?.total_comisiones_a_mi_agencia, 0)}
-              items={agencyPerformanceItems}
-            />
-          )}
-        </div>
-      )}
+      <div className="d-flex p-3 flex-column flex-xl-row gap-3">
+        <AgentPerformanceSection
+          labels={{
+            title: t('dashboard.agentPerformance.title'),
+            totalSales: t('dashboard.agentPerformance.totalSales'),
+            totalCommissions: t('dashboard.agentPerformance.totalCommissions'),
+            noData: t('dashboard.agentPerformance.noData'),
+          }}
+          totalSales={formatCurrency(data.agent_performance?.totales?.total_ventas, 0)}
+          totalCommissions={formatCurrency(data.agent_performance?.totales?.total_comisiones_a_mi_agencia, 0)}
+          items={agentPerformanceItems}
+        />
+        <AgencyPerformanceSection
+          labels={{
+            title: t('dashboard.agencyPerformance.title'),
+            totalSales: t('dashboard.agencyPerformance.totalSales'),
+            totalCommissions: t('dashboard.agencyPerformance.totalCommissions'),
+            noData: t('dashboard.agencyPerformance.noData'),
+          }}
+          totalSales={formatCurrency(data.agency_performance?.totales?.total_ventas, 0)}
+          totalCommissions={formatCurrency(data.agency_performance?.totales?.total_comisiones_a_mi_agencia, 0)}
+          items={agencyPerformanceItems}
+        />
+      </div>
       </div>
     </div>
   );

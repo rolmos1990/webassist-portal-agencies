@@ -170,12 +170,14 @@
     "agentPerformance": {
       "title": "key_dashboard_agentPerformance_title",
       "totalSales": "key_dashboard_agentPerformance_totalSales",
-      "totalCommissions": "key_dashboard_agentPerformance_totalCommissions"
+      "totalCommissions": "key_dashboard_agentPerformance_totalCommissions",
+      "noData": "key_dashboard_agentPerformance_noData"
     },
     "agencyPerformance": {
       "title": "key_dashboard_agencyPerformance_title",
       "totalSales": "key_dashboard_agencyPerformance_totalSales",
-      "totalCommissions": "key_dashboard_agencyPerformance_totalCommissions"
+      "totalCommissions": "key_dashboard_agencyPerformance_totalCommissions",
+      "noData": "key_dashboard_agencyPerformance_noData"
     }
   },
   "menu": {

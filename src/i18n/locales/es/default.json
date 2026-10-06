@@ -170,12 +170,14 @@
     "agentPerformance": {
       "title": "Desempeño de Agentes",
       "totalSales": "Ventas totales",
-      "totalCommissions": "Comisiones para mi agencia"
+      "totalCommissions": "Comisiones para mi agencia",
+      "noData": "No hay datos de ventas de agentes"
     },
     "agencyPerformance": {
       "title": "Desempeño de Agencias",
       "totalSales": "Ventas totales",
-      "totalCommissions": "Comisiones para mi agencia"
+      "totalCommissions": "Comisiones para mi agencia",
+      "noData": "No hay datos de ventas de agencias"
     }
   },
   "menu": {
