@@ -12,6 +12,7 @@ import { SecurityRole } from './stores/SecurityRole';
 // pages...
 import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
+import ProgramsPerformance from './pages/ProgramsPerformance';
 import Agencies from './pages/Agencies';
 import AgencyDetail from './pages/AgencyDetail';
 import Agents from './pages/Agents';
@@ -58,6 +59,7 @@ export default function App() {
           <Route element={<PrivateRoute />}>
             <Route element={<DashboardLayout />}>
               <Route index element={<Dashboard />} />
+              <Route path="programs-performance" element={<ProgramsPerformance />} />
 
               {/* Solo agente_administrador puede ver Agencias y Agentes */}
               <Route element={<RoleRoute roles={[SecurityRole.AGENT_ADMIN]} />}>

@@ -155,7 +155,8 @@
       "title": "Top Selling Plans Per Program",
       "subtitle": "Top 3 selling plans across all programs",
       "noData": "No sales data available",
-      "unitsSold": "Units Sold"
+      "unitsSold": "Units Sold",
+      "viewDetail": "View performance per program"
     },
     "kpiComparison": {
       "title": "KPI Comparison",
@@ -178,6 +179,29 @@
       "totalSales": "Total sales",
       "totalCommissions": "Commissions to my agency",
       "noData": "No agency sales data available"
+    },
+    "programsPerformance": {
+      "title": "Performance per program",
+      "subtitle": "Revenue, commissions, units and days sold per program",
+      "loading": "Loading...",
+      "noData": "No program data available",
+      "totalRevenue": "Total revenue of the program",
+      "totalCommissions": "Total commission received of the program",
+      "totalUnits": "Total units sold of the program",
+      "totalDays": "Total days sold of the program",
+      "units": "Units",
+      "days": "Days",
+      "periods": {
+        "ytd": "YTD",
+        "mom": "MOM",
+        "yoy": "YOY"
+      },
+      "plan": {
+        "totalRevenue": "Total revenue",
+        "totalCommissions": "Total commission received",
+        "totalDays": "Total days sold",
+        "totalUnits": "Total units sold"
+      }
     }
   },
   "menu": {

@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router-dom';
 import type { ChartData } from 'chart.js';
 import Breadcrumb from '../components/Breadcrumb';
 import { UIButton } from '../components/Button';
@@ -21,6 +22,7 @@ import CreateAgenciesVertical from '../components/Forms/CreateAgenciesVertical';
 import FilterByAgencyForm from '../components/Forms/FilterByAgencyForm';
 import Offcanvas from '../components/Offcanvas';
 import { useDashboardData } from '../hooks/useDashboardData';
+import { PATHS } from '../routes/Routes';
 import type {
   GetDashboard200DataComisionesItem,
   GetDashboard200DataKpisVentas,
@@ -162,6 +164,7 @@ function buildCommissionChartData(comisiones: GetDashboard200DataComisionesItem[
 function Dashboard() {
   const { data, loading, error } = useDashboardData();
   const { t } = useTranslation();
+  const navigate = useNavigate();
 
   const [show, setShow] = useState(false);
   const [kpiView, setKpiView] = useState<KPIView>('monthly');
@@ -225,6 +228,7 @@ function Dashboard() {
     title: t('dashboard.topSellingPlans.title'),
     subtitle: t('dashboard.topSellingPlans.subtitle'),
     noData: t('dashboard.topSellingPlans.noData'),
+    viewDetail: t('dashboard.topSellingPlans.viewDetail'),
   };
 
   const topSellingPlanItems = buildTopSellingPlanItems(data.top_planes, t('dashboard.topSellingPlans.unitsSold'));
@@ -298,7 +302,11 @@ function Dashboard() {
           pending={revenueRenewalsPending}
           completed={revenueRenewalsCompleted}
         />
-        <TopSellingPlansSection labels={topSellingPlansLabels} items={topSellingPlanItems} />
+        <TopSellingPlansSection
+          labels={topSellingPlansLabels}
+          items={topSellingPlanItems}
+          onViewDetail={() => navigate(PATHS.dashboard.programsPerformance())}
+        />
       </div>
       <div className="d-flex p-3 flex-column flex-xl-row gap-3">
         <KPIComparisonSection

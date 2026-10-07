@@ -12,14 +12,16 @@ interface TopSellingPlansSectionLabels {
   title: string;
   subtitle: string;
   noData: string;
+  viewDetail: string;
 }
 
 interface TopSellingPlansSectionProps {
   labels: TopSellingPlansSectionLabels;
   items: TopSellingPlanItem[];
+  onViewDetail?: () => void;
 }
 
-export default function TopSellingPlansSection({ labels, items }: TopSellingPlansSectionProps) {
+export default function TopSellingPlansSection({ labels, items, onViewDetail }: TopSellingPlansSectionProps) {
   return (
     <div className="p-3 bg-white rounded-2 w-100">
       <div className="d-flex justify-content-between align-items-start gap-3">
@@ -31,7 +33,19 @@ export default function TopSellingPlansSection({ labels, items }: TopSellingPlan
             {labels.subtitle}
           </p>
         </div>
-        <img src={LinkedIcon} alt="link-icon" />
+        {onViewDetail ? (
+          <button
+            type="button"
+            className="btn p-0 border-0"
+            onClick={onViewDetail}
+            aria-label={labels.viewDetail}
+            title={labels.viewDetail}
+          >
+            <img src={LinkedIcon} alt="" />
+          </button>
+        ) : (
+          <img src={LinkedIcon} alt="" />
+        )}
       </div>
       {items.length === 0 ? (
         <p className="p-0 m-0 mt-3" style={{ color: "#4b647e", fontSize: "13px" }}>

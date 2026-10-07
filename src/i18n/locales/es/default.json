@@ -155,7 +155,8 @@
       "title": "Planes Más Vendidos por Programa",
       "subtitle": "Los 3 planes más vendidos en todos los programas",
       "noData": "No hay datos de ventas disponibles",
-      "unitsSold": "Unidades Vendidas"
+      "unitsSold": "Unidades Vendidas",
+      "viewDetail": "Ver desempeño por programa"
     },
     "kpiComparison": {
       "title": "Comparación de KPI",
@@ -178,6 +179,29 @@
       "totalSales": "Ventas totales",
       "totalCommissions": "Comisiones para mi agencia",
       "noData": "No hay datos de ventas de agencias"
+    },
+    "programsPerformance": {
+      "title": "Desempeño por programa",
+      "subtitle": "Ventas, comisiones, unidades y días vendidos por programa",
+      "loading": "Cargando...",
+      "noData": "No hay datos de programas disponibles",
+      "totalRevenue": "Ventas totales del programa",
+      "totalCommissions": "Comisiones totales recibidas del programa",
+      "totalUnits": "Unidades totales vendidas del programa",
+      "totalDays": "Días totales vendidos del programa",
+      "units": "Unidades",
+      "days": "Días",
+      "periods": {
+        "ytd": "YTD",
+        "mom": "MOM",
+        "yoy": "YOY"
+      },
+      "plan": {
+        "totalRevenue": "Ventas totales",
+        "totalCommissions": "Comisiones recibidas",
+        "totalDays": "Días vendidos",
+        "totalUnits": "Unidades vendidas"
+      }
     }
   },
   "menu": {

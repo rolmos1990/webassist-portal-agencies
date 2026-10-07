@@ -29,6 +29,7 @@ const T = {
 
   // Dashboard
   dashboardHome: '/:lang',
+  programsPerformance: '/:lang/programs-performance',
 
   // Agencies / Agency
   agencies: '/:lang/agencies',
@@ -85,6 +86,7 @@ export const PATHS = {
   },
   dashboard: {
     home: (lang?: Lang) => withLang(T.dashboardHome, {}, lang),
+    programsPerformance: (lang?: Lang) => withLang(T.programsPerformance, {}, lang),
   },
   agencies: {
     list: (lang?: Lang) => withLang(T.agencies, {}, lang),

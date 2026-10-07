@@ -155,7 +155,8 @@
       "title": "key_dashboard_topSellingPlans_title",
       "subtitle": "key_dashboard_topSellingPlans_subtitle",
       "noData": "key_dashboard_topSellingPlans_noData",
-      "unitsSold": "key_dashboard_topSellingPlans_unitsSold"
+      "unitsSold": "key_dashboard_topSellingPlans_unitsSold",
+      "viewDetail": "key_dashboard_topSellingPlans_viewDetail"
     },
     "kpiComparison": {
       "title": "key_dashboard_kpiComparison_title",
@@ -178,6 +179,29 @@
       "totalSales": "key_dashboard_agencyPerformance_totalSales",
       "totalCommissions": "key_dashboard_agencyPerformance_totalCommissions",
       "noData": "key_dashboard_agencyPerformance_noData"
+    },
+    "programsPerformance": {
+      "title": "key_dashboard_programsPerformance_title",
+      "subtitle": "key_dashboard_programsPerformance_subtitle",
+      "loading": "key_dashboard_programsPerformance_loading",
+      "noData": "key_dashboard_programsPerformance_noData",
+      "totalRevenue": "key_dashboard_programsPerformance_totalRevenue",
+      "totalCommissions": "key_dashboard_programsPerformance_totalCommissions",
+      "totalUnits": "key_dashboard_programsPerformance_totalUnits",
+      "totalDays": "key_dashboard_programsPerformance_totalDays",
+      "units": "key_dashboard_programsPerformance_units",
+      "days": "key_dashboard_programsPerformance_days",
+      "periods": {
+        "ytd": "key_dashboard_programsPerformance_periods_ytd",
+        "mom": "key_dashboard_programsPerformance_periods_mom",
+        "yoy": "key_dashboard_programsPerformance_periods_yoy"
+      },
+      "plan": {
+        "totalRevenue": "key_dashboard_programsPerformance_plan_totalRevenue",
+        "totalCommissions": "key_dashboard_programsPerformance_plan_totalCommissions",
+        "totalDays": "key_dashboard_programsPerformance_plan_totalDays",
+        "totalUnits": "key_dashboard_programsPerformance_plan_totalUnits"
+      }
     }
   },
   "menu": {
