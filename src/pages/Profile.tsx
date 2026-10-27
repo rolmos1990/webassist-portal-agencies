@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from 'react';
+import { useEffect, useMemo, useRef, type ChangeEvent } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useQueryClient } from '@tanstack/react-query';
 import Breadcrumb from '../components/Breadcrumb';
@@ -9,6 +9,7 @@ import ProfileLanguageForm, { type ProfileLanguageFormData } from '../components
 import {
   getGetPerfilAgenteQueryKey,
   useActualizarPerfilAgente,
+  useCambiarImagenPerfilAgente,
   useGetPerfilAgente,
 } from '../api/generated';
 import type { ActualizarPerfilAgenteBody } from '../api/schemas';
@@ -18,6 +19,18 @@ import { parseSecurityRole, SecurityRole } from '../stores/SecurityRole';
 import { toast } from '../services/toast';
 import { getApiErrorMessage } from '../api/errors/ApiError';
 
+const PHOTO_MAX_BYTES = 5 * 1024 * 1024;
+const PHOTO_TYPES = ['image/jpeg', 'image/png'];
+
+// El servicio acepta la imagen en base64 con prefijo data URI
+const readAsDataUrl = (file: File) =>
+  new Promise<string>((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => (typeof reader.result === 'string' ? resolve(reader.result) : reject(new Error('read')));
+    reader.onerror = () => reject(reader.error);
+    reader.readAsDataURL(file);
+  });
+
 function Profile() {
   const { t } = useTranslation();
   const { lang, setLang } = useI18nCache();
@@ -26,6 +39,8 @@ function Profile() {
 
   const { data, isLoading, error } = useGetPerfilAgente(lang);
   const { mutateAsync: actualizarPerfilAgente } = useActualizarPerfilAgente();
+  const { mutateAsync: cambiarImagen, isPending: isSavingPhoto } = useCambiarImagenPerfilAgente();
+  const photoInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     if (error) {
@@ -74,6 +89,39 @@ function Profile() {
     }
   };
 
+  // POST /perfil/imagen; cadena vacía quita la foto
+  const savePhoto = async (imagen: string) => {
+    try {
+      await cambiarImagen({ idioma: lang, data: { imagen } });
+      await queryClient.invalidateQueries({ queryKey: getGetPerfilAgenteQueryKey(lang) });
+      toast.success(t("feedback.savedTitle"), t("feedback.saved"));
+    } catch (e) {
+      toast.error("Error", getApiErrorMessage(e, t('error_generico')));
+    }
+  };
+
+  const onPhotoSelected = async (event: ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    // Permite volver a elegir el mismo archivo
+    event.target.value = '';
+    if (!file) return;
+
+    if (!PHOTO_TYPES.includes(file.type)) {
+      toast.error("Error", t('myProfile.photoInvalidType'));
+      return;
+    }
+    if (file.size > PHOTO_MAX_BYTES) {
+      toast.error("Error", t('myProfile.photoTooLarge'));
+      return;
+    }
+
+    try {
+      await savePhoto(await readAsDataUrl(file));
+    } catch {
+      toast.error("Error", t('error_generico'));
+    }
+  };
+
   const onPersonalSubmit = (values: ProfilePersonalFormData) =>
     savePerfil({
       nombre: values.nombre,
@@ -110,15 +158,40 @@ function Profile() {
         <div className="border rounded-3 p-4 d-flex flex-column flex-md-row align-items-center gap-4">
           <div className="position-relative flex-shrink-0">
             <Avatar src={profile.imagen || undefined} name={fullName} size={120} />
-            {/* Aún no hay servicio para cambiar la foto */}
+            {isSavingPhoto && (
+              <div className="position-absolute top-50 start-50 translate-middle">
+                <div className="spinner-border spinner-border-sm text-light" role="status" />
+              </div>
+            )}
+            <input
+              ref={photoInputRef}
+              type="file"
+              accept={PHOTO_TYPES.join(',')}
+              className="d-none"
+              onChange={onPhotoSelected}
+            />
             <button
               type="button"
               className="btn btn-light rounded-circle position-absolute bottom-0 end-0 p-1 lh-1 border"
-              disabled
+              disabled={isSavingPhoto}
+              onClick={() => photoInputRef.current?.click()}
               aria-label={t('myProfile.changePhoto')}
+              title={t('myProfile.changePhoto')}
             >
               <i className="bi bi-camera-fill"></i>
             </button>
+            {profile.imagen && (
+              <button
+                type="button"
+                className="btn btn-light rounded-circle position-absolute bottom-0 start-0 p-1 lh-1 border"
+                disabled={isSavingPhoto}
+                onClick={() => savePhoto('')}
+                aria-label={t('myProfile.removePhoto')}
+                title={t('myProfile.removePhoto')}
+              >
+                <i className="bi bi-trash"></i>
+              </button>
+            )}
           </div>
           <div className="flex-grow-1 text-center text-md-start">
             <h4 className="mb-2">{fullName}</h4>

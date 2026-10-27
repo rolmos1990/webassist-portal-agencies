@@ -96,6 +96,10 @@ export interface RadioChartConfig {
     yAxisMax?: number;
     /** Chart height */
     height?: number;
+    /** Tooltip title for the point at index (defaults to the label) */
+    tooltipTitle?: (index: number) => string;
+    /** Tooltip lines for the point at index (defaults to the value) */
+    tooltipLines?: (index: number) => string[];
 }
 
 // Chart data interfaces for horizontal bar chart

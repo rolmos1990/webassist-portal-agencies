@@ -5,23 +5,28 @@ import type { ChartData } from 'chart.js';
 import Breadcrumb from '../components/Breadcrumb';
 import { UIButton } from '../components/Button';
 import {
-  DashboardHeader,
   // SalesTargetSection,
   RevenueRenewalsSection,
   TopSellingPlansSection,
   KPIComparisonSection,
   CommissionEarnedSection,
-  // QuotePerformanceSection,
+  QuotePerformanceSection,
   AgentPerformanceSection,
   AgencyPerformanceSection
 } from '../components/dashboard';
 import type { AgentPerformanceData } from '../components/dashboard/AgentPerformanceSection';
 import type { KPIView } from '../components/dashboard/KPIComparisonSection';
 import type { TopSellingPlanItem } from '../components/dashboard/TopSellingPlansSection';
-import CreateAgenciesVertical from '../components/Forms/CreateAgenciesVertical';
-import FilterByAgencyForm from '../components/Forms/FilterByAgencyForm';
+import FilterDashboardForm from '../components/Forms/FilterDashboardForm';
+import {
+  EMPTY_DASHBOARD_FILTERS,
+  toDashboardFilterParams,
+  type DashboardFilterValues,
+} from '../components/Forms/dashboardFilters';
 import Offcanvas from '../components/Offcanvas';
 import { useDashboardData } from '../hooks/useDashboardData';
+import { useCountryOptions } from '../hooks/useCountryOptions';
+import { usePlanTypeOptions } from '../hooks/usePlanTypeOptions';
 import { PATHS } from '../routes/Routes';
 import type {
   GetDashboard200DataComisionesItem,
@@ -162,20 +167,25 @@ function buildCommissionChartData(comisiones: GetDashboard200DataComisionesItem[
 }
 
 function Dashboard() {
-  const { data, loading, error } = useDashboardData();
+  const [filters, setFilters] = useState<DashboardFilterValues>(EMPTY_DASHBOARD_FILTERS);
+  const { data, loading, fetching, error } = useDashboardData(toDashboardFilterParams(filters));
   const { t } = useTranslation();
   const navigate = useNavigate();
+  const countryOptions = useCountryOptions();
+  const planTypeOptions = usePlanTypeOptions();
 
   const [show, setShow] = useState(false);
   const [kpiView, setKpiView] = useState<KPIView>('monthly');
+  const [quoteView, setQuoteView] = useState<KPIView>('monthly');
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
-  const handleSubmit = (data: any) => {
-    console.log(data);
+  const handleApplyFilter = (values: DashboardFilterValues) => {
+    setFilters(values);
     handleClose();
   };
+  const activeFilters = Object.values(filters).filter(Boolean).length;
 
   if (loading) {
     return (
@@ -271,7 +281,7 @@ function Dashboard() {
     rightContent={
       <div className="d-flex gap-2">
         <UIButton variant="outline-primary" icon=""  onClick={handleShow}>
-          Filter By
+          {t('filter_by')}{activeFilters > 0 && ` (${activeFilters})`}
         </UIButton>
         <UIButton variant="outline-primary" icon="">
           This year
@@ -284,14 +294,20 @@ function Dashboard() {
         show={show}
         onHide={() => setShow(false)}
         placement="end"
-        title="Filter By Agency"
+        title={t('filter_by')}
         canClose={true}
         scroll={true}
         backdrop="static"
         width="380px"
         keyboard={true}
       >
-        <FilterByAgencyForm onSubmit={handleSubmit} onCancel={handleClose} />
+        <FilterDashboardForm
+          defaultValues={filters}
+          countryOptions={countryOptions}
+          planTypeOptions={planTypeOptions}
+          onSubmit={handleApplyFilter}
+          onCancel={handleClose}
+        />
         </Offcanvas>
 
       {/* <SalesTargetSection /> */}
@@ -317,7 +333,12 @@ function Dashboard() {
         />
         <CommissionEarnedSection labels={commissionEarnedLabels} chartData={commissionChartData} />
       </div>
-      {/* <QuotePerformanceSection /> */}
+      <QuotePerformanceSection
+        data={data.cotizaciones_performance}
+        view={quoteView}
+        onViewChange={setQuoteView}
+        loading={fetching}
+      />
       <div className="d-flex p-3 flex-column flex-xl-row gap-3">
         <AgentPerformanceSection
           labels={{

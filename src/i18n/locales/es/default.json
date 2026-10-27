@@ -158,6 +158,27 @@
       "unitsSold": "Unidades Vendidas",
       "viewDetail": "Ver desempeño por programa"
     },
+    "filters": {
+      "hint": "Estos filtros aplican al resumen de desempeño de cotizaciones.",
+      "originCountry": "País de origen",
+      "planType": "Tipo de plan",
+      "apply": "Aplicar"
+    },
+    "quotePerformance": {
+      "title": "Desempeño de Cotizaciones",
+      "quotes": "Total de Cotizaciones Generadas",
+      "closingRatio": "Porcentaje de Cierre",
+      "totalAmount": "Promedio de Cotizaciones Generadas",
+      "points": "pts",
+      "previousMonth": "Mes anterior",
+      "previousYear": "Año anterior",
+      "generatedChart": "Cotizaciones Generadas",
+      "closingChart": "Porcentaje de Cierre",
+      "amount": "Monto",
+      "count": "Cantidad",
+      "quotesCount": "Cotizaciones",
+      "orders": "Pedidos"
+    },
     "kpiComparison": {
       "title": "Comparación de KPI",
       "monthly": "Mensual",
@@ -235,6 +256,7 @@
   "assistanceDetail": {
     "back": "Atrás",
     "resendVoucher": "Reenviar Voucher",
+    "resendQuote": "Reenviar Cotización",
     "viewMore": "Ver más",
     "benefits": "Beneficios",
     "issueDate": "Fecha de Emisión",
@@ -302,7 +324,8 @@
       "invalido": "El valor no es válido",
       "duplicado": "Ya está registrado",
       "excede_comision_agencia": "Supera la comisión de la agencia",
-      "no_permitido": "No está permitido modificar este campo"
+      "no_permitido": "No está permitido modificar este campo",
+      "excede_maximo": "Supera la cantidad máxima permitida"
     }
   },
   "noData": "No hay datos disponibles",
@@ -353,6 +376,9 @@
     "back": "Atrás",
     "title": "Mi Perfil",
     "changePhoto": "Cambiar foto",
+    "removePhoto": "Quitar foto",
+    "photoInvalidType": "La imagen debe ser JPG o PNG",
+    "photoTooLarge": "La imagen no puede superar los 5 MB",
     "personalInformation": "Información Personal",
     "firstName": "Nombre",
     "lastName": "Apellido",
@@ -414,6 +440,82 @@
       "website": "Sitio Web",
       "address": "Dirección",
       "sendVoucherCopies": "Enviar Copia de Vouchers"
+    }
+  },
+  "passwordReset": {
+    "title": "¿Olvidaste tu contraseña?",
+    "subtitle": "No te preocupes, te enviaremos un código para restablecerla.",
+    "email": "Correo electrónico",
+    "emailPlaceholder": "Tu correo electrónico",
+    "emailRequired": "El correo es obligatorio",
+    "emailInvalid": "El correo no es válido",
+    "sendCode": "Enviar código",
+    "codeSentTitle": "Código enviado",
+    "codeSent": "Revisa tu correo e ingresa el código que te enviamos.",
+    "otpTitle": "Verifica tu correo",
+    "otpSubtitle": "Ingresa el código de 6 dígitos que enviamos a",
+    "otp": "Código de verificación",
+    "otpRequired": "El código es obligatorio",
+    "otpInvalid": "El código debe tener 6 dígitos",
+    "resendCode": "Reenviar código",
+    "verifyCode": "Verificar código",
+    "newPasswordTitle": "Crea una nueva contraseña",
+    "newPasswordSubtitle": "La nueva contraseña debe ser diferente a la actual.",
+    "newPassword": "Nueva contraseña",
+    "confirmPassword": "Confirmar contraseña",
+    "passwordPlaceholder": "Tu contraseña",
+    "passwordRequired": "La contraseña es obligatoria",
+    "passwordMin": "La contraseña debe tener al menos {{min}} caracteres",
+    "confirmRequired": "Confirma la contraseña",
+    "passwordMismatch": "Las contraseñas no coinciden",
+    "confirmButton": "Cambiar contraseña",
+    "expiredTitle": "Tiempo agotado",
+    "expired": "El tiempo para cambiar la contraseña venció. Solicita un nuevo código.",
+    "successTitle": "Contraseña actualizada",
+    "success": "Tu contraseña se cambió correctamente. Ya puedes iniciar sesión.",
+    "backToLogin": "Volver al inicio de sesión"
+  },
+  "resend": {
+    "emails": "Correos destinatarios",
+    "emailsPlaceholder": "cliente@correo.com, otro@correo.com",
+    "emailsHint": "Separa los correos con coma. Máximo {{max}}.",
+    "emailsHintOptional": "Separa los correos con coma. Máximo {{max}}. Si lo dejas vacío se envía a los destinatarios habituales.",
+    "emailsRequired": "Ingresa al menos un correo",
+    "emailsInvalid": "Hay correos con formato inválido",
+    "emailsMax": "Máximo {{max}} correos",
+    "name": "Nombre del cliente",
+    "namePlaceholder": "Nombre",
+    "send": "Enviar",
+    "sentTitle": "Envío realizado",
+    "sent": "El correo se envió correctamente."
+  },
+  "renewals": {
+    "title": "Renovaciones Pendientes",
+    "stats": {
+      "renewalsYtd": "Renovaciones del año",
+      "upcoming": "Pendientes a futuro",
+      "expired": "Expiradas este año",
+      "sales": "Ventas renovadas",
+      "commissions": "Comisiones renovadas"
+    },
+    "table": {
+      "tripStart": "Inicio del viaje",
+      "agent": "Agente",
+      "agency": "Agencia",
+      "total": "Total",
+      "commission": "Comisión",
+      "lastReminder": "Último recordatorio",
+      "status": "Estado",
+      "quote": "Cotización",
+      "viewQuote": "Ver cotización",
+      "noQuote": "Sin cotización"
+    },
+    "filters": {
+      "planType": "Tipo de plan",
+      "from": "Inicio del viaje desde",
+      "to": "Inicio del viaje hasta",
+      "invalidRange": "La fecha final debe ser igual o posterior a la inicial",
+      "apply": "Aplicar"
     }
   }
 }

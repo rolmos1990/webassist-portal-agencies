@@ -7,8 +7,8 @@
     },
     "info": {
         "title": "WAC API",
-        "description": "Api para uso interno WAC.\n\n## Errores\n\nTodas las respuestas de error salen en JSON con la misma forma: `ok` en `false`, un `mensaje` para mostrar y un `error_code` para decidir en el front.\n\n| error_code | HTTP | Cuándo |\n| --- | --- | --- |\n| 5000 | 302 | Falta el token de la API o no es válido (header `Authorization: Bearer`) |\n| 5001 | 200 | El idioma del path no está soportado |\n| 5002 | 200 | El `userToken` del agente no es válido o expiró |\n| 5003 | 404 | El endpoint solicitado no existe |\n| 5004 | 405 | El método HTTP no está permitido para ese endpoint |\n| 5005 | 500 | Error interno al procesar la solicitud |\n| 5006 | 200 | El plan no existe o no está habilitado para el usuario de la API |\n| 5007 | 200 | El cliente no existe o no es del agente (ni de su agencia, si es administrador) |\n\nLos códigos 5001 y 5002 son de negocio y viajan con HTTP 200: hay que mirar siempre el campo `ok`, no sólo el status.\n\nLos códigos 5003, 5004 y 5005 los resuelve el manejador global, así que pueden aparecer en cualquier endpoint.\n\nCuando el error es de validación de campos, además de `error` viene `errores`, un objeto con un motivo por campo (`requerido`, `invalido`, `duplicado`, `excede_comision_agencia`, `no_permitido`).\n\nEn el ambiente de desarrollo las respuestas 500 agregan `error` y `archivo` con el detalle técnico; en producción no.\n",
-        "version": "1.1.0",
+        "description": "Api para uso interno WAC.\n\n## Errores\n\nTodas las respuestas de error salen en JSON con la misma forma: `ok` en `false`, un `mensaje` para mostrar y un `error_code` para decidir en el front.\n\n| error_code | HTTP | Cuándo |\n| --- | --- | --- |\n| 5000 | 302 | Falta el token de la API o no es válido (header `Authorization: Bearer`) |\n| 5001 | 200 | El idioma del path no está soportado |\n| 5002 | 200 | El `userToken` del agente no es válido o expiró |\n| 5003 | 404 | El endpoint solicitado no existe |\n| 5004 | 405 | El método HTTP no está permitido para ese endpoint |\n| 5005 | 500 | Error interno al procesar la solicitud |\n| 5006 | 200 | El plan no existe o no está habilitado para el usuario de la API |\n| 5007 | 200 | El cliente no existe o no es del agente (ni de su agencia, si es administrador) |\n\nLos códigos 5001 y 5002 son de negocio y viajan con HTTP 200: hay que mirar siempre el campo `ok`, no sólo el status.\n\nLos códigos 5003, 5004 y 5005 los resuelve el manejador global, así que pueden aparecer en cualquier endpoint.\n\nCuando el error es de validación de campos, además de `error` viene `errores`, un objeto con un motivo por campo (`requerido`, `invalido`, `duplicado`, `excede_comision_agencia`, `no_permitido`, `excede_maximo`).\n\nEn el ambiente de desarrollo las respuestas 500 agregan `error` y `archivo` con el detalle técnico; en producción no.\n",
+        "version": "1.2.4",
         "contact": {
             "name": "Pixel Media Publicidad",
             "url": "https://www.pixelmedia.com.pa",
@@ -753,6 +753,263 @@
                 }
             }
         },
+        "/{idioma}/password-solicitar-otp": {
+            "post": {
+                "summary": "Recuperar contraseña: solicitar OTP",
+                "description": "Paso 1. Envía por correo un código (OTP) de 6 dígitos ligado al usuario, con vigencia de 15 minutos. Responde `ok:true` exista o no el correo, para no revelar qué correos están registrados. Si ya se pidió un código hace menos de un minuto no se envía otro. Solo requiere el token de la API (sin `userToken`).",
+                "operationId": "solicitarOtpPassword",
+                "tags": ["Agentes"],
+                "parameters": [
+                    {
+                        "name": "idioma",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Código del idioma"
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "required": ["email"],
+                                "properties": {
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email",
+                                        "examples": ["agente@correo.com"]
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Siempre HTTP 200: revisar `ok`. Errores de campo: email (requerido, invalido)",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "ok": {
+                                            "type": "boolean",
+                                            "examples": [true]
+                                        },
+                                        "mensaje": {
+                                            "type": "string"
+                                        },
+                                        "errores": {
+                                            "type": "object",
+                                            "additionalProperties": {
+                                                "type": "string"
+                                            }
+                                        },
+                                        "expira_en": {
+                                            "type": "integer",
+                                            "description": "Segundos de vigencia del código",
+                                            "examples": [900]
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/RutaNoEncontrada"
+                    },
+                    "405": {
+                        "$ref": "#/components/responses/MetodoNoPermitido"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/ErrorInterno"
+                    }
+                }
+            }
+        },
+        "/{idioma}/password-validar-otp": {
+            "post": {
+                "summary": "Recuperar contraseña: validar OTP",
+                "description": "Paso 2. Valida el código recibido por correo. Cada código admite 5 intentos. Devuelve `reset_token`, de un solo uso y con vigencia de 10 minutos, que se usa en el paso 3. Cualquier falla responde `errores.otp = invalido`.",
+                "operationId": "validarOtpPassword",
+                "tags": ["Agentes"],
+                "parameters": [
+                    {
+                        "name": "idioma",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Código del idioma"
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "required": ["email", "otp"],
+                                "properties": {
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email",
+                                        "examples": ["agente@correo.com"]
+                                    },
+                                    "otp": {
+                                        "type": "string",
+                                        "pattern": "^[0-9]{6}$",
+                                        "examples": ["123456"]
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Siempre HTTP 200: revisar `ok`",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "ok": {
+                                            "type": "boolean",
+                                            "examples": [true]
+                                        },
+                                        "mensaje": {
+                                            "type": "string"
+                                        },
+                                        "errores": {
+                                            "type": "object",
+                                            "additionalProperties": {
+                                                "type": "string"
+                                            }
+                                        },
+                                        "reset_token": {
+                                            "type": "string"
+                                        },
+                                        "expira_en": {
+                                            "type": "integer",
+                                            "description": "Segundos de vigencia del token",
+                                            "examples": [600]
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/RutaNoEncontrada"
+                    },
+                    "405": {
+                        "$ref": "#/components/responses/MetodoNoPermitido"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/ErrorInterno"
+                    }
+                }
+            }
+        },
+        "/{idioma}/password-cambiar": {
+            "post": {
+                "summary": "Recuperar contraseña: cambiar contraseña",
+                "description": "Paso 3. Cambia la contraseña con el `reset_token` del paso 2 (un solo uso). Cierra las sesiones abiertas del usuario. La contraseña debe cumplir la política del sitio: mínimo 6 caracteres, con al menos un número, una mayúscula y una minúscula.",
+                "operationId": "cambiarPassword",
+                "tags": ["Agentes"],
+                "parameters": [
+                    {
+                        "name": "idioma",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Código del idioma"
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "required": [
+                                    "email",
+                                    "reset_token",
+                                    "password"
+                                ],
+                                "properties": {
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email",
+                                        "examples": ["agente@correo.com"]
+                                    },
+                                    "reset_token": {
+                                        "type": "string"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "format": "password"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Siempre HTTP 200: revisar `ok`. Errores de campo: password (requerido, invalido), reset_token (invalido)",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "ok": {
+                                            "type": "boolean",
+                                            "examples": [true]
+                                        },
+                                        "mensaje": {
+                                            "type": "string"
+                                        },
+                                        "errores": {
+                                            "type": "object",
+                                            "additionalProperties": {
+                                                "type": "string"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/RutaNoEncontrada"
+                    },
+                    "405": {
+                        "$ref": "#/components/responses/MetodoNoPermitido"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/ErrorInterno"
+                    }
+                }
+            }
+        },
         "/{idioma}/reporte-ventas-agencia": {
             "get": {
                 "summary": "Reporte de ventas por agencia",
@@ -968,6 +1225,69 @@
                                     "recibir_correos_renovaciones": {
                                         "type": "boolean",
                                         "description": "Si el agente recibe o no los correos de renovación (opcional)"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Resultado de la actualización",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ActualizarAgenteResponse"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/RutaNoEncontrada"
+                    },
+                    "405": {
+                        "$ref": "#/components/responses/MetodoNoPermitido"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/ErrorInterno"
+                    }
+                }
+            }
+        },
+        "/{idioma}/perfil/imagen": {
+            "post": {
+                "summary": "Cambiar Imagen de Perfil",
+                "description": "Cambia la imagen de perfil del agente autenticado. La imagen se envía como datos en base64, con o sin el prefijo `data:image/...;base64,`. Acepta jpeg, png, gif o webp; se guarda como webp y se reduce a un máximo de 1000 x 1000 manteniendo la proporción. Enviar `imagen` como cadena vacía la quita.\n\nSi la imagen no es válida devuelve `errores.imagen` con el valor `invalido`.\n",
+                "operationId": "cambiarImagenPerfilAgente",
+                "tags": ["Agentes"],
+                "parameters": [
+                    {
+                        "name": "idioma",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "El código del idioma"
+                    },
+                    {
+                        "$ref": "#/components/parameters/userTokenHeader"
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "required": ["imagen"],
+                                "properties": {
+                                    "imagen": {
+                                        "type": "string",
+                                        "description": "Imagen en base64 (con o sin prefijo data URI), cadena vacía para quitarla"
                                     }
                                 }
                             }
@@ -1912,7 +2232,7 @@
         "/{idioma}/renovaciones-pendientes": {
             "get": {
                 "summary": "Renovaciones Pendientes",
-                "description": "Lista las renovaciones pendientes para el usuario autenticado",
+                "description": "Lista las renovaciones pendientes del usuario autenticado (si es `agente_administrador`, las de toda la agencia), con las estadísticas de renovaciones del año en curso fuera de `items`.\n\nLos campos que son ID salen como objetos `{id, nombre}`. `carrito.url` es el link de la cotización; `carrito` es `null` mientras la renovación no tiene cotización creada. Las estadísticas no dependen de los filtros.\n",
                 "operationId": "getRenovacionesPendientes",
                 "tags": ["Renovaciones"],
                 "parameters": [
@@ -1927,6 +2247,33 @@
                     },
                     {
                         "$ref": "#/components/parameters/userTokenHeader"
+                    },
+                    {
+                        "name": "tipo_plan",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "description": "ID del tipo de plan de la venta a renovar (opcional)"
+                    },
+                    {
+                        "name": "fecha_inicio",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Fecha de inicio del viaje desde la que se listan (opcional)"
+                    },
+                    {
+                        "name": "fecha_final",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Fecha de inicio del viaje hasta la que se listan, inclusive (opcional)"
                     }
                 ],
                 "responses": {
@@ -1950,441 +2297,144 @@
                                                         "type": "object",
                                                         "properties": {
                                                             "id": {
-                                                                "type": "string",
-                                                                "examples": [
-                                                                    "9"
-                                                                ]
-                                                            },
-                                                            "venta": {
-                                                                "type": "string",
-                                                                "examples": [
-                                                                    "3346"
-                                                                ]
+                                                                "type": "integer"
                                                             },
                                                             "agente": {
-                                                                "type": "string",
-                                                                "examples": [
-                                                                    "56"
-                                                                ]
-                                                            },
-                                                            "agencia": {
-                                                                "type": "string",
-                                                                "examples": [
-                                                                    "10"
-                                                                ]
-                                                            },
-                                                            "carrito": {
-                                                                "type": "string",
-                                                                "examples": [
-                                                                    "63973"
-                                                                ]
-                                                            },
-                                                            "carrito_linea": {
-                                                                "type": "string",
-                                                                "examples": [
-                                                                    "38386"
-                                                                ]
-                                                            },
-                                                            "precio_total": {
-                                                                "type": "string",
-                                                                "examples": [
-                                                                    "150.00"
-                                                                ]
-                                                            },
-                                                            "ts_creacion": {
-                                                                "type": "string",
-                                                                "examples": [
-                                                                    "1758640498"
-                                                                ]
-                                                            },
-                                                            "ts_inicio_viaje": {
-                                                                "type": "string",
-                                                                "examples": [
-                                                                    "1759640400"
-                                                                ]
-                                                            },
-                                                            "ultimo_recordatorio": {
-                                                                "type": "string",
-                                                                "examples": [
-                                                                    "3"
-                                                                ]
-                                                            },
-                                                            "venta_renovacion": {
-                                                                "type": [
-                                                                    "string",
-                                                                    "null"
-                                                                ],
-                                                                "examples": [
-                                                                    null
-                                                                ]
-                                                            },
-                                                            "ts_cierre": {
-                                                                "type": [
-                                                                    "string",
-                                                                    "null"
-                                                                ],
-                                                                "examples": [
-                                                                    null
-                                                                ]
-                                                            },
-                                                            "idioma": {
-                                                                "type": "string",
-                                                                "examples": [
-                                                                    "es"
-                                                                ]
-                                                            },
-                                                            "status": {
-                                                                "type": "string",
-                                                                "examples": [
-                                                                    "1"
-                                                                ]
-                                                            },
-                                                            "agente_nombre": {
-                                                                "type": "string",
-                                                                "examples": [
-                                                                    "Nombre Agente"
-                                                                ]
-                                                            },
-                                                            "agencia_nombre": {
-                                                                "type": "string",
-                                                                "examples": [
-                                                                    "Nombre Agencia"
-                                                                ]
-                                                            },
-                                                            "fecha_inicio_viaje": {
-                                                                "type": "string",
-                                                                "examples": [
-                                                                    "05/10/2025"
-                                                                ]
-                                                            },
-                                                            "etapa_nombre": {
-                                                                "type": [
-                                                                    "string",
-                                                                    "null"
-                                                                ],
-                                                                "examples": [
-                                                                    null
-                                                                ]
-                                                            },
-                                                            "venta_datos": {
                                                                 "type": "object",
+                                                                "description": "Agente de la renovación",
                                                                 "properties": {
                                                                     "id": {
-                                                                        "type": "string",
-                                                                        "examples": [
-                                                                            "3346"
-                                                                        ]
+                                                                        "type": "integer"
                                                                     },
-                                                                    "linea_carrito": {
-                                                                        "type": "string",
-                                                                        "examples": [
-                                                                            "23849"
-                                                                        ]
-                                                                    },
-                                                                    "pais": {
-                                                                        "type": "string",
-                                                                        "examples": [
-                                                                            "1"
-                                                                        ]
-                                                                    },
-                                                                    "pais_destino": {
-                                                                        "type": "string",
-                                                                        "examples": [
-                                                                            "-1"
-                                                                        ]
-                                                                    },
-                                                                    "plan": {
-                                                                        "type": "string",
-                                                                        "examples": [
-                                                                            "30"
-                                                                        ]
-                                                                    },
-                                                                    "distribuidor": {
-                                                                        "type": "string",
-                                                                        "examples": [
-                                                                            "10"
-                                                                        ]
-                                                                    },
-                                                                    "agente": {
-                                                                        "type": "string",
-                                                                        "examples": [
-                                                                            "56"
-                                                                        ]
-                                                                    },
-                                                                    "precio": {
-                                                                        "type": "string",
-                                                                        "examples": [
-                                                                            "150.00"
-                                                                        ]
-                                                                    },
-                                                                    "costo": {
-                                                                        "type": "string",
-                                                                        "examples": [
-                                                                            "46.90"
-                                                                        ]
-                                                                    },
-                                                                    "costo_base": {
-                                                                        "type": "string",
-                                                                        "examples": [
-                                                                            "46.90"
-                                                                        ]
-                                                                    },
-                                                                    "costo_transaccion": {
-                                                                        "type": "string",
-                                                                        "examples": [
-                                                                            "4.74"
-                                                                        ]
-                                                                    },
-                                                                    "margen": {
-                                                                        "type": "string",
-                                                                        "examples": [
-                                                                            "98.36"
-                                                                        ]
-                                                                    },
-                                                                    "fecha_ts": {
-                                                                        "type": "string",
-                                                                        "examples": [
-                                                                            "1728146462"
-                                                                        ]
-                                                                    },
-                                                                    "fecha_inicio_ts": {
-                                                                        "type": "string",
-                                                                        "examples": [
-                                                                            "1728104400"
-                                                                        ]
-                                                                    },
-                                                                    "fecha_fin_ts": {
-                                                                        "type": "string",
-                                                                        "examples": [
-                                                                            "1759554000"
-                                                                        ]
-                                                                    },
-                                                                    "voucher": {
-                                                                        "type": "string",
-                                                                        "examples": [
-                                                                            "A93-XXXXXX"
-                                                                        ]
-                                                                    },
-                                                                    "voucher_master": {
-                                                                        "type": [
-                                                                            "string",
-                                                                            "null"
-                                                                        ],
-                                                                        "examples": [
-                                                                            null
-                                                                        ]
-                                                                    },
-                                                                    "ocultar_precios": {
-                                                                        "type": "string",
-                                                                        "examples": [
-                                                                            "0"
-                                                                        ]
-                                                                    },
-                                                                    "enviar_correos": {
-                                                                        "type": "string",
-                                                                        "examples": [
-                                                                            "1"
-                                                                        ]
-                                                                    },
-                                                                    "contacto": {
-                                                                        "type": "string",
-                                                                        "examples": [
-                                                                            "Nombre Contacto"
-                                                                        ]
-                                                                    },
-                                                                    "contacto_telefono": {
-                                                                        "type": "string",
-                                                                        "examples": [
-                                                                            "00000000"
-                                                                        ]
-                                                                    },
-                                                                    "contacto_email": {
-                                                                        "type": "string",
-                                                                        "examples": [
-                                                                            "correo@ejemplo.com"
-                                                                        ]
-                                                                    },
-                                                                    "consideraciones": {
-                                                                        "type": "string",
-                                                                        "examples": [
-                                                                            ""
-                                                                        ]
-                                                                    },
-                                                                    "cancelada": {
-                                                                        "type": "string",
-                                                                        "examples": [
-                                                                            "0"
-                                                                        ]
-                                                                    },
-                                                                    "fecha_cancelacion_ts": {
-                                                                        "type": [
-                                                                            "string",
-                                                                            "null"
-                                                                        ],
-                                                                        "examples": [
-                                                                            null
-                                                                        ]
-                                                                    },
-                                                                    "usuario_cancelacion": {
-                                                                        "type": "string",
-                                                                        "examples": [
-                                                                            "0"
-                                                                        ]
-                                                                    },
-                                                                    "cobrada_recibo": {
-                                                                        "type": [
-                                                                            "string",
-                                                                            "null"
-                                                                        ],
-                                                                        "examples": [
-                                                                            null
-                                                                        ]
-                                                                    },
-                                                                    "pagada_cheque": {
-                                                                        "type": [
-                                                                            "string",
-                                                                            "null"
-                                                                        ],
-                                                                        "examples": [
-                                                                            null
-                                                                        ]
-                                                                    },
-                                                                    "metodo_pago": {
-                                                                        "type": "string",
-                                                                        "examples": [
-                                                                            "1"
-                                                                        ]
-                                                                    },
-                                                                    "pais_bin": {
-                                                                        "type": "string",
-                                                                        "examples": [
-                                                                            "PA"
-                                                                        ]
-                                                                    },
-                                                                    "transaccion_internacional": {
-                                                                        "type": "string",
-                                                                        "examples": [
-                                                                            "2"
-                                                                        ]
-                                                                    },
-                                                                    "comision_procesada": {
-                                                                        "type": "string",
-                                                                        "examples": [
-                                                                            "1"
-                                                                        ]
-                                                                    },
-                                                                    "renovacion_de": {
-                                                                        "type": [
-                                                                            "string",
-                                                                            "null"
-                                                                        ],
-                                                                        "examples": [
-                                                                            null
-                                                                        ]
-                                                                    },
-                                                                    "leido_erp": {
-                                                                        "type": "string",
-                                                                        "examples": [
-                                                                            "0"
-                                                                        ]
-                                                                    },
-                                                                    "aprobacion_temp": {
-                                                                        "type": "string",
-                                                                        "examples": [
-                                                                            ""
-                                                                        ]
-                                                                    },
-                                                                    "documentos": {
-                                                                        "type": "array",
-                                                                        "items": {
-                                                                            "type": "object",
-                                                                            "properties": {
-                                                                                "nombre": {
-                                                                                    "type": "string",
-                                                                                    "examples": [
-                                                                                        "Nombre Cliente"
-                                                                                    ]
-                                                                                },
-                                                                                "voucher": {
-                                                                                    "type": "string",
-                                                                                    "examples": [
-                                                                                        "A93-XXXXXX"
-                                                                                    ]
-                                                                                },
-                                                                                "pdf_vouchers": {
-                                                                                    "type": "object",
-                                                                                    "properties": {
-                                                                                        "es": {
-                                                                                            "type": "string",
-                                                                                            "examples": [
-                                                                                                "https://www.ejemplo.com/vouchers/voucher_A93-XXXXXX_es.pdf"
-                                                                                            ]
-                                                                                        },
-                                                                                        "en": {
-                                                                                            "type": "string",
-                                                                                            "examples": [
-                                                                                                "https://www.ejemplo.com/vouchers/voucher_A93-XXXXXX_en.pdf"
-                                                                                            ]
-                                                                                        }
-                                                                                    }
-                                                                                },
-                                                                                "links_tarjetas_es": {
-                                                                                    "type": "array",
-                                                                                    "items": {
-                                                                                        "type": "object",
-                                                                                        "properties": {
-                                                                                            "nombre": {
-                                                                                                "type": "string",
-                                                                                                "examples": [
-                                                                                                    "Nombre Cliente"
-                                                                                                ]
-                                                                                            },
-                                                                                            "file": {
-                                                                                                "type": "string",
-                                                                                                "examples": [
-                                                                                                    "https://www.ejemplo.com/vouchers/card_A93-XXXXXX_1_es.pdf"
-                                                                                                ]
-                                                                                            }
-                                                                                        }
-                                                                                    }
-                                                                                },
-                                                                                "links_tarjetas_en": {
-                                                                                    "type": "array",
-                                                                                    "items": {
-                                                                                        "type": "object",
-                                                                                        "properties": {
-                                                                                            "nombre": {
-                                                                                                "type": "string",
-                                                                                                "examples": [
-                                                                                                    "Nombre Cliente"
-                                                                                                ]
-                                                                                            },
-                                                                                            "file": {
-                                                                                                "type": "string",
-                                                                                                "examples": [
-                                                                                                    "https://www.ejemplo.com/vouchers/card_A93-XXXXXX_1_en.pdf"
-                                                                                                ]
-                                                                                            }
-                                                                                        }
-                                                                                    }
-                                                                                }
-                                                                            }
-                                                                        }
-                                                                    },
-                                                                    "cliente": {
-                                                                        "type": "string",
-                                                                        "examples": [
-                                                                            "Nombre Cliente"
-                                                                        ]
+                                                                    "nombre": {
+                                                                        "type": "string"
                                                                     }
                                                                 }
                                                             },
-                                                            "url_carrito": {
-                                                                "type": "string",
-                                                                "examples": [
-                                                                    "https://dev.weassistgroup.com/es/carrito/XXXXXXXX"
+                                                            "agencia": {
+                                                                "type": "object",
+                                                                "description": "Agencia del agente",
+                                                                "properties": {
+                                                                    "id": {
+                                                                        "type": "integer"
+                                                                    },
+                                                                    "nombre": {
+                                                                        "type": "string"
+                                                                    }
+                                                                }
+                                                            },
+                                                            "status": {
+                                                                "type": "object",
+                                                                "description": "Status de la renovación",
+                                                                "properties": {
+                                                                    "id": {
+                                                                        "type": "integer"
+                                                                    },
+                                                                    "nombre": {
+                                                                        "type": "string"
+                                                                    }
+                                                                }
+                                                            },
+                                                            "ultimo_recordatorio": {
+                                                                "type": [
+                                                                    "object",
+                                                                    "null"
+                                                                ],
+                                                                "description": "Último recordatorio enviado; null si no se ha enviado ninguno",
+                                                                "properties": {
+                                                                    "id": {
+                                                                        "type": "integer"
+                                                                    },
+                                                                    "nombre": {
+                                                                        "type": "string"
+                                                                    }
+                                                                }
+                                                            },
+                                                            "venta": {
+                                                                "type": "object",
+                                                                "description": "Datos de la venta a renovar, con documentos y cliente"
+                                                            },
+                                                            "venta_renovacion": {
+                                                                "type": [
+                                                                    "object",
+                                                                    "null"
+                                                                ],
+                                                                "description": "Venta que renovó, si ya se renovó",
+                                                                "properties": {
+                                                                    "id": {
+                                                                        "type": "integer"
+                                                                    },
+                                                                    "voucher": {
+                                                                        "type": "string"
+                                                                    }
+                                                                }
+                                                            },
+                                                            "carrito": {
+                                                                "type": [
+                                                                    "object",
+                                                                    "null"
+                                                                ],
+                                                                "description": "Cotización de la renovación",
+                                                                "properties": {
+                                                                    "id": {
+                                                                        "type": "integer"
+                                                                    },
+                                                                    "url": {
+                                                                        "type": "string",
+                                                                        "description": "URL de la cotización"
+                                                                    }
+                                                                }
+                                                            },
+                                                            "precio_total": {
+                                                                "type": "number"
+                                                            },
+                                                            "comision": {
+                                                                "type": "number"
+                                                            },
+                                                            "comision_agencia": {
+                                                                "type": "number"
+                                                            },
+                                                            "fecha_inicio_viaje": {
+                                                                "type": "string"
+                                                            },
+                                                            "ts_inicio_viaje": {
+                                                                "type": [
+                                                                    "integer",
+                                                                    "null"
                                                                 ]
+                                                            },
+                                                            "ts_creacion": {
+                                                                "type": "integer"
+                                                            },
+                                                            "idioma": {
+                                                                "type": "string"
                                                             }
+                                                        }
+                                                    }
+                                                },
+                                                "estadisticas": {
+                                                    "type": "object",
+                                                    "description": "Estadísticas de renovaciones del agente en el año en curso (las mismas del correo mensual)",
+                                                    "properties": {
+                                                        "renovaciones_ytd": {
+                                                            "type": "integer",
+                                                            "description": "Renovaciones realizadas este año"
+                                                        },
+                                                        "cantidad_futuras": {
+                                                            "type": "integer",
+                                                            "description": "Renovaciones pendientes a futuro"
+                                                        },
+                                                        "cantidad_expiradas": {
+                                                            "type": "integer",
+                                                            "description": "Renovaciones expiradas en el año corriente"
+                                                        },
+                                                        "ventas_realizadas": {
+                                                            "type": "number",
+                                                            "description": "Total en USD de las renovaciones realizadas este año"
+                                                        },
+                                                        "comisiones_realizadas": {
+                                                            "type": "number",
+                                                            "description": "Total en USD de comisiones de las renovaciones realizadas este año"
                                                         }
                                                     }
                                                 }
@@ -3778,6 +3828,199 @@
                                                 "paginacion": {
                                                     "$ref": "#/components/schemas/Paginacion"
                                                 }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/RutaNoEncontrada"
+                    },
+                    "405": {
+                        "$ref": "#/components/responses/MetodoNoPermitido"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/ErrorInterno"
+                    }
+                }
+            }
+        },
+        "/{idioma}/enviar-cotizacion": {
+            "post": {
+                "summary": "Enviar cotización",
+                "description": "Envía por correo la cotización de un carrito. Copia el carrito a una cotización y manda el detalle con los enlaces de compra y PDF. No restringe qué carritos se pueden enviar (basta con que exista y tenga productos). El agente del carrito va en copia.",
+                "operationId": "enviarCotizacion",
+                "tags": ["Emisiones"],
+                "parameters": [
+                    {
+                        "name": "idioma",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Código del idioma del correo"
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "required": ["token_carrito", "emails"],
+                                "properties": {
+                                    "token_carrito": {
+                                        "type": "string",
+                                        "description": "Token del carrito a cotizar",
+                                        "examples": ["WG3ZF6BQ"]
+                                    },
+                                    "emails": {
+                                        "description": "Destinatarios: arreglo o lista separada por comas. Máximo 5.",
+                                        "oneOf": [
+                                            {
+                                                "type": "array",
+                                                "items": {
+                                                    "type": "string",
+                                                    "format": "email"
+                                                }
+                                            },
+                                            {
+                                                "type": "string"
+                                            }
+                                        ],
+                                        "examples": [["cliente@correo.com"]]
+                                    },
+                                    "nombre": {
+                                        "type": "string",
+                                        "description": "Nombre del cliente. Se guarda en el carrito y va en el saludo",
+                                        "examples": ["Nombre"]
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Siempre HTTP 200: revisar `ok`. Si falla, `mensaje` y `errores` (token_carrito: invalido; emails: requerido, invalido, excede_maximo)",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "ok": {
+                                            "type": "boolean",
+                                            "examples": [true]
+                                        },
+                                        "enviado": {
+                                            "type": "boolean",
+                                            "examples": [true]
+                                        },
+                                        "mensaje": {
+                                            "type": "string"
+                                        },
+                                        "errores": {
+                                            "type": "object",
+                                            "additionalProperties": {
+                                                "type": "string"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/RutaNoEncontrada"
+                    },
+                    "405": {
+                        "$ref": "#/components/responses/MetodoNoPermitido"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/ErrorInterno"
+                    }
+                }
+            }
+        },
+        "/{idioma}/enviar-voucher": {
+            "post": {
+                "summary": "Enviar voucher",
+                "description": "Reenvía por correo un voucher ya emitido. Si no se indican `emails`, se envía a los correos usuales del voucher: el primer beneficiario como destinatario y los demás beneficiarios en copia, además de las copias que correspondan a la agencia y al agente. Si se indican, reemplazan a los destinatarios usuales. Regenera los PDFs del voucher antes de enviar, por lo que puede tardar.",
+                "operationId": "enviarVoucher",
+                "tags": ["Emisiones"],
+                "parameters": [
+                    {
+                        "name": "idioma",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Código del idioma del correo"
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "required": ["voucher"],
+                                "properties": {
+                                    "voucher": {
+                                        "type": "string",
+                                        "description": "Número del voucher",
+                                        "examples": ["WA-12345"]
+                                    },
+                                    "emails": {
+                                        "description": "Destinatarios que reemplazan a los usuales del voucher: arreglo o lista separada por comas. Máximo 5. Si se omite o va vacío se envía a los usuales.",
+                                        "oneOf": [
+                                            {
+                                                "type": "array",
+                                                "items": {
+                                                    "type": "string",
+                                                    "format": "email"
+                                                }
+                                            },
+                                            {
+                                                "type": "string"
+                                            }
+                                        ],
+                                        "examples": [["cliente@correo.com"]]
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Siempre HTTP 200: revisar `ok`. Si falla, `mensaje` y `errores` (voucher: invalido; emails: invalido, excede_maximo)",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "ok": {
+                                            "type": "boolean",
+                                            "examples": [true]
+                                        },
+                                        "mensaje": {
+                                            "type": "string"
+                                        },
+                                        "errores": {
+                                            "type": "object",
+                                            "additionalProperties": {
+                                                "type": "string"
                                             }
                                         }
                                     }
@@ -5404,6 +5647,24 @@
                     },
                     {
                         "$ref": "#/components/parameters/userTokenHeader"
+                    },
+                    {
+                        "name": "pais_origen",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "description": "ID del país de origen; filtra solo cotizaciones_performance (opcional)"
+                    },
+                    {
+                        "name": "tipo_plan",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "description": "ID del tipo de plan; filtra solo cotizaciones_performance (opcional)"
                     }
                 ],
                 "responses": {
@@ -5850,6 +6111,163 @@
                                                             },
                                                             "ano_anterior": {
                                                                 "$ref": "#/components/schemas/ProgramPerformancePeriodo"
+                                                            }
+                                                        }
+                                                    }
+                                                },
+                                                "cotizaciones_performance": {
+                                                    "type": "object",
+                                                    "description": "Performance de cotizaciones (carritos con subtotal > 0, no de prueba). Se considera pedido el carrito pagado (status 2). El porcentaje de cierre es sobre las cotizaciones creadas en el periodo. 'meses' va de enero al mes en curso; 'anos' trae el año actual y el anterior; 'month_over_month' compara mes actual vs anterior; 'year_over_year' compara de enero a hoy vs el mismo periodo del año anterior.",
+                                                    "properties": {
+                                                        "meses": {
+                                                            "type": "object",
+                                                            "properties": {
+                                                                "cotizaciones_generadas": {
+                                                                    "type": "array",
+                                                                    "items": {
+                                                                        "type": "object",
+                                                                        "properties": {
+                                                                            "mes": {
+                                                                                "type": "integer",
+                                                                                "description": "1-12"
+                                                                            },
+                                                                            "nombre": {
+                                                                                "type": "string"
+                                                                            },
+                                                                            "cantidad": {
+                                                                                "type": "integer"
+                                                                            },
+                                                                            "monto": {
+                                                                                "type": "number"
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                },
+                                                                "porcentaje_cierre": {
+                                                                    "type": "array",
+                                                                    "items": {
+                                                                        "type": "object",
+                                                                        "properties": {
+                                                                            "mes": {
+                                                                                "type": "integer",
+                                                                                "description": "1-12"
+                                                                            },
+                                                                            "nombre": {
+                                                                                "type": "string"
+                                                                            },
+                                                                            "cotizaciones": {
+                                                                                "type": "integer"
+                                                                            },
+                                                                            "pedidos": {
+                                                                                "type": "integer",
+                                                                                "description": "Cotizaciones convertidas a pedido"
+                                                                            },
+                                                                            "porcentaje": {
+                                                                                "type": "number"
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                }
+                                                            }
+                                                        },
+                                                        "anos": {
+                                                            "type": "object",
+                                                            "properties": {
+                                                                "cotizaciones_generadas": {
+                                                                    "type": "array",
+                                                                    "items": {
+                                                                        "type": "object",
+                                                                        "properties": {
+                                                                            "ano": {
+                                                                                "type": "integer"
+                                                                            },
+                                                                            "cantidad": {
+                                                                                "type": "integer"
+                                                                            },
+                                                                            "monto": {
+                                                                                "type": "number"
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                },
+                                                                "porcentaje_cierre": {
+                                                                    "type": "array",
+                                                                    "items": {
+                                                                        "type": "object",
+                                                                        "properties": {
+                                                                            "ano": {
+                                                                                "type": "integer"
+                                                                            },
+                                                                            "cotizaciones": {
+                                                                                "type": "integer"
+                                                                            },
+                                                                            "pedidos": {
+                                                                                "type": "integer",
+                                                                                "description": "Cotizaciones convertidas a pedido"
+                                                                            },
+                                                                            "porcentaje": {
+                                                                                "type": "number"
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                }
+                                                            }
+                                                        },
+                                                        "month_over_month": {
+                                                            "$ref": "#/components/schemas/CotizacionesComparativa"
+                                                        },
+                                                        "year_over_year": {
+                                                            "$ref": "#/components/schemas/CotizacionesComparativa"
+                                                        }
+                                                    }
+                                                },
+                                                "datos_planes": {
+                                                    "type": "array",
+                                                    "description": "Ventas por tipo de plan (solo tipos con ventas): 'ytd' (enero a hoy), 'month_over_month' (mes actual vs anterior) y 'year_over_year' (enero a hoy vs mismo periodo del año anterior). 'planes' lista los planes con ventas en el ytd.",
+                                                    "items": {
+                                                        "type": "object",
+                                                        "properties": {
+                                                            "id": {
+                                                                "type": "integer",
+                                                                "description": "Id del tipo de plan"
+                                                            },
+                                                            "nombre": {
+                                                                "type": "string"
+                                                            },
+                                                            "ytd": {
+                                                                "$ref": "#/components/schemas/DatosPlanesMetricas"
+                                                            },
+                                                            "month_over_month": {
+                                                                "$ref": "#/components/schemas/DatosPlanesComparativa"
+                                                            },
+                                                            "year_over_year": {
+                                                                "$ref": "#/components/schemas/DatosPlanesComparativa"
+                                                            },
+                                                            "planes": {
+                                                                "type": "array",
+                                                                "items": {
+                                                                    "type": "object",
+                                                                    "properties": {
+                                                                        "id": {
+                                                                            "type": "integer"
+                                                                        },
+                                                                        "nombre": {
+                                                                            "type": "string"
+                                                                        },
+                                                                        "total_vendido": {
+                                                                            "type": "number"
+                                                                        },
+                                                                        "total_comisiones": {
+                                                                            "type": "number"
+                                                                        },
+                                                                        "unidades_vendidas": {
+                                                                            "type": "integer"
+                                                                        },
+                                                                        "dias_vendidos": {
+                                                                            "type": "number"
+                                                                        }
+                                                                    }
+                                                                }
                                                             }
                                                         }
                                                     }
@@ -6991,6 +7409,142 @@
                         "type": ["string", "null"],
                         "description": "Fin de vigencia si es activa o vencida; fecha y hora de cancelación si es cancelada (null si no está registrada)",
                         "examples": ["15/11/2025"]
+                    }
+                }
+            },
+            "CotizacionesComparativa": {
+                "type": "object",
+                "description": "Comparativa entre dos periodos de cotizaciones, usada por month_over_month y year_over_year",
+                "properties": {
+                    "cantidad": {
+                        "type": "object",
+                        "description": "Cotizaciones generadas",
+                        "properties": {
+                            "actual": {
+                                "type": "integer"
+                            },
+                            "anterior": {
+                                "type": "integer"
+                            },
+                            "variacion": {
+                                "type": ["number", "null"],
+                                "description": "Variación en % (null si el periodo anterior es 0); en porcentaje_cierre son puntos porcentuales"
+                            }
+                        }
+                    },
+                    "porcentaje_cierre": {
+                        "type": "object",
+                        "description": "% de cotizaciones convertidas a pedido",
+                        "properties": {
+                            "actual": {
+                                "type": "number"
+                            },
+                            "anterior": {
+                                "type": "number"
+                            },
+                            "variacion": {
+                                "type": ["number", "null"],
+                                "description": "Variación en % (null si el periodo anterior es 0); en porcentaje_cierre son puntos porcentuales"
+                            }
+                        }
+                    },
+                    "monto_total": {
+                        "type": "object",
+                        "description": "Monto total de las cotizaciones",
+                        "properties": {
+                            "actual": {
+                                "type": "number"
+                            },
+                            "anterior": {
+                                "type": "number"
+                            },
+                            "variacion": {
+                                "type": ["number", "null"],
+                                "description": "Variación en % (null si el periodo anterior es 0); en porcentaje_cierre son puntos porcentuales"
+                            }
+                        }
+                    }
+                }
+            },
+            "DatosPlanesMetricas": {
+                "type": "object",
+                "properties": {
+                    "ventas": {
+                        "type": "number"
+                    },
+                    "comisiones": {
+                        "type": "number"
+                    },
+                    "cantidad_ventas": {
+                        "type": "integer"
+                    },
+                    "cantidad_dias": {
+                        "type": "number"
+                    }
+                }
+            },
+            "DatosPlanesComparativa": {
+                "type": "object",
+                "properties": {
+                    "ventas": {
+                        "type": "object",
+                        "properties": {
+                            "actual": {
+                                "type": "number"
+                            },
+                            "anterior": {
+                                "type": "number"
+                            },
+                            "variacion": {
+                                "type": ["number", "null"],
+                                "description": "Variación en % (null si el periodo anterior es 0)"
+                            }
+                        }
+                    },
+                    "comisiones": {
+                        "type": "object",
+                        "properties": {
+                            "actual": {
+                                "type": "number"
+                            },
+                            "anterior": {
+                                "type": "number"
+                            },
+                            "variacion": {
+                                "type": ["number", "null"],
+                                "description": "Variación en % (null si el periodo anterior es 0)"
+                            }
+                        }
+                    },
+                    "cantidad_ventas": {
+                        "type": "object",
+                        "properties": {
+                            "actual": {
+                                "type": "integer"
+                            },
+                            "anterior": {
+                                "type": "integer"
+                            },
+                            "variacion": {
+                                "type": ["number", "null"],
+                                "description": "Variación en % (null si el periodo anterior es 0)"
+                            }
+                        }
+                    },
+                    "cantidad_dias": {
+                        "type": "object",
+                        "properties": {
+                            "actual": {
+                                "type": "number"
+                            },
+                            "anterior": {
+                                "type": "number"
+                            },
+                            "variacion": {
+                                "type": ["number", "null"],
+                                "description": "Variación en % (null si el periodo anterior es 0)"
+                            }
+                        }
                     }
                 }
             }

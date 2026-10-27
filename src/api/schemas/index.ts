@@ -23,11 +23,11 @@ Los códigos 5001 y 5002 son de negocio y viajan con HTTP 200: hay que mirar sie
 
 Los códigos 5003, 5004 y 5005 los resuelve el manejador global, así que pueden aparecer en cualquier endpoint.
 
-Cuando el error es de validación de campos, además de `error` viene `errores`, un objeto con un motivo por campo (`requerido`, `invalido`, `duplicado`, `excede_comision_agencia`, `no_permitido`).
+Cuando el error es de validación de campos, además de `error` viene `errores`, un objeto con un motivo por campo (`requerido`, `invalido`, `duplicado`, `excede_comision_agencia`, `no_permitido`, `excede_maximo`).
 
 En el ambiente de desarrollo las respuestas 500 agregan `error` y `archivo` con el detalle técnico; en producción no.
 
- * OpenAPI spec version: 1.1.0
+ * OpenAPI spec version: 1.2.4
  */
 
 export * from './actualizarAgentePorIdBody';
@@ -62,11 +62,40 @@ export * from './agenteItemStatus';
 export * from './agenteItemTipoPago';
 export * from './busquedaItem';
 export * from './busquedaItemTipo';
+export * from './cambiarImagenPerfilAgenteBody';
+export * from './cambiarPassword200';
+export * from './cambiarPassword200Errores';
+export * from './cambiarPasswordBody';
+export * from './cotizacionesComparativa';
+export * from './cotizacionesComparativaCantidad';
+export * from './cotizacionesComparativaCantidadVariacion';
+export * from './cotizacionesComparativaMontoTotal';
+export * from './cotizacionesComparativaMontoTotalVariacion';
+export * from './cotizacionesComparativaPorcentajeCierre';
+export * from './cotizacionesComparativaPorcentajeCierreVariacion';
 export * from './crearAgente200';
 export * from './crearAgente200Errores';
 export * from './crearAgenteBody';
+export * from './datosPlanesComparativa';
+export * from './datosPlanesComparativaCantidadDias';
+export * from './datosPlanesComparativaCantidadDiasVariacion';
+export * from './datosPlanesComparativaCantidadVentas';
+export * from './datosPlanesComparativaCantidadVentasVariacion';
+export * from './datosPlanesComparativaComisiones';
+export * from './datosPlanesComparativaComisionesVariacion';
+export * from './datosPlanesComparativaVentas';
+export * from './datosPlanesComparativaVentasVariacion';
+export * from './datosPlanesMetricas';
 export * from './detenerRecordatorioRenovacion200';
 export * from './detenerRecordatorioRenovacionBody';
+export * from './enviarCotizacion200';
+export * from './enviarCotizacion200Errores';
+export * from './enviarCotizacionBody';
+export * from './enviarCotizacionBodyEmails';
+export * from './enviarVoucher200';
+export * from './enviarVoucher200Errores';
+export * from './enviarVoucherBody';
+export * from './enviarVoucherBodyEmails';
 export * from './errorInternoResponse';
 export * from './errorRespuesta';
 export * from './getAgenciasAgencia200';
@@ -182,6 +211,15 @@ export * from './getDashboard200DataAgentPerformanceItemsItemAllOf';
 export * from './getDashboard200DataAgentPerformanceTotales';
 export * from './getDashboard200DataComisionesItem';
 export * from './getDashboard200DataComisionesItemMesesItem';
+export * from './getDashboard200DataCotizacionesPerformance';
+export * from './getDashboard200DataCotizacionesPerformanceAnos';
+export * from './getDashboard200DataCotizacionesPerformanceAnosCotizacionesGeneradasItem';
+export * from './getDashboard200DataCotizacionesPerformanceAnosPorcentajeCierreItem';
+export * from './getDashboard200DataCotizacionesPerformanceMeses';
+export * from './getDashboard200DataCotizacionesPerformanceMesesCotizacionesGeneradasItem';
+export * from './getDashboard200DataCotizacionesPerformanceMesesPorcentajeCierreItem';
+export * from './getDashboard200DataDatosPlanesItem';
+export * from './getDashboard200DataDatosPlanesItemPlanesItem';
 export * from './getDashboard200DataKpis';
 export * from './getDashboard200DataKpisVentas';
 export * from './getDashboard200DataKpisVentasAno';
@@ -201,6 +239,7 @@ export * from './getDashboard200DataRenovacionesPendientesMonto';
 export * from './getDashboard200DataTopPlanesItem';
 export * from './getDashboard200DataTopPlanesItemMonto';
 export * from './getDashboard200DataTopPlanesItemVentas';
+export * from './getDashboardParams';
 export * from './getDocumentosVoucher200';
 export * from './getDocumentosVoucher200DocumentosItem';
 export * from './getDocumentosVoucher200DocumentosItemLinksTarjetasEnItem';
@@ -270,9 +309,19 @@ export * from './getPlanBeneficios200DataBeneficiosAdicionalesItem';
 export * from './getPlanBeneficios200DataBeneficiosPrincipalesItem';
 export * from './getRenovacionesPendientes200';
 export * from './getRenovacionesPendientes200Data';
+export * from './getRenovacionesPendientes200DataEstadisticas';
 export * from './getRenovacionesPendientes200DataItemsItem';
+export * from './getRenovacionesPendientes200DataItemsItemAgencia';
+export * from './getRenovacionesPendientes200DataItemsItemAgente';
+export * from './getRenovacionesPendientes200DataItemsItemCarrito';
+export * from './getRenovacionesPendientes200DataItemsItemCarritoAnyOf';
 export * from './getRenovacionesPendientes200DataItemsItemEtapaNombre';
+export * from './getRenovacionesPendientes200DataItemsItemStatus';
 export * from './getRenovacionesPendientes200DataItemsItemTsCierre';
+export * from './getRenovacionesPendientes200DataItemsItemTsInicioViaje';
+export * from './getRenovacionesPendientes200DataItemsItemUltimoRecordatorio';
+export * from './getRenovacionesPendientes200DataItemsItemUltimoRecordatorioAnyOf';
+export * from './getRenovacionesPendientes200DataItemsItemVenta';
 export * from './getRenovacionesPendientes200DataItemsItemVentaDatos';
 export * from './getRenovacionesPendientes200DataItemsItemVentaDatosCobradaRecibo';
 export * from './getRenovacionesPendientes200DataItemsItemVentaDatosDocumentosItem';
@@ -284,6 +333,8 @@ export * from './getRenovacionesPendientes200DataItemsItemVentaDatosPagadaCheque
 export * from './getRenovacionesPendientes200DataItemsItemVentaDatosRenovacionDe';
 export * from './getRenovacionesPendientes200DataItemsItemVentaDatosVoucherMaster';
 export * from './getRenovacionesPendientes200DataItemsItemVentaRenovacion';
+export * from './getRenovacionesPendientes200DataItemsItemVentaRenovacionAnyOf';
+export * from './getRenovacionesPendientesParams';
 export * from './getStatusCodes200';
 export * from './getStatusCodes200Data';
 export * from './getStatusCodes200DataCarritosItem';
@@ -322,6 +373,9 @@ export * from './reporteVentasAgenciaResponseDataItemsItem';
 export * from './respuesta';
 export * from './respuestaItem';
 export * from './rutaNoEncontradaResponse';
+export * from './solicitarOtpPassword200';
+export * from './solicitarOtpPassword200Errores';
+export * from './solicitarOtpPasswordBody';
 export * from './statusVenta';
 export * from './statusVentaCodigo';
 export * from './statusVentaFecha';
@@ -330,3 +384,6 @@ export * from './userAgente';
 export * from './userLogin';
 export * from './userLoginAllOf';
 export * from './userTokenHeaderParameter';
+export * from './validarOtpPassword200';
+export * from './validarOtpPassword200Errores';
+export * from './validarOtpPasswordBody';

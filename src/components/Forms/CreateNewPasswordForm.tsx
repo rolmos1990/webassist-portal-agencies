@@ -1,44 +1,59 @@
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
 import * as yup from 'yup';
 import { UIButton } from "../Button";
 import InputText from "./Inputs/InputText";
-import { useNavigate } from 'react-router-dom';
-import { PATHS } from '../../routes/Routes';
+import { applyApiFieldErrors } from '../../api/errors/applyApiFieldErrors';
 
-export interface FormData {
+export interface CreateNewPasswordFormData {
     password: string;
-    newPassword: string;
+    confirmPassword: string;
   }
 
 interface Props {
-    onSubmit: (data: FormData) => void;
+    /** Si rechaza, se marcan los errores por campo del servicio */
+    onSubmit: (data: CreateNewPasswordFormData) => Promise<void> | void;
   }
 
-  const schema = yup.object({
-    password: yup.string().required('Password is required'),
-    newPassword: yup.string().required('New password is required'),
-      });
+const PASSWORD_MIN_LENGTH = 8;
 
+// campo de la API -> campo del formulario
+const API_FIELD_MAP = { password: 'password' } as const;
 
 const CreateNewPasswordForm: React.FC<Props> = ({ onSubmit }) => {
+    const { t } = useTranslation();
+
+    const schema = yup.object({
+      password: yup
+        .string()
+        .required(t('passwordReset.passwordRequired'))
+        .min(PASSWORD_MIN_LENGTH, t('passwordReset.passwordMin', { min: PASSWORD_MIN_LENGTH })),
+      confirmPassword: yup
+        .string()
+        .required(t('passwordReset.confirmRequired'))
+        .oneOf([yup.ref('password')], t('passwordReset.passwordMismatch')),
+    });
+
     const {
       register,
       handleSubmit,
-      reset,
+      setError,
       formState: { errors, isSubmitting },
-    } = useForm<FormData>({
+    } = useForm<CreateNewPasswordFormData>({
       resolver: yupResolver(schema),
       defaultValues: {
         password: '',
-        newPassword: '',
+        confirmPassword: '',
       },
     });
-    const navigate = useNavigate();
-  
-    const handleFormSubmit = (data: FormData) => {
-      onSubmit(data);
-      reset();
+
+    const handleFormSubmit = async (data: CreateNewPasswordFormData) => {
+      try {
+        await onSubmit(data);
+      } catch (e) {
+        applyApiFieldErrors(e, setError, API_FIELD_MAP, t);
+      }
     };
 
     return (
@@ -49,9 +64,9 @@ const CreateNewPasswordForm: React.FC<Props> = ({ onSubmit }) => {
       >
             <InputText
             type="password"
-            label="New password"
+            label={t('passwordReset.newPassword')}
             name="password"
-            placeholder="Your password"
+            placeholder={t('passwordReset.passwordPlaceholder')}
             register={register}
             error={errors.password}
             labelClassName="fw-semibold"
@@ -60,24 +75,14 @@ const CreateNewPasswordForm: React.FC<Props> = ({ onSubmit }) => {
 
             <InputText
             type="password"
-            label="Confirm password"
-            name="newPassword"
-            placeholder="Your password"
+            label={t('passwordReset.confirmPassword')}
+            name="confirmPassword"
+            placeholder={t('passwordReset.passwordPlaceholder')}
             register={register}
-            error={errors.newPassword}
+            error={errors.confirmPassword}
             labelClassName="fw-semibold"
             mainClassName="mb-3"
             />
-
-        <div className="d-flex justify-content-end mb-3">
-        <UIButton
-          variant="link"
-          onClick={() => navigate(PATHS.auth.forgotPassword())}
-          title="Go to: Support"
-          >
-          Forgot Password?
-          </UIButton>
-        </div>
 
          <UIButton
           type="submit"
@@ -87,11 +92,11 @@ const CreateNewPasswordForm: React.FC<Props> = ({ onSubmit }) => {
           className="d-inline-block w-100"
           disabled={isSubmitting}
         >
-          Confirm password
+          {t('passwordReset.confirmButton')}
         </UIButton>
 
       </form>
     );
   };
-  
+
   export default CreateNewPasswordForm;

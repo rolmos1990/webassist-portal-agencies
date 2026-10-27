@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react';
 import { Chart, registerables } from 'chart.js';
 import type { ChartConfiguration } from 'chart.js';
-import type { UseRadioChartProps } from '../interfaces';
+import type { UseRadioChartProps } from '../common/interfaces/chart';
 
 // Register Chart.js components
 Chart.register(...registerables);
@@ -46,7 +46,17 @@ export function useRadioChart({ config }: UseRadioChartProps) {
                 maintainAspectRatio: false,
                 plugins: {
                     legend: { display: false },
-                    tooltip: { enabled: true },
+                    tooltip: {
+                        enabled: true,
+                        callbacks: {
+                            ...(config.tooltipTitle && {
+                                title: (items) => (items.length ? config.tooltipTitle!(items[0].dataIndex) : ''),
+                            }),
+                            ...(config.tooltipLines && {
+                                label: (item) => config.tooltipLines!(item.dataIndex),
+                            }),
+                        },
+                    },
                 },
                 scales: {
                     y: {

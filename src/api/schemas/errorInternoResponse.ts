@@ -23,11 +23,11 @@ Los códigos 5001 y 5002 son de negocio y viajan con HTTP 200: hay que mirar sie
 
 Los códigos 5003, 5004 y 5005 los resuelve el manejador global, así que pueden aparecer en cualquier endpoint.
 
-Cuando el error es de validación de campos, además de `error` viene `errores`, un objeto con un motivo por campo (`requerido`, `invalido`, `duplicado`, `excede_comision_agencia`, `no_permitido`).
+Cuando el error es de validación de campos, además de `error` viene `errores`, un objeto con un motivo por campo (`requerido`, `invalido`, `duplicado`, `excede_comision_agencia`, `no_permitido`, `excede_maximo`).
 
 En el ambiente de desarrollo las respuestas 500 agregan `error` y `archivo` con el detalle técnico; en producción no.
 
- * OpenAPI spec version: 1.1.0
+ * OpenAPI spec version: 1.2.4
  */
 import type { ErrorRespuesta } from './errorRespuesta';
 

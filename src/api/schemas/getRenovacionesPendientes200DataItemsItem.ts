@@ -23,36 +23,42 @@ Los códigos 5001 y 5002 son de negocio y viajan con HTTP 200: hay que mirar sie
 
 Los códigos 5003, 5004 y 5005 los resuelve el manejador global, así que pueden aparecer en cualquier endpoint.
 
-Cuando el error es de validación de campos, además de `error` viene `errores`, un objeto con un motivo por campo (`requerido`, `invalido`, `duplicado`, `excede_comision_agencia`, `no_permitido`).
+Cuando el error es de validación de campos, además de `error` viene `errores`, un objeto con un motivo por campo (`requerido`, `invalido`, `duplicado`, `excede_comision_agencia`, `no_permitido`, `excede_maximo`).
 
 En el ambiente de desarrollo las respuestas 500 agregan `error` y `archivo` con el detalle técnico; en producción no.
 
- * OpenAPI spec version: 1.1.0
+ * OpenAPI spec version: 1.2.4
  */
+import type { GetRenovacionesPendientes200DataItemsItemAgente } from './getRenovacionesPendientes200DataItemsItemAgente';
+import type { GetRenovacionesPendientes200DataItemsItemAgencia } from './getRenovacionesPendientes200DataItemsItemAgencia';
+import type { GetRenovacionesPendientes200DataItemsItemStatus } from './getRenovacionesPendientes200DataItemsItemStatus';
+import type { GetRenovacionesPendientes200DataItemsItemUltimoRecordatorio } from './getRenovacionesPendientes200DataItemsItemUltimoRecordatorio';
+import type { GetRenovacionesPendientes200DataItemsItemVenta } from './getRenovacionesPendientes200DataItemsItemVenta';
 import type { GetRenovacionesPendientes200DataItemsItemVentaRenovacion } from './getRenovacionesPendientes200DataItemsItemVentaRenovacion';
-import type { GetRenovacionesPendientes200DataItemsItemTsCierre } from './getRenovacionesPendientes200DataItemsItemTsCierre';
-import type { GetRenovacionesPendientes200DataItemsItemEtapaNombre } from './getRenovacionesPendientes200DataItemsItemEtapaNombre';
-import type { GetRenovacionesPendientes200DataItemsItemVentaDatos } from './getRenovacionesPendientes200DataItemsItemVentaDatos';
+import type { GetRenovacionesPendientes200DataItemsItemCarrito } from './getRenovacionesPendientes200DataItemsItemCarrito';
+import type { GetRenovacionesPendientes200DataItemsItemTsInicioViaje } from './getRenovacionesPendientes200DataItemsItemTsInicioViaje';
 
 export type GetRenovacionesPendientes200DataItemsItem = {
-  id?: string;
-  venta?: string;
-  agente?: string;
-  agencia?: string;
-  carrito?: string;
-  carrito_linea?: string;
-  precio_total?: string;
-  ts_creacion?: string;
-  ts_inicio_viaje?: string;
-  ultimo_recordatorio?: string;
+  id?: number;
+  /** Agente de la renovación */
+  agente?: GetRenovacionesPendientes200DataItemsItemAgente;
+  /** Agencia del agente */
+  agencia?: GetRenovacionesPendientes200DataItemsItemAgencia;
+  /** Status de la renovación */
+  status?: GetRenovacionesPendientes200DataItemsItemStatus;
+  /** Último recordatorio enviado; null si no se ha enviado ninguno */
+  ultimo_recordatorio?: GetRenovacionesPendientes200DataItemsItemUltimoRecordatorio;
+  /** Datos de la venta a renovar, con documentos y cliente */
+  venta?: GetRenovacionesPendientes200DataItemsItemVenta;
+  /** Venta que renovó, si ya se renovó */
   venta_renovacion?: GetRenovacionesPendientes200DataItemsItemVentaRenovacion;
-  ts_cierre?: GetRenovacionesPendientes200DataItemsItemTsCierre;
-  idioma?: string;
-  status?: string;
-  agente_nombre?: string;
-  agencia_nombre?: string;
+  /** Cotización de la renovación */
+  carrito?: GetRenovacionesPendientes200DataItemsItemCarrito;
+  precio_total?: number;
+  comision?: number;
+  comision_agencia?: number;
   fecha_inicio_viaje?: string;
-  etapa_nombre?: GetRenovacionesPendientes200DataItemsItemEtapaNombre;
-  venta_datos?: GetRenovacionesPendientes200DataItemsItemVentaDatos;
-  url_carrito?: string;
+  ts_inicio_viaje?: GetRenovacionesPendientes200DataItemsItemTsInicioViaje;
+  ts_creacion?: number;
+  idioma?: string;
 };

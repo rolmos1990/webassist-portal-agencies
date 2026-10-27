@@ -23,11 +23,11 @@ Los códigos 5001 y 5002 son de negocio y viajan con HTTP 200: hay que mirar sie
 
 Los códigos 5003, 5004 y 5005 los resuelve el manejador global, así que pueden aparecer en cualquier endpoint.
 
-Cuando el error es de validación de campos, además de `error` viene `errores`, un objeto con un motivo por campo (`requerido`, `invalido`, `duplicado`, `excede_comision_agencia`, `no_permitido`).
+Cuando el error es de validación de campos, además de `error` viene `errores`, un objeto con un motivo por campo (`requerido`, `invalido`, `duplicado`, `excede_comision_agencia`, `no_permitido`, `excede_maximo`).
 
 En el ambiente de desarrollo las respuestas 500 agregan `error` y `archivo` con el detalle técnico; en producción no.
 
- * OpenAPI spec version: 1.1.0
+ * OpenAPI spec version: 1.2.4
  */
 import type { GetDashboard200DataRenovaciones } from './getDashboard200DataRenovaciones';
 import type { GetDashboard200DataTopPlanesItem } from './getDashboard200DataTopPlanesItem';
@@ -36,6 +36,8 @@ import type { GetDashboard200DataComisionesItem } from './getDashboard200DataCom
 import type { GetDashboard200DataAgencyPerformance } from './getDashboard200DataAgencyPerformance';
 import type { GetDashboard200DataAgentPerformance } from './getDashboard200DataAgentPerformance';
 import type { GetDashboard200DataProgramsPerformanceItem } from './getDashboard200DataProgramsPerformanceItem';
+import type { GetDashboard200DataCotizacionesPerformance } from './getDashboard200DataCotizacionesPerformance';
+import type { GetDashboard200DataDatosPlanesItem } from './getDashboard200DataDatosPlanesItem';
 
 export type GetDashboard200Data = {
   renovaciones?: GetDashboard200DataRenovaciones;
@@ -49,4 +51,8 @@ export type GetDashboard200Data = {
   agent_performance?: GetDashboard200DataAgentPerformance;
   /** Performance por tipo de plan, en 4 periodos: 'ytd' (año actual completo), 'mes_actual', 'mes_anterior' y 'ano_anterior'. Comparando 'mes_actual' contra 'mes_anterior' se obtiene el Month over Month, y 'ytd' contra 'ano_anterior' el Year over Year. */
   programs_performance?: GetDashboard200DataProgramsPerformanceItem[];
+  /** Performance de cotizaciones (carritos con subtotal > 0, no de prueba). Se considera pedido el carrito pagado (status 2). El porcentaje de cierre es sobre las cotizaciones creadas en el periodo. 'meses' va de enero al mes en curso; 'anos' trae el año actual y el anterior; 'month_over_month' compara mes actual vs anterior; 'year_over_year' compara de enero a hoy vs el mismo periodo del año anterior. */
+  cotizaciones_performance?: GetDashboard200DataCotizacionesPerformance;
+  /** Ventas por tipo de plan (solo tipos con ventas): 'ytd' (enero a hoy), 'month_over_month' (mes actual vs anterior) y 'year_over_year' (enero a hoy vs mismo periodo del año anterior). 'planes' lista los planes con ventas en el ytd. */
+  datos_planes?: GetDashboard200DataDatosPlanesItem[];
 };

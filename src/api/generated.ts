@@ -23,11 +23,11 @@ Los códigos 5001 y 5002 son de negocio y viajan con HTTP 200: hay que mirar sie
 
 Los códigos 5003, 5004 y 5005 los resuelve el manejador global, así que pueden aparecer en cualquier endpoint.
 
-Cuando el error es de validación de campos, además de `error` viene `errores`, un objeto con un motivo por campo (`requerido`, `invalido`, `duplicado`, `excede_comision_agencia`, `no_permitido`).
+Cuando el error es de validación de campos, además de `error` viene `errores`, un objeto con un motivo por campo (`requerido`, `invalido`, `duplicado`, `excede_comision_agencia`, `no_permitido`, `excede_maximo`).
 
 En el ambiente de desarrollo las respuestas 500 agregan `error` y `archivo` con el detalle técnico; en producción no.
 
- * OpenAPI spec version: 1.1.0
+ * OpenAPI spec version: 1.2.4
  */
 import {
   useMutation,
@@ -56,10 +56,17 @@ import type {
   ActualizarPerfilAgencia200,
   ActualizarPerfilAgenciaBody,
   ActualizarPerfilAgenteBody,
+  CambiarImagenPerfilAgenteBody,
+  CambiarPassword200,
+  CambiarPasswordBody,
   CrearAgente200,
   CrearAgenteBody,
   DetenerRecordatorioRenovacion200,
   DetenerRecordatorioRenovacionBody,
+  EnviarCotizacion200,
+  EnviarCotizacionBody,
+  EnviarVoucher200,
+  EnviarVoucherBody,
   ErrorInternoResponse,
   GetAgenciasAgencia200,
   GetAgentesAgencia200,
@@ -82,6 +89,7 @@ import type {
   GetCotizacionesAgenteAgencia200,
   GetCotizacionesAgenteAgenciaParams,
   GetDashboard200,
+  GetDashboardParams,
   GetDocumentosVoucher200,
   GetIdiomas200,
   GetLangStrings200,
@@ -95,6 +103,7 @@ import type {
   GetPerfilAgente200,
   GetPlanBeneficios200,
   GetRenovacionesPendientes200,
+  GetRenovacionesPendientesParams,
   GetStatusCodes200,
   GetTasaComisiones200,
   GetVouchersMaster200,
@@ -105,7 +114,11 @@ import type {
   PostAgenteLoginBody,
   PostLogout200,
   ReporteVentasAgenciaResponse,
-  RutaNoEncontradaResponse
+  RutaNoEncontradaResponse,
+  SolicitarOtpPassword200,
+  SolicitarOtpPasswordBody,
+  ValidarOtpPassword200,
+  ValidarOtpPasswordBody
 } from './schemas';
 
 import { customFetch } from './custom-fetcher';
@@ -794,6 +807,207 @@ export const usePostLogout = <TError = null | RutaNoEncontradaResponse | MetodoN
     }
     
 /**
+ * Paso 1. Envía por correo un código (OTP) de 6 dígitos ligado al usuario, con vigencia de 15 minutos. Responde `ok:true` exista o no el correo, para no revelar qué correos están registrados. Si ya se pidió un código hace menos de un minuto no se envía otro. Solo requiere el token de la API (sin `userToken`).
+ * @summary Recuperar contraseña: solicitar OTP
+ */
+export const solicitarOtpPassword = (
+    idioma: string,
+    solicitarOtpPasswordBody: SolicitarOtpPasswordBody,
+ signal?: AbortSignal
+) => {
+      
+      
+      return customFetch<SolicitarOtpPassword200>(
+      {url: `/${idioma}/password-solicitar-otp`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: solicitarOtpPasswordBody, signal
+    },
+      );
+    }
+  
+
+
+export const getSolicitarOtpPasswordMutationOptions = <TError = null | RutaNoEncontradaResponse | MetodoNoPermitidoResponse | ErrorInternoResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof solicitarOtpPassword>>, TError,{idioma: string;data: SolicitarOtpPasswordBody}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof solicitarOtpPassword>>, TError,{idioma: string;data: SolicitarOtpPasswordBody}, TContext> => {
+
+const mutationKey = ['solicitarOtpPassword'];
+const {mutation: mutationOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }};
+
+      
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof solicitarOtpPassword>>, {idioma: string;data: SolicitarOtpPasswordBody}> = (props) => {
+          const {idioma,data} = props ?? {};
+
+          return  solicitarOtpPassword(idioma,data,)
+        }
+
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type SolicitarOtpPasswordMutationResult = NonNullable<Awaited<ReturnType<typeof solicitarOtpPassword>>>
+    export type SolicitarOtpPasswordMutationBody = SolicitarOtpPasswordBody
+    export type SolicitarOtpPasswordMutationError = null | RutaNoEncontradaResponse | MetodoNoPermitidoResponse | ErrorInternoResponse
+
+    /**
+ * @summary Recuperar contraseña: solicitar OTP
+ */
+export const useSolicitarOtpPassword = <TError = null | RutaNoEncontradaResponse | MetodoNoPermitidoResponse | ErrorInternoResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof solicitarOtpPassword>>, TError,{idioma: string;data: SolicitarOtpPasswordBody}, TContext>, }
+ , queryClient?: QueryClient): UseMutationResult<
+        Awaited<ReturnType<typeof solicitarOtpPassword>>,
+        TError,
+        {idioma: string;data: SolicitarOtpPasswordBody},
+        TContext
+      > => {
+
+      const mutationOptions = getSolicitarOtpPasswordMutationOptions(options);
+
+      return useMutation(mutationOptions , queryClient);
+    }
+    
+/**
+ * Paso 2. Valida el código recibido por correo. Cada código admite 5 intentos. Devuelve `reset_token`, de un solo uso y con vigencia de 10 minutos, que se usa en el paso 3. Cualquier falla responde `errores.otp = invalido`.
+ * @summary Recuperar contraseña: validar OTP
+ */
+export const validarOtpPassword = (
+    idioma: string,
+    validarOtpPasswordBody: ValidarOtpPasswordBody,
+ signal?: AbortSignal
+) => {
+      
+      
+      return customFetch<ValidarOtpPassword200>(
+      {url: `/${idioma}/password-validar-otp`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: validarOtpPasswordBody, signal
+    },
+      );
+    }
+  
+
+
+export const getValidarOtpPasswordMutationOptions = <TError = null | RutaNoEncontradaResponse | MetodoNoPermitidoResponse | ErrorInternoResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof validarOtpPassword>>, TError,{idioma: string;data: ValidarOtpPasswordBody}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof validarOtpPassword>>, TError,{idioma: string;data: ValidarOtpPasswordBody}, TContext> => {
+
+const mutationKey = ['validarOtpPassword'];
+const {mutation: mutationOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }};
+
+      
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof validarOtpPassword>>, {idioma: string;data: ValidarOtpPasswordBody}> = (props) => {
+          const {idioma,data} = props ?? {};
+
+          return  validarOtpPassword(idioma,data,)
+        }
+
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type ValidarOtpPasswordMutationResult = NonNullable<Awaited<ReturnType<typeof validarOtpPassword>>>
+    export type ValidarOtpPasswordMutationBody = ValidarOtpPasswordBody
+    export type ValidarOtpPasswordMutationError = null | RutaNoEncontradaResponse | MetodoNoPermitidoResponse | ErrorInternoResponse
+
+    /**
+ * @summary Recuperar contraseña: validar OTP
+ */
+export const useValidarOtpPassword = <TError = null | RutaNoEncontradaResponse | MetodoNoPermitidoResponse | ErrorInternoResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof validarOtpPassword>>, TError,{idioma: string;data: ValidarOtpPasswordBody}, TContext>, }
+ , queryClient?: QueryClient): UseMutationResult<
+        Awaited<ReturnType<typeof validarOtpPassword>>,
+        TError,
+        {idioma: string;data: ValidarOtpPasswordBody},
+        TContext
+      > => {
+
+      const mutationOptions = getValidarOtpPasswordMutationOptions(options);
+
+      return useMutation(mutationOptions , queryClient);
+    }
+    
+/**
+ * Paso 3. Cambia la contraseña con el `reset_token` del paso 2 (un solo uso). Cierra las sesiones abiertas del usuario. La contraseña debe cumplir la política del sitio: mínimo 6 caracteres, con al menos un número, una mayúscula y una minúscula.
+ * @summary Recuperar contraseña: cambiar contraseña
+ */
+export const cambiarPassword = (
+    idioma: string,
+    cambiarPasswordBody: CambiarPasswordBody,
+ signal?: AbortSignal
+) => {
+      
+      
+      return customFetch<CambiarPassword200>(
+      {url: `/${idioma}/password-cambiar`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: cambiarPasswordBody, signal
+    },
+      );
+    }
+  
+
+
+export const getCambiarPasswordMutationOptions = <TError = null | RutaNoEncontradaResponse | MetodoNoPermitidoResponse | ErrorInternoResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof cambiarPassword>>, TError,{idioma: string;data: CambiarPasswordBody}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof cambiarPassword>>, TError,{idioma: string;data: CambiarPasswordBody}, TContext> => {
+
+const mutationKey = ['cambiarPassword'];
+const {mutation: mutationOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }};
+
+      
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof cambiarPassword>>, {idioma: string;data: CambiarPasswordBody}> = (props) => {
+          const {idioma,data} = props ?? {};
+
+          return  cambiarPassword(idioma,data,)
+        }
+
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type CambiarPasswordMutationResult = NonNullable<Awaited<ReturnType<typeof cambiarPassword>>>
+    export type CambiarPasswordMutationBody = CambiarPasswordBody
+    export type CambiarPasswordMutationError = null | RutaNoEncontradaResponse | MetodoNoPermitidoResponse | ErrorInternoResponse
+
+    /**
+ * @summary Recuperar contraseña: cambiar contraseña
+ */
+export const useCambiarPassword = <TError = null | RutaNoEncontradaResponse | MetodoNoPermitidoResponse | ErrorInternoResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof cambiarPassword>>, TError,{idioma: string;data: CambiarPasswordBody}, TContext>, }
+ , queryClient?: QueryClient): UseMutationResult<
+        Awaited<ReturnType<typeof cambiarPassword>>,
+        TError,
+        {idioma: string;data: CambiarPasswordBody},
+        TContext
+      > => {
+
+      const mutationOptions = getCambiarPasswordMutationOptions(options);
+
+      return useMutation(mutationOptions , queryClient);
+    }
+    
+/**
  * Reporte de ventas por agencia (mes actual)
  * @summary Reporte de ventas por agencia
  */
@@ -1140,6 +1354,76 @@ export const useActualizarPerfilAgente = <TError = null | RutaNoEncontradaRespon
     }
     
 /**
+ * Cambia la imagen de perfil del agente autenticado. La imagen se envía como datos en base64, con o sin el prefijo `data:image/...;base64,`. Acepta jpeg, png, gif o webp; se guarda como webp y se reduce a un máximo de 1000 x 1000 manteniendo la proporción. Enviar `imagen` como cadena vacía la quita.
+
+Si la imagen no es válida devuelve `errores.imagen` con el valor `invalido`.
+
+ * @summary Cambiar Imagen de Perfil
+ */
+export const cambiarImagenPerfilAgente = (
+    idioma: string,
+    cambiarImagenPerfilAgenteBody: CambiarImagenPerfilAgenteBody,
+ signal?: AbortSignal
+) => {
+      
+      
+      return customFetch<ActualizarAgenteResponse>(
+      {url: `/${idioma}/perfil/imagen`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: cambiarImagenPerfilAgenteBody, signal
+    },
+      );
+    }
+  
+
+
+export const getCambiarImagenPerfilAgenteMutationOptions = <TError = null | RutaNoEncontradaResponse | MetodoNoPermitidoResponse | ErrorInternoResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof cambiarImagenPerfilAgente>>, TError,{idioma: string;data: CambiarImagenPerfilAgenteBody}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof cambiarImagenPerfilAgente>>, TError,{idioma: string;data: CambiarImagenPerfilAgenteBody}, TContext> => {
+
+const mutationKey = ['cambiarImagenPerfilAgente'];
+const {mutation: mutationOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }};
+
+      
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof cambiarImagenPerfilAgente>>, {idioma: string;data: CambiarImagenPerfilAgenteBody}> = (props) => {
+          const {idioma,data} = props ?? {};
+
+          return  cambiarImagenPerfilAgente(idioma,data,)
+        }
+
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type CambiarImagenPerfilAgenteMutationResult = NonNullable<Awaited<ReturnType<typeof cambiarImagenPerfilAgente>>>
+    export type CambiarImagenPerfilAgenteMutationBody = CambiarImagenPerfilAgenteBody
+    export type CambiarImagenPerfilAgenteMutationError = null | RutaNoEncontradaResponse | MetodoNoPermitidoResponse | ErrorInternoResponse
+
+    /**
+ * @summary Cambiar Imagen de Perfil
+ */
+export const useCambiarImagenPerfilAgente = <TError = null | RutaNoEncontradaResponse | MetodoNoPermitidoResponse | ErrorInternoResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof cambiarImagenPerfilAgente>>, TError,{idioma: string;data: CambiarImagenPerfilAgenteBody}, TContext>, }
+ , queryClient?: QueryClient): UseMutationResult<
+        Awaited<ReturnType<typeof cambiarImagenPerfilAgente>>,
+        TError,
+        {idioma: string;data: CambiarImagenPerfilAgenteBody},
+        TContext
+      > => {
+
+      const mutationOptions = getCambiarImagenPerfilAgenteMutationOptions(options);
+
+      return useMutation(mutationOptions , queryClient);
+    }
+    
+/**
  * Actualiza el idioma preferido del agente autenticado
  * @summary Actualizar Idioma del Agente
  */
@@ -1459,37 +1743,44 @@ export function useGetVouchersMasterDetail<TData = Awaited<ReturnType<typeof get
 
 
 /**
- * Lista las renovaciones pendientes para el usuario autenticado
+ * Lista las renovaciones pendientes del usuario autenticado (si es `agente_administrador`, las de toda la agencia), con las estadísticas de renovaciones del año en curso fuera de `items`.
+
+Los campos que son ID salen como objetos `{id, nombre}`. `carrito.url` es el link de la cotización; `carrito` es `null` mientras la renovación no tiene cotización creada. Las estadísticas no dependen de los filtros.
+
  * @summary Renovaciones Pendientes
  */
 export const getRenovacionesPendientes = (
     idioma: string,
+    params?: GetRenovacionesPendientesParams,
  signal?: AbortSignal
 ) => {
       
       
       return customFetch<GetRenovacionesPendientes200>(
-      {url: `/${idioma}/renovaciones-pendientes`, method: 'GET', signal
+      {url: `/${idioma}/renovaciones-pendientes`, method: 'GET',
+        params, signal
     },
       );
     }
   
 
-export const getGetRenovacionesPendientesQueryKey = (idioma?: string,) => {
-    return [`/${idioma}/renovaciones-pendientes`] as const;
+export const getGetRenovacionesPendientesQueryKey = (idioma?: string,
+    params?: GetRenovacionesPendientesParams,) => {
+    return [`/${idioma}/renovaciones-pendientes`, ...(params ? [params]: [])] as const;
     }
 
     
-export const getGetRenovacionesPendientesQueryOptions = <TData = Awaited<ReturnType<typeof getRenovacionesPendientes>>, TError = null | RutaNoEncontradaResponse | MetodoNoPermitidoResponse | ErrorInternoResponse>(idioma: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getRenovacionesPendientes>>, TError, TData>>, }
+export const getGetRenovacionesPendientesQueryOptions = <TData = Awaited<ReturnType<typeof getRenovacionesPendientes>>, TError = null | RutaNoEncontradaResponse | MetodoNoPermitidoResponse | ErrorInternoResponse>(idioma: string,
+    params?: GetRenovacionesPendientesParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getRenovacionesPendientes>>, TError, TData>>, }
 ) => {
 
 const {query: queryOptions} = options ?? {};
 
-  const queryKey =  queryOptions?.queryKey ?? getGetRenovacionesPendientesQueryKey(idioma);
+  const queryKey =  queryOptions?.queryKey ?? getGetRenovacionesPendientesQueryKey(idioma,params);
 
   
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getRenovacionesPendientes>>> = ({ signal }) => getRenovacionesPendientes(idioma, signal);
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getRenovacionesPendientes>>> = ({ signal }) => getRenovacionesPendientes(idioma,params, signal);
 
       
 
@@ -1503,7 +1794,8 @@ export type GetRenovacionesPendientesQueryError = null | RutaNoEncontradaRespons
 
 
 export function useGetRenovacionesPendientes<TData = Awaited<ReturnType<typeof getRenovacionesPendientes>>, TError = null | RutaNoEncontradaResponse | MetodoNoPermitidoResponse | ErrorInternoResponse>(
- idioma: string, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getRenovacionesPendientes>>, TError, TData>> & Pick<
+ idioma: string,
+    params: undefined |  GetRenovacionesPendientesParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getRenovacionesPendientes>>, TError, TData>> & Pick<
         DefinedInitialDataOptions<
           Awaited<ReturnType<typeof getRenovacionesPendientes>>,
           TError,
@@ -1513,7 +1805,8 @@ export function useGetRenovacionesPendientes<TData = Awaited<ReturnType<typeof g
  , queryClient?: QueryClient
   ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 export function useGetRenovacionesPendientes<TData = Awaited<ReturnType<typeof getRenovacionesPendientes>>, TError = null | RutaNoEncontradaResponse | MetodoNoPermitidoResponse | ErrorInternoResponse>(
- idioma: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getRenovacionesPendientes>>, TError, TData>> & Pick<
+ idioma: string,
+    params?: GetRenovacionesPendientesParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getRenovacionesPendientes>>, TError, TData>> & Pick<
         UndefinedInitialDataOptions<
           Awaited<ReturnType<typeof getRenovacionesPendientes>>,
           TError,
@@ -1523,7 +1816,8 @@ export function useGetRenovacionesPendientes<TData = Awaited<ReturnType<typeof g
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 export function useGetRenovacionesPendientes<TData = Awaited<ReturnType<typeof getRenovacionesPendientes>>, TError = null | RutaNoEncontradaResponse | MetodoNoPermitidoResponse | ErrorInternoResponse>(
- idioma: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getRenovacionesPendientes>>, TError, TData>>, }
+ idioma: string,
+    params?: GetRenovacionesPendientesParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getRenovacionesPendientes>>, TError, TData>>, }
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 /**
@@ -1531,11 +1825,12 @@ export function useGetRenovacionesPendientes<TData = Awaited<ReturnType<typeof g
  */
 
 export function useGetRenovacionesPendientes<TData = Awaited<ReturnType<typeof getRenovacionesPendientes>>, TError = null | RutaNoEncontradaResponse | MetodoNoPermitidoResponse | ErrorInternoResponse>(
- idioma: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getRenovacionesPendientes>>, TError, TData>>, }
+ idioma: string,
+    params?: GetRenovacionesPendientesParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getRenovacionesPendientes>>, TError, TData>>, }
  , queryClient?: QueryClient 
  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
-  const queryOptions = getGetRenovacionesPendientesQueryOptions(idioma,options)
+  const queryOptions = getGetRenovacionesPendientesQueryOptions(idioma,params,options)
 
   const query = useQuery(queryOptions , queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
@@ -2299,6 +2594,140 @@ export function useGetCotizacionesAgenteAgencia<TData = Awaited<ReturnType<typeo
 
 
 /**
+ * Envía por correo la cotización de un carrito. Copia el carrito a una cotización y manda el detalle con los enlaces de compra y PDF. No restringe qué carritos se pueden enviar (basta con que exista y tenga productos). El agente del carrito va en copia.
+ * @summary Enviar cotización
+ */
+export const enviarCotizacion = (
+    idioma: string,
+    enviarCotizacionBody: EnviarCotizacionBody,
+ signal?: AbortSignal
+) => {
+      
+      
+      return customFetch<EnviarCotizacion200>(
+      {url: `/${idioma}/enviar-cotizacion`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: enviarCotizacionBody, signal
+    },
+      );
+    }
+  
+
+
+export const getEnviarCotizacionMutationOptions = <TError = null | RutaNoEncontradaResponse | MetodoNoPermitidoResponse | ErrorInternoResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof enviarCotizacion>>, TError,{idioma: string;data: EnviarCotizacionBody}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof enviarCotizacion>>, TError,{idioma: string;data: EnviarCotizacionBody}, TContext> => {
+
+const mutationKey = ['enviarCotizacion'];
+const {mutation: mutationOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }};
+
+      
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof enviarCotizacion>>, {idioma: string;data: EnviarCotizacionBody}> = (props) => {
+          const {idioma,data} = props ?? {};
+
+          return  enviarCotizacion(idioma,data,)
+        }
+
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type EnviarCotizacionMutationResult = NonNullable<Awaited<ReturnType<typeof enviarCotizacion>>>
+    export type EnviarCotizacionMutationBody = EnviarCotizacionBody
+    export type EnviarCotizacionMutationError = null | RutaNoEncontradaResponse | MetodoNoPermitidoResponse | ErrorInternoResponse
+
+    /**
+ * @summary Enviar cotización
+ */
+export const useEnviarCotizacion = <TError = null | RutaNoEncontradaResponse | MetodoNoPermitidoResponse | ErrorInternoResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof enviarCotizacion>>, TError,{idioma: string;data: EnviarCotizacionBody}, TContext>, }
+ , queryClient?: QueryClient): UseMutationResult<
+        Awaited<ReturnType<typeof enviarCotizacion>>,
+        TError,
+        {idioma: string;data: EnviarCotizacionBody},
+        TContext
+      > => {
+
+      const mutationOptions = getEnviarCotizacionMutationOptions(options);
+
+      return useMutation(mutationOptions , queryClient);
+    }
+    
+/**
+ * Reenvía por correo un voucher ya emitido. Si no se indican `emails`, se envía a los correos usuales del voucher: el primer beneficiario como destinatario y los demás beneficiarios en copia, además de las copias que correspondan a la agencia y al agente. Si se indican, reemplazan a los destinatarios usuales. Regenera los PDFs del voucher antes de enviar, por lo que puede tardar.
+ * @summary Enviar voucher
+ */
+export const enviarVoucher = (
+    idioma: string,
+    enviarVoucherBody: EnviarVoucherBody,
+ signal?: AbortSignal
+) => {
+      
+      
+      return customFetch<EnviarVoucher200>(
+      {url: `/${idioma}/enviar-voucher`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: enviarVoucherBody, signal
+    },
+      );
+    }
+  
+
+
+export const getEnviarVoucherMutationOptions = <TError = null | RutaNoEncontradaResponse | MetodoNoPermitidoResponse | ErrorInternoResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof enviarVoucher>>, TError,{idioma: string;data: EnviarVoucherBody}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof enviarVoucher>>, TError,{idioma: string;data: EnviarVoucherBody}, TContext> => {
+
+const mutationKey = ['enviarVoucher'];
+const {mutation: mutationOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }};
+
+      
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof enviarVoucher>>, {idioma: string;data: EnviarVoucherBody}> = (props) => {
+          const {idioma,data} = props ?? {};
+
+          return  enviarVoucher(idioma,data,)
+        }
+
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type EnviarVoucherMutationResult = NonNullable<Awaited<ReturnType<typeof enviarVoucher>>>
+    export type EnviarVoucherMutationBody = EnviarVoucherBody
+    export type EnviarVoucherMutationError = null | RutaNoEncontradaResponse | MetodoNoPermitidoResponse | ErrorInternoResponse
+
+    /**
+ * @summary Enviar voucher
+ */
+export const useEnviarVoucher = <TError = null | RutaNoEncontradaResponse | MetodoNoPermitidoResponse | ErrorInternoResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof enviarVoucher>>, TError,{idioma: string;data: EnviarVoucherBody}, TContext>, }
+ , queryClient?: QueryClient): UseMutationResult<
+        Awaited<ReturnType<typeof enviarVoucher>>,
+        TError,
+        {idioma: string;data: EnviarVoucherBody},
+        TContext
+      > => {
+
+      const mutationOptions = getEnviarVoucherMutationOptions(options);
+
+      return useMutation(mutationOptions , queryClient);
+    }
+    
+/**
  * Lista las asistencias del agente o agencia autenticada
  * @summary Asistencias del Agente / Agencia
  */
@@ -2978,32 +3407,36 @@ export function useGetClienteHistorial<TData = Awaited<ReturnType<typeof getClie
  */
 export const getDashboard = (
     idioma: 'es' | 'en',
+    params?: GetDashboardParams,
  signal?: AbortSignal
 ) => {
       
       
       return customFetch<GetDashboard200>(
-      {url: `/${idioma}/dashboard`, method: 'GET', signal
+      {url: `/${idioma}/dashboard`, method: 'GET',
+        params, signal
     },
       );
     }
   
 
-export const getGetDashboardQueryKey = (idioma?: 'es' | 'en',) => {
-    return [`/${idioma}/dashboard`] as const;
+export const getGetDashboardQueryKey = (idioma?: 'es' | 'en',
+    params?: GetDashboardParams,) => {
+    return [`/${idioma}/dashboard`, ...(params ? [params]: [])] as const;
     }
 
     
-export const getGetDashboardQueryOptions = <TData = Awaited<ReturnType<typeof getDashboard>>, TError = null | RutaNoEncontradaResponse | MetodoNoPermitidoResponse | ErrorInternoResponse>(idioma: 'es' | 'en', options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDashboard>>, TError, TData>>, }
+export const getGetDashboardQueryOptions = <TData = Awaited<ReturnType<typeof getDashboard>>, TError = null | RutaNoEncontradaResponse | MetodoNoPermitidoResponse | ErrorInternoResponse>(idioma: 'es' | 'en',
+    params?: GetDashboardParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDashboard>>, TError, TData>>, }
 ) => {
 
 const {query: queryOptions} = options ?? {};
 
-  const queryKey =  queryOptions?.queryKey ?? getGetDashboardQueryKey(idioma);
+  const queryKey =  queryOptions?.queryKey ?? getGetDashboardQueryKey(idioma,params);
 
   
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getDashboard>>> = ({ signal }) => getDashboard(idioma, signal);
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getDashboard>>> = ({ signal }) => getDashboard(idioma,params, signal);
 
       
 
@@ -3017,7 +3450,8 @@ export type GetDashboardQueryError = null | RutaNoEncontradaResponse | MetodoNoP
 
 
 export function useGetDashboard<TData = Awaited<ReturnType<typeof getDashboard>>, TError = null | RutaNoEncontradaResponse | MetodoNoPermitidoResponse | ErrorInternoResponse>(
- idioma: 'es' | 'en', options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDashboard>>, TError, TData>> & Pick<
+ idioma: 'es' | 'en',
+    params: undefined |  GetDashboardParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDashboard>>, TError, TData>> & Pick<
         DefinedInitialDataOptions<
           Awaited<ReturnType<typeof getDashboard>>,
           TError,
@@ -3027,7 +3461,8 @@ export function useGetDashboard<TData = Awaited<ReturnType<typeof getDashboard>>
  , queryClient?: QueryClient
   ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 export function useGetDashboard<TData = Awaited<ReturnType<typeof getDashboard>>, TError = null | RutaNoEncontradaResponse | MetodoNoPermitidoResponse | ErrorInternoResponse>(
- idioma: 'es' | 'en', options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDashboard>>, TError, TData>> & Pick<
+ idioma: 'es' | 'en',
+    params?: GetDashboardParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDashboard>>, TError, TData>> & Pick<
         UndefinedInitialDataOptions<
           Awaited<ReturnType<typeof getDashboard>>,
           TError,
@@ -3037,7 +3472,8 @@ export function useGetDashboard<TData = Awaited<ReturnType<typeof getDashboard>>
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 export function useGetDashboard<TData = Awaited<ReturnType<typeof getDashboard>>, TError = null | RutaNoEncontradaResponse | MetodoNoPermitidoResponse | ErrorInternoResponse>(
- idioma: 'es' | 'en', options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDashboard>>, TError, TData>>, }
+ idioma: 'es' | 'en',
+    params?: GetDashboardParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDashboard>>, TError, TData>>, }
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 /**
@@ -3045,11 +3481,12 @@ export function useGetDashboard<TData = Awaited<ReturnType<typeof getDashboard>>
  */
 
 export function useGetDashboard<TData = Awaited<ReturnType<typeof getDashboard>>, TError = null | RutaNoEncontradaResponse | MetodoNoPermitidoResponse | ErrorInternoResponse>(
- idioma: 'es' | 'en', options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDashboard>>, TError, TData>>, }
+ idioma: 'es' | 'en',
+    params?: GetDashboardParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDashboard>>, TError, TData>>, }
  , queryClient?: QueryClient 
  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
-  const queryOptions = getGetDashboardQueryOptions(idioma,options)
+  const queryOptions = getGetDashboardQueryOptions(idioma,params,options)
 
   const query = useQuery(queryOptions , queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 

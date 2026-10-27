@@ -158,6 +158,27 @@
       "unitsSold": "Units Sold",
       "viewDetail": "View performance per program"
     },
+    "filters": {
+      "hint": "These filters apply to the quote performance overview.",
+      "originCountry": "Origin country",
+      "planType": "Plan type",
+      "apply": "Apply"
+    },
+    "quotePerformance": {
+      "title": "Quote Performance Overview",
+      "quotes": "Total Quotes Generated",
+      "closingRatio": "Closing Ratio",
+      "totalAmount": "Average Quotes Generated",
+      "points": "pts",
+      "previousMonth": "Previous month",
+      "previousYear": "Previous year",
+      "generatedChart": "Quotes Generated",
+      "closingChart": "Closing Ratio Percentage",
+      "amount": "Amount",
+      "count": "Quantity",
+      "quotesCount": "Quotes",
+      "orders": "Orders"
+    },
     "kpiComparison": {
       "title": "KPI Comparison",
       "monthly": "Monthly",
@@ -235,6 +256,7 @@
   "assistanceDetail": {
     "back": "Back",
     "resendVoucher": "Resend Voucher",
+    "resendQuote": "Resend Quote",
     "viewMore": "View More",
     "benefits": "Benefits",
     "issueDate": "Issue Date",
@@ -302,7 +324,8 @@
       "invalido": "The value is not valid",
       "duplicado": "It is already registered",
       "excede_comision_agencia": "Exceeds the agency commission",
-      "no_permitido": "This field cannot be modified"
+      "no_permitido": "This field cannot be modified",
+      "excede_maximo": "Exceeds the maximum allowed"
     }
   },
   "noData": "No data available",
@@ -353,6 +376,9 @@
     "back": "Back",
     "title": "My Profile",
     "changePhoto": "Change photo",
+    "removePhoto": "Remove photo",
+    "photoInvalidType": "The image must be JPG or PNG",
+    "photoTooLarge": "The image cannot exceed 5 MB",
     "personalInformation": "Personal Information",
     "firstName": "First Name",
     "lastName": "Last Name",
@@ -414,6 +440,82 @@
       "website": "Website",
       "address": "Address",
       "sendVoucherCopies": "Send Voucher Copies"
+    }
+  },
+  "passwordReset": {
+    "title": "Forgot Password?",
+    "subtitle": "No worries, we'll send you a code to reset it.",
+    "email": "Email",
+    "emailPlaceholder": "Your email address",
+    "emailRequired": "Email is required",
+    "emailInvalid": "Invalid email",
+    "sendCode": "Send code",
+    "codeSentTitle": "Code sent",
+    "codeSent": "Check your email and enter the code we sent you.",
+    "otpTitle": "Check your email",
+    "otpSubtitle": "Enter the 6-digit code we sent to",
+    "otp": "Verification code",
+    "otpRequired": "Code is required",
+    "otpInvalid": "The code must have 6 digits",
+    "resendCode": "Resend code",
+    "verifyCode": "Verify code",
+    "newPasswordTitle": "Create a new password",
+    "newPasswordSubtitle": "New password must be different from current password.",
+    "newPassword": "New password",
+    "confirmPassword": "Confirm password",
+    "passwordPlaceholder": "Your password",
+    "passwordRequired": "Password is required",
+    "passwordMin": "Password must be at least {{min}} characters",
+    "confirmRequired": "Please confirm the password",
+    "passwordMismatch": "Passwords do not match",
+    "confirmButton": "Change password",
+    "expiredTitle": "Time expired",
+    "expired": "The time to change your password expired. Request a new code.",
+    "successTitle": "Password Reset Successful",
+    "success": "You have successfully updated your password. You can now log in.",
+    "backToLogin": "Back to log in"
+  },
+  "resend": {
+    "emails": "Recipient emails",
+    "emailsPlaceholder": "client@mail.com, other@mail.com",
+    "emailsHint": "Separate emails with commas. Maximum {{max}}.",
+    "emailsHintOptional": "Separate emails with commas. Maximum {{max}}. Leave empty to send to the usual recipients.",
+    "emailsRequired": "Enter at least one email",
+    "emailsInvalid": "Some emails have an invalid format",
+    "emailsMax": "Maximum {{max}} emails",
+    "name": "Client name",
+    "namePlaceholder": "Name",
+    "send": "Send",
+    "sentTitle": "Sent",
+    "sent": "The email was sent successfully."
+  },
+  "renewals": {
+    "title": "Pending Renewals",
+    "stats": {
+      "renewalsYtd": "Renewals this year",
+      "upcoming": "Upcoming",
+      "expired": "Expired this year",
+      "sales": "Renewed sales",
+      "commissions": "Renewed commissions"
+    },
+    "table": {
+      "tripStart": "Trip start",
+      "agent": "Agent",
+      "agency": "Agency",
+      "total": "Total",
+      "commission": "Commission",
+      "lastReminder": "Last reminder",
+      "status": "Status",
+      "quote": "Quote",
+      "viewQuote": "View quote",
+      "noQuote": "No quote"
+    },
+    "filters": {
+      "planType": "Plan type",
+      "from": "Trip start from",
+      "to": "Trip start to",
+      "invalidRange": "The end date must be on or after the start date",
+      "apply": "Apply"
     }
   }
 }

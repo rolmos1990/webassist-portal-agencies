@@ -1,38 +1,49 @@
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
 import * as yup from 'yup';
 import { UIButton } from "../Button";
 import InputText from "./Inputs/InputText";
+import { applyApiFieldErrors } from '../../api/errors/applyApiFieldErrors';
 
-export interface CreateAgencyFormData {
+export interface ForgotPasswordFormData {
     email: string;
   }
 
 interface Props {
-    onSubmit: (data: CreateAgencyFormData) => void;
+    initialEmail?: string;
+    /** Si rechaza, se marcan los errores por campo del servicio */
+    onSubmit: (data: ForgotPasswordFormData) => Promise<void> | void;
   }
 
-  const schema = yup.object({
-    email: yup.string().required('Email is required').email('Invalid email'),
-  });
+// campo de la API -> campo del formulario
+const API_FIELD_MAP = { email: 'email' } as const;
 
+const ForgotPasswordForm: React.FC<Props> = ({ initialEmail = '', onSubmit }) => {
+    const { t } = useTranslation();
 
-const ForgotPasswordForm: React.FC<Props> = ({ onSubmit }) => {
+    const schema = yup.object({
+      email: yup.string().required(t('passwordReset.emailRequired')).email(t('passwordReset.emailInvalid')),
+    });
+
     const {
       register,
       handleSubmit,
-      reset,
+      setError,
       formState: { errors, isSubmitting },
-    } = useForm<CreateAgencyFormData>({
+    } = useForm<ForgotPasswordFormData>({
       resolver: yupResolver(schema),
       defaultValues: {
-        email: ''
+        email: initialEmail
       },
     });
-  
-    const handleFormSubmit = (data: CreateAgencyFormData) => {
-      onSubmit(data);
-      reset();
+
+    const handleFormSubmit = async (data: ForgotPasswordFormData) => {
+      try {
+        await onSubmit(data);
+      } catch (e) {
+        applyApiFieldErrors(e, setError, API_FIELD_MAP, t);
+      }
     };
 
     return (
@@ -42,12 +53,13 @@ const ForgotPasswordForm: React.FC<Props> = ({ onSubmit }) => {
         noValidate
       >
             <InputText
-            label="Email"
+            type="email"
+            label={t('passwordReset.email')}
             name="email"
-            placeholder="Your mail address"
+            placeholder={t('passwordReset.emailPlaceholder')}
             register={register}
             error={errors.email}
-            icon="bi bi-search"
+            icon="bi bi-envelope"
             labelClassName="fw-semibold"
             mainClassName="mb-3"
             />
@@ -60,11 +72,11 @@ const ForgotPasswordForm: React.FC<Props> = ({ onSubmit }) => {
           className="d-inline-block w-100"
           disabled={isSubmitting}
         >
-          Send the password reset link
+          {t('passwordReset.sendCode')}
         </UIButton>
 
       </form>
     );
   };
-  
+
   export default ForgotPasswordForm;

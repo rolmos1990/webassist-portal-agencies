@@ -1,6 +1,8 @@
 import { useCallback, useMemo } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
+import { useQueryClient } from "@tanstack/react-query";
 import { usePostAgenteLogin } from "../api/generated";
+import { planTypesQueryOptions } from "./usePlanTypeOptions";
 import { isSessionUser, useAuthStore } from "../stores/useAuthStore";
 import { ApiError, getApiErrorMessage } from "../api/errors/ApiError";
 import { toast } from "../services/toast";
@@ -21,6 +23,7 @@ export function useLogin() {
   const { mutateAsync: postLogin, isPending } = usePostAgenteLogin();
   const { i18n, t } = useTranslation();
   const { setLang } = useI18nCache();
+  const queryClient = useQueryClient();
 
   const idioma = useMemo(
     () => i18n.language.split("-")[0], 
@@ -51,6 +54,11 @@ export function useLogin() {
           setLang(user.idioma_user);
         }
 
+        // Catálogo de tipos de plan (filtros): se pide una vez por sesión y queda en cache
+        const sessionLang =
+          user?.idioma_user && SUPPORTED_LANGS.includes(user.idioma_user) ? user.idioma_user : idioma;
+        void queryClient.prefetchQuery(planTypesQueryOptions(sessionLang));
+
         const to = location?.state?.from?.pathname || "/";
         navigate(to, { replace: true });
 
@@ -61,7 +69,7 @@ export function useLogin() {
         return false;
       }
     },
-    [postLogin, idioma, login, location?.state, navigate, t, setLang]
+    [postLogin, idioma, login, location?.state, navigate, t, setLang, queryClient]
   );
 
   return useMemo(

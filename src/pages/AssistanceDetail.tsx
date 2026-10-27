@@ -14,10 +14,16 @@ import type {
   GetCotizacionesAgenteAgencia200DataItemsItem,
 } from '../api/schemas';
 import { fromAsistencia, fromCotizacion, type VoucherBlock, type VoucherKind } from '../adapters/voucherDetail';
-import { useGetAsistenciasAgenteAgencia, useGetBeneficiosCliente } from '../api/generated';
+import {
+  useEnviarCotizacion,
+  useEnviarVoucher,
+  useGetAsistenciasAgenteAgencia,
+  useGetBeneficiosCliente,
+} from '../api/generated';
 import { useI18nCache } from '../i18n/i18nCacheProvider';
 import { toast } from '../services/toast';
-import { getApiErrorMessage } from '../api/errors/ApiError';
+import { ApiError, getApiErrorMessage } from '../api/errors/ApiError';
+import ResendDocumentForm, { type ResendDocumentValues } from '../components/Forms/ResendDocumentForm';
 
 const openInNewTab = (url?: string) => {
   if (url) window.open(url, '_blank', 'noopener,noreferrer');
@@ -37,6 +43,7 @@ interface Props {
 
 export default function AssistanceDetail({ kind = 'assistance' }: Props) {
     const [show, setShow] = useState(false);
+    const [showResend, setShowResend] = useState(false);
     const { t } = useTranslation();
     const { id, clientId } = useParams<{ id: string; clientId?: string }>();
     const location = useLocation();
@@ -57,9 +64,10 @@ export default function AssistanceDetail({ kind = 'assistance' }: Props) {
       ? asistencias.data?.data?.items?.find((i) => i.token === id || i.voucher?.codigo === id)
       : (state?.item as GetAsistenciasAgenteAgencia200DataItemsItem | undefined);
 
-    const voucher = kind === 'quote'
-      ? fromCotizacion(state?.item as GetCotizacionesAgenteAgencia200DataItemsItem | undefined)
-      : fromAsistencia(asistencia);
+    const cotizacion = kind === 'quote'
+      ? (state?.item as GetCotizacionesAgenteAgencia200DataItemsItem | undefined)
+      : undefined;
+    const voucher = kind === 'quote' ? fromCotizacion(cotizacion) : fromAsistencia(asistencia);
     const code = state?.item ? voucher.code : (id ?? voucher.code);
     const multipleBlocks = voucher.blocks.length > 1;
 
@@ -89,6 +97,40 @@ export default function AssistanceDetail({ kind = 'assistance' }: Props) {
         toast.error("Error", getApiErrorMessage(asistencias.error, t('error_generico')));
       }
     }, [asistencias.error, t]);
+
+    // Reenvío: la cotización se identifica por el token del carrito y la asistencia por el número de voucher
+    const { mutateAsync: enviarCotizacion } = useEnviarCotizacion();
+    const { mutateAsync: enviarVoucher } = useEnviarVoucher();
+    const resendTarget = kind === 'quote' ? cotizacion?.token : asistencia?.voucher?.codigo;
+    const titular = kind === 'quote' ? cotizacion?.lineas?.[0]?.pasajeros?.[0] : undefined;
+    const resendInitialValues = {
+      emails: titular?.email ?? '',
+      nombre: `${titular?.nombre ?? ''} ${titular?.apellido ?? ''}`.trim(),
+    };
+
+    const handleResend = async ({ emails: destinatarios, nombre }: ResendDocumentValues) => {
+      if (!resendTarget) return;
+      try {
+        if (kind === 'quote') {
+          const res = await enviarCotizacion({
+            idioma: lang,
+            data: { token_carrito: resendTarget, emails: destinatarios, nombre: nombre || undefined },
+          });
+          if (res.enviado === false) throw new ApiError(res.mensaje || t('error_generico'));
+        } else {
+          // Sin destinatarios el servicio usa los usuales del voucher
+          await enviarVoucher({
+            idioma: lang,
+            data: { voucher: resendTarget, emails: destinatarios.length ? destinatarios : undefined },
+          });
+        }
+        toast.success(t('resend.sentTitle'), t('resend.sent'));
+        setShowResend(false);
+      } catch (e) {
+        toast.error("Error", getApiErrorMessage(e, t('error_generico')));
+        throw e;
+      }
+    };
 
     const renderStrip = (block: VoucherBlock, withGeneralData: boolean) => (
       <div className="flex-grow-1 border-bottom pb-3">
@@ -161,8 +203,10 @@ export default function AssistanceDetail({ kind = 'assistance' }: Props) {
         <UIButton
         variant="outline-primary"
         icon="bi bi-envelope"
+        disabled={!resendTarget}
+        onClick={() => setShowResend(true)}
         >
-        {t("assistanceDetail.resendVoucher")}
+        {kind === 'quote' ? t("assistanceDetail.resendQuote") : t("assistanceDetail.resendVoucher")}
         </UIButton>
         <UIButton
         variant="outline-primary"
@@ -172,6 +216,27 @@ export default function AssistanceDetail({ kind = 'assistance' }: Props) {
         </UIButton>
           </div>
         } />
+        <Offcanvas
+        show={showResend}
+        onHide={() => setShowResend(false)}
+        placement="end"
+        title={kind === 'quote' ? t("assistanceDetail.resendQuote") : t("assistanceDetail.resendVoucher")}
+        canClose={true}
+        scroll={true}
+        backdrop="static"
+        width="380px"
+        >
+          {/* Se monta al abrir para que el formulario arranque con los valores iniciales */}
+          {showResend && (
+            <ResendDocumentForm
+              emailsRequired={kind === 'quote'}
+              showName={kind === 'quote'}
+              initialValues={kind === 'quote' ? resendInitialValues : undefined}
+              onSubmit={handleResend}
+              onCancel={() => setShowResend(false)}
+            />
+          )}
+        </Offcanvas>
         <Offcanvas
         show={show}
         onHide={() => setShow(false)}
