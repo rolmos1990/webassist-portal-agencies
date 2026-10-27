@@ -5,7 +5,7 @@ import Breadcrumb from '../components/Breadcrumb';
 import { UIButton } from '../components/Button';
 import Offcanvas from '../components/Offcanvas';
 import { currency } from '../components/DataTable';
-import { HorizontalCardList, HorizontalCardListItem } from '../components/HorizontalCardList';
+import { StatCard } from '../components/StatCard';
 import { RenewalsTable } from '../components/Tables/RenewalsTable';
 import FilterRenewalsForm from '../components/Forms/FilterRenewalsForm';
 import {
@@ -67,7 +67,7 @@ function Renewals() {
           title={t('filter_by')}
           canClose={true}
           scroll={true}
-          backdrop="static"
+          backdrop={true}
           width="380px"
         >
           <FilterRenewalsForm
@@ -78,20 +78,43 @@ function Renewals() {
           />
         </Offcanvas>
 
-        <div className="card border-0 mb-3 px-3">
-          <HorizontalCardList desktopCols={5}>
-            <HorizontalCardListItem title={t('renewals.stats.renewalsYtd')} value={stats?.renovaciones_ytd ?? '—'} />
-            <HorizontalCardListItem title={t('renewals.stats.upcoming')} value={stats?.cantidad_futuras ?? '—'} />
-            <HorizontalCardListItem title={t('renewals.stats.expired')} value={stats?.cantidad_expiradas ?? '—'} />
-            <HorizontalCardListItem
-              title={t('renewals.stats.sales')}
+        {/* Mismo estilo de tarjetas que el reporte de ventas */}
+        <div className="row row-cols-2 row-cols-md-3 row-cols-xl-5 g-3 mb-3">
+          <div className="col">
+            <StatCard
+              icon="bi-arrow-repeat"
+              label={t('renewals.stats.renewalsYtd')}
+              value={String(stats?.renovaciones_ytd ?? '—')}
+            />
+          </div>
+          <div className="col">
+            <StatCard
+              icon="bi-calendar-event"
+              label={t('renewals.stats.upcoming')}
+              value={String(stats?.cantidad_futuras ?? '—')}
+            />
+          </div>
+          <div className="col">
+            <StatCard
+              icon="bi-calendar-x"
+              label={t('renewals.stats.expired')}
+              value={String(stats?.cantidad_expiradas ?? '—')}
+            />
+          </div>
+          <div className="col">
+            <StatCard
+              icon="bi-graph-up-arrow"
+              label={t('renewals.stats.sales')}
               value={stats?.ventas_realizadas == null ? '—' : currency(stats.ventas_realizadas)}
             />
-            <HorizontalCardListItem
-              title={t('renewals.stats.commissions')}
+          </div>
+          <div className="col">
+            <StatCard
+              icon="bi-cash-coin"
+              label={t('renewals.stats.commissions')}
               value={stats?.comisiones_realizadas == null ? '—' : currency(stats.comisiones_realizadas)}
             />
-          </HorizontalCardList>
+          </div>
         </div>
 
         <div className="card border-0">

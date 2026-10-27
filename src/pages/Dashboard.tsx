@@ -297,7 +297,7 @@ function Dashboard() {
         title={t('filter_by')}
         canClose={true}
         scroll={true}
-        backdrop="static"
+        backdrop={true}
         width="380px"
         keyboard={true}
       >

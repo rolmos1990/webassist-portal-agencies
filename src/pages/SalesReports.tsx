@@ -115,7 +115,7 @@ function SalesReports() {
           title={t('salesReport.filterByDateLabel')}
           canClose={true}
           scroll={true}
-          backdrop="static"
+          backdrop={true}
           width="380px"
           keyboard={true}
         >

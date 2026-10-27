@@ -10,6 +10,7 @@ import iconClients from '../assets/images/icons/icon (1).svg';
 import iconNewQuote from '../assets/images/icons/icon (4).svg';
 import iconStandingQuote from '../assets/images/icons/icon (2).svg';
 import iconReports from '../assets/images/icons/icon (10).svg';
+import iconRenewals from '../assets/images/icons/icon (6).svg';
 import SidebarItem from './SidebarItem';
 import { useTranslation } from 'react-i18next';
 import { useI18nCache } from '../i18n/i18nCacheProvider';
@@ -132,6 +133,8 @@ function NavBar() {
           <SidebarItem icon={iconNewQuote} label={t('menu.agencyQuotes')} path={PATHS.quotes.agency()} collapsed={isCompact} onNavigate={closeMobileMenu} />
 
           <SidebarItem icon={iconStandingQuote} label={t('menu.agencyAssistances')} path={PATHS.assistances.agency()} collapsed={isCompact} onNavigate={closeMobileMenu} />
+
+          <SidebarItem icon={iconRenewals} label={t('menu.renewals')} path={PATHS.renewals.list()} collapsed={isCompact} onNavigate={closeMobileMenu} />
 
           <SidebarItem icon={iconReports} label={t('menu.salesReport')} path={PATHS.reports()} collapsed={isCompact} onNavigate={closeMobileMenu} />
           </ul>

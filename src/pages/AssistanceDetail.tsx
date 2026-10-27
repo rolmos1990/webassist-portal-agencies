@@ -208,12 +208,6 @@ export default function AssistanceDetail({ kind = 'assistance' }: Props) {
         >
         {kind === 'quote' ? t("assistanceDetail.resendQuote") : t("assistanceDetail.resendVoucher")}
         </UIButton>
-        <UIButton
-        variant="outline-primary"
-        icon="bi bi-pencil"
-        >
-        {t("assistanceDetail.modifyVoucher")}
-        </UIButton>
           </div>
         } />
         <Offcanvas
@@ -318,9 +312,6 @@ export default function AssistanceDetail({ kind = 'assistance' }: Props) {
             </div>
              {/* Derecha: botones */}
              <div className="col-12 col-md-auto d-flex align-items-center justify-content-center justify-content-md-end gap-2 ms-md-auto">
-             <UIButton variant="dark" size="sm" pill>
-            {t("assistanceDetail.rePurchase")}
-            </UIButton>
             {voucher.pdfUrl && (
               <UIButton
                 variant="dark"

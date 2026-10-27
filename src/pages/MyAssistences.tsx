@@ -71,7 +71,7 @@ function MyAssistances() {
           title={t('filter_by')}
           canClose={true}
           scroll={true}
-          backdrop="static"
+          backdrop={true}
           width="380px"
         >
           <FilterByPassengerForm

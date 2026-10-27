@@ -234,7 +234,8 @@
     "agencyQuotes": "Agency Quotes",
     "myAssistances": "My Assistances",
     "agencyAssistances": "Agency Assistances",
-    "salesReport": "Sales Report"
+    "salesReport": "Sales Report",
+    "renewals": "Renewals"
   },
   "sidebar": {
     "collapse": "Collapse menu",

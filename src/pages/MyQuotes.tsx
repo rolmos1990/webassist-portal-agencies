@@ -107,7 +107,7 @@ function MyQuotes() {
         title={t("filtrar_por")}
         canClose={true}
         scroll={true}
-        backdrop="static"
+        backdrop={true}
         width="380px"
       >
         <FilterByPassengerForm

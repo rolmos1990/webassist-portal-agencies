@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, type ChangeEvent } from 'react';
+import { useEffect, useMemo, useRef, useState, type ChangeEvent } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useQueryClient } from '@tanstack/react-query';
 import Breadcrumb from '../components/Breadcrumb';
@@ -16,6 +16,7 @@ import type { ActualizarPerfilAgenteBody } from '../api/schemas';
 import { useCountryOptions } from '../hooks/useCountryOptions';
 import { useI18nCache } from '../i18n/i18nCacheProvider';
 import { parseSecurityRole, SecurityRole } from '../stores/SecurityRole';
+import { useAuthStore } from '../stores/useAuthStore';
 import { toast } from '../services/toast';
 import { getApiErrorMessage } from '../api/errors/ApiError';
 
@@ -41,6 +42,9 @@ function Profile() {
   const { mutateAsync: actualizarPerfilAgente } = useActualizarPerfilAgente();
   const { mutateAsync: cambiarImagen, isPending: isSavingPhoto } = useCambiarImagenPerfilAgente();
   const photoInputRef = useRef<HTMLInputElement>(null);
+  // URL procesada que devuelve /perfil/imagen; se muestra hasta recargar la página
+  // aunque GET /perfil todavía entregue la imagen anterior
+  const [uploadedPhoto, setUploadedPhoto] = useState<string | null>(null);
 
   useEffect(() => {
     if (error) {
@@ -49,6 +53,7 @@ function Profile() {
   }, [error, t]);
 
   const profile = data?.data;
+  const photoUrl = uploadedPhoto ?? profile?.imagen;
 
   // Memorizados: los formularios hacen reset cada vez que cambian sus initialValues
   const personalValues = useMemo<ProfilePersonalFormData>(() => ({
@@ -92,7 +97,12 @@ function Profile() {
   // POST /perfil/imagen; cadena vacía quita la foto
   const savePhoto = async (imagen: string) => {
     try {
-      await cambiarImagen({ idioma: lang, data: { imagen } });
+      const res = await cambiarImagen({ idioma: lang, data: { imagen } });
+      const nuevaImagen = res.data?.imagen ?? res.usuario?.imagen ?? imagen;
+      setUploadedPhoto(nuevaImagen);
+      // La foto del menú superior sale del usuario de la sesión
+      const { user, setUser } = useAuthStore.getState();
+      if (user) setUser({ ...user, imagen: nuevaImagen });
       await queryClient.invalidateQueries({ queryKey: getGetPerfilAgenteQueryKey(lang) });
       toast.success(t("feedback.savedTitle"), t("feedback.saved"));
     } catch (e) {
@@ -157,7 +167,7 @@ function Profile() {
       <div className="d-flex flex-column gap-4">
         <div className="border rounded-3 p-4 d-flex flex-column flex-md-row align-items-center gap-4">
           <div className="position-relative flex-shrink-0">
-            <Avatar src={profile.imagen || undefined} name={fullName} size={120} />
+            <Avatar src={photoUrl || undefined} name={fullName} size={120} />
             {isSavingPhoto && (
               <div className="position-absolute top-50 start-50 translate-middle">
                 <div className="spinner-border spinner-border-sm text-light" role="status" />
@@ -180,7 +190,7 @@ function Profile() {
             >
               <i className="bi bi-camera-fill"></i>
             </button>
-            {profile.imagen && (
+            {photoUrl && (
               <button
                 type="button"
                 className="btn btn-light rounded-circle position-absolute bottom-0 start-0 p-1 lh-1 border"

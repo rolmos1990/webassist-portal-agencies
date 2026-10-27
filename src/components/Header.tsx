@@ -1,11 +1,11 @@
 import { useMemo } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import logo from "../assets/images/logo.png";
-import iconRounded from "../assets/images/icons/rounded-icon.svg";
 import GlobalSearch from "./common/GlobalSearch";
 import NotificationsDropdown from "./NotificationDropdown";
 import type { NotificationItem } from "./NotificationDropdown";
 import Dropdown, { DropdownDivider, DropdownItem } from "./Dropdown";
+import { Avatar } from "./Avatar";
 import { useAuthStore } from '../stores/useAuthStore';
 import { useTranslation } from "react-i18next";
 import { PATHS } from "../routes/Routes";
@@ -24,6 +24,7 @@ import { useI18nCache } from "../i18n/i18nCacheProvider";
 function Header() {
   const navigate = useNavigate();
   const logout = useAuthStore((s) => s.logout);
+  const user = useAuthStore((s) => s.user);
   const { t } = useTranslation();
   const { lang } = useI18nCache();
   const { mutateAsync: postLogout } = usePostLogout();
@@ -95,8 +96,6 @@ function Header() {
         style={{ width: "fit-content" }}
         className="col-md-3 text-end px-2 px-md-4 d-flex align-items-center justify-content-end gap-2 gap-md-3"
       >
-        <img src={iconRounded} alt="rounded icon" />
-
         {/* 🔔 Notificaciones */}
         <NotificationsDropdown
           items={notifications}
@@ -107,12 +106,10 @@ function Header() {
         <Dropdown
           align="end"
           trigger={
-            <img
-              src="https://github.com/mdo.png"
-              alt="Profile"
-              width="32"
-              height="32"
-              className="rounded-circle"
+            <Avatar
+              src={user?.imagen || undefined}
+              name={user?.nombre_completo || `${user?.nombre ?? ''} ${user?.apellido ?? ''}`}
+              size={32}
             />
           }
         >
