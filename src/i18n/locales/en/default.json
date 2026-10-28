@@ -503,13 +503,18 @@
       "tripStart": "Trip start",
       "agent": "Agent",
       "agency": "Agency",
+      "client": "Client",
       "total": "Total",
       "commission": "Commission",
       "lastReminder": "Last reminder",
       "status": "Status",
       "quote": "Quote",
       "viewQuote": "View quote",
-      "noQuote": "No quote"
+      "noQuote": "No quote",
+      "actions": "Actions",
+      "viewAssistance": "View assistance",
+      "stopReminder": "Stop reminder",
+      "reminderStopped": "Renewal reminder stopped"
     },
     "filters": {
       "planType": "Plan type",

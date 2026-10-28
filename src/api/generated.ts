@@ -106,6 +106,7 @@ import type {
   GetRenovacionesPendientesParams,
   GetStatusCodes200,
   GetTasaComisiones200,
+  GetV2TiposPlanes200,
   GetVouchersMaster200,
   GetVouchersMasterDetail200,
   MarcarNotificacionLeida200,
@@ -3487,6 +3488,95 @@ export function useGetDashboard<TData = Awaited<ReturnType<typeof getDashboard>>
  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
   const queryOptions = getGetDashboardQueryOptions(idioma,params,options)
+
+  const query = useQuery(queryOptions , queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  query.queryKey = queryOptions.queryKey ;
+
+  return query;
+}
+
+
+
+
+/**
+ * Devuelve el catálogo de tipos de plan disponibles.
+ * @summary Tipos de plan
+ */
+export const getV2TiposPlanes = (
+    idioma: 'es' | 'en',
+ signal?: AbortSignal
+) => {
+      
+      
+      return customFetch<GetV2TiposPlanes200>(
+      {url: `/${idioma}/v2/tipos-planes`, method: 'GET', signal
+    },
+      );
+    }
+  
+
+export const getGetV2TiposPlanesQueryKey = (idioma?: 'es' | 'en',) => {
+    return [`/${idioma}/v2/tipos-planes`] as const;
+    }
+
+    
+export const getGetV2TiposPlanesQueryOptions = <TData = Awaited<ReturnType<typeof getV2TiposPlanes>>, TError = null | RutaNoEncontradaResponse | MetodoNoPermitidoResponse | ErrorInternoResponse>(idioma: 'es' | 'en', options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getV2TiposPlanes>>, TError, TData>>, }
+) => {
+
+const {query: queryOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetV2TiposPlanesQueryKey(idioma);
+
+  
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getV2TiposPlanes>>> = ({ signal }) => getV2TiposPlanes(idioma, signal);
+
+      
+
+      
+
+   return  { queryKey, queryFn, enabled: !!(idioma), ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getV2TiposPlanes>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type GetV2TiposPlanesQueryResult = NonNullable<Awaited<ReturnType<typeof getV2TiposPlanes>>>
+export type GetV2TiposPlanesQueryError = null | RutaNoEncontradaResponse | MetodoNoPermitidoResponse | ErrorInternoResponse
+
+
+export function useGetV2TiposPlanes<TData = Awaited<ReturnType<typeof getV2TiposPlanes>>, TError = null | RutaNoEncontradaResponse | MetodoNoPermitidoResponse | ErrorInternoResponse>(
+ idioma: 'es' | 'en', options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getV2TiposPlanes>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getV2TiposPlanes>>,
+          TError,
+          Awaited<ReturnType<typeof getV2TiposPlanes>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetV2TiposPlanes<TData = Awaited<ReturnType<typeof getV2TiposPlanes>>, TError = null | RutaNoEncontradaResponse | MetodoNoPermitidoResponse | ErrorInternoResponse>(
+ idioma: 'es' | 'en', options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getV2TiposPlanes>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getV2TiposPlanes>>,
+          TError,
+          Awaited<ReturnType<typeof getV2TiposPlanes>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetV2TiposPlanes<TData = Awaited<ReturnType<typeof getV2TiposPlanes>>, TError = null | RutaNoEncontradaResponse | MetodoNoPermitidoResponse | ErrorInternoResponse>(
+ idioma: 'es' | 'en', options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getV2TiposPlanes>>, TError, TData>>, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/**
+ * @summary Tipos de plan
+ */
+
+export function useGetV2TiposPlanes<TData = Awaited<ReturnType<typeof getV2TiposPlanes>>, TError = null | RutaNoEncontradaResponse | MetodoNoPermitidoResponse | ErrorInternoResponse>(
+ idioma: 'es' | 'en', options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getV2TiposPlanes>>, TError, TData>>, }
+ , queryClient?: QueryClient 
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getGetV2TiposPlanesQueryOptions(idioma,options)
 
   const query = useQuery(queryOptions , queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 

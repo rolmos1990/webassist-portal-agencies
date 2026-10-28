@@ -33,4 +33,7 @@ En el ambiente de desarrollo las respuestas 500 agregan `error` y `archivo` con 
 /**
  * Datos de la venta a renovar, con documentos y cliente
  */
-export type GetRenovacionesPendientes200DataItemsItemVenta = { [key: string]: unknown };
+export type GetRenovacionesPendientes200DataItemsItemVenta = {
+  cliente?: string;
+  voucher?: string;
+};

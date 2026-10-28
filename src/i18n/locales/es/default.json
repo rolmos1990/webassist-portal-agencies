@@ -503,13 +503,18 @@
       "tripStart": "Inicio del viaje",
       "agent": "Agente",
       "agency": "Agencia",
+      "client": "Cliente",
       "total": "Total",
       "commission": "Comisión",
       "lastReminder": "Último recordatorio",
       "status": "Estado",
       "quote": "Cotización",
       "viewQuote": "Ver cotización",
-      "noQuote": "Sin cotización"
+      "noQuote": "Sin cotización",
+      "actions": "Acciones",
+      "viewAssistance": "Ver asistencia",
+      "stopReminder": "Detener recordatorio",
+      "reminderStopped": "Recordatorio de renovación detenido"
     },
     "filters": {
       "planType": "Tipo de plan",

@@ -1,14 +1,19 @@
 import { type ColumnDef } from "../DataTable";
 import type { GetRenovacionesPendientes200DataItemsItem } from "../../api/schemas";
+import RowActions from "../RowActions";
 
 type CreateColumnsDeps = {
   currency: (n: number) => string;
   t: (key: string) => string | React.ReactNode;
+  onViewAssistance: (row: GetRenovacionesPendientes200DataItemsItem) => void;
+  onStopReminder: (row: GetRenovacionesPendientes200DataItemsItem) => void;
 };
 
 export function createRenewalsColumns({
   currency,
   t,
+  onViewAssistance,
+  onStopReminder,
 }: CreateColumnsDeps): ColumnDef<GetRenovacionesPendientes200DataItemsItem>[] {
   return [
     {
@@ -30,6 +35,13 @@ export function createRenewalsColumns({
       label: t("renewals.table.agency"),
       width: "16%",
       accessor: (row) => row.agencia?.nombre,
+      align: "start",
+    },
+    {
+      id: "cliente",
+      label: t("renewals.table.client"),
+      width: "16%",
+      accessor: (row) => row.venta?.cliente,
       align: "start",
     },
     {
@@ -70,14 +82,39 @@ export function createRenewalsColumns({
       align: "end",
       // carrito es null mientras la renovación no tiene cotización creada
       render: (row) =>
-        row.carrito?.url ? (
-          <a href={row.carrito.url} target="_blank" rel="noopener noreferrer" className="text-nowrap">
-            <i className="bi bi-box-arrow-up-right me-1" />
-            {t("renewals.table.viewQuote")}
-          </a>
-        ) : (
+        row.carrito?.url ? null : (
           <span className="text-muted small">{t("renewals.table.noQuote")}</span>
         ),
+    },
+    {
+      id: "actions",
+      label: <span className="visually-hidden">{t("renewals.table.actions")}</span>,
+      width: 36,
+      align: "end",
+      render: (row) => (
+        <RowActions context={row}>
+          {row.carrito?.url && (
+            <RowActions.Item<GetRenovacionesPendientes200DataItemsItem>
+              icon="bi-box-arrow-up-right"
+              onClick={(r) => window.open(r.carrito!.url, "_blank", "noopener,noreferrer")}
+            >
+              {t("renewals.table.viewQuote")}
+            </RowActions.Item>
+          )}
+          <RowActions.Item<GetRenovacionesPendientes200DataItemsItem>
+            icon="bi-life-preserver"
+            onClick={onViewAssistance}
+          >
+            {t("renewals.table.viewAssistance")}
+          </RowActions.Item>
+          <RowActions.Item<GetRenovacionesPendientes200DataItemsItem>
+            icon="bi-bell-slash"
+            onClick={onStopReminder}
+          >
+            {t("renewals.table.stopReminder")}
+          </RowActions.Item>
+        </RowActions>
+      ),
     },
   ];
 }

@@ -3,6 +3,14 @@
    ============================================================ */
 @use '../abstracts/variables' as *;
 
+// El menú de RowActions (bi-three-dots) se abre con position:fixed para escapar de
+// este contenedor, pero overflow-x:auto igual recorta ese contenido fuera de flujo
+// (el navegador fuerza overflow-y a 'auto' si overflow-x no es 'visible', así que no
+// se puede dejar sólo el scroll horizontal): se quita el recorte vertical acá.
+.table-responsive {
+    overflow: visible;
+}
+
 .wac-data-table {
     thead th {
         padding-top: .75rem;

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { keepPreviousData } from '@tanstack/react-query';
+import { keepPreviousData, useQueryClient } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
 import Breadcrumb from '../components/Breadcrumb';
 import { UIButton } from '../components/Button';
@@ -13,7 +13,12 @@ import {
   toRenewalFilterParams,
   type RenewalFilterValues,
 } from '../components/Forms/renewalFilters';
-import { useGetRenovacionesPendientes } from '../api/generated';
+import {
+  getGetRenovacionesPendientesQueryKey,
+  useDetenerRecordatorioRenovacion,
+  useGetRenovacionesPendientes,
+} from '../api/generated';
+import type { GetRenovacionesPendientes200DataItemsItem } from '../api/schemas';
 import { usePlanTypeOptions } from '../hooks/usePlanTypeOptions';
 import { useI18nCache } from '../i18n/i18nCacheProvider';
 import { toast } from '../services/toast';
@@ -22,6 +27,7 @@ import { getApiErrorMessage } from '../api/errors/ApiError';
 function Renewals() {
   const { lang } = useI18nCache();
   const { t } = useTranslation();
+  const queryClient = useQueryClient();
 
   const [showFilter, setShowFilter] = useState(false);
   const [filters, setFilters] = useState<RenewalFilterValues>(EMPTY_RENEWAL_FILTERS);
@@ -45,6 +51,19 @@ function Renewals() {
       toast.error("Error", getApiErrorMessage(error, t('error_generico')));
     }
   }, [error, t]);
+
+  const { mutateAsync: detenerRecordatorio } = useDetenerRecordatorioRenovacion();
+
+  const handleStopReminder = async (row: GetRenovacionesPendientes200DataItemsItem) => {
+    if (row.agente?.id == null) return;
+    try {
+      await detenerRecordatorio({ idioma: lang, data: { id: String(row.agente.id) } });
+      toast.success(t('renewals.table.reminderStopped'));
+      queryClient.invalidateQueries({ queryKey: getGetRenovacionesPendientesQueryKey(lang) });
+    } catch (e) {
+      toast.error("Error", getApiErrorMessage(e, t('error_generico')));
+    }
+  };
 
   const items = data?.data?.items ?? [];
   const stats = data?.data?.estadisticas;
@@ -119,7 +138,7 @@ function Renewals() {
 
         <div className="card border-0">
           <div className="card-body p-0">
-            <RenewalsTable data={items} loading={isLoading} />
+            <RenewalsTable data={items} loading={isLoading} onStopReminder={handleStopReminder} />
           </div>
         </div>
       </div>

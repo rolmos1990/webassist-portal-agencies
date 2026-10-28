@@ -2352,7 +2352,15 @@
                                                             },
                                                             "venta": {
                                                                 "type": "object",
-                                                                "description": "Datos de la venta a renovar, con documentos y cliente"
+                                                                "description": "Datos de la venta a renovar, con documentos y cliente",
+                                                                "properties": {
+                                                                    "cliente": {
+                                                                        "type": "string"
+                                                                    },
+                                                                    "voucher": {
+                                                                        "type": "string"
+                                                                    }
+                                                                }
                                                             },
                                                             "venta_renovacion": {
                                                                 "type": [
@@ -6276,6 +6284,82 @@
                                         },
                                         "usuario": {
                                             "$ref": "#/components/schemas/UserLogin"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/RutaNoEncontrada"
+                    },
+                    "405": {
+                        "$ref": "#/components/responses/MetodoNoPermitido"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/ErrorInterno"
+                    }
+                }
+            }
+        },
+        "/{idioma}/v2/tipos-planes": {
+            "get": {
+                "summary": "Tipos de plan",
+                "description": "Devuelve el catálogo de tipos de plan disponibles.",
+                "operationId": "getV2TiposPlanes",
+                "tags": ["Generales"],
+                "parameters": [
+                    {
+                        "name": "idioma",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "enum": ["es", "en"]
+                        },
+                        "description": "Idioma de la respuesta"
+                    },
+                    {
+                        "$ref": "#/components/parameters/userTokenHeader"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Tipos de plan",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "ok": {
+                                            "type": "boolean",
+                                            "examples": [true]
+                                        },
+                                        "data": {
+                                            "type": "object",
+                                            "description": "Catálogo de tipos de plan (categorías), cada una con sus planes y territorios disponibles",
+                                            "properties": {
+                                                "tipos": {
+                                                    "type": "array",
+                                                    "description": "Lista de categorías de tipos de plan",
+                                                    "items": {
+                                                        "type": "object",
+                                                        "properties": {
+                                                            "id": {
+                                                                "type": "integer",
+                                                                "examples": [1]
+                                                            },
+                                                            "nombre": {
+                                                                "type": "string",
+                                                                "examples": ["Viajes por día"]
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
                                         }
                                     }
                                 }
