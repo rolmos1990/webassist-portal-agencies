@@ -31,7 +31,6 @@ function SalesReports() {
 
   const [currentPage, setCurrentPage] = useState(1);
   const [sort, setSort] = useState<{ id: string; dir: SortDir } | null>(null);
-  const [selectedIds, setSelectedIds] = useState<Array<string | number>>([]);
   const [showFilter, setShowFilter] = useState(false);
   const [filterMonth, setFilterMonth] = useState(''); // "YYYY-MM" o "" (sin filtro)
 
@@ -164,8 +163,6 @@ function SalesReports() {
               loading={isLoading}
               sort={sort}
               onSortChange={onSortChange}
-              selectedIds={selectedIds}
-              onSelectionChange={setSelectedIds}
               pagination={{
                 totalPages,
                 currentPage,
