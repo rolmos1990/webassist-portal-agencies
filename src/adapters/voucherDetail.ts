@@ -22,6 +22,8 @@ export type VoucherTraveler = {
   phone: string;
   email: string;
   medicalDetails: string;
+  /** Pasajero de cotización sin datos cargados (datos_completos = false) */
+  incomplete?: boolean;
   cardUrl?: string;
   certificationUrl?: string;
 };
@@ -42,6 +44,8 @@ export type VoucherView = {
   statusKey: string;
   statusLabel: string;
   planTitle: string;
+  /** Tipo de viaje del plan (plan.tipo.nombre); vacío si el servicio no lo envía */
+  planType?: string;
   /** null = no mostrar precios */
   total: number | null;
   travelersCount: number;
@@ -49,6 +53,8 @@ export type VoucherView = {
   reference: string;
   payment: string;
   pdfUrl?: string;
+  /** Link de la cotización (campo url); solo cotizaciones */
+  quoteUrl?: string;
   /** Las cotizaciones todavía no tienen tarjeta/certificado */
   hasDocuments: boolean;
   /**
@@ -77,10 +83,12 @@ export function fromAsistencia(item?: GetAsistenciasAgenteAgencia200DataItemsIte
     statusKey: item?.status?.codigo ?? "",
     statusLabel: item?.status?.nombre ?? "",
     planTitle: orEmpty(item?.plan?.nombre),
+    planType: item?.plan?.tipo?.nombre?.trim() ?? "",
     total: showPrices ? Number(item?.total ?? 0) : null,
     travelersCount: pasajeros.length,
     issueDate: orEmpty(item?.fecha),
-    reference: HARDCODED_REFERENCE,
+    // Primer pago: id del carrito
+    reference: orEmpty(pago?.id_carrito),
     payment: pago
       ? `${pago.metodo_pago?.nombre ?? EMPTY}${pago.id_aprobacion ? ` (${pago.id_aprobacion})` : ""}`
       : EMPTY,
@@ -131,6 +139,7 @@ export function fromCotizacion(item?: GetCotizacionesAgenteAgencia200DataItemsIt
     reference: HARDCODED_REFERENCE,
     payment: "__",
     pdfUrl: undefined,
+    quoteUrl: item?.url || undefined,
     hasDocuments: false,
     blocks: lineas.map((linea, lineIdx) => ({
       key: String(linea.id ?? lineIdx),
@@ -151,6 +160,7 @@ export function fromCotizacion(item?: GetCotizacionesAgenteAgencia200DataItemsIt
         phone: orEmpty(p.telefono),
         email: orEmpty(p.email),
         medicalDetails: p.condicion_medica ?? "",
+        incomplete: p.datos_completos === false,
       })),
     })),
   };

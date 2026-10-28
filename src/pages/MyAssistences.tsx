@@ -14,10 +14,12 @@ import Offcanvas from '../components/Offcanvas';
 import FilterByPassengerForm from '../components/Forms/FilterByPassengerForm';
 import {
   EMPTY_PASSENGER_FILTERS,
+  countActiveFilters,
   toAssistanceFilterParams,
   type PassengerFilterValues,
 } from '../components/Forms/passengerFilters';
 import { useCountryOptions } from '../hooks/useCountryOptions';
+import { usePlanOptions, usePlanTypeOptions } from '../hooks/usePlanTypeOptions';
 
 function MyAssistances() {
   const { lang } = useI18nCache();
@@ -27,7 +29,10 @@ function MyAssistances() {
   const [currentPage, setCurrentPage] = useState(1);
   const [showFilter, setShowFilter] = useState(false);
   const [filters, setFilters] = useState<PassengerFilterValues>(EMPTY_PASSENGER_FILTERS);
+  const activeFilters = countActiveFilters(filters);
   const countryOptions = useCountryOptions();
+  const planTypeOptions = usePlanTypeOptions();
+  const getPlanOptions = usePlanOptions();
 
   const handleApplyFilter = (values: PassengerFilterValues) => {
     setFilters(values);
@@ -60,7 +65,7 @@ function MyAssistances() {
         <Breadcrumb title={t('menu.myAssistances')} rightContent={
           <div className="d-flex gap-2">
             <UIButton variant="outline-primary" icon="" onClick={() => setShowFilter(true)}>
-              {t('filter_by')}
+              {t('filter_by')}{activeFilters > 0 && ` (${activeFilters})`}
             </UIButton>
           </div>
         } />
@@ -78,6 +83,10 @@ function MyAssistances() {
             defaultValues={filters}
             countryOptions={countryOptions}
             showVoucher
+            showPlanAndDates
+            showNationality={false}
+            planTypeOptions={planTypeOptions}
+            getPlanOptions={getPlanOptions}
             onSubmit={handleApplyFilter}
             onCancel={() => setShowFilter(false)}
           />

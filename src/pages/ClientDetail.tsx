@@ -36,9 +36,6 @@ export default function ClientDetail() {
             <button type="button" className="btn btn-outline-primary rounded-pill bg-white">
               <i className="bi bi-envelope me-1"></i>Resend the Voucher
             </button>
-            <button type="button" className="btn btn-outline-primary rounded-pill bg-white">
-              <i className="bi bi-pencil me-1"></i>Modify Voucher Data
-            </button>
           </div>
         } />
         <div className="card shadow">

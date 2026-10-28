@@ -1,3 +1,4 @@
+import type { ReactNode } from "react";
 import { Avatar } from "./Avatar";
 import { StatusBadge } from "./StatusBadge";
 import type { StatusBadgeProps } from "./StatusBadge";
@@ -7,20 +8,29 @@ interface CardAvatarProps {
   avatarUrl?: string;
   name: string;
   status: StatusBadgeProps['status'];
+  /** Texto del estado; si no viene se usa el label del theme */
+  statusLabel?: StatusBadgeProps['label'];
+  /** Theme de colores del estado (por defecto defaultStatusTheme) */
+  statusTheme?: StatusBadgeProps['theme'];
   email: string;
   phone: string;
   location: string;
   className?: string;
+  /** Contenido opcional arriba a la derecha (p. ej. agencia asociada) */
+  rightContent?: ReactNode;
 }
 
 export const CardAvatar = ({
   avatarUrl,
   name,
   status,
+  statusLabel,
+  statusTheme = defaultStatusTheme,
   email,
   phone,
   location,
-  className = ''
+  className = '',
+  rightContent,
 }: CardAvatarProps) => {
   return (
     <div className={`col-12 border-bottom w-100 mx-auto ${className}`}>
@@ -34,7 +44,7 @@ export const CardAvatar = ({
             <h4 className="mb-2 d-flex flex-column flex-md-row align-items-center justify-content-center justify-content-md-start gap-2">
               {name}
               <div className="ms-md-2 mt-2 mt-md-0">
-                <StatusBadge status={status} theme={defaultStatusTheme} />
+                <StatusBadge status={status} label={statusLabel} theme={statusTheme} />
               </div>
             </h4>
 
@@ -51,6 +61,12 @@ export const CardAvatar = ({
               {location}
             </p>
           </div>
+
+          {rightContent && (
+            <div className="flex-shrink-0 align-self-stretch align-self-md-auto text-center text-md-end">
+              {rightContent}
+            </div>
+          )}
         </div>
       </div>
     </div>

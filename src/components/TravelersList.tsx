@@ -38,6 +38,7 @@ export default function TravelersList({ travelers, hideDocuments = false }: Trav
                 hideCard={hideDocuments}
                 hideCertification={hideDocuments}
                 currency="USD"
+                compact={traveler.incomplete}
               />
             </div>
           ))

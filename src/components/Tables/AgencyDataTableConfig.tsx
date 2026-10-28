@@ -2,7 +2,7 @@ import type { GetAgenciasAgencia200DataItem } from "../../api/schemas";
 import { currency, type ColumnDef } from "../DataTable";
 import RowActions from "../RowActions";
 import { StatusBadge } from "../StatusBadge";
-import type { StatusTheme } from "../StatusBadge";
+import { agencyStatusTheme } from "../StatusBadge/StatusBadgeThemes";
 
 type CreateColumnsDeps = {
   t: (key: string) => string | React.ReactNode;
@@ -14,14 +14,7 @@ type CreateColumnsDeps = {
 export function createAgencyColumns({
   t,
   onEdit,
-  onToggle,
-  onDelete,
 }: CreateColumnsDeps): ColumnDef<GetAgenciasAgencia200DataItem>[] {
-  const agencyStatusTheme: StatusTheme = {
-    "1": { tone: "success", label: t("status.active") },
-    "2": { tone: "danger", label: t("status.inactive") },
-    default: { tone: "secondary" },
-  };
 
   return [
     {
@@ -88,7 +81,7 @@ export function createAgencyColumns({
       render: (row) => (
         <StatusBadge
           status={String(row.status?.id ?? "")}
-          label={row.status?.nombre || undefined}
+          label={row.status?.nombre || "—"}
           theme={agencyStatusTheme}
         />
       ),
@@ -101,30 +94,12 @@ export function createAgencyColumns({
       render: (row) => (
         <RowActions context={row}>
           <RowActions.Item<GetAgenciasAgencia200DataItem>
-            icon="bi-pencil"
+            icon="bi-eye"
             onClick={onEdit}
           >
-            {t("agency.edit")}
+            {t("agency.view")}
           </RowActions.Item>
-
-          <RowActions.Item<GetAgenciasAgencia200DataItem>
-            icon={row.status?.id === 1 ? "bi-toggle-on" : "bi-toggle-off"}
-            onClick={onToggle}
-          >
-            {row.status?.id === 1
-              ? t("agency.markInactive")
-              : t("agency.markActive")}
-          </RowActions.Item>
-
-          <RowActions.Divider />
-
-          <RowActions.Item<GetAgenciasAgencia200DataItem>
-            icon="bi-trash3"
-            danger
-            onClick={onDelete}
-          >
-            {t("agency.delete")}
-          </RowActions.Item>
+          {/* Marcar activo/inactivo y Eliminar: pendientes hasta que existan los servicios */}
         </RowActions>
       ),
     },

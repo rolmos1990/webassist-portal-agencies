@@ -16,3 +16,16 @@ export const saleStatusTheme: StatusTheme = {
   cancelada: "danger",
   default:   "secondary",
 };
+// Status de un agente: el color sale de status.id y el texto de status.nombre
+export const agentStatusTheme: StatusTheme = {
+  "1": "success",
+  "2": "secondary",
+  default: "secondary",
+};
+
+// Status de una agencia: el color sale de status.id y el texto de status.nombre
+export const agencyStatusTheme: StatusTheme = {
+  "1": "success",
+  "2": "danger",
+  default: "secondary",
+};

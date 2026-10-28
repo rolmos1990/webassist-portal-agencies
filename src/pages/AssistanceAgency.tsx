@@ -14,17 +14,22 @@ import { PATHS } from '../routes/Routes';
 import FilterByPassengerForm from '../components/Forms/FilterByPassengerForm';
 import {
   EMPTY_PASSENGER_FILTERS,
+  countActiveFilters,
   toAssistanceFilterParams,
   type PassengerFilterValues,
 } from '../components/Forms/passengerFilters';
 import { useCountryOptions } from '../hooks/useCountryOptions';
+import { usePlanOptions, usePlanTypeOptions } from '../hooks/usePlanTypeOptions';
 
 function AssistanceAgency() {
   const { lang } = useI18nCache();
   const [currentPage, setCurrentPage] = useState(1);
   const [showFilter, setShowFilter] = useState(false);
   const [filters, setFilters] = useState<PassengerFilterValues>(EMPTY_PASSENGER_FILTERS);
+  const activeFilters = countActiveFilters(filters);
   const countryOptions = useCountryOptions();
+  const planTypeOptions = usePlanTypeOptions();
+  const getPlanOptions = usePlanOptions();
 
   const handleApplyFilter = (values: PassengerFilterValues) => {
     setFilters(values);
@@ -64,7 +69,7 @@ function AssistanceAgency() {
                 icon=""
                 onClick={() => setShowFilter(true)}
                 >
-                {t('filter_by')}
+                {t('filter_by')}{activeFilters > 0 && ` (${activeFilters})`}
                 </UIButton>
                   </div>
         } />      
@@ -82,6 +87,10 @@ function AssistanceAgency() {
             defaultValues={filters}
             countryOptions={countryOptions}
             showVoucher
+            showPlanAndDates
+            showNationality={false}
+            planTypeOptions={planTypeOptions}
+            getPlanOptions={getPlanOptions}
             onSubmit={handleApplyFilter}
             onCancel={() => setShowFilter(false)}
           />

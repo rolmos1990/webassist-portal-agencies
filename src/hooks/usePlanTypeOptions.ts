@@ -26,3 +26,25 @@ export function usePlanTypeOptions(): SelectOption[] {
     [data]
   );
 }
+
+/**
+ * Planes del mismo catálogo (data.tipos[].planes). Devuelve una función que arma las opciones
+ * del tipo de plan elegido; sin tipo lista todos con el nombre completo para distinguirlos.
+ */
+export function usePlanOptions(): (tipoPlan: string) => SelectOption[] {
+  const { lang } = useI18nCache();
+  const { data } = useGetV2TiposPlanes(toPlanTypesLang(lang), { query: { staleTime: Infinity } });
+
+  return useMemo(() => {
+    const tipos = data?.data?.tipos ?? [];
+    return (tipoPlan: string) =>
+      tipos
+        .filter((tipo) => !tipoPlan || String(tipo.id) === tipoPlan)
+        .flatMap((tipo) => tipo.planes ?? [])
+        .filter((plan) => plan.id != null)
+        .map((plan) => ({
+          value: Number(plan.id),
+          label: (tipoPlan ? plan.nombre : plan.nombre_completo || plan.nombre) ?? "",
+        }));
+  }, [data]);
+}

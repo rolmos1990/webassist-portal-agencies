@@ -29,8 +29,11 @@ En el ambiente de desarrollo las respuestas 500 agregan `error` y `archivo` con 
 
  * OpenAPI spec version: 1.2.4
  */
+import type { GetV2TiposPlanes200DataTiposItemPlanesItem } from './getV2TiposPlanes200DataTiposItemPlanesItem';
 
 export type GetV2TiposPlanes200DataTiposItem = {
   id?: number;
   nombre?: string;
+  /** Planes disponibles de la categoría */
+  planes?: GetV2TiposPlanes200DataTiposItemPlanesItem[];
 };

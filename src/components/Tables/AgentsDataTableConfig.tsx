@@ -3,6 +3,7 @@ import { type ColumnDef } from "../DataTable";
 import RowActions from "../RowActions";
 import { StatusBadge } from "../StatusBadge";
 import type { StatusTheme } from "../StatusBadge";
+import { agentStatusTheme } from "../StatusBadge/StatusBadgeThemes";
 import type { GetAgentesAgencia200DataItem } from "../../api/schemas";
 import { parseSecurityRole, SecurityRole } from "../../stores/SecurityRole";
 
@@ -27,12 +28,6 @@ export function createAgentColumns({
   onEdit,
   onToggle,
 }: CreateColumnsDeps): ColumnDef<GetAgentesAgencia200DataItem>[] {
-  const agentStatusTheme: StatusTheme = {
-    "1": { tone: "success", label: t("status.active") },
-    "2": { tone: "secondary", label: t("status.inactive") },
-    default: { tone: "secondary" },
-  };
-
   // El rol se muestra como badge para que se lea como un tipo de agente
   const agentRoleTheme: StatusTheme = {
     [SecurityRole.AGENT_ADMIN]: { tone: "primary", label: t("agents.roleAgentAdmin"), showDot: false },
@@ -114,7 +109,7 @@ export function createAgentColumns({
       accessor: (row) => row.status?.nombre,
       align: "center",
       render: (row) => (
-        <StatusBadge status={String(row.status?.id ?? "")} theme={agentStatusTheme} />
+        <StatusBadge status={String(row.status?.id ?? "")} label={row.status?.nombre || "—"} theme={agentStatusTheme} />
       ),
     },
     {

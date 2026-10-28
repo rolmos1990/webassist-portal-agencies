@@ -1,8 +1,5 @@
 import { useEffect, useState } from 'react';
 import Breadcrumb from '../components/Breadcrumb';
-import { UIButton } from '../components/Button';
-import CreateAgenciesVertical from '../components/Forms/CreateAgenciesVertical';
-import Offcanvas from '../components/Offcanvas';
 import { AgencyTable } from '../components/Tables/AgencyTable';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
@@ -17,7 +14,6 @@ import { PATHS } from '../routes/Routes';
 const PAGE_SIZE = 20;
 
 function Agencies() {
-  const [show, setShow] = useState(false);
   const [loading, setLoading] = useState(false);
   const { lang } = useI18nCache();
   const [currentPage, setCurrentPage] = useState(1);
@@ -45,14 +41,6 @@ function Agencies() {
     }
   };
 
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
-
-  const handleSubmit = (data: any) => {
-    console.log(data);
-    handleClose();
-  };
-
   const onChangePage = (page: number) => {
     setCurrentPage(page);
   };
@@ -74,45 +62,11 @@ function Agencies() {
     setSort(next);
   };
 
-  const locations = [
-    { value: 'pa-panama', label: 'Panama' },
-    { value: 'pa-colon', label: 'Colón' },
-  ];
-
   return (
 <div className="min-vh-100 bg-light">
 <div className="container-fluid py-3 px-4">
-        <Breadcrumb title={t('agencias')} rightContent={
-                  <div className="d-flex gap-2">
-                <UIButton
-                variant="outline-primary"
-                icon=""
-                >
-                {t('agencias_filter_by')}
-                </UIButton>
-                <UIButton
-                variant="dark"
-                icon=""
-                onClick={handleShow}
-                >
-                {t('crear_agencia')}
-                </UIButton>
-                  </div>
-        } />      
-        <Offcanvas
-        show={show}
-        onHide={() => setShow(false)}
-        onShow={() => console.log('shown')}
-        placement="end"
-        title="Panel"
-        width="420px"
-        id="app-offcanvas"
-        backdrop={true}
-        scroll={false}
-        keyboard={true}
-      >
-        <CreateAgenciesVertical onSubmit={handleSubmit} onCancel={handleClose} locations={locations} />
-        </Offcanvas>
+        {/* Sin filtros ni alta de agencias por ahora: no hay servicios para esas acciones */}
+        <Breadcrumb title={t('agencias')} />
             <div className="card border-0">
               <div className="card-body p-0">
               <AgencyTable

@@ -346,6 +346,7 @@ export * from './getV2TiposPlanes200';
 export * from './getV2TiposPlanes200Data';
 export * from './getV2TiposPlanes200DataItem';
 export * from './getV2TiposPlanes200DataTiposItem';
+export * from './getV2TiposPlanes200DataTiposItemPlanesItem';
 export * from './getVouchersMaster200';
 export * from './getVouchersMaster200DataItem';
 export * from './getVouchersMasterDetail200';

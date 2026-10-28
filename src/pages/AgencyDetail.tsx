@@ -4,6 +4,7 @@ import { useTranslation } from "react-i18next";
 import Breadcrumb from '../components/Breadcrumb';
 import { UIButton } from '../components/Button';
 import { CardAvatar } from '../components/CardAvatar';
+import { agencyStatusTheme } from '../components/StatusBadge/StatusBadgeThemes';
 import { HorizontalCardList, HorizontalCardListItem } from '../components/HorizontalCardList';
 import { AgencyTable } from '../components/Tables/AgencyTable';
 import { currency } from '../components/DataTable';
@@ -56,7 +57,9 @@ export default function AgencyDetail() {
                 <CardAvatar
                     avatarUrl={agency.logo || undefined}
                     name={agency.nombre || '—'}
-                    status={agency.status?.id === 1 ? 'Active' : 'Inactive'}
+                    status={String(agency.status?.id ?? '')}
+                    statusLabel={agency.status?.nombre || '—'}
+                    statusTheme={agencyStatusTheme}
                     email={agency.email || '—'}
                     phone={agency.telefono || '—'}
                     location={[agency.direccion, agency.ciudad, agency.pais?.nombre].filter(Boolean).join(', ') || '—'}

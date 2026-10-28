@@ -228,12 +228,6 @@ function Agents() {
         <Breadcrumb title={t('agentes')} rightContent={
                   <div className="d-flex gap-2">
                 <UIButton
-                variant="outline-primary"
-                icon=""
-                >
-                {t('filter_by')}
-                </UIButton>
-                <UIButton
                 variant="dark"
                 icon=""
                 onClick={handleShow}

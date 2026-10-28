@@ -19,6 +19,8 @@ export interface CustomerCardProps {
   hideCertification?: boolean;
   hideCard?: boolean;
   currency?: string;
+  /** Solo nombre y precio (pasajero sin datos cargados) */
+  compact?: boolean;
 }
 
 const genderIcon = (g: Gender) => {
@@ -54,6 +56,7 @@ export default function CustomerCard({
   hideCertification = false,
   hideCard = false,
   currency = "USD",
+  compact = false,
 }: CustomerCardProps) {
   const { t } = useTranslation();
   const { whole, cents } = formatAmountParts(amount ?? 0, currency);
@@ -70,6 +73,7 @@ export default function CustomerCard({
             <div>
               <div className="fw-semibold">{name}</div>
 
+              {!compact && (
               <div className="d-flex align-items-center flex-wrap gap-2 text-muted small">
                 <span className="d-inline-flex align-items-center gap-1">
                   <i className={`bi ${genderIcon(gender)} text-success`} />
@@ -81,6 +85,7 @@ export default function CustomerCard({
                   <span>{idNumber}</span>
                 </span>
               </div>
+              )}
             </div>
           </div>
 
@@ -97,6 +102,8 @@ export default function CustomerCard({
           </div>
         </div>
 
+        {!compact && (
+        <>
         <hr className="my-3" />
 
         {/* Info grid */}
@@ -150,6 +157,8 @@ export default function CustomerCard({
             </UIButton>
           )}
         </div>
+        </>
+        )}
       </div>
     </div>
   );

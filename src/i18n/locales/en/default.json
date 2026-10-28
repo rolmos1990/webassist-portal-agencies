@@ -30,6 +30,7 @@
       "status":"Status",
       "actions":"Actions",
       "edit":"Edit",
+      "view":"View Agency",
       "delete":"Delete",
       "markActive":"Mark as Active",
       "markInactive":"Mark as Inactive",
@@ -85,7 +86,8 @@
       "quotes": "Quotes",
       "sales": "Sales",
       "viewProfile": "View Profile",
-      "notFound": "Agent not found"
+      "notFound": "Agent not found",
+      "associatedAgency": "Associated Agency"
     },
     "form": {
       "firstName": "First Name",
@@ -266,6 +268,8 @@
     "departureDate": "Departure Date",
     "returnDate": "Return Date",
     "reference": "Reference",
+    "quote": "Quote",
+    "goToQuote": "Go to Quote",
     "paymentId": "Payment ID",
     "modifyVoucher": "Modify Voucher Data",
     "rePurchase": "Re Purchase",
@@ -360,7 +364,12 @@
     "country": "Departure or destination country",
     "nationality": "Nationality",
     "all": "All",
-    "clear": "Clear"
+    "clear": "Clear",
+    "dateFrom": "Purchase date from",
+    "dateTo": "Purchase date to",
+    "invalidRange": "The end date must be on or after the start date",
+    "planType": "Plan type",
+    "plan": "Plan"
   },
   "search": {
     "searching": "Searching…",

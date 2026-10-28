@@ -8,7 +8,7 @@ import { StatusBadge } from '../components/StatusBadge';
 import Offcanvas from '../components/Offcanvas';
 import { useTranslation } from 'react-i18next';
 import { currency } from '../components/DataTable';
-import { defaultStatusTheme, saleStatusTheme } from '../components/StatusBadge/StatusBadgeThemes';
+import { saleStatusTheme } from '../components/StatusBadge/StatusBadgeThemes';
 import type {
   GetAsistenciasAgenteAgencia200DataItemsItem,
   GetCotizacionesAgenteAgencia200DataItemsItem,
@@ -162,7 +162,25 @@ export default function AssistanceDetail({ kind = 'assistance' }: Props) {
             value={withIcon('bi-calendar3', block.return)}
             icon={""}
           />
-          {withGeneralData && (
+          {withGeneralData && kind === 'quote' && (
+            // Las cotizaciones no tienen referencia: se muestra el link a la cotización
+            <HorizontalCardListItem
+              title={t("assistanceDetail.quote")}
+              value={voucher.quoteUrl ? (
+                <a
+                  href={voucher.quoteUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="btn btn-sm btn-outline-primary rounded-pill d-inline-flex align-items-center"
+                >
+                  <i className="bi bi-box-arrow-up-right me-2" />
+                  {t("assistanceDetail.goToQuote")}
+                </a>
+              ) : '—'}
+              icon={""}
+            />
+          )}
+          {withGeneralData && kind !== 'quote' && (
             <HorizontalCardListItem
               title={t("assistanceDetail.reference")}
               value={voucher.reference}
@@ -285,16 +303,20 @@ export default function AssistanceDetail({ kind = 'assistance' }: Props) {
             <div className="col">
                 <h4 className="mb-2 d-flex flex-column flex-md-row align-items-center justify-content-center justify-content-md-start gap-2">
               {code}
-              <div className="ms-md-2 mt-2 mt-md-0">
-                <StatusBadge
-                  status={voucher.statusKey}
-                  label={voucher.statusLabel || t('assistancesTable.notDefined')}
-                  theme={kind === 'quote' ? defaultStatusTheme : saleStatusTheme}
-                />
-              </div>
+              {/* Las cotizaciones no manejan estado */}
+              {kind !== 'quote' && (
+                <div className="ms-md-2 mt-2 mt-md-0">
+                  <StatusBadge
+                    status={voucher.statusKey}
+                    label={voucher.statusLabel || t('assistancesTable.notDefined')}
+                    theme={saleStatusTheme}
+                  />
+                </div>
+              )}
             </h4>
 
             <p className="mb-1 text-black pb-1">
+              {voucher.planType && <span className="text-gray me-2">{voucher.planType}</span>}
               <b>{voucher.planTitle}</b>
             </p>
             <p className="mb-1 text-gray small pb-1">

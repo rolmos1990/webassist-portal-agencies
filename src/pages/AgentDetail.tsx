@@ -10,8 +10,7 @@ import { AgencyQuotesTable } from "../components/Tables/AgencyQuotesTable";
 import { AgencyAssistanceTable } from "../components/Tables/AgencyAssistanceTable";
 import TabPanel from '../components/TabPanel';
 import { StatusBadge } from "../components/StatusBadge";
-import { defaultStatusTheme } from "../components/StatusBadge/StatusBadgeThemes";
-import { isAgentActive } from "../components/Tables/AgentsDataTableConfig";
+import { agentStatusTheme } from "../components/StatusBadge/StatusBadgeThemes";
 import { currency } from "../components/DataTable";
 import { PATHS } from "../routes/Routes";
 import {
@@ -33,7 +32,7 @@ const fullName = (agent: GetAgentesAgencia200DataItem) =>
 
 // pais.nombre llega en false cuando el agente no tiene país asignado
 const countryName = (agent: GetAgentesAgencia200DataItem) =>
-    typeof agent.pais?.nombre === 'string' && agent.pais.nombre ? agent.pais.nombre : '—';
+    typeof agent.pais?.nombre === 'string' && agent.pais.nombre ? agent.pais.nombre : '';
 
 // fecha_creacion llega ya formateada desde el servicio (dd/mm/yyyy, timestamp o ISO): se muestra como "15 mar 2022"
 const formatJoinDate = (value: string | undefined, lang: string) => {
@@ -48,7 +47,6 @@ const formatJoinDate = (value: string | undefined, lang: string) => {
         .replace(/\./g, '');
 };
 
-const statusKey = (agent: GetAgentesAgencia200DataItem) => (isAgentActive(agent) ? 'Active' : 'Inactive');
 
 const NoContent = () => {
     const { t } = useTranslation();
@@ -182,10 +180,18 @@ export default function AgentDetail() {
                 <CardAvatar
                     avatarUrl={agent.imagen || undefined}
                     name={fullName(agent)}
-                    status={statusKey(agent)}
-                    email={agent.email || '—'}
-                    phone={agent.telefono || '—'}
+                    status={String(agent.status?.id ?? '')}
+                    statusLabel={agent.status?.nombre || '—'}
+                    statusTheme={agentStatusTheme}
+                    email={agent.email || ''}
+                    phone={agent.telefono || ''}
                     location={countryName(agent)}
+                    rightContent={
+                        <>
+                            <div className="small text-black">{t('agents.detail.associatedAgency')}</div>
+                            <div className="fs-5 fw-bold text-black">{agent.agencia?.nombre || '—'}</div>
+                        </>
+                    }
                 />
                 <div className="">
                     <HorizontalCardList desktopCols={6}>
@@ -236,15 +242,21 @@ export default function AgentDetail() {
                                                 <ContactCard
                                                     name={fullName(reportingAgent)}
                                                     photoUrl={reportingAgent.imagen || undefined}
-                                                    status={<StatusBadge status={statusKey(reportingAgent)} theme={defaultStatusTheme} />}
+                                                    status={
+                                                        <StatusBadge
+                                                            status={String(reportingAgent.status?.id ?? '')}
+                                                            label={reportingAgent.status?.nombre || '—'}
+                                                            theme={agentStatusTheme}
+                                                        />
+                                                    }
                                                     items={[
                                                         {
                                                             icon: <i className="bi bi-envelope"></i>,
-                                                            content: reportingAgent.email || '—'
+                                                            content: reportingAgent.email || ''
                                                         },
                                                         {
                                                             icon: <i className="bi bi-telephone"></i>,
-                                                            content: reportingAgent.telefono || '—'
+                                                            content: reportingAgent.telefono || ''
                                                         },
                                                     ]}
                                                     action={{

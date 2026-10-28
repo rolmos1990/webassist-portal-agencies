@@ -6355,6 +6355,27 @@
                                                             "nombre": {
                                                                 "type": "string",
                                                                 "examples": ["Viajes por día"]
+                                                            },
+                                                            "planes": {
+                                                                "type": "array",
+                                                                "description": "Planes disponibles de la categoría",
+                                                                "items": {
+                                                                    "type": "object",
+                                                                    "properties": {
+                                                                        "id": {
+                                                                            "type": "integer",
+                                                                            "examples": [26]
+                                                                        },
+                                                                        "nombre": {
+                                                                            "type": "string",
+                                                                            "examples": ["GOLD"]
+                                                                        },
+                                                                        "nombre_completo": {
+                                                                            "type": "string",
+                                                                            "examples": ["Travel - Viajes por día - GOLD"]
+                                                                        }
+                                                                    }
+                                                                }
                                                             }
                                                         }
                                                     }

@@ -6,6 +6,7 @@ import CreateAgenciesVertical from '../components/Forms/CreateAgenciesVertical';
 import FilterByPassengerForm from '../components/Forms/FilterByPassengerForm';
 import {
   EMPTY_PASSENGER_FILTERS,
+  countActiveFilters,
   toQuoteFilterParams,
   type PassengerFilterValues,
 } from '../components/Forms/passengerFilters';
@@ -24,6 +25,7 @@ function MyQuotes() {
   const [show, setShow] = useState(false);
   const [showFilter, setShowFilter] = useState(false);
   const [filters, setFilters] = useState<PassengerFilterValues>(EMPTY_PASSENGER_FILTERS);
+  const activeFilters = countActiveFilters(filters);
   const [currentPage, setCurrentPage] = useState(1);
   const { t } = useTranslation();
   const navigate = useNavigate();
@@ -77,7 +79,7 @@ function MyQuotes() {
         icon=""
         onClick={() => setShowFilter(true)}
         >
-        {t("filtrar_por")}
+        {t("filtrar_por")}{activeFilters > 0 && ` (${activeFilters})`}
         </UIButton>
         <UIButton
         variant="dark"

@@ -5,6 +5,7 @@ import { UIButton } from '../components/Button';
 import FilterByPassengerForm from '../components/Forms/FilterByPassengerForm';
 import {
   EMPTY_PASSENGER_FILTERS,
+  countActiveFilters,
   toQuoteFilterParams,
   type PassengerFilterValues,
 } from '../components/Forms/passengerFilters';
@@ -22,6 +23,7 @@ import { getApiErrorMessage } from '../api/errors/ApiError';
 function QuotesAgency() {
   const [showFilter, setShowFilter] = useState(false);
   const [filters, setFilters] = useState<PassengerFilterValues>(EMPTY_PASSENGER_FILTERS);
+  const activeFilters = countActiveFilters(filters);
   const [currentPage, setCurrentPage] = useState(1);
   const { t } = useTranslation();
   const navigate = useNavigate();
@@ -63,7 +65,7 @@ function QuotesAgency() {
         icon=""
         onClick={() => setShowFilter(true)}
         >
-        {t("filtrar_por")}
+        {t("filtrar_por")}{activeFilters > 0 && ` (${activeFilters})`}
         </UIButton>
           </div>
         } />      

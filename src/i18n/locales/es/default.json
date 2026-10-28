@@ -30,6 +30,7 @@
       "status":"Estado",
       "actions":"Acciones",
       "edit":"Editar",
+      "view":"Ver Agencia",
       "delete":"Eliminar",
       "markActive":"Marcar como Activo",
       "markInactive":"Marcar como Inactivo",
@@ -85,7 +86,8 @@
       "quotes": "Cotizaciones",
       "sales": "Ventas",
       "viewProfile": "Ver perfil",
-      "notFound": "No se encontró el agente"
+      "notFound": "No se encontró el agente",
+      "associatedAgency": "Agencia Asociada"
     },
     "form": {
       "firstName": "Nombre",
@@ -266,6 +268,8 @@
     "departureDate": "Fecha de Salida",
     "returnDate": "Fecha de Regreso",
     "reference": "Referencia",
+    "quote": "Cotización",
+    "goToQuote": "Ir a Cotización",
     "paymentId": "ID de Pago",
     "modifyVoucher": "Modificar Datos del Voucher",
     "rePurchase": "Recomprar",
@@ -360,7 +364,12 @@
     "country": "País de salida o destino",
     "nationality": "Nacionalidad",
     "all": "Todos",
-    "clear": "Limpiar"
+    "clear": "Limpiar",
+    "dateFrom": "Fecha de compra desde",
+    "dateTo": "Fecha de compra hasta",
+    "invalidRange": "La fecha final debe ser igual o posterior a la inicial",
+    "planType": "Tipo de plan",
+    "plan": "Plan"
   },
   "search": {
     "searching": "Buscando…",
