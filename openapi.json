@@ -8,7 +8,7 @@
     "info": {
         "title": "WAC API",
         "description": "Api para uso interno WAC.\n\n## Errores\n\nTodas las respuestas de error salen en JSON con la misma forma: `ok` en `false`, un `mensaje` para mostrar y un `error_code` para decidir en el front.\n\n| error_code | HTTP | Cuándo |\n| --- | --- | --- |\n| 5000 | 302 | Falta el token de la API o no es válido (header `Authorization: Bearer`) |\n| 5001 | 200 | El idioma del path no está soportado |\n| 5002 | 200 | El `userToken` del agente no es válido o expiró |\n| 5003 | 404 | El endpoint solicitado no existe |\n| 5004 | 405 | El método HTTP no está permitido para ese endpoint |\n| 5005 | 500 | Error interno al procesar la solicitud |\n| 5006 | 200 | El plan no existe o no está habilitado para el usuario de la API |\n| 5007 | 200 | El cliente no existe o no es del agente (ni de su agencia, si es administrador) |\n\nLos códigos 5001 y 5002 son de negocio y viajan con HTTP 200: hay que mirar siempre el campo `ok`, no sólo el status.\n\nLos códigos 5003, 5004 y 5005 los resuelve el manejador global, así que pueden aparecer en cualquier endpoint.\n\nCuando el error es de validación de campos, además de `error` viene `errores`, un objeto con un motivo por campo (`requerido`, `invalido`, `duplicado`, `excede_comision_agencia`, `no_permitido`, `excede_maximo`).\n\nEn el ambiente de desarrollo las respuestas 500 agregan `error` y `archivo` con el detalle técnico; en producción no.\n",
-        "version": "1.2.4",
+        "version": "1.2.7",
         "contact": {
             "name": "Pixel Media Publicidad",
             "url": "https://www.pixelmedia.com.pa",
@@ -49,6 +49,10 @@
         {
             "name": "Leads",
             "description": "Endpoints para gestión de leads"
+        },
+        {
+            "name": "Sitio web",
+            "description": "Endpoints con el contenido del sitio web público"
         }
     ],
     "paths": {
@@ -116,6 +120,7 @@
                         "schema": {
                             "type": "string"
                         },
+                        "example": "es",
                         "description": "El código del idioma"
                     }
                 ],
@@ -176,6 +181,7 @@
                         "schema": {
                             "type": "string"
                         },
+                        "example": "es",
                         "description": "El código del idioma"
                     }
                 ],
@@ -240,6 +246,7 @@
                         "schema": {
                             "type": "string"
                         },
+                        "example": "es",
                         "description": "El código del idioma"
                     }
                 ],
@@ -336,6 +343,7 @@
                         "schema": {
                             "type": "string"
                         },
+                        "example": "es",
                         "description": "El código del idioma"
                     },
                     {
@@ -469,6 +477,7 @@
                         "schema": {
                             "type": "string"
                         },
+                        "example": "es",
                         "description": "El código del idioma"
                     },
                     {
@@ -638,6 +647,7 @@
                         "schema": {
                             "type": "string"
                         },
+                        "example": "es",
                         "description": "El código del idioma"
                     }
                 ],
@@ -715,6 +725,7 @@
                         "schema": {
                             "type": "string"
                         },
+                        "example": "es",
                         "description": "El código del idioma"
                     },
                     {
@@ -767,6 +778,7 @@
                         "schema": {
                             "type": "string"
                         },
+                        "example": "es",
                         "description": "Código del idioma"
                     }
                 ],
@@ -848,6 +860,7 @@
                         "schema": {
                             "type": "string"
                         },
+                        "example": "es",
                         "description": "Código del idioma"
                     }
                 ],
@@ -937,6 +950,7 @@
                         "schema": {
                             "type": "string"
                         },
+                        "example": "es",
                         "description": "Código del idioma"
                     }
                 ],
@@ -1024,6 +1038,7 @@
                         "schema": {
                             "type": "string"
                         },
+                        "example": "es",
                         "description": "El código del idioma"
                     },
                     {
@@ -1070,6 +1085,7 @@
                         "schema": {
                             "type": "string"
                         },
+                        "example": "es",
                         "description": "El código del idioma"
                     },
                     {
@@ -1126,6 +1142,7 @@
                         "schema": {
                             "type": "string"
                         },
+                        "example": "es",
                         "description": "El código del idioma"
                     },
                     {
@@ -1179,6 +1196,7 @@
                         "schema": {
                             "type": "string"
                         },
+                        "example": "es",
                         "description": "El código del idioma"
                     },
                     {
@@ -1271,6 +1289,7 @@
                         "schema": {
                             "type": "string"
                         },
+                        "example": "es",
                         "description": "El código del idioma"
                     },
                     {
@@ -1334,6 +1353,7 @@
                         "schema": {
                             "type": "string"
                         },
+                        "example": "es",
                         "description": "El código del idioma actual"
                     },
                     {
@@ -1407,7 +1427,8 @@
                         "description": "Idioma de la configuración.",
                         "schema": {
                             "type": "string"
-                        }
+                        },
+                        "example": "es"
                     }
                 ],
                 "requestBody": {
@@ -1740,6 +1761,7 @@
                         "schema": {
                             "type": "string"
                         },
+                        "example": "es",
                         "description": "El código del idioma"
                     },
                     {
@@ -1881,6 +1903,7 @@
                         "schema": {
                             "type": "string"
                         },
+                        "example": "es",
                         "description": "El código del idioma"
                     },
                     {
@@ -2243,10 +2266,20 @@
                         "schema": {
                             "type": "string"
                         },
+                        "example": "es",
                         "description": "El código del idioma"
                     },
                     {
                         "$ref": "#/components/parameters/userTokenHeader"
+                    },
+                    {
+                        "name": "plan",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "description": "ID del plan de la venta a renovar (opcional)"
                     },
                     {
                         "name": "tipo_plan",
@@ -2352,15 +2385,7 @@
                                                             },
                                                             "venta": {
                                                                 "type": "object",
-                                                                "description": "Datos de la venta a renovar, con documentos y cliente",
-                                                                "properties": {
-                                                                    "cliente": {
-                                                                        "type": "string"
-                                                                    },
-                                                                    "voucher": {
-                                                                        "type": "string"
-                                                                    }
-                                                                }
+                                                                "description": "Datos de la venta a renovar, con documentos y cliente"
                                                             },
                                                             "venta_renovacion": {
                                                                 "type": [
@@ -2474,7 +2499,7 @@
         "/{idioma}/detener_recordatorio_renovacion": {
             "post": {
                 "summary": "Detener Recordatorio Renovación",
-                "description": "Desactiva el recordatorio de la renovación indicada.",
+                "description": "Desactiva el recordatorio de renovación para el usuario indicado.",
                 "operationId": "detenerRecordatorioRenovacion",
                 "tags": ["Renovaciones"],
                 "parameters": [
@@ -2485,6 +2510,7 @@
                         "schema": {
                             "type": "string"
                         },
+                        "example": "es",
                         "description": "Código del idioma"
                     }
                 ],
@@ -2497,7 +2523,7 @@
                                 "properties": {
                                     "id": {
                                         "type": "string",
-                                        "description": "ID de la renovación (id del item de /renovaciones-pendientes) a la que se le detiene el recordatorio"
+                                        "description": "ID del usuario/agente para detener el recordatorio"
                                     }
                                 }
                             }
@@ -2549,6 +2575,7 @@
                         "schema": {
                             "type": "string"
                         },
+                        "example": "es",
                         "description": "El código del idioma"
                     },
                     {
@@ -2641,6 +2668,7 @@
                         "schema": {
                             "type": "string"
                         },
+                        "example": "es",
                         "description": "El código del idioma"
                     },
                     {
@@ -2778,6 +2806,7 @@
                         "schema": {
                             "type": "string"
                         },
+                        "example": "es",
                         "description": "El código del idioma"
                     },
                     {
@@ -2896,6 +2925,7 @@
                         "schema": {
                             "type": "string"
                         },
+                        "example": "es",
                         "description": "El código del idioma"
                     }
                 ],
@@ -2947,6 +2977,352 @@
                 }
             }
         },
+        "/{idioma}/v2/tipos-planes": {
+            "get": {
+                "summary": "Tipos de Planes",
+                "description": "Lista los tipos de plan activos con sus planes, más los territorios para los selectores de origen y destino.\n\nSólo salen los planes habilitados para el usuario dueño del token de la API; sin usuario, los planes públicos. Es la versión liviana del viejo `/{idioma}/tipos_planes`: el cotizador sale sólo como `{id, nombre}` y los planes no traen beneficios ni upgrades (los beneficios de un plan están en `/{idioma}/plan-beneficios/{id_plan}`).\n",
+                "operationId": "getTiposPlanesV2",
+                "tags": ["Generales"],
+                "parameters": [
+                    {
+                        "name": "idioma",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "es",
+                        "description": "El código del idioma"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Tipos de plan con sus planes",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "ok": {
+                                            "type": "boolean",
+                                            "examples": [true]
+                                        },
+                                        "data": {
+                                            "type": "object",
+                                            "properties": {
+                                                "tipos": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "object",
+                                                        "properties": {
+                                                            "id": {
+                                                                "type": "integer",
+                                                                "description": "ID del tipo de plan, el que reciben los filtros `tipo_plan`",
+                                                                "examples": [1]
+                                                            },
+                                                            "nombre": {
+                                                                "type": "string",
+                                                                "examples": [
+                                                                    "Viajes"
+                                                                ]
+                                                            },
+                                                            "slug": {
+                                                                "type": "string",
+                                                                "examples": [
+                                                                    "viajes"
+                                                                ]
+                                                            },
+                                                            "url": {
+                                                                "type": "string",
+                                                                "examples": [
+                                                                    "https://www.weassistgroup.com/es/productos/viajes"
+                                                                ]
+                                                            },
+                                                            "icono": {
+                                                                "type": "string",
+                                                                "examples": [
+                                                                    "https://www.weassistgroup.com/uploads/contenido/icono.svg"
+                                                                ]
+                                                            },
+                                                            "icono2": {
+                                                                "type": "string",
+                                                                "examples": [
+                                                                    "https://www.weassistgroup.com/uploads/contenido/icono2.svg"
+                                                                ]
+                                                            },
+                                                            "imagen_promo": {
+                                                                "type": "string",
+                                                                "examples": [
+                                                                    "https://www.weassistgroup.com/uploads/contenido/promo.jpg"
+                                                                ]
+                                                            },
+                                                            "descripcion": {
+                                                                "type": "string",
+                                                                "examples": [
+                                                                    "<p>Descripción del tipo de plan.</p>"
+                                                                ]
+                                                            },
+                                                            "cotizador": {
+                                                                "type": "object",
+                                                                "properties": {
+                                                                    "id": {
+                                                                        "type": "integer",
+                                                                        "description": "ID del cotizador (1 viajes)",
+                                                                        "examples": [
+                                                                            1
+                                                                        ]
+                                                                    },
+                                                                    "nombre": {
+                                                                        "type": "string",
+                                                                        "examples": [
+                                                                            "Viajes"
+                                                                        ]
+                                                                    }
+                                                                }
+                                                            },
+                                                            "planes": {
+                                                                "type": "array",
+                                                                "description": "Planes del tipo habilitados para el usuario; puede venir vacío",
+                                                                "items": {
+                                                                    "type": "object",
+                                                                    "properties": {
+                                                                        "id": {
+                                                                            "type": "integer",
+                                                                            "description": "ID del plan, el que reciben los filtros `plan`",
+                                                                            "examples": [
+                                                                                101
+                                                                            ]
+                                                                        },
+                                                                        "nombre": {
+                                                                            "type": "string",
+                                                                            "examples": [
+                                                                                "Plan 50"
+                                                                            ]
+                                                                        },
+                                                                        "nombre_completo": {
+                                                                            "type": "string",
+                                                                            "examples": [
+                                                                                "We Assist - Viajes - Plan 50"
+                                                                            ]
+                                                                        },
+                                                                        "edad_minima": {
+                                                                            "type": [
+                                                                                "integer",
+                                                                                "null"
+                                                                            ],
+                                                                            "examples": [
+                                                                                0
+                                                                            ]
+                                                                        },
+                                                                        "edad_maxima": {
+                                                                            "type": [
+                                                                                "integer",
+                                                                                "null"
+                                                                            ],
+                                                                            "examples": [
+                                                                                75
+                                                                            ]
+                                                                        },
+                                                                        "minimo_dias": {
+                                                                            "type": [
+                                                                                "integer",
+                                                                                "null"
+                                                                            ],
+                                                                            "examples": [
+                                                                                1
+                                                                            ]
+                                                                        },
+                                                                        "maximo_dias": {
+                                                                            "type": [
+                                                                                "integer",
+                                                                                "null"
+                                                                            ],
+                                                                            "examples": [
+                                                                                90
+                                                                            ]
+                                                                        },
+                                                                        "precio_desde": {
+                                                                            "type": "number",
+                                                                            "examples": [
+                                                                                25
+                                                                            ]
+                                                                        },
+                                                                        "maximo_personas": {
+                                                                            "type": [
+                                                                                "integer",
+                                                                                "null"
+                                                                            ],
+                                                                            "examples": [
+                                                                                9
+                                                                            ]
+                                                                        },
+                                                                        "cobertura": {
+                                                                            "type": "string",
+                                                                            "examples": [
+                                                                                "50000"
+                                                                            ]
+                                                                        },
+                                                                        "disclaimer": {
+                                                                            "type": "string",
+                                                                            "examples": [
+                                                                                ""
+                                                                            ]
+                                                                        },
+                                                                        "popular": {
+                                                                            "type": "boolean",
+                                                                            "description": "Si es de los más vendidos",
+                                                                            "examples": [
+                                                                                false
+                                                                            ]
+                                                                        }
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                },
+                                                "territorios": {
+                                                    "type": "object",
+                                                    "description": "Países activos, `{id: nombre}`. A diferencia de `/{idioma}/paises`, incluye los IDs de control (0 o negativos).",
+                                                    "additionalProperties": {
+                                                        "type": "string"
+                                                    },
+                                                    "examples": [
+                                                        {
+                                                            "1": "Panamá",
+                                                            "2": "Costa Rica"
+                                                        }
+                                                    ]
+                                                }
+                                            }
+                                        },
+                                        "user": {
+                                            "$ref": "#/components/schemas/User",
+                                            "description": "Sólo cuando el token de la API pertenece a un usuario"
+                                        },
+                                        "mensaje": {
+                                            "type": "string",
+                                            "description": "Sólo cuando ok es false",
+                                            "examples": ["Idioma no soportado"]
+                                        },
+                                        "error_code": {
+                                            "type": "integer",
+                                            "description": "5001 idioma no soportado.",
+                                            "examples": [5001]
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/RutaNoEncontrada"
+                    },
+                    "405": {
+                        "$ref": "#/components/responses/MetodoNoPermitido"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/ErrorInterno"
+                    }
+                }
+            }
+        },
+        "/{idioma}/sitio-web/menus": {
+            "get": {
+                "summary": "Menús del sitio web",
+                "description": "Devuelve todos los menús del sitio web con todos sus niveles de submenús. Los items del primer nivel son los menús de cada parte del sitio (por ejemplo id 2 = menú superior, id 26 = menús inferiores), así que al agregar un menú nuevo en el administrador aparece aquí sin cambios en la API. Solo incluye los items activos, ordenados como en el administrador.",
+                "operationId": "getSitioWebMenus",
+                "tags": ["Sitio web"],
+                "parameters": [
+                    {
+                        "name": "idioma",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "es",
+                        "description": "El código del idioma"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Menús del sitio en el idioma pedido",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "ok": {
+                                            "type": "boolean",
+                                            "examples": [true]
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "description": "Menús del primer nivel, cada uno con sus submenús en hijos",
+                                            "items": {
+                                                "type": "object",
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "integer",
+                                                        "examples": [2]
+                                                    },
+                                                    "nombre": {
+                                                        "type": "string",
+                                                        "examples": ["Planes"]
+                                                    },
+                                                    "icono": {
+                                                        "type": "string",
+                                                        "description": "Clase de Font Awesome, vacío si no tiene",
+                                                        "examples": ["fa-plane"]
+                                                    },
+                                                    "url": {
+                                                        "type": "string",
+                                                        "description": "URL final del item: absoluta, con el sitio y el idioma si era relativa, o # si no tiene enlace",
+                                                        "examples": [
+                                                            "https://www.weassistgroup.com/es/planes"
+                                                        ]
+                                                    },
+                                                    "slug": {
+                                                        "type": "string",
+                                                        "description": "Slug o URL del item sin completar, ya con los lang_strings evaluados",
+                                                        "examples": ["planes"]
+                                                    },
+                                                    "target": {
+                                                        "type": "string",
+                                                        "description": "_blank si debe abrirse en una página nueva, vacío si no",
+                                                        "examples": [""]
+                                                    },
+                                                    "hijos": {
+                                                        "type": "array",
+                                                        "description": "Submenús del item, con esta misma estructura y sin límite de niveles",
+                                                        "items": {
+                                                            "type": "object"
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/RutaNoEncontrada"
+                    },
+                    "405": {
+                        "$ref": "#/components/responses/MetodoNoPermitido"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/ErrorInterno"
+                    }
+                }
+            }
+        },
         "/{idioma}/agencias": {
             "get": {
                 "summary": "Agencias de Agencia",
@@ -2961,6 +3337,7 @@
                         "schema": {
                             "type": "string"
                         },
+                        "example": "es",
                         "description": "El código del idioma"
                     },
                     {
@@ -3050,6 +3427,7 @@
                         "schema": {
                             "type": "string"
                         },
+                        "example": "es",
                         "description": "El código del idioma"
                     },
                     {
@@ -3106,6 +3484,7 @@
                         "schema": {
                             "type": "string"
                         },
+                        "example": "es",
                         "description": "El código del idioma"
                     },
                     {
@@ -3231,6 +3610,7 @@
                         "schema": {
                             "type": "string"
                         },
+                        "example": "es",
                         "description": "El código del idioma"
                     },
                     {
@@ -3316,6 +3696,15 @@
                             "type": "integer"
                         },
                         "description": "Filtra cotizaciones que tengan un pasajero con esta nacionalidad, en cualquiera de sus líneas"
+                    },
+                    {
+                        "name": "id_agente",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "description": "Sólo para agente administrador: filtra las cotizaciones creadas por este agente, siempre dentro de su agencia (un agente de otra agencia devuelve el listado vacío). Al agente común se le ignora, porque ya ve sólo las suyas"
                     },
                     {
                         "$ref": "#/components/parameters/userTokenHeader"
@@ -3872,6 +4261,7 @@
                         "schema": {
                             "type": "string"
                         },
+                        "example": "es",
                         "description": "Código del idioma del correo"
                     }
                 ],
@@ -3973,6 +4363,7 @@
                         "schema": {
                             "type": "string"
                         },
+                        "example": "es",
                         "description": "Código del idioma del correo"
                     }
                 ],
@@ -4065,6 +4456,7 @@
                         "schema": {
                             "type": "string"
                         },
+                        "example": "es",
                         "description": "El código del idioma"
                     },
                     {
@@ -4150,6 +4542,15 @@
                             "type": "integer"
                         },
                         "description": "ID del país de nacionalidad para filtrar"
+                    },
+                    {
+                        "name": "id_agente",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "description": "Sólo para agente administrador: filtra las asistencias vendidas por este agente, siempre dentro de su agencia (un agente de otra agencia devuelve el listado vacío). Al agente común se le ignora, porque ya ve sólo las suyas"
                     },
                     {
                         "$ref": "#/components/parameters/userTokenHeader"
@@ -4604,6 +5005,7 @@
                         "schema": {
                             "type": "string"
                         },
+                        "example": "es",
                         "description": "El código del idioma"
                     },
                     {
@@ -4704,7 +5106,7 @@
         "/{idioma}/plan-beneficios/{id_plan}": {
             "get": {
                 "summary": "Beneficios de un Plan",
-                "description": "Obtiene los beneficios de un plan, separados en principales y adicionales. Sólo responde planes habilitados para el usuario de la API (los mismos de tipos_planes); si no, devuelve error_code 5006. Sólo se incluyen beneficios con valor cargado para el plan.",
+                "description": "Obtiene los beneficios de un plan, separados en principales y adicionales. Sólo responde planes habilitados para el usuario de la API (los mismos de v2/tipos-planes); si no, devuelve error_code 5006. Sólo se incluyen beneficios con valor cargado para el plan.",
                 "operationId": "getPlanBeneficios",
                 "tags": ["Emisiones"],
                 "parameters": [
@@ -4715,6 +5117,7 @@
                         "schema": {
                             "type": "string"
                         },
+                        "example": "es",
                         "description": "El código del idioma"
                     },
                     {
@@ -4890,6 +5293,7 @@
                         "schema": {
                             "type": "string"
                         },
+                        "example": "es",
                         "description": "Código del idioma"
                     }
                 ],
@@ -4981,6 +5385,7 @@
                         "schema": {
                             "type": "string"
                         },
+                        "example": "es",
                         "description": "El código del idioma"
                     },
                     {
@@ -5266,6 +5671,7 @@
                             "type": "string",
                             "enum": ["es", "en"]
                         },
+                        "example": "es",
                         "description": "El código del idioma"
                     },
                     {
@@ -5469,6 +5875,7 @@
                             "type": "string",
                             "enum": ["es", "en"]
                         },
+                        "example": "es",
                         "description": "El código del idioma"
                     },
                     {
@@ -5651,6 +6058,7 @@
                             "type": "string",
                             "enum": ["es", "en"]
                         },
+                        "example": "es",
                         "description": "Idioma de la respuesta"
                     },
                     {
@@ -6305,103 +6713,6 @@
                 }
             }
         },
-        "/{idioma}/v2/tipos-planes": {
-            "get": {
-                "summary": "Tipos de plan",
-                "description": "Devuelve el catálogo de tipos de plan disponibles.",
-                "operationId": "getV2TiposPlanes",
-                "tags": ["Generales"],
-                "parameters": [
-                    {
-                        "name": "idioma",
-                        "in": "path",
-                        "required": true,
-                        "schema": {
-                            "type": "string",
-                            "enum": ["es", "en"]
-                        },
-                        "description": "Idioma de la respuesta"
-                    },
-                    {
-                        "$ref": "#/components/parameters/userTokenHeader"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Tipos de plan",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "type": "object",
-                                    "properties": {
-                                        "ok": {
-                                            "type": "boolean",
-                                            "examples": [true]
-                                        },
-                                        "data": {
-                                            "type": "object",
-                                            "description": "Catálogo de tipos de plan (categorías), cada una con sus planes y territorios disponibles",
-                                            "properties": {
-                                                "tipos": {
-                                                    "type": "array",
-                                                    "description": "Lista de categorías de tipos de plan",
-                                                    "items": {
-                                                        "type": "object",
-                                                        "properties": {
-                                                            "id": {
-                                                                "type": "integer",
-                                                                "examples": [1]
-                                                            },
-                                                            "nombre": {
-                                                                "type": "string",
-                                                                "examples": ["Viajes por día"]
-                                                            },
-                                                            "planes": {
-                                                                "type": "array",
-                                                                "description": "Planes disponibles de la categoría",
-                                                                "items": {
-                                                                    "type": "object",
-                                                                    "properties": {
-                                                                        "id": {
-                                                                            "type": "integer",
-                                                                            "examples": [26]
-                                                                        },
-                                                                        "nombre": {
-                                                                            "type": "string",
-                                                                            "examples": ["GOLD"]
-                                                                        },
-                                                                        "nombre_completo": {
-                                                                            "type": "string",
-                                                                            "examples": ["Travel - Viajes por día - GOLD"]
-                                                                        }
-                                                                    }
-                                                                }
-                                                            }
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request"
-                    },
-                    "404": {
-                        "$ref": "#/components/responses/RutaNoEncontrada"
-                    },
-                    "405": {
-                        "$ref": "#/components/responses/MetodoNoPermitido"
-                    },
-                    "500": {
-                        "$ref": "#/components/responses/ErrorInterno"
-                    }
-                }
-            }
-        },
         "/{idioma}/tasa-comisiones": {
             "get": {
                 "summary": "Tasa de comisiones",
@@ -6417,6 +6728,7 @@
                             "type": "string",
                             "enum": ["es", "en"]
                         },
+                        "example": "es",
                         "description": "Idioma de la respuesta"
                     },
                     {
@@ -6490,6 +6802,7 @@
                         "schema": {
                             "type": "string"
                         },
+                        "example": "es",
                         "description": "El código del idioma"
                     },
                     {
@@ -6594,6 +6907,7 @@
                         "schema": {
                             "type": "string"
                         },
+                        "example": "es",
                         "description": "El código del idioma"
                     },
                     {
@@ -6678,6 +6992,7 @@
                         "schema": {
                             "type": "string"
                         },
+                        "example": "es",
                         "description": "El código del idioma"
                     },
                     {

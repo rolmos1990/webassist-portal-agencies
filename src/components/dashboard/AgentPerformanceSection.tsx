@@ -1,4 +1,3 @@
-import LinkedIcon from '../../assets/images/icons/link-icon.svg';
 import HorizontalBarChart from '../common/HorizontalBarChart';
 import { performanceScale } from './performanceScale';
 
@@ -31,7 +30,6 @@ export default function AgentPerformanceSection({ labels, totalSales, totalCommi
         <h1 className="p-0 m-0" style={{ fontSize: 14, fontWeight: 600 }}>
           {labels.title}
         </h1>
-        <img src={LinkedIcon} alt="" />
       </div>
       <div className="d-flex align-items-center gap-3 mt-3">
         <div className="">

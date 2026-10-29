@@ -27,13 +27,10 @@ Cuando el error es de validación de campos, además de `error` viene `errores`,
 
 En el ambiente de desarrollo las respuestas 500 agregan `error` y `archivo` con el detalle técnico; en producción no.
 
- * OpenAPI spec version: 1.2.4
+ * OpenAPI spec version: 1.2.7
  */
 
 /**
  * Datos de la venta a renovar, con documentos y cliente
  */
-export type GetRenovacionesPendientes200DataItemsItemVenta = {
-  cliente?: string;
-  voucher?: string;
-};
+export type GetRenovacionesPendientes200DataItemsItemVenta = { [key: string]: unknown };

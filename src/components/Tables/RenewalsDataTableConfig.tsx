@@ -55,7 +55,8 @@ export function createRenewalsColumns({
       id: "cliente",
       label: t("renewals.table.client"),
       width: "16%",
-      accessor: (row) => row.venta?.cliente,
+      // venta llega sin tipo en el contrato: se valida que cliente sea texto antes de mostrarlo
+      accessor: (row) => (typeof row.venta?.cliente === "string" ? row.venta.cliente : ""),
       align: "start",
     },
     {

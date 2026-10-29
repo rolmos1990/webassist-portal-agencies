@@ -27,7 +27,7 @@ Cuando el error es de validación de campos, además de `error` viene `errores`,
 
 En el ambiente de desarrollo las respuestas 500 agregan `error` y `archivo` con el detalle técnico; en producción no.
 
- * OpenAPI spec version: 1.2.4
+ * OpenAPI spec version: 1.2.7
  */
 
 export type GetAsistenciasAgenteAgenciaParams = {
@@ -67,4 +67,8 @@ pasaporte?: string;
  * ID del país de nacionalidad para filtrar
  */
 nacionalidad?: number;
+/**
+ * Sólo para agente administrador: filtra las asistencias vendidas por este agente, siempre dentro de su agencia (un agente de otra agencia devuelve el listado vacío). Al agente común se le ignora, porque ya ve sólo las suyas
+ */
+id_agente?: number;
 };

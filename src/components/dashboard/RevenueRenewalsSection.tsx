@@ -1,5 +1,3 @@
-import LinkedIcon from '../../assets/images/icons/link-icon.svg';
-
 interface RevenueRenewalsSectionLabels {
   title: string;
   subtitle: string;
@@ -33,7 +31,6 @@ export default function RevenueRenewalsSection({ labels, pending, completed }: R
             {labels.subtitle}
           </p>
         </div>
-        <img src={LinkedIcon} alt="link-icon" />
       </div>
       <div className="row align-items-end" style={{ marginTop: "22px" }}>
         <div className="col-12 col-md-6 d-flex align-items-end gap-2">

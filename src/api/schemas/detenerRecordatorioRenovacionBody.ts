@@ -27,10 +27,10 @@ Cuando el error es de validación de campos, además de `error` viene `errores`,
 
 En el ambiente de desarrollo las respuestas 500 agregan `error` y `archivo` con el detalle técnico; en producción no.
 
- * OpenAPI spec version: 1.2.4
+ * OpenAPI spec version: 1.2.7
  */
 
 export type DetenerRecordatorioRenovacionBody = {
-  /** ID de la renovación (id del item de /renovaciones-pendientes) a la que se le detiene el recordatorio */
+  /** ID del usuario/agente para detener el recordatorio */
   id?: string;
 };

@@ -27,7 +27,7 @@ Cuando el error es de validación de campos, además de `error` viene `errores`,
 
 En el ambiente de desarrollo las respuestas 500 agregan `error` y `archivo` con el detalle técnico; en producción no.
 
- * OpenAPI spec version: 1.2.4
+ * OpenAPI spec version: 1.2.7
  */
 
 export * from './actualizarAgentePorIdBody';
@@ -335,6 +335,9 @@ export * from './getRenovacionesPendientes200DataItemsItemVentaDatosVoucherMaste
 export * from './getRenovacionesPendientes200DataItemsItemVentaRenovacion';
 export * from './getRenovacionesPendientes200DataItemsItemVentaRenovacionAnyOf';
 export * from './getRenovacionesPendientesParams';
+export * from './getSitioWebMenus200';
+export * from './getSitioWebMenus200DataItem';
+export * from './getSitioWebMenus200DataItemHijosItem';
 export * from './getStatusCodes200';
 export * from './getStatusCodes200Data';
 export * from './getStatusCodes200DataCarritosItem';
@@ -342,6 +345,17 @@ export * from './getStatusCodes200DataGenericosItem';
 export * from './getStatusCodes200DataRenovacionesItem';
 export * from './getTasaComisiones200';
 export * from './getTasaComisiones200DataItem';
+export * from './getTiposPlanesV2200';
+export * from './getTiposPlanesV2200Data';
+export * from './getTiposPlanesV2200DataTerritorios';
+export * from './getTiposPlanesV2200DataTiposItem';
+export * from './getTiposPlanesV2200DataTiposItemCotizador';
+export * from './getTiposPlanesV2200DataTiposItemPlanesItem';
+export * from './getTiposPlanesV2200DataTiposItemPlanesItemEdadMaxima';
+export * from './getTiposPlanesV2200DataTiposItemPlanesItemEdadMinima';
+export * from './getTiposPlanesV2200DataTiposItemPlanesItemMaximoDias';
+export * from './getTiposPlanesV2200DataTiposItemPlanesItemMaximoPersonas';
+export * from './getTiposPlanesV2200DataTiposItemPlanesItemMinimoDias';
 export * from './getV2TiposPlanes200';
 export * from './getV2TiposPlanes200Data';
 export * from './getV2TiposPlanes200DataItem';

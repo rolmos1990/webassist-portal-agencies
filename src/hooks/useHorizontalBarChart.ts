@@ -69,8 +69,9 @@ export function useHorizontalBarChart({
                         max: chartMaxValue,
                         min: 0,
                         ticks: {
-                            callback: function (value: any) {
-                                return '$' + value / 1000 + 'K';
+                            // Máximo 2 decimales: Chart.js arma los ticks con sumas de punto flotante (4.0764000…K)
+                            callback: function (value: number | string) {
+                                return '$' + Number((Number(value) / 1000).toFixed(2)) + 'K';
                             },
                             font: { size: 13 },
                             stepSize: chartStepSize,

@@ -59,8 +59,8 @@ const NoContent = () => {
     return <div className="border rounded-4 p-4 text-muted">{t('noData')}</div>;
 };
 
-// Sin filtro por agente en el contrato: por ahora lista las cotizaciones de toda la agencia
-function AgentQuotesTab() {
+// Cotizaciones creadas por el agente (id_agente)
+function AgentQuotesTab({ agentId }: { agentId: number }) {
     const { t } = useTranslation();
     const { lang } = useI18nCache();
     const navigate = useNavigate();
@@ -68,7 +68,7 @@ function AgentQuotesTab() {
 
     const { data, isLoading, error } = useGetCotizacionesAgenteAgencia(
         lang,
-        { pagina: currentPage },
+        { pagina: currentPage, id_agente: agentId },
         { query: { placeholderData: keepPreviousData } }
     );
 
@@ -94,8 +94,8 @@ function AgentQuotesTab() {
     );
 }
 
-// Ventas = asistencias. Sin filtro por agente en el contrato: por ahora lista las de toda la agencia
-function AgentSalesTab() {
+// Ventas = asistencias vendidas por el agente (id_agente)
+function AgentSalesTab({ agentId }: { agentId: number }) {
     const { t } = useTranslation();
     const { lang } = useI18nCache();
     const navigate = useNavigate();
@@ -103,7 +103,7 @@ function AgentSalesTab() {
 
     const { data, isLoading, error } = useGetAsistenciasAgenteAgencia(
         lang,
-        { pagina: currentPage },
+        { pagina: currentPage, id_agente: agentId },
         { query: { placeholderData: keepPreviousData } }
     );
 
@@ -320,12 +320,12 @@ export default function AgentDetail() {
                             {
                                 id: 'quotes',
                                 title: t('agents.detail.quotes'),
-                                content: isVisited('quotes') ? <AgentQuotesTab /> : null
+                                content: isVisited('quotes') ? <AgentQuotesTab agentId={Number(agent.id)} /> : null
                             },
                             {
                                 id: 'sales',
                                 title: t('agents.detail.sales'),
-                                content: isVisited('sales') ? <AgentSalesTab /> : null
+                                content: isVisited('sales') ? <AgentSalesTab agentId={Number(agent.id)} /> : null
                             },
                         ]}
                         defaultActiveTab="reporting-agents"

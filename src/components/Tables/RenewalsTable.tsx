@@ -19,7 +19,9 @@ export function RenewalsTable({ data, loading = false, onStopReminder }: Renewal
 
   const columns = useMemo(() => {
     const onViewAssistance = (row: GetRenovacionesPendientes200DataItemsItem) => {
-      if (row.venta?.voucher) navigate(PATHS.assistances.detail(row.venta.voucher));
+      // venta llega sin tipo en el contrato: sólo se navega si voucher es texto
+      const voucher = row.venta?.voucher;
+      if (typeof voucher === "string" && voucher) navigate(PATHS.assistances.detail(voucher));
     };
     return createRenewalsColumns({ currency, t, onViewAssistance, onStopReminder });
   }, [t, navigate, onStopReminder]);

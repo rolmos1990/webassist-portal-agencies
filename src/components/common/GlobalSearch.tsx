@@ -3,23 +3,49 @@ import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import Search from './Search';
 import { useGetBusqueda } from '../../api/generated';
-import type { BusquedaItem, BusquedaItemTipo } from '../../api/schemas';
+import { BusquedaItemTipo, type BusquedaItem } from '../../api/schemas';
 import { useI18nCache } from '../../i18n/i18nCacheProvider';
-import { useSecurityStore } from '../../stores/securityStore';
-import { SecurityRole } from '../../stores/SecurityRole';
 import { PATHS } from '../../routes/Routes';
 
 const MIN_CHARS = 2; // el servicio exige al menos 2 caracteres
 const DEBOUNCE_MS = 300;
 
-const TYPE_ORDER: BusquedaItemTipo[] = ['agente', 'agencia', 'asistencia', 'cotizacion', 'cliente'];
+// Tipos de resultado que el buscador sabe abrir (enum generado del contrato), en el orden en que se agrupan
+const TYPE_ORDER: BusquedaItemTipo[] = [
+  BusquedaItemTipo.agente,
+  BusquedaItemTipo.agencia,
+  BusquedaItemTipo.asistencia,
+];
+
+/**
+ * Ruta del detalle de cada resultado: asistencia por `referencia` (voucher); agente y agencia por
+ * `id`. null = no se puede abrir (tipo desconocido, excluido o sin clave), y el resultado se omite
+ * de la lista.
+ */
+function detailPath(item: BusquedaItem): string | null {
+  switch (item.tipo) {
+    case BusquedaItemTipo.asistencia:
+      return item.referencia ? PATHS.assistances.detail(item.referencia) : null;
+    // Cotizaciones excluidas por ahora: no hay servicio para cargar una cotización por su token
+    case BusquedaItemTipo.cotizacion:
+      return null;
+    case BusquedaItemTipo.agente:
+      return item.id != null ? PATHS.agents.detail(item.id) : null;
+    case BusquedaItemTipo.agencia:
+      return item.id != null ? PATHS.agencies.detail(item.id) : null;
+    // Clientes excluidos por ahora: no hay servicio para cargar un cliente por su id
+    case BusquedaItemTipo.cliente:
+      return null;
+    default:
+      return null;
+  }
+}
 
 /** Buscador del header: busca en agentes, agencias, asistencias, cotizaciones y clientes. */
 export default function GlobalSearch() {
   const { t } = useTranslation();
   const { lang } = useI18nCache();
   const navigate = useNavigate();
-  const isAgentAdmin = useSecurityStore((s) => s.hasRole(SecurityRole.AGENT_ADMIN));
   const rootRef = useRef<HTMLDivElement>(null);
 
   const [text, setText] = useState('');
@@ -53,29 +79,14 @@ export default function GlobalSearch() {
     };
   }, [open]);
 
-  const goTo = (item: BusquedaItem) => {
-    switch (item.tipo) {
-      case 'agente':
-        if (item.id != null) navigate(PATHS.agents.detail(item.id));
-        break;
-      case 'agencia':
-        if (item.id != null) navigate(PATHS.agencies.detail(item.id));
-        break;
-      case 'asistencia':
-        if (item.referencia) navigate(PATHS.assistances.detail(item.referencia));
-        break;
-      case 'cotizacion': // no hay detalle de cotización: se abre el listado
-        navigate(isAgentAdmin ? PATHS.quotes.agency() : PATHS.quotes.mine());
-        break;
-      case 'cliente': // no hay detalle de cliente: se abre el listado
-        navigate(PATHS.clients.list());
-        break;
-    }
+  const goTo = (path: string) => {
+    navigate(path);
     setOpen(false);
     setText('');
   };
 
-  const items = enabled ? data?.items ?? [] : [];
+  // Sólo resultados que se pueden abrir; cualquier otro tipo se omite
+  const items = (enabled ? data?.items ?? [] : []).filter((i) => detailPath(i) !== null);
   const groups = TYPE_ORDER.map((tipo) => ({ tipo, items: items.filter((i) => i.tipo === tipo) })).filter(
     (g) => g.items.length > 0
   );
@@ -118,7 +129,10 @@ export default function GlobalSearch() {
                   type="button"
                   role="option"
                   className="dropdown-item text-wrap py-2"
-                  onClick={() => goTo(item)}
+                  onClick={() => {
+                    const path = detailPath(item);
+                    if (path) goTo(path);
+                  }}
                 >
                   <div className="fw-semibold small">{item.nombre || item.referencia || '—'}</div>
                   {(item.referencia || item.detalle) && (
