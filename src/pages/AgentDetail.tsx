@@ -27,6 +27,12 @@ import { getApiErrorMessage } from "../api/errors/ApiError";
 
 type TabId = 'reporting-agents' | 'quotes' | 'sales';
 
+const AGENT_SEARCH_DELAY_MS = 250;
+
+// Minúsculas y sin acentos para que "castanon" encuentre "Castañon"
+const normalize = (value: string) =>
+    value.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().trim();
+
 const fullName = (agent: GetAgentesAgencia200DataItem) =>
     agent.nombre_completo || `${agent.nombre ?? ''} ${agent.apellido ?? ''}`.trim() || '—';
 
@@ -149,6 +155,19 @@ export default function AgentDetail() {
     const agent = agents.find((a) => String(a.id) === id);
     const reportingAgents = agents.filter((a) => String(a.id) !== id);
 
+    // Búsqueda local de agentes de la agencia (nombre, correo o teléfono), con 250 ms de espera
+    const [agentSearch, setAgentSearch] = useState('');
+    const [agentQuery, setAgentQuery] = useState('');
+    useEffect(() => {
+        const timer = window.setTimeout(() => setAgentQuery(normalize(agentSearch)), AGENT_SEARCH_DELAY_MS);
+        return () => window.clearTimeout(timer);
+    }, [agentSearch]);
+
+    const visibleAgents = agentQuery
+        ? reportingAgents.filter((a) =>
+            [fullName(a), a.email, a.telefono].some((v) => normalize(v ?? '').includes(agentQuery)))
+        : reportingAgents;
+
     const handleTabChange = (tabId: string) =>
         setVisitedTabs((prev) => (prev.has(tabId) ? prev : new Set(prev).add(tabId)));
     const isVisited = (tabId: TabId) => visitedTabs.has(tabId);
@@ -231,13 +250,41 @@ export default function AgentDetail() {
                 <div className="mt-4">
                     <TabPanel
                         onTabChange={handleTabChange}
+                        renderExtra={(activeTab) => activeTab === 'reporting-agents' && (
+                            <div className="tab-search position-relative">
+                                <i className="bi bi-search tab-search__icon" aria-hidden="true" />
+                                <input
+                                    type="text"
+                                    className="form-control tab-search__input"
+                                    placeholder={t('agents.detail.searchAgents')}
+                                    aria-label={t('agents.detail.searchAgents')}
+                                    value={agentSearch}
+                                    onChange={(e) => setAgentSearch(e.target.value)}
+                                />
+                                {agentSearch && (
+                                    <button
+                                        type="button"
+                                        className="tab-search__clear"
+                                        aria-label={t('filters.clear')}
+                                        title={t('filters.clear')}
+                                        onClick={() => {
+                                            // Limpia sin esperar el delay
+                                            setAgentSearch('');
+                                            setAgentQuery('');
+                                        }}
+                                    >
+                                        <i className="bi bi-x-circle-fill" aria-hidden="true" />
+                                    </button>
+                                )}
+                            </div>
+                        )}
                         tabs={[
                             {
                                 id: 'reporting-agents',
                                 title: t('agents.detail.reportingAgents'),
-                                content: reportingAgents.length === 0 ? <NoContent /> : (
+                                content: visibleAgents.length === 0 ? <NoContent /> : (
                                     <div className="row g-3">
-                                        {reportingAgents.map((reportingAgent) => (
+                                        {visibleAgents.map((reportingAgent) => (
                                             <div className="col-12 col-md-6 col-lg-4" key={reportingAgent.id}>
                                                 <ContactCard
                                                     name={fullName(reportingAgent)}

@@ -20,3 +20,84 @@
     border-bottom: 2px solid #0dcaf0;
     color: #131313;
 }
+/* Contenido debajo de las pestañas según la pestaña activa (TabPanel renderExtra) */
+.tab-panel-extra {
+    margin-top: 1rem;
+    animation: tab-panel-extra-in 0.25s ease-out;
+}
+
+/* Buscador debajo de las pestañas (p. ej. Agentes de la Agencia): alineado a la izquierda,
+   440px de ancho en escritorio y ancho completo en móvil.
+   Los selectores van anidados en .tab-search porque main.scss vuelve a incluir Bootstrap
+   después de este archivo y su .form-control pisaba alto, fondo y padding. */
+.tab-search {
+    width: 100%;
+    max-width: 440px;
+
+    .tab-search__input {
+        height: 40px;
+        padding-left: 2.5rem;
+        padding-right: 2.25rem;
+        background-color: #eef1f5;
+        border: 1px solid #dde2e8;
+        border-radius: 8px;
+        box-shadow: none;
+        color: #131313;
+        font-size: 0.9rem;
+
+        &::placeholder {
+            color: #8a94a3;
+        }
+
+        &:focus {
+            background-color: #ffffff;
+            border-color: #0eace4;
+            box-shadow: 0 0 0 3px rgba(14, 172, 228, 0.12);
+        }
+    }
+
+    .tab-search__icon {
+        position: absolute;
+        top: 50%;
+        left: 0.875rem;
+        transform: translateY(-50%);
+        font-size: 1rem;
+        line-height: 1;
+        color: #1a2c47;
+        pointer-events: none;
+    }
+
+    .tab-search__clear {
+        position: absolute;
+        top: 50%;
+        right: 0.75rem;
+        transform: translateY(-50%);
+        padding: 0;
+        border: 0;
+        background: transparent;
+        font-size: 1.1rem;
+        line-height: 1;
+        color: #8a94a3;
+
+        &:hover {
+            color: #4b647e;
+        }
+    }
+}
+
+@keyframes tab-panel-extra-in {
+    from {
+        opacity: 0;
+        transform: translateY(-4px);
+    }
+    to {
+        opacity: 1;
+        transform: none;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .tab-panel-extra {
+        animation: none;
+    }
+}

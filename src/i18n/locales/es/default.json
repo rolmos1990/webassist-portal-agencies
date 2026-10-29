@@ -87,7 +87,8 @@
       "sales": "Ventas",
       "viewProfile": "Ver perfil",
       "notFound": "No se encontró el agente",
-      "associatedAgency": "Agencia Asociada"
+      "associatedAgency": "Agencia Asociada",
+      "searchAgents": "Buscar agentes..."
     },
     "form": {
       "firstName": "Nombre",

@@ -87,7 +87,8 @@
       "sales": "Sales",
       "viewProfile": "View Profile",
       "notFound": "Agent not found",
-      "associatedAgency": "Associated Agency"
+      "associatedAgency": "Associated Agency",
+      "searchAgents": "Search agents..."
     },
     "form": {
       "firstName": "First Name",

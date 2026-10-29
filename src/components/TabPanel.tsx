@@ -11,12 +11,16 @@ interface TabPanelProps {
   defaultActiveTab?: string;
   className?: string;
   onTabChange?: (id: string) => void;
+  /** Contenido opcional debajo de las pestañas según la pestaña activa (p. ej. un buscador) */
+  renderExtra?: (activeTab: string) => ReactNode;
 }
 
-export const TabPanel = ({ tabs, defaultActiveTab, className = '', onTabChange }: TabPanelProps) => {
+export const TabPanel = ({ tabs, defaultActiveTab, className = '', onTabChange, renderExtra }: TabPanelProps) => {
   const [activeTab, setActiveTab] = useState(defaultActiveTab || (tabs.length > 0 ? tabs[0].id : ''));
 
   if (tabs.length === 0) return null;
+
+  const extra = renderExtra?.(activeTab);
 
   return (
     <div className={className}>
@@ -42,6 +46,8 @@ export const TabPanel = ({ tabs, defaultActiveTab, className = '', onTabChange }
           </li>
         ))}
       </ul>
+      {/* key: se vuelve a montar (y animar) cada vez que aparece en otra pestaña */}
+      {extra && <div key={activeTab} className="tab-panel-extra">{extra}</div>}
 
       <div className="tab-content pt-3" id="tabContent">
         {tabs.map((tab) => (
