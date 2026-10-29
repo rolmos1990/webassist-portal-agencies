@@ -1,6 +1,8 @@
 import { type ColumnDef } from "../DataTable";
 import type { GetRenovacionesPendientes200DataItemsItem } from "../../api/schemas";
 import RowActions from "../RowActions";
+// Mismo ícono que identifica a Agencias en el menú lateral
+import iconAgencies from "../../assets/images/icons/icon (8).svg";
 
 type CreateColumnsDeps = {
   currency: (n: number) => string;
@@ -24,18 +26,30 @@ export function createRenewalsColumns({
       align: "start",
     },
     {
+      // Agente y agencia en una columna: agente destacado y agencia como badge (como Nombre en Agentes)
       id: "agente",
       label: t("renewals.table.agent"),
-      width: "16%",
+      width: "24%",
       accessor: (row) => row.agente?.nombre,
       align: "start",
-    },
-    {
-      id: "agencia",
-      label: t("renewals.table.agency"),
-      width: "16%",
-      accessor: (row) => row.agencia?.nombre,
-      align: "start",
+      render: (row) => (
+        <div className="lh-sm">
+          <div className="fw-semibold">{row.agente?.nombre || "—"}</div>
+          {row.agencia?.nombre && (
+            <span className="badge rounded-pill d-inline-flex align-items-center gap-1 py-1 px-2 fw-medium small border bg-light text-secondary mt-1">
+              <img
+                src={iconAgencies}
+                alt=""
+                aria-hidden="true"
+                width={10}
+                height={12}
+                style={{ filter: "grayscale(1)", opacity: 0.6 }}
+              />
+              {row.agencia.nombre}
+            </span>
+          )}
+        </div>
+      ),
     },
     {
       id: "cliente",
@@ -77,14 +91,11 @@ export function createRenewalsColumns({
     },
     {
       id: "carrito",
-      label: t("renewals.table.quote"),
+      label: t("assistancesTable.orderNumber"),
       width: "12%",
       align: "end",
-      // carrito es null mientras la renovación no tiene cotización creada
-      render: (row) =>
-        row.carrito?.url ? null : (
-          <span className="text-muted small">{t("renewals.table.noQuote")}</span>
-        ),
+      // N° de pedido = carrito.id; carrito es null mientras la renovación no tiene cotización creada
+      render: (row) => (row.carrito?.id != null ? String(row.carrito.id) : ""),
     },
     {
       id: "actions",

@@ -2474,7 +2474,7 @@
         "/{idioma}/detener_recordatorio_renovacion": {
             "post": {
                 "summary": "Detener Recordatorio Renovación",
-                "description": "Desactiva el recordatorio de renovación para el usuario indicado.",
+                "description": "Desactiva el recordatorio de la renovación indicada.",
                 "operationId": "detenerRecordatorioRenovacion",
                 "tags": ["Renovaciones"],
                 "parameters": [
@@ -2497,7 +2497,7 @@
                                 "properties": {
                                     "id": {
                                         "type": "string",
-                                        "description": "ID del usuario/agente para detener el recordatorio"
+                                        "description": "ID de la renovación (id del item de /renovaciones-pendientes) a la que se le detiene el recordatorio"
                                     }
                                 }
                             }

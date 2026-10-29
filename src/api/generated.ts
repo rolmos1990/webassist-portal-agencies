@@ -1844,7 +1844,7 @@ export function useGetRenovacionesPendientes<TData = Awaited<ReturnType<typeof g
 
 
 /**
- * Desactiva el recordatorio de renovación para el usuario indicado.
+ * Desactiva el recordatorio de la renovación indicada.
  * @summary Detener Recordatorio Renovación
  */
 export const detenerRecordatorioRenovacion = (

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { keepPreviousData, useQueryClient } from '@tanstack/react-query';
+import { keepPreviousData } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
 import Breadcrumb from '../components/Breadcrumb';
 import { UIButton } from '../components/Button';
@@ -14,7 +14,6 @@ import {
   type RenewalFilterValues,
 } from '../components/Forms/renewalFilters';
 import {
-  getGetRenovacionesPendientesQueryKey,
   useDetenerRecordatorioRenovacion,
   useGetRenovacionesPendientes,
 } from '../api/generated';
@@ -27,7 +26,6 @@ import { getApiErrorMessage } from '../api/errors/ApiError';
 function Renewals() {
   const { lang } = useI18nCache();
   const { t } = useTranslation();
-  const queryClient = useQueryClient();
 
   const [showFilter, setShowFilter] = useState(false);
   const [filters, setFilters] = useState<RenewalFilterValues>(EMPTY_RENEWAL_FILTERS);
@@ -39,7 +37,7 @@ function Renewals() {
   };
 
   // Lista del agente (o de toda la agencia si es agente_administrador)
-  const { data, isLoading, error } = useGetRenovacionesPendientes(
+  const { data, isLoading, error, refetch } = useGetRenovacionesPendientes(
     lang,
     toRenewalFilterParams(filters),
     // Las estadísticas no dependen de los filtros: se mantienen mientras recarga la lista
@@ -55,11 +53,13 @@ function Renewals() {
   const { mutateAsync: detenerRecordatorio } = useDetenerRecordatorioRenovacion();
 
   const handleStopReminder = async (row: GetRenovacionesPendientes200DataItemsItem) => {
-    if (row.agente?.id == null) return;
+    if (row.id == null) return;
     try {
-      await detenerRecordatorio({ idioma: lang, data: { id: String(row.agente.id) } });
+      // id de la renovación (item de la lista), no del agente
+      await detenerRecordatorio({ idioma: lang, data: { id: String(row.id) } });
       toast.success(t('renewals.table.reminderStopped'));
-      queryClient.invalidateQueries({ queryKey: getGetRenovacionesPendientesQueryKey(lang) });
+      // La renovación debe desaparecer: se vuelve a consultar la lista con los filtros actuales
+      await refetch();
     } catch (e) {
       toast.error("Error", getApiErrorMessage(e, t('error_generico')));
     }

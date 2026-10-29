@@ -31,6 +31,6 @@ En el ambiente de desarrollo las respuestas 500 agregan `error` y `archivo` con 
  */
 
 export type DetenerRecordatorioRenovacionBody = {
-  /** ID del usuario/agente para detener el recordatorio */
+  /** ID de la renovación (id del item de /renovaciones-pendientes) a la que se le detiene el recordatorio */
   id?: string;
 };
