@@ -518,10 +518,10 @@
       "lastReminder": "Last reminder",
       "status": "Status",
       "quote": "Quote",
-      "viewQuote": "View quote",
+      "viewQuote": "View renewal",
       "noQuote": "No quote",
       "actions": "Actions",
-      "viewAssistance": "View assistance",
+      "viewAssistance": "View previous voucher",
       "stopReminder": "Stop reminder",
       "reminderStopped": "Renewal reminder stopped"
     },

@@ -20,11 +20,6 @@ const Login = () => {
         onSubmit={(data) => doLogin({ email: data.email, password: data.password })}
         isLoading={isLoggingIn}
       />
-
-      <div className="d-flex flex-column flex-sm-row align-items-center align-items-sm-start gap-sm-1">
-        <span>Don’t have an account?</span>
-        <a className="text-decoration-none" href="#">Create an Account</a>
-      </div>
     </section>
   );
 };

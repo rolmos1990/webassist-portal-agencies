@@ -31,13 +31,7 @@ export default function ClientDetail() {
     return (
 <div className="min-vh-100 bg-light">
   <div className="container-fluid py-3 px-4">
-        <Breadcrumb title="Back" hasBack rightContent={
-          <div className="d-flex gap-2">
-            <button type="button" className="btn btn-outline-primary rounded-pill bg-white">
-              <i className="bi bi-envelope me-1"></i>Resend the Voucher
-            </button>
-          </div>
-        } />
+        <Breadcrumb title="Back" hasBack />
         <div className="card shadow">
             <div className="p-4">
                 <CardAvatar

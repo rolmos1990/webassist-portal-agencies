@@ -518,10 +518,10 @@
       "lastReminder": "Último recordatorio",
       "status": "Estado",
       "quote": "Cotización",
-      "viewQuote": "Ver cotización",
+      "viewQuote": "Ver renovación",
       "noQuote": "Sin cotización",
       "actions": "Acciones",
-      "viewAssistance": "Ver asistencia",
+      "viewAssistance": "Ver voucher anterior",
       "stopReminder": "Detener recordatorio",
       "reminderStopped": "Recordatorio de renovación detenido"
     },

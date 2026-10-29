@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useTranslation } from "react-i18next";
 import Breadcrumb from '../components/Breadcrumb';
-import { UIButton } from '../components/Button';
 import { CardAvatar } from '../components/CardAvatar';
 import { agencyStatusTheme } from '../components/StatusBadge/StatusBadgeThemes';
 import { HorizontalCardList, HorizontalCardListItem } from '../components/HorizontalCardList';
@@ -63,6 +62,15 @@ export default function AgencyDetail() {
                     email={agency.email || '—'}
                     phone={agency.telefono || '—'}
                     location={[agency.direccion, agency.ciudad, agency.pais?.nombre].filter(Boolean).join(', ') || '—'}
+                    extraInfo={
+                        <>
+                            <i className="bi bi-wallet2 me-2 text-success"></i>
+                            {t('agency.paymentType')}:{' '}
+                            <span>
+                                {(typeof agency.tipo_pago?.nombre === 'string' && agency.tipo_pago.nombre) || ''}
+                            </span>
+                        </>
+                    }
                 />
                 <div className="">
                     <HorizontalCardList desktopCols={5}>
@@ -118,22 +126,7 @@ export default function AgencyDetail() {
     return (
     <div className="min-vh-100 bg-light">
     <div className="container-fluid py-3 px-4">
-            <Breadcrumb title={t('agency.detail.back')} hasBack rightContent={
-            <div className="d-flex gap-2">
-            <UIButton
-            variant="outline-primary"
-            icon="bi bi-envelope"
-            >
-            Resend the Voucher
-            </UIButton>
-            <UIButton
-            variant="outline-primary"
-            icon="bi bi-pencil"
-            >
-            Modify Voucher Data
-            </UIButton>
-            </div>
-            } />
+            <Breadcrumb title={t('agency.detail.back')} hasBack />
             <div className="card shadow">
                 {renderBody()}
             </div>

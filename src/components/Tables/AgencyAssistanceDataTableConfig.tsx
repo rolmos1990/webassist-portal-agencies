@@ -34,8 +34,8 @@ export function createAgencyAssistanceColumns({
       id: "pedido",
       label: t("assistancesTable.orderNumber"),
       width: "12%",
-      // El servicio todavía no devuelve un número de pedido para asistencias.
-      accessor: () => "",
+      // N° de pedido = id_carrito del primer pago; vacío si no hay pagos
+      accessor: (row) => row.pagos?.[0]?.id_carrito ?? "",
       align: "start",
     },
     {

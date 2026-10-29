@@ -182,7 +182,7 @@ export default function AssistanceDetail({ kind = 'assistance' }: Props) {
           )}
           {withGeneralData && kind !== 'quote' && (
             <HorizontalCardListItem
-              title={t("assistanceDetail.reference")}
+              title={t("assistancesTable.orderNumber")}
               value={voucher.reference}
               icon={""}
             />

@@ -33,7 +33,7 @@ export function createAgencyColumns({
       // nombre puede venir como false cuando el backend no encuentra el tipo de pago
       accessor: (row) => (typeof row.tipo_pago?.nombre === "string" ? row.tipo_pago.nombre : ""),
       align: "start",
-      render: (row) => (typeof row.tipo_pago?.nombre === "string" && row.tipo_pago.nombre) || "—",
+      render: (row) => (typeof row.tipo_pago?.nombre === "string" && row.tipo_pago.nombre) || "",
     },
     {
       id: "comision",

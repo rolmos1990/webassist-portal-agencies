@@ -15,6 +15,16 @@
             background-color: $color-highlight;
             color: #ffffff;
         }
+
+        // UIButton variant="outline-primary" agrega .bg-white, que trae !important y
+        // dejaba el hover con texto blanco sobre fondo blanco
+        &.bg-white:hover,
+        &.bg-white:focus-visible,
+        &.bg-white:active {
+            background-color: $color-highlight !important;
+            border-color: $color-highlight;
+            color: #ffffff;
+        }
     }
 
     // Botón CTA sólido (variant="dark" en UIButton). Mismo alto/padding que

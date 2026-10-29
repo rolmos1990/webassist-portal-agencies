@@ -18,6 +18,8 @@ interface CardAvatarProps {
   className?: string;
   /** Contenido opcional arriba a la derecha (p. ej. agencia asociada) */
   rightContent?: ReactNode;
+  /** Contenido opcional debajo de la ubicación, con el mismo estilo (p. ej. tipo de pago) */
+  extraInfo?: ReactNode;
 }
 
 export const CardAvatar = ({
@@ -31,6 +33,7 @@ export const CardAvatar = ({
   location,
   className = '',
   rightContent,
+  extraInfo,
 }: CardAvatarProps) => {
   return (
     <div className={`col-12 border-bottom w-100 mx-auto ${className}`}>
@@ -60,6 +63,7 @@ export const CardAvatar = ({
               <i className="bi bi-geo-alt me-2 text-success"></i>
               {location}
             </p>
+            {extraInfo && <p className="mt-1 mb-0 text-gray small pb-1">{extraInfo}</p>}
           </div>
 
           {rightContent && (
