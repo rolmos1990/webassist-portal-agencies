@@ -1,0 +1,48 @@
+/* ============================================================
+   🎬 Dashboard: entrada leve de los contenedores al cargar
+   Fade + subida corta con un pequeño rebote (tipo fadeInUp/bounceIn suave).
+   Cada fila (.dashboard-anim-N) entra un poco después de la anterior y,
+   dentro de la fila, cada tarjeta entra un poco después de la anterior.
+   Se usa en Dashboard y en Programs Performance.
+   ============================================================ */
+
+@keyframes dashboard-fade-bounce-in {
+    0% {
+        opacity: 0;
+        transform: translateY(18px) scale(0.985);
+    }
+    60% {
+        opacity: 1;
+        transform: translateY(-3px) scale(1.003);
+    }
+    80% {
+        transform: translateY(1px) scale(1);
+    }
+    100% {
+        opacity: 1;
+        transform: none;
+    }
+}
+
+[class*="dashboard-anim-"] > * {
+    animation: dashboard-fade-bounce-in 0.6s ease-out both;
+}
+
+@for $i from 1 through 4 {
+    .dashboard-anim-#{$i} > * {
+        animation-delay: #{($i - 1) * 0.1}s;
+    }
+
+    // Tarjetas dentro de la fila: cada una 0,08 s después de la anterior (hasta 6)
+    @for $n from 2 through 6 {
+        .dashboard-anim-#{$i} > *:nth-child(#{$n}) {
+            animation-delay: #{($i - 1) * 0.1 + ($n - 1) * 0.08}s;
+        }
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    [class*="dashboard-anim-"] > * {
+        animation: none;
+    }
+}

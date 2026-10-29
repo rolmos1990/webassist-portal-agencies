@@ -290,7 +290,7 @@ function Agents() {
           </div>
         </UIModal>
             <div className="card border-0">
-              <div className="card-body p-0">
+              <div className="card-body p-0 table-scroll-x">
               <AgentsTable
                   data={agents.slice((currentPage - 1) * PAGE_SIZE, currentPage * PAGE_SIZE)}
                   loading={isLoading}

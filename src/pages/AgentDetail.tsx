@@ -79,6 +79,7 @@ function AgentQuotesTab({ agentId }: { agentId: number }) {
     }, [error, t]);
 
     return (
+        <div className="table-scroll-x">
         <AgencyQuotesTable
             data={data?.data?.items ?? []}
             loading={isLoading}
@@ -91,6 +92,7 @@ function AgentQuotesTab({ agentId }: { agentId: number }) {
                 onChange: setCurrentPage,
             }}
         />
+        </div>
     );
 }
 
@@ -114,6 +116,7 @@ function AgentSalesTab({ agentId }: { agentId: number }) {
     }, [error, t]);
 
     return (
+        <div className="table-scroll-x">
         <AgencyAssistanceTable
             data={data?.data?.items ?? []}
             loading={isLoading}
@@ -126,6 +129,7 @@ function AgentSalesTab({ agentId }: { agentId: number }) {
                 onChange: setCurrentPage,
             }}
         />
+        </div>
     );
 }
 

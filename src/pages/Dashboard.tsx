@@ -283,9 +283,6 @@ function Dashboard() {
         <UIButton variant="outline-primary" icon=""  onClick={handleShow}>
           {t('filter_by')}{activeFilters > 0 && ` (${activeFilters})`}
         </UIButton>
-        <UIButton variant="outline-primary" icon="">
-          This year
-        </UIButton>
       </div>
     }
     />
@@ -312,7 +309,7 @@ function Dashboard() {
 
       {/* <SalesTargetSection /> */}
 
-      <div className="d-flex p-3 flex-column flex-xl-row gap-3">
+      <div className="d-flex p-3 flex-column flex-xl-row gap-3 dashboard-anim-1">
         <RevenueRenewalsSection
           labels={revenueRenewalsLabels}
           pending={revenueRenewalsPending}
@@ -324,7 +321,7 @@ function Dashboard() {
           onViewDetail={() => navigate(PATHS.dashboard.programsPerformance())}
         />
       </div>
-      <div className="d-flex p-3 flex-column flex-xl-row gap-3">
+      <div className="d-flex p-3 flex-column flex-xl-row gap-3 dashboard-anim-2">
         <KPIComparisonSection
           labels={kpiComparisonLabels}
           chartData={kpiChartData}
@@ -333,13 +330,16 @@ function Dashboard() {
         />
         <CommissionEarnedSection labels={commissionEarnedLabels} chartData={commissionChartData} />
       </div>
+      {/* Contenedores con entrada animada: ver _dashboard-animations.scss */}
+      <div className="dashboard-anim-3">
       <QuotePerformanceSection
         data={data.cotizaciones_performance}
         view={quoteView}
         onViewChange={setQuoteView}
         loading={fetching}
       />
-      <div className="d-flex p-3 flex-column flex-xl-row gap-3">
+      </div>
+      <div className="d-flex p-3 flex-column flex-xl-row gap-3 dashboard-anim-4">
         <AgentPerformanceSection
           labels={{
             title: t('dashboard.agentPerformance.title'),

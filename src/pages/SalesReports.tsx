@@ -157,7 +157,7 @@ function SalesReports() {
         </div>
 
         <div className="card border-0">
-          <div className="card-body p-0">
+          <div className="card-body p-0 table-scroll-x">
             <SalesReportTable
               data={pageItems}
               loading={isLoading}

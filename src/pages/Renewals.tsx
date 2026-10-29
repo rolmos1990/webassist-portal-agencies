@@ -137,7 +137,7 @@ function Renewals() {
         </div>
 
         <div className="card border-0">
-          <div className="card-body p-0">
+          <div className="card-body p-0 table-scroll-x">
             <RenewalsTable data={items} loading={isLoading} onStopReminder={handleStopReminder} />
           </div>
         </div>

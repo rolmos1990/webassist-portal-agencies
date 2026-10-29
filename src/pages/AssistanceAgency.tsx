@@ -96,7 +96,7 @@ function AssistanceAgency() {
           />
         </Offcanvas>
             <div className="card">
-              <div className="card-body p-0">
+              <div className="card-body p-0 table-scroll-x">
               <AgencyAssistanceTable
                   data={items}
                   loading={isLoading}

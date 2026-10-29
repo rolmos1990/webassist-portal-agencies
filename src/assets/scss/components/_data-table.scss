@@ -11,6 +11,18 @@
     overflow: visible;
 }
 
+// Tablas que deben adaptarse al contenedor (p. ej. dentro de pestañas en tablet/teléfono):
+// se vuelve a habilitar el scroll horizontal sólo donde se envuelve con .table-scroll-x.
+// El menú de RowActions usa Popper con strategy "fixed", así que no lo recorta.
+.table-scroll-x {
+    max-width: 100%;
+
+    .table-responsive {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+}
+
 .wac-data-table {
     thead th {
         padding-top: .75rem;

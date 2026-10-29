@@ -105,6 +105,7 @@ export default function AgencyDetail() {
                 <div className="mt-4">
                     <h5 className="mb-4">{t('agency.detail.subAgencies')}</h5>
                     {/* Por ahora muestra todas las agencias del listado */}
+                    <div className="table-scroll-x">
                     <AgencyTable
                         data={agencies.slice((currentPage - 1) * PAGE_SIZE, currentPage * PAGE_SIZE)}
                         onEdit={(row) => navigate(PATHS.agencies.detail(row.id))}
@@ -118,6 +119,7 @@ export default function AgencyDetail() {
                             onChange: setCurrentPage,
                         }}
                     />
+                    </div>
                 </div>
             </div>
         );

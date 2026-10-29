@@ -99,7 +99,7 @@ function Clients() {
         />
 
         <div className="card border-0">
-          <div className="card-body p-0">
+          <div className="card-body p-0 table-scroll-x">
             <ClientsTable
               data={items}
               loading={isLoading}

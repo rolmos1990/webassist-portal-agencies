@@ -68,7 +68,7 @@ function Agencies() {
         {/* Sin filtros ni alta de agencias por ahora: no hay servicios para esas acciones */}
         <Breadcrumb title={t('agencias')} />
             <div className="card border-0">
-              <div className="card-body p-0">
+              <div className="card-body p-0 table-scroll-x">
               <AgencyTable
                   data={agenciesData.slice((currentPage - 1) * PAGE_SIZE, currentPage * PAGE_SIZE)}
                   loading={loading}

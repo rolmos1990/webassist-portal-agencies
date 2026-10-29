@@ -92,11 +92,14 @@ function ProgramsPerformance() {
           })}
         </div>
 
-        <ProgramPerformanceSummary program={program} metrics={metrics} periodLabels={periodLabels} />
+        {/* Entrada animada de los contenedores: ver _dashboard-animations.scss */}
+        <div className="dashboard-anim-1">
+          <ProgramPerformanceSummary program={program} metrics={metrics} periodLabels={periodLabels} />
+        </div>
 
         {/* Tarjetas por plan (SILVER, GOLD, ...) del programa seleccionado: datos_planes[].planes */}
         {plans.length > 0 && (
-          <div className="row g-3 mt-1">
+          <div className="row g-3 mt-1 dashboard-anim-2">
             {plans.map((plan, index) => (
               <div className="col-12 col-md-6 col-xl-4" key={plan.id ?? index}>
                 <ProgramPlanCard
