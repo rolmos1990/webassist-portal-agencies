@@ -27,6 +27,25 @@
         }
     }
 
+    // Resto de variantes outline de UIButton (secondary, success, info, danger) con .bg-white:
+    // el fondo queda blanco por el !important, así que en hover/foco/click se oscurece el texto
+    // y el borde en vez de pasar a blanco (Bootstrap usa estas variables en :hover y :active).
+    $outline-white-hover: (
+        "secondary": #343a40,
+        "success": #146c43,
+        "info": #087990,
+        "danger": #b02a37,
+    );
+
+    @each $name, $color in $outline-white-hover {
+        &.btn-outline-#{$name}.bg-white {
+            --bs-btn-hover-color: #{$color};
+            --bs-btn-hover-border-color: #{$color};
+            --bs-btn-active-color: #{$color};
+            --bs-btn-active-border-color: #{$color};
+        }
+    }
+
     // Botón CTA sólido (variant="dark" en UIButton). Mismo alto/padding que
     // .btn-outline-primary para que ambos se vean consistentes uno al lado del otro.
     &.btn-solid-primary {

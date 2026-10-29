@@ -1,6 +1,6 @@
 /**
  * Tarjeta de resumen por plan (SILVER, GOLD, ...) dentro de un programa.
- * Sólo UI: todavía no hay API que la alimente, por eso su uso está comentado en ProgramsPerformance.
+ * Se alimenta de datos_planes[].planes del dashboard (ver ProgramsPerformance).
  */
 export interface ProgramPlanCardProps {
   name: string;
@@ -10,21 +10,34 @@ export interface ProgramPlanCardProps {
 
 export default function ProgramPlanCard({ name, rows }: ProgramPlanCardProps) {
   return (
-    <div className="p-4 bg-white rounded-2 h-100">
+    <div className="bg-white h-100" style={{ borderRadius: 12, padding: '28px 28px 24px' }}>
       <div
         className="d-flex align-items-center justify-content-center rounded-circle"
-        style={{ width: 48, height: 48, backgroundColor: '#e8f5dc', color: '#7cc249', fontSize: 20 }}
+        style={{ width: 52, height: 52, backgroundColor: '#edf7e6', color: '#6dbb3a' }}
       >
-        <i className="bi bi-suitcase2"></i>
+        {/* Maleta del diseño (asa, dos franjas y ruedas) en SVG para que se vea nítida */}
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+          <path d="M9.5 6V3.75a.75.75 0 0 1 .75-.75h3.5a.75.75 0 0 1 .75.75V6" />
+          <rect x="6.5" y="6" width="11" height="13" rx="2" />
+          <path d="M10 9.5v6M14 9.5v6" />
+          <path d="M9 19v1.5M15 19v1.5" />
+        </svg>
       </div>
-      <h2 className="p-0 m-0 mt-4" style={{ fontSize: 15, fontWeight: 600, color: '#21272a' }}>
+      {/* Sin m-0: su !important anularía el marginTop */}
+      <h2 className="p-0 mb-0" style={{ marginTop: 24, fontSize: 16, fontWeight: 600, color: '#21272a', letterSpacing: 0.2 }}>
         {name}
       </h2>
-      <div className="mt-3 d-flex flex-column gap-2">
+      {/* Dos columnas: etiqueta a la izquierda y valores alineados entre sí (no pegados al borde) */}
+      <div
+        className="mt-3"
+        style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 1fr) auto', columnGap: 24, rowGap: 12, alignItems: 'baseline' }}
+      >
         {rows.map((row) => (
-          <div key={row.label} className="d-flex justify-content-between gap-3">
-            <span style={{ fontSize: 13, color: '#4b647e' }}>{row.label}</span>
-            <span style={{ fontSize: 14, fontWeight: 600, color: '#21272a' }}>{row.value}</span>
+          <div key={row.label} style={{ display: 'contents' }}>
+            <span style={{ fontSize: 14, color: '#4b647e' }}>{row.label}</span>
+            <span style={{ fontSize: 15, fontWeight: 600, color: '#21272a', whiteSpace: 'nowrap', paddingRight: 32 }}>
+              {row.value}
+            </span>
           </div>
         ))}
       </div>

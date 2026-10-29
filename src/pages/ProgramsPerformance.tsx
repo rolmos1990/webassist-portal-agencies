@@ -4,7 +4,7 @@ import Breadcrumb from '../components/Breadcrumb';
 import { currency } from '../components/DataTable';
 import ProgramPerformanceSummary from '../components/dashboard/ProgramPerformanceSummary';
 import type { ProgramPerformanceMetric, ProgramPeriod } from '../components/dashboard/ProgramPerformanceSummary';
-// import ProgramPlanCard from '../components/dashboard/ProgramPlanCard';
+import ProgramPlanCard from '../components/dashboard/ProgramPlanCard';
 import { useDashboardData } from '../hooks/useDashboardData';
 
 /** Detalle de "Planes más vendidos por programa": se alimenta de programs_performance del dashboard */
@@ -15,6 +15,8 @@ function ProgramsPerformance() {
 
   const programs = data?.programs_performance ?? [];
   const program = programs[selectedIndex] ?? programs[0];
+  // datos_planes viene por tipo de plan con el mismo id que programs_performance
+  const plans = (data?.datos_planes ?? []).find((d) => d.id != null && d.id === program?.id)?.planes ?? [];
 
   const periodLabels: Record<ProgramPeriod, string> = {
     ytd: t('dashboard.programsPerformance.periods.ytd'),
@@ -92,23 +94,24 @@ function ProgramsPerformance() {
 
         <ProgramPerformanceSummary program={program} metrics={metrics} periodLabels={periodLabels} />
 
-        {/* Tarjetas por plan (SILVER, GOLD, ...): pendiente de API.
-        <div className="row g-3 mt-1">
-          {plans.map((plan) => (
-            <div className="col-12 col-md-6 col-xl-4" key={plan.id}>
-              <ProgramPlanCard
-                name={plan.nombre}
-                rows={[
-                  { label: t('dashboard.programsPerformance.plan.totalRevenue'), value: currency(plan.total_ventas) },
-                  { label: t('dashboard.programsPerformance.plan.totalCommissions'), value: currency(plan.total_comisiones) },
-                  { label: t('dashboard.programsPerformance.plan.totalDays'), value: `${plan.cantidad_dias} ${daysLabel}` },
-                  { label: t('dashboard.programsPerformance.plan.totalUnits'), value: `${plan.cantidad_ventas} ${unitsLabel}` },
-                ]}
-              />
-            </div>
-          ))}
-        </div>
-        */}
+        {/* Tarjetas por plan (SILVER, GOLD, ...) del programa seleccionado: datos_planes[].planes */}
+        {plans.length > 0 && (
+          <div className="row g-3 mt-1">
+            {plans.map((plan, index) => (
+              <div className="col-12 col-md-6 col-xl-4" key={plan.id ?? index}>
+                <ProgramPlanCard
+                  name={plan.nombre ?? ''}
+                  rows={[
+                    { label: t('dashboard.programsPerformance.plan.totalRevenue'), value: currency(plan.total_vendido ?? 0) },
+                    { label: t('dashboard.programsPerformance.plan.totalCommissions'), value: currency(plan.total_comisiones ?? 0) },
+                    { label: t('dashboard.programsPerformance.plan.totalDays'), value: `${plan.dias_vendidos ?? 0} ${daysLabel}` },
+                    { label: t('dashboard.programsPerformance.plan.totalUnits'), value: `${plan.unidades_vendidas ?? 0} ${unitsLabel}` },
+                  ]}
+                />
+              </div>
+            ))}
+          </div>
+        )}
       </>
     );
   };
